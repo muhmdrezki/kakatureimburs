@@ -103,12 +103,14 @@ desired effect
       <?php 
       include "con_db.php";
 
+      list($one, $two) = explode(",", $_SESSION['jabatan'] , 2);
+
         $sql1 = "SELECT id_anggota, foto_profile FROM tb_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
         $result1=mysqli_query($koneksi, $sql1);
         $values1=mysqli_fetch_assoc($result1);
         $id_anggota = $values1['id_anggota'];  
 
-        if($_SESSION['jabatan'] == 'Admin'){
+        if($one == 'Admin'){
 
         $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_pembayaran` WHERE `status`= 'belum'";
         $result=mysqli_query($koneksi, $sql);
@@ -117,7 +119,7 @@ desired effect
 
         $notif_string = "Ada ". $jumlah . " yang belum di reimbers";
 
-      } else if($_SESSION['jabatan'] != 'Admin' ){
+      } else if($one != 'Admin' ){
 
         $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_konfirmasi` WHERE `konfirm_admin`= 'OK' AND id_anggota = '$_SESSION[id_anggota]'";
         $result=mysqli_query($koneksi, $sql);
@@ -149,11 +151,11 @@ desired effect
                   <li><!-- start notification -->
                     <a href="index.php?sidebar-menu=list_bayar&action=tampil&status=notif">
                     <?php 
-                      if($_SESSION['jabatan']=='Admin'){
+                      if($one=='Admin'){
                     ?>
                       <i class="fa fa-book text-aqua" style="float: center;"></i> <?php echo $notif_string ?>
                     <?php
-                    } else if ($_SESSION['jabatan']!='Admin'){
+                    } else if ($one!='Admin'){
                     ?>
                       <i class="fa fa-book text-aqua" style="float: center;"></i> <?php echo $notif_string ?>
                     <?php
@@ -172,11 +174,11 @@ desired effect
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
               <?php
-                if(!is_null($values1['foto_profile'])){ 
+                if($values1['foto_profile']!='-'){ 
                 ?>
                   <img alt="User Image" <?php echo "src='dist/img/".$values1['foto_profile']."'"; ?> class="user-image img-responsive"> 
                 <?php
-                } else {
+                } else if($values1['foto_profile']=='-') {
                 ?>  
                   <img alt="User Image" <?php echo "src='dist/img/no-profile.jpg'"; ?> class="user-image img-responsive">
                 <?php
@@ -189,11 +191,11 @@ desired effect
               <!-- The user image in the menu -->
               <li class="user-header"  style="height: 115px;">
                  <?php
-                if(!is_null($values1['foto_profile'])){ 
+                if($values1['foto_profile']!='-'){ 
                 ?>
                   <img alt="User Image" align="cen" <?php echo "src='dist/img/".$values1['foto_profile']."'"; ?> class="img-circle img-responsive pull-left"> 
                 <?php
-                } else {
+                } else if($values1['foto_profile']=='-'){
                 ?>  
                   <img alt="User Image" <?php echo "src='dist/img/no-profile.jpg'"; ?> class="img-circle img-responsive pull-left">
                 <?php
@@ -235,11 +237,11 @@ desired effect
       <div class="user-panel">
         <div class="pull-left image">
           <?php
-                if(!is_null($values1['foto_profile'])){ 
+                if($values1['foto_profile']!='-'){ 
                 ?>
                   <img alt="User Pic" <?php echo "<img src='dist/img/".$values1['foto_profile']."'"; ?> class="img-circle img-responsive"> 
                 <?php
-                } else {
+                } else if($values1['foto_profile']=='-'){
                 ?>  
                   <img alt="User Pic" <?php echo "<img src='dist/img/no-profile.jpg'"; ?> class="img-circle img-responsive">
                 <?php
@@ -266,7 +268,8 @@ desired effect
   </aside>
 
    <?php 
-          if($_SESSION['jabatan'] != "Admin"){
+
+          if($one != "Admin"){
             ?>
               <script type="text/javascript">
                   document.getElementById('menu_anggota').style.display="none";

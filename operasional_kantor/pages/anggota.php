@@ -35,7 +35,7 @@
     <tbody>
             <?php
 
-           $sql = "SELECT id_anggota, nama, jabatan, email, jenis_kelamin FROM tb_anggota";
+           $sql = "SELECT tb_anggota.id_anggota, tb_anggota.nama, GROUP_CONCAT(tb_jabatan.jabatan SEPARATOR ', ') as 'jabatan', tb_anggota.email, tb_anggota.jenis_kelamin FROM `tb_anggota` JOIN jabatan_anggota ON tb_anggota.id_anggota = jabatan_anggota.id_anggota JOIN tb_jabatan ON tb_jabatan.id_jabatan = jabatan_anggota.id_jabatan GROUP BY tb_anggota.id_anggota";
 
            $result = mysqli_query($koneksi,$sql);
            
@@ -55,7 +55,7 @@
               <td> <?php echo $r[jabatan] ?> </td>
               <td> <?php echo $r[email] ?> </td>
               <td> <?php echo $r[jenis_kelamin] ?> </td>           
-              <td> <center><a href='#'> <span class='glyphicon glyphicon-list-alt'></span> </a></center> </td>
+              <td> <center><a href='#' class="btn btn-info"> Detail <span class='glyphicon glyphicon-list-alt'></span> </a></center> </td>
             </tr>
 
               <?php
