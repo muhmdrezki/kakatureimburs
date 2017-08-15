@@ -29,7 +29,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	</head>
 
 	<?php 
-		  include "/../con_db.php";
+		  include "../con_db.php";
 		  session_start();
 
    		  $tgl_now = date("d-m-Y"); 
@@ -41,8 +41,16 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 		  $id_pembayaran = $_GET['id'];
 		  $_SESSION['id_pembayaran'] = $id_pembayaran;
 
-		  $sql = "SELECT * FROM tb_pembayaran WHERE id_pembayaran='$id_pembayaran'";
+		  $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.id_pembayaran='$id_pembayaran'";
 		  $result=mysqli_query($koneksi,$sql);
+
+		   if (!$result) {
+              printf("Error: %s\n", mysqli_error($koneksi));
+              exit();
+              } 
+
+          $sql_bukti = "SELECT * FROM tb_buktipembayaran WHERE id_pembayaran = '$id_pembayaran'";
+          $result_bukti = mysqli_query($koneksi, $sql_bukti);   
 
 	?>
 
@@ -54,9 +62,22 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 					<br>
 					  <h2>FORM PEMBAYARAN</h2> 
 					  <br>
+					  <div class="form-group">
+					  <label for="nominal"> Bukti Pembayaran </label>
+					  <?php 
+					  	while ($r = mysqli_fetch_array($result_bukti)){
+					  		?>
+					  	
+					      <img alt="User Pic" "<?php echo $r[bukti]?>" <?php echo "src='dist/fotobukti/".$r[bukti]."'"; ?> class="user-image img-responsive" width="260" height="136"> 
+					  
+					    <?php
+					  	}
+					  ?>
+					    </div>
 					    <?php
 							while ($row=mysqli_fetch_array($result)) {	
 						?>
+					    <hr>
 					    <div class="form-group">
 					      <label for="id_pembayaran">ID</label>
 					      <input type="text" class="form-control" id="id_pembayaran" placeholder="Id Pembayaran" name="id_pembayaran" value="<?php echo $row['id_pembayaran']; ?>" disabled>
@@ -81,18 +102,9 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 					      <label for="keterangan"> Keterangan </label>
 					      <textarea class="form-control" rows="5" id="keterangan" name="keterangan" placeholder="Keterangan Pembayaran" disabled> <?php echo $row['keterangan']; ?> </textarea>
 					    </div>
-
-					    <div class="form-group">
-					      <label for="pass"> Bukti Pembayaran </label>
-					      <input class="form-control" type="file" id="user_image1" name="user_image1">
-					      <br>
-					      <input class="form-control" type="file" id="user_image2" name="user_image2">
-					      <br>
-					      <input class="form-control" type="file" id="user_image3" name="user_image3">
-					    </div>
 					    <!-- Trigger the modal with a button -->
 						  <Button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal">KONFIRMASI</Button>
-
+						  <br><br>
 						  <!-- Modal -->
 						  <div class="modal fade" id="myModal" role="dialog">
 						    <div class="modal-dialog">

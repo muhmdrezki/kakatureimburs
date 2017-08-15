@@ -1,7 +1,7 @@
 <?php 
 session_start();
 	include "../con_db.php";
-	$target_dir = "../dist/img/";
+	$target_dir = "../dist/fotoprofile/";
 	$target_file = $target_dir . basename($_FILES["image"]["name"]);
 	$file = basename($_FILES["image"]["name"]);
 	$uploadOk = 1;

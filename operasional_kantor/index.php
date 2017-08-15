@@ -41,6 +41,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="plugins/iCheck/all.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="bower_components/select2/dist/css/select2.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -112,7 +114,7 @@ desired effect
 
         if($one == 'Admin'){
 
-        $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_pembayaran` WHERE `status`= 'belum'";
+        $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_pembayaran` WHERE `status`= '0'";
         $result=mysqli_query($koneksi, $sql);
         $values=mysqli_fetch_assoc($result);
         $jumlah = $values['jumlah'];
@@ -121,7 +123,7 @@ desired effect
 
       } else if($one != 'Admin' ){
 
-        $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_konfirmasi` WHERE `konfirm_admin`= 'OK' AND id_anggota = '$_SESSION[id_anggota]'";
+        $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_konfirmasi` WHERE `konfirm_admin`= '2' AND id_anggota = '$_SESSION[id_anggota]'";
         $result=mysqli_query($koneksi, $sql);
         $values=mysqli_fetch_assoc($result);
         $jumlah = $values['jumlah'];    
@@ -176,11 +178,11 @@ desired effect
               <?php
                 if($values1['foto_profile']!='-'){ 
                 ?>
-                  <img alt="User Image" <?php echo "src='dist/img/".$values1['foto_profile']."'"; ?> class="user-image img-responsive"> 
+                  <img alt="User Image" <?php echo "src='dist/fotoprofile/".$values1['foto_profile']."'"; ?> class="user-image img-responsive"> 
                 <?php
                 } else if($values1['foto_profile']=='-') {
                 ?>  
-                  <img alt="User Image" <?php echo "src='dist/img/no-profile.jpg'"; ?> class="user-image img-responsive">
+                  <img alt="User Image" <?php echo "src='dist/fotoprofile/no-profile.jpg'"; ?> class="user-image img-responsive">
                 <?php
                 }
                 ?>
@@ -193,11 +195,11 @@ desired effect
                  <?php
                 if($values1['foto_profile']!='-'){ 
                 ?>
-                  <img alt="User Image" align="cen" <?php echo "src='dist/img/".$values1['foto_profile']."'"; ?> class="img-circle img-responsive pull-left"> 
+                  <img alt="User Image" align="cen" <?php echo "src='dist/fotoprofile/".$values1['foto_profile']."'"; ?> class="img-circle img-responsive pull-left"> 
                 <?php
                 } else if($values1['foto_profile']=='-'){
                 ?>  
-                  <img alt="User Image" <?php echo "src='dist/img/no-profile.jpg'"; ?> class="img-circle img-responsive pull-left">
+                  <img alt="User Image" <?php echo "src='dist/fotoprofile/no-profile.jpg'"; ?> class="img-circle img-responsive pull-left">
                 <?php
                 }
                 ?>
@@ -449,6 +451,8 @@ desired effect
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Select2 -->
+<script src="bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- InputMask -->
 <script src="plugins/input-mask/jquery.inputmask.js"></script>
 <script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
@@ -472,8 +476,10 @@ desired effect
     <script>
       $(function (){
 
+     $('.select2').select2()    
+
         //Datemask dd/mm/yyyy
-        $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+        $('#datemask').inputmask('dd-mm-YYYY', { 'placeholder': 'dd/mm/yyyy' })
         $('[data-mask]').inputmask()
 
      //Date range picker

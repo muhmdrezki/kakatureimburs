@@ -36,7 +36,7 @@ session_start();
 <br>
   <h2>FORM PEMBAYARAN</h2> 
   <br>
-  <form action="pages/proses_pembayaran.php" method="POST">
+  <form action="pages/proses_pembayaran.php" method="POST" enctype="multipart/form-data">
     
     <div class="form-group">
       <label for="id_pembayaran">ID</label>
@@ -94,16 +94,20 @@ session_start();
       </select>
     <?php
       } else {
+
+        $sql = "SELECT * FROM tb_jenistransaksi";
+        $result = mysqli_query($koneksi, $sql);
+
     ?>
     <div class="form-group">
       <label for="jenis"> Jenis Pembayaran </label>
       <select class="form-control" id="jenis" name="jenis">
-        <option value="Pilih"> Bayar apa? </option>
-        <option value="Bayar Listrik"> Bayar Listrik </option>
-        <option value="Air Minum"> Bayar Air Minum </option>
-        <option value="Bayar ART"> Bayar ART </option>
-        <option value="Bayar Sampah"> Bayar Sampah </option>
-        <option value="Lain - Lain"> Lain - lain </option>
+        <?php  while ($r = mysqli_fetch_array($result)) {
+          ?>
+          <option value="<?php echo $r[id_jenis]?>"> <?php echo $r[jenis]; ?> </option>
+        <?php
+        } ?>
+        
       </select>
     </div>
     <?php } ?>
@@ -120,11 +124,7 @@ session_start();
 
     <div class="form-group">
       <label for="pass"> Bukti Pembayaran </label>
-      <input class="form-control" type="file" id="user_image1" name="user_image1">
-      <br>
-      <input class="form-control" type="file" id="user_image2" name="user_image2">
-      <br>
-      <input class="form-control" type="file" id="user_image3" name="user_image3">
+      <input class="form-control" type="file" name="bukti[]" multiple/>
     </div>
 
     <br>

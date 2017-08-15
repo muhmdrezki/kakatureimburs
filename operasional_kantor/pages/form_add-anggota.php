@@ -42,10 +42,26 @@
         <label for="nama"> Nama </label>
         <input type="text" class="form-control" id="nama" placeholder="Masukan Nama" name="nama">
       </div>
-      <div class="form-group">
-        <label for="jabatan"> Jabatan </label>
-        <input type="text" class="form-control" id="jabatan" placeholder="Masukan Jabatan" name="jabatan">
-      </div>
+
+      <?php 
+        include "../con_db.php";
+
+        $sql_query = "SELECT * FROM tb_jabatan";
+        $result = mysqli_query($koneksi,$sql_query);
+      ?>      
+              <div class="form-group">
+                <label>Jabatan</label>
+                <select class="form-control select2 btn-primary" multiple="multiple" data-placeholder="Pilih Jabatan" name="jabatan[]"
+                        style="width: 100%; color: #212121;">
+                        <?php 
+                          while ($row = mysqli_fetch_array($result)){
+                        ?>
+                            <option value="<?php echo $row[id_jabatan]; ?>"> <?php echo $row[jabatan]; ?> </option>
+                         <?php
+                         }
+                         ?>
+                </select>
+              </div>
       <div class="form-group">
         <label for="email"> Email </label>
         <input type="email" class="form-control" id="email" placeholder="Masukan Email" name="email">
@@ -54,11 +70,7 @@
         <label for="alamat"> Alamat </label>
         <textarea  class="form-control" rows="5" id="alamat" name="alamat" placeholder="Alamat Anggota"></textarea>  
       </div>
-      <div class="form-group">
-        <label for="tempat_lahir"> Tempat Lahir </label>
-        <input type="text" class="form-control" id="tempat_lahir" placeholder="Masukan Tempat Lahir" name="tempat_lahir">
-      </div>
-          <!-- radio -->
+        <!-- radio -->
               <div class="form-group">
                 <label for="jenis_kelamin"> Jenis Kelamin </label>
               <div class="form-group">
@@ -67,13 +79,17 @@
               </div>
               </div>
        <!-- Date dd/mm/yyyy -->
+      <div class="form-group">
+        <label for="tempat_lahir"> Tempat Lahir </label>
+        <input type="text" class="form-control" id="tempat_lahir" placeholder="Masukan Tempat Lahir" name="tempat_lahir">
+      </div>
               <div class="form-group">
                 <label> Tanggal Lahir </label>
                 <div class="input-group">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                  <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" data-inputmask="'alias': 'dd-mm-yyyy'" data-mask>
                 </div>
                 <!-- /.input group -->
               </div>
@@ -85,9 +101,6 @@
       <input type="submit" name="submit" class="btn btn-primary" value="Save Data">
     </form>
   </div>
-
-
-</script>
 
   </body>  
 </html>

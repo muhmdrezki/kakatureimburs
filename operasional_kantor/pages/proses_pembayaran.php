@@ -23,11 +23,31 @@
 	$keterangan = $_POST['keterangan'];
 
 	//query untuk memasukan ke database
-	$query = "INSERT INTO tb_pembayaran VALUES ('$id', '$id_anggota', '$tgl_new_format', '$jenis', '$nominal', '$keterangan', '-', '-' , '-', 'belum' )";
+	$query = "INSERT INTO tb_pembayaran VALUES ('$id', '$id_anggota', '$tgl_new_format', '$jenis', '$nominal', '$keterangan', '0' )";
 	$insert = mysqli_query($koneksi, $query);
 
-	$query2 = "INSERT INTO tb_konfirmasi (id_pembayaran, id_anggota) VALUES ('$id','$id_anggota')";
+	$query2 = "INSERT INTO tb_konfirmasi (id_pembayaran, id_anggota, konfirm_anggota, konfirm_admin) VALUES ('$id','$id_anggota','0','0')";
 	$insert2 = mysqli_query($koneksi, $query2);
 
+	for($i = 0; $i < count($_FILES['bukti']['name']); $i++)
+	{
+		$filetmp = $_FILES["bukti"]["tmp_name"][$i];
+		$filename = $_FILES["bukti"]["name"][$i];
+		$filetype = $_FILES["bukti"]["type"][$i];
+		$filepath = "../dist/fotobukti/" . basename($filename);
+	
+	move_uploaded_file($filetmp,$filepath);
+	
+	$sql = "INSERT INTO tb_buktipembayaran (id_pembayaran, bukti) VALUES ('$id','$filename')";
+	$result = mysqli_query($koneksi,$sql);
+
+	 if (!$result) {
+              printf("Error: %s\n", mysqli_error($koneksi));
+              exit();
+              } 
+	
+	}
+
+
 ?>
-<script> alert("Data Berhasil Disimpan"); document.location.href="../index.php?sidebar-menu=list_bayar&action=tampil" </script> 
+<script> alert("Pembayaran Berhasil"); document.location.href="../index.php?sidebar-menu=list_bayar&action=tampil" </script> 

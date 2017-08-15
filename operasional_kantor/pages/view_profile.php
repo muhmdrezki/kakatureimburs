@@ -46,7 +46,6 @@
 
       <div class="row">
       <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
-       <br>
       </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
           <div>
@@ -56,7 +55,7 @@
 
                   include "../con_db.php";
 
-                  $sql = "SELECT * FROM tb_anggota WHERE id_anggota = '$_SESSION[id_anggota]'";
+                  $sql = "SELECT tb_anggota.id_anggota, tb_anggota.nama, GROUP_CONCAT(tb_jabatan.jabatan SEPARATOR ', ') as 'jabatan', tb_anggota.email, tb_anggota.jenis_kelamin, tb_anggota.alamat,tb_anggota.foto_profile FROM `tb_anggota` JOIN jabatan_anggota ON tb_anggota.id_anggota = jabatan_anggota.id_anggota JOIN tb_jabatan ON tb_jabatan.id_jabatan = jabatan_anggota.id_jabatan WHERE tb_anggota.id_anggota = '$_SESSION[id_anggota]'";
                   $result = mysqli_query($koneksi,$sql);
                   $values = mysqli_fetch_assoc($result);
 
@@ -67,11 +66,11 @@
               <div class="row">
                 <div class="col-md-3 col-lg-3 " align="center"> 
                 <?php
-                if(!is_null($values['foto_profile'])){ 
+                if($values['foto_profile']!="-"){ 
                 ?>
-                  <img alt="User Pic" <?php echo "src='dist/img/".$values['foto_profile']."'"; ?> class="img-circle img-responsive"> 
+                  <img alt="User Pic" <?php echo "src='dist/fotoprofile/".$values['foto_profile']."'"; ?> class="img-circle img-responsive"> 
                 <?php
-                } else {
+                } else if ($values['foto_profile']=="-") {
                 ?>  
                   <img alt="User Pic" <?php echo "src='dist/img/no-profile.jpg'"; ?> class="img-circle img-responsive">
                 <?php

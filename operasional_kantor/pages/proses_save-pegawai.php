@@ -15,7 +15,6 @@
 	//mengambil nilai dari form
 	$id = $_POST['id'];
 	$nama = $_POST['nama'];
-	$jabatan = $_POST['jabatan'];
 	$email = $_POST['email'];
 	$alamat = $_POST['alamat'];
 	$tempat_lahir = $_POST['tempat_lahir'];
@@ -26,7 +25,17 @@
 	$password = $_POST['password'];
 
 	//query untuk memasukan ke database
-	$query = "INSERT INTO tb_anggota VALUES('$id', '$nama', '$jabatan', '$email', '$alamat', '$tempat_lahir', '$tgl_new_format' , '$jenis_kelamin',  '$password')";
+	$query = "INSERT INTO tb_anggota (id_anggota, nama, email, alamat, tempat_lahir, tgl_lahir, jenis_kelamin, password, foto_profile)VALUES('$id', '$nama', '$email', '$alamat', '$tempat_lahir', '$tgl_new_format' , '$jenis_kelamin',  '$password','-')";
 	$insert = mysqli_query($koneksi, $query);
+
+
+
+	$jabatan = $_POST['jabatan'];
+	if($jabatan){
+
+	foreach ($jabatan as $value_jabatan) {
+		mysqli_query($koneksi, "INSERT INTO jabatan_anggota (id_anggota, id_jabatan) VALUES ('$id','".mysqli_real_escape_string($koneksi, $value_jabatan)."')");
+	}
+}
 ?>
-<script> alert("Data Berhasil Disimpan"); document.location.href="../index.php?sidebar-menu=anggota&action=tampil" </script>
+<script> alert("Data Anggota Berhasil Disimpan <?php echo $tgl_new_format ?>"); document.location.href="../index.php?sidebar-menu=anggota&action=tampil" </script>
