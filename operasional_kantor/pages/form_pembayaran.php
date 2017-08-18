@@ -124,7 +124,7 @@ session_start();
 
     <div class="form-group">
       <label for="pass"> Bukti Pembayaran </label>
-      <input class="form-control" type="file" name="bukti[]" multiple/>
+      <input class="form-control" type="file" name="bukti[]" multiple acceptedFiles="image/*;capture=camera" />
     </div>
 
     <br>

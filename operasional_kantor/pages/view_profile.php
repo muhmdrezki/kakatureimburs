@@ -55,7 +55,7 @@
 
                   include "../con_db.php";
 
-                  $sql = "SELECT tb_anggota.id_anggota, tb_anggota.nama, GROUP_CONCAT(tb_jabatan.jabatan SEPARATOR ', ') as 'jabatan', tb_anggota.email, tb_anggota.jenis_kelamin, tb_anggota.alamat,tb_anggota.foto_profile FROM `tb_anggota` JOIN jabatan_anggota ON tb_anggota.id_anggota = jabatan_anggota.id_anggota JOIN tb_jabatan ON tb_jabatan.id_jabatan = jabatan_anggota.id_jabatan WHERE tb_anggota.id_anggota = '$_SESSION[id_anggota]'";
+                  $sql = "SELECT tb_anggota.id_anggota, tb_anggota.nama, GROUP_CONCAT(tb_jabatan.jabatan SEPARATOR ', ') as 'jabatan', tb_anggota.email, tb_anggota.jenis_kelamin, tb_anggota.alamat,tb_anggota.foto_profile, tb_anggota.tempat_lahir, tb_anggota.tgl_lahir FROM `tb_anggota` JOIN jabatan_anggota ON tb_anggota.id_anggota = jabatan_anggota.id_anggota JOIN tb_jabatan ON tb_jabatan.id_jabatan = jabatan_anggota.id_jabatan WHERE tb_anggota.id_anggota = '$_SESSION[id_anggota]'";
                   $result = mysqli_query($koneksi,$sql);
                   $values = mysqli_fetch_assoc($result);
 
@@ -105,7 +105,7 @@
                       </tr>
                       <tr>
                         <td>Tempat, Tanggal Lahir : </td>
-                        <td>Ciamis, 21 Februari 1996</td>
+                        <td><?php echo $values['tempat_lahir']?>, <?php echo $values['tgl_lahir']?></td>
                       </tr>
 
                       <?php 

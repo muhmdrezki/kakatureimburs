@@ -27,7 +27,6 @@
         <th>Id Anggota</th>
         <th>Nama Anggota</th>
         <th>Jabatan</th>
-        <th>Email</th>
         <th>Jenis Kelamin</th>
         <th>Action</th>
       </tr>
@@ -53,7 +52,6 @@
               <td> <?php echo $r[id_anggota] ?> </td>
               <td> <?php echo $r[nama] ?> </td>
               <td> <?php echo $r[jabatan] ?> </td>
-              <td> <?php echo $r[email] ?> </td>
               <td> <?php echo $r[jenis_kelamin] ?> </td>           
               <td> <center><a href='#' class="btn btn-info"> Detail <span class='glyphicon glyphicon-list-alt'></span> </a></center> </td>
             </tr>
@@ -65,6 +63,10 @@
       </tr>
     </tbody>
   </table>
+  <br>
+   <form action="pages/proses_convert-csv.php" method="POST">
+      <input type="submit" class="btn btn-primary pull-right" value="Convert To CSV" name="submit_csv-anggota">  
+  </form>
 </div>
 </body>
 </html>

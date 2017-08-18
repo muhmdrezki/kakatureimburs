@@ -36,7 +36,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Ionicons -->
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="dist/css/AdminLTE.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <!-- iCheck for checkboxes and radio inputs -->
@@ -179,15 +179,17 @@ desired effect
                 if($values1['foto_profile']!='-'){ 
                 ?>
                   <img alt="User Image" <?php echo "src='dist/fotoprofile/".$values1['foto_profile']."'"; ?> class="user-image img-responsive"> 
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <span class="hidden-xs"><?php echo $_SESSION['nama'];?></span>
                 <?php
                 } else if($values1['foto_profile']=='-') {
                 ?>  
                   <img alt="User Image" <?php echo "src='dist/fotoprofile/no-profile.jpg'"; ?> class="user-image img-responsive">
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <span class="hidden-xs"><?php echo $_SESSION['nama'];?></span>
                 <?php
                 }
                 ?>
-              <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs"><?php echo $_SESSION['nama'];?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
@@ -203,7 +205,6 @@ desired effect
                 <?php
                 }
                 ?>
-                <br>
                 <p>
                   <?php echo $_SESSION['nama'];?>
                   <br>
@@ -241,11 +242,11 @@ desired effect
           <?php
                 if($values1['foto_profile']!='-'){ 
                 ?>
-                  <img alt="User Pic" <?php echo "<img src='dist/img/".$values1['foto_profile']."'"; ?> class="img-circle img-responsive"> 
+                  <img alt="User Pic" <?php echo "<img src='dist/fotoprofile/".$values1['foto_profile']."'"; ?> class="img-circle img-responsive"> 
                 <?php
                 } else if($values1['foto_profile']=='-'){
                 ?>  
-                  <img alt="User Pic" <?php echo "<img src='dist/img/no-profile.jpg'"; ?> class="img-circle img-responsive">
+                  <img alt="User Pic" <?php echo "<img src='dist/fotoprofile/no-profile.jpg'"; ?> class="img-circle img-responsive">
                 <?php
                 }
                 ?>
@@ -259,9 +260,9 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree" id="sidebar-menu">
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href="index.php?sidebar-menu=home&action=tampil"><span class='glyphicon glyphicon-home'></span><span>Home</span></a></li>
-        <li id="menu_anggota"><a href="index.php?sidebar-menu=anggota&action=tampil"><span class="glyphicon glyphicon-user"></span><span>Anggota</span></a></li>
-        <li><a href="index.php?sidebar-menu=list_bayar&action=tampil"><span class='glyphicon glyphicon-usd'></span><span>Pembayaran</span></a></li>
+        <li><a href="index.php?sidebar-menu=home&action=tampil"><i class='glyphicon glyphicon-home'></i><span>Home</span></a>
+        <li id="menu_anggota"><a href="index.php?sidebar-menu=anggota&action=tampil"><i class="glyphicon glyphicon-user"></i><span>Anggota</span></a></li>
+        <li><a href="index.php?sidebar-menu=list_bayar&action=tampil"><i class='glyphicon glyphicon-usd'></i><span>Pembayaran</span></a></li>
         </li>
       </ul>
       <!-- /.sidebar-menu -->
@@ -453,6 +454,8 @@ desired effect
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Select2 -->
 <script src="bower_components/select2/dist/js/select2.full.min.js"></script>
+<!-- ChartJS -->
+<script src="bower_components/Chart.js/Chart.js"></script>
 <!-- InputMask -->
 <script src="plugins/input-mask/jquery.inputmask.js"></script>
 <script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
@@ -469,12 +472,14 @@ desired effect
 <script src="plugins/iCheck/icheck.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
+<script src="pages/app.js"></script>
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 
+
  <!-- Page script -->
-    <script>
-      $(function (){
+<script>
+    $(function (){
 
      $('.select2').select2()    
 
@@ -541,5 +546,62 @@ desired effect
 
     })
     </script>
+<script type="text/javascript">
+      $(document).ready(function () {
+       var areaChartData = {
+      labels  : ['Juli', 'Agustus', 'September'],
+      datasets: [
+        {
+          label               : 'Total',
+          fillColor           : 'rgba(60,141,188,0.9)',
+          strokeColor         : 'rgba(60,141,188,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [40000, 100000, 300000]
+        }
+      ]
+
+    }
+      //-------------
+    //- BAR CHART -
+    //-------------
+    var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
+    var barChart                         = new Chart(barChartCanvas)
+    var barChartData                     = areaChartData
+    var barChartOptions                  = {
+      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero        : true,
+      //Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : true,
+      //String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      //Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      //Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      //Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      //Boolean - If there is a stroke on each bar
+      barShowStroke           : true,
+      //Number - Pixel width of the bar stroke
+      barStrokeWidth          : 2,
+      //Number - Spacing between each of the X value sets
+      barValueSpacing         : 5,
+      //Number - Spacing between data sets within X values
+      barDatasetSpacing       : 1,
+      //String - A legend template
+      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+      //Boolean - whether to make the chart responsive
+      responsive              : true,
+      maintainAspectRatio     : true
+    }
+
+    barChartOptions.datasetFill = false
+    barChart.Bar(barChartData, barChartOptions)
+  })
+</script>
+
 </body>
 </html>

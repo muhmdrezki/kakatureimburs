@@ -35,6 +35,7 @@
 		$filename = $_FILES["bukti"]["name"][$i];
 		$filetype = $_FILES["bukti"]["type"][$i];
 		$filepath = "../dist/fotobukti/" . basename($filename);
+
 	
 	move_uploaded_file($filetmp,$filepath);
 	
@@ -45,8 +46,8 @@
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
               } 
-	
 	}
+
 
 
 ?>
