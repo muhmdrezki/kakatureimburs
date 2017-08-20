@@ -6,17 +6,7 @@
   
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect. -->
-  <link rel="stylesheet" href="../dist/css/skins/skin-blue.min.css">
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -25,13 +15,12 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
-  <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+   <style>
+  @import url('https://fonts.googleapis.com/css?family=Dosis');
+  </style>
 
-  <link href="https://fonts.googleapis.com/css?family=Mulis" rel="stylesheet">
-
-  <link rel="stylesheet" href="../dist/css/profile.min.css">
+  <!-- jQuery 3 -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
         
   </head>
 
@@ -72,7 +61,7 @@
                 <?php
                 } else if ($values['foto_profile']=="-") {
                 ?>  
-                  <img alt="User Pic" <?php echo "src='dist/img/no-profile.jpg'"; ?> class="img-circle img-responsive">
+                  <img alt="User Pic" <?php echo "src='dist/fotoprofile/no-profile.jpg'"; ?> class="img-circle img-responsive">
                 <?php
                 }
                 ?>
@@ -138,7 +127,7 @@
                     </tbody>
                   </table>
                      <span class="pull-right">
-                            <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i> Edit Profile </a>
+                            <input type="button" name="edit" value="<?php echo $values["id_anggota"]; ?>" id="<?php echo $values["id_anggota"]; ?>" class="btn btn-warning edit_data"/>
                         </span>
                 </div>
               </div>
@@ -146,8 +135,67 @@
           </div>
         </div>
       </div>
-    </div>      
+    </div>  
+
+        <div id="add_data_Modal" class="modal fade">  
+      <div class="modal-dialog">  
+           <div class="modal-content">  
+                <div class="modal-header">  
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                     <h4 class="modal-title">EDIT PROFILE</h4>  
+                </div>  
+                <div class="modal-body">  
+                     <form method="post" action="pages/proses_edit-anggota.php">  
+                          <label>ID Anggota</label>
+                          <input type="text" name="id_anggota" id="id_anggota" class="form-control" readonly />   
+                          <br />
+                          <label>Nama</label>  
+                          <input type="text" name="nama" id="nama" class="form-control" />  
+                          <br />  
+                          <label>Alamat</label>  
+                          <textarea name="alamat" id="alamat" class="form-control"></textarea>  
+                          <br />  
+                          <label>Tempat Lahir</label>  
+                          <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" />  
+                          <br />  
+                          <label>Tanggal Lahir</label>  
+                          <input type="text" name="tgl_lahir" id="tgl_lahir" class="form-control" />  
+                          <br />  
+                          <label>Email</label>  
+                          <input type="email" name="email" id="email" class="form-control" /> 
+                          <br /> 
+                      
+                </div>  
+                <div class="modal-footer"> 
+                     <input type="submit" name="submit" id="insert" value="Update" class="btn btn-success" /> 
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>  
+                </form>      
+                </div>  
+           </div>  
+      </div>  
+ </div>  
+<script type="text/javascript">
+  $(document).on('click', '.edit_data', function(){ 
+  var id_anggota = $(this).attr("id");   
+             $.ajax({  
+                url:"pages/fetch_data_anggota-json.php",  
+                method:"POST",  
+                data:{id_anggota:id_anggota},  
+                dataType:"json",  
+                success:function(data){ 
+                     $('#id_anggota').val(data.id_anggota); 
+                     $('#nama').val(data.nama);  
+                     $('#alamat').val(data.alamat);  
+                     $('#tempat_lahir').val(data.tempat_lahir);  
+                     $('#tgl_lahir').val(data.tgl_lahir);  
+                     $('#email').val(data.email);  
+                     $('#insert').val("Update");  
+                     $('#add_data_Modal').modal('show');  
+                }  
+           });
+      });    
+</script>
+
     </body>
 
-<script src="../dist/profile.js"></script>
 </html>

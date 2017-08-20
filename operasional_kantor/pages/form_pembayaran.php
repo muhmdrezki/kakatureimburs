@@ -128,7 +128,7 @@ session_start();
     </div>
 
     <br>
-    <input name="submit" type="submit" class="btn btn-primary" value="SUBMIT" data-toggle="modal" data-target="#myModal"> 
+    <input name="submit" type="submit" class="btn btn-primary" value="SUBMIT"> 
     <br>
     <br>
   </form>

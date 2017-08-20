@@ -49,6 +49,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="dist/css/profile.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -335,8 +336,9 @@ desired effect
           include "pages/detail_pembayaran.php";
         } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="profile") && (($_GET['action']=="tampil"))) {
           include "pages/view_profile.php";
+        } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="profile") && (($_GET['action']=="tampil"))) {
+          include "pages/form_edit-anggota.php";
         }
-        
   ?>
 
     </section>
@@ -546,10 +548,36 @@ desired effect
 
     })
     </script>
+
 <script type="text/javascript">
+
+      <?php
+      $sql_grafik = sprintf("SELECT MONTHNAME(`tanggal`) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `status` = '2' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");
+         $hasil = $koneksi->query($sql_grafik);
+
+              if (!$hasil) {
+              printf("Error: %s\n", mysqli_error($koneksi));
+              exit();
+              }
+
+              $total = 0;
+
+         foreach ($hasil as $row_hasil) {
+          $total += 1;
+          $data[] = $row_hasil;
+         }
+      ?>
       $(document).ready(function () {
        var areaChartData = {
-      labels  : ['Juli', 'Agustus', 'September'],
+      labels  : [
+                <?php
+                foreach ($data as $key => $row_hasil):
+                ?>
+                  '<?= $row_hasil["Bulan"] ?>'<?= ($key == ($total - 1)) ? '' : ','?>
+                <?php
+                endforeach;
+                ?>
+                ],
       datasets: [
         {
           label               : 'Total',
@@ -559,16 +587,28 @@ desired effect
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [40000, 100000, 300000]
+          data                : [
+                <?php
+                foreach ($data as $key => $row_hasil):
+                ?>
+                  '<?= $row_hasil["Total"] ?>'<?= ($key == ($total - 1)) ? '' : ','?>
+                <?php
+                endforeach;
+                ?>
+          ]
         }
       ]
 
     }
       //-------------
     //- BAR CHART -
-    //-------------
-    var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
-    var barChart                         = new Chart(barChartCanvas)
+    //---------------
+    var element = $('#barChart').get(0);
+    if(element == null){
+       return false;
+    } 
+    var barChartCanvas                   = element.getContext('2d');
+    var barChart                         = new Chart(barChartCanvas);
     var barChartData                     = areaChartData
     var barChartOptions                  = {
       //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
