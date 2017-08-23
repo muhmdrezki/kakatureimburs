@@ -15,15 +15,17 @@
 
 </head>
 <body style="background-color: #f9f9f9">
-<div class="container">
-  <h2>LIST PEMBAYARAN OPERASIONAL KANTOR</h2>   
-  <br>     
-  <a href="index.php?sidebar-menu=form_bayar&action=tampil"><span class="glyphicon glyphicon-plus"></span>BAYAR OPERASIONAL</a>
-  <br>
-  <br>
+<section class="content-header">
+  <h2>LIST PEMBAYARAN OPERASIONAL KANTOR</h2>        
+</section>  
+<br>
+<section>
+<a href="index.php?sidebar-menu=form_bayar&action=tampil" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>BAYAR OPERASIONAL</a>
+<hr>
       <div class="form-group">
    <label> FILTER STATUS </label>
             <form method="POST" action="index.php?sidebar-menu=list_bayar&action=tampil"> 
+
              <div class="input-group"> 
               <a href="index.php?sidebar-menu=list_bayar&action=tampil" class="btn btn-default">VIEW ALL</a>              
                   <input type="submit" name="status_belum" value="BELUM" class="btn btn-danger" style="margin-left: 3px;">
@@ -52,9 +54,10 @@
               $enddate = date("Y-m-d", strtotime($end));
 
             ?>
-</div>
+
+</section>
   <hr>
-  <div class="container">
+  <div class="table-responsive">
   <table class="table" id="example">
     <thead>
       <tr>
@@ -176,15 +179,15 @@
               <?php 
                 if($r[status]=='0'){
                   ?>
-                       <td> <a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-danger"> <span> BELUM </span> </a> </td>
+                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-danger btn-xs"> <span> BELUM </span></a> <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS"></td>
                   <?php 
                 } else if($r[status]=='2'){
                   ?>
-                       <td> <a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-success"> <span> SUDAH </span> </a></td>
+                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-success btn-xs"> <span> SUDAH </span></a> <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS"></td>
                   <?php 
                 } else if($r[status]=='1'){
                   ?>
-                       <td> <a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-warning"> <span> MENUNGGU </a>  </td> 
+                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-warning btn-xs"> <span> MENUNGGU </span></a> <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS"></td> 
                 <?php
                 }
               ?>
@@ -194,15 +197,52 @@
                 $no++;
               }
             ?>
-      </tr>
-    </tbody>
+      </tbody>
   </table>
   <br>
-  <form action="pages/proses_convert-csv.php" method="POST">
+  </div>
+    <form action="pages/proses_convert-csv.php" method="POST">
       <input type="submit" class="btn btn-primary pull-right" value="Convert To CSV" name="submit_csv-pembayaran">  
   </form>
-  </div>
-
-
 </body>
+
+<div id="dataModal" class="modal fade">  
+      <div class="modal-dialog">  
+           <div class="modal-content">  
+                <div class="modal-header">  
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                     <h4 class="modal-title">Detail Pembayaran</h4>  
+                </div>  
+                <div class="modal-body" id="pembayaran_detail">  
+                </div>  
+                <div class="modal-footer">    
+                     <a href="pages/proses_delete-pembayaran.php" class="btn btn-danger">HAPUS DATA</a> 
+                     <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>  
+                </div>  
+           </div>  
+      </div>  
+ </div>
+
+  <!-- jQuery 3 -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function(){  
+          $(".delete_data").click(function(){    
+    var id_pembayaran = $(this).attr("id");
+   
+                $.ajax({  
+                url:"pages/fetch_data_pembayaran.php",  
+                method:"post",  
+                data:{id_pembayaran:id_pembayaran},  
+                success:function(data){
+                 $('#pembayaran_detail').html(data);           
+                 $('#dataModal').modal("show");  
+             }
+          });  
+       });     
+    });
+
+</script>
+  
 </html>

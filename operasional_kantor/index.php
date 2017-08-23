@@ -3,10 +3,6 @@
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-
-<style>
-@import url('https://fonts.googleapis.com/css?family=Dosis');
-</style>
 <?php 
   session_start();
   error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
@@ -26,7 +22,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Dashboard | Admin </title>
+  <title> KAKATU Operasional </title>
   
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -37,6 +33,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.css">
+  <!-- Morris charts -->
+  <link rel="stylesheet" href="bower_components/morris.js/morris.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
   <!-- iCheck for checkboxes and radio inputs -->
@@ -261,9 +259,24 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree" id="sidebar-menu">
         <li class="header">MENU</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href="index.php?sidebar-menu=home&action=tampil"><i class='glyphicon glyphicon-home'></i><span>Home</span></a>
-        <li id="menu_anggota"><a href="index.php?sidebar-menu=anggota&action=tampil"><i class="glyphicon glyphicon-user"></i><span>Anggota</span></a></li>
+        <li><a href="index.php?sidebar-menu=home&action=tampil"><i class='fa fa-dashboard'></i><span>Dashboard</span></a>
+        </li>
         <li><a href="index.php?sidebar-menu=list_bayar&action=tampil"><i class='glyphicon glyphicon-usd'></i><span>Pembayaran</span></a></li>
+        </li>
+        <li><a id="menu_absen" href="index.php?sidebar-menu=data_absen&action=tampil"><i class='fa fa-book'></i><span>Absensi</span></a></li>
+        </li>
+        <li id="menu_master" class="treeview">
+          <a href="#">
+            <i class="fa fa-folder"></i> <span>Data Master</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="index.php?sidebar-menu=anggota&action=tampil"><i class="glyphicon glyphicon-user"></i><span> Data Anggota</span></a>
+            <li><a href="index.php?sidebar-menu=list_jabatan&action=tampil"><i class="fa fa-black-tie"></i> Data Jabatan </a></li>
+            <li><a href="index.php?sidebar-menu=list_jenis-pembayaran&action=tampil"><i class="fa fa-money"></i> Jenis Pembayaran </a></li>
+          </ul>
         </li>
       </ul>
       <!-- /.sidebar-menu -->
@@ -276,7 +289,8 @@ desired effect
           if($one != "Admin"){
             ?>
               <script type="text/javascript">
-                  document.getElementById('menu_anggota').style.display="none";
+                  document.getElementById('menu_absen').style.display="none";
+                  document.getElementById('menu_master').style.display="none";
               </script>
             <?php 
           } else {
@@ -334,10 +348,27 @@ desired effect
         } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="detail") && (($_GET['action']=="tampil"))) {
           
           include "pages/detail_pembayaran.php";
+        
         } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="profile") && (($_GET['action']=="tampil"))) {
+        
           include "pages/view_profile.php";
-        } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="profile") && (($_GET['action']=="tampil"))) {
-          include "pages/form_edit-anggota.php";
+        
+        } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="form_edit-pembayaran") && (($_GET['action']=="tampil"))) {
+        
+          include "pages/form_edit-pembayaran.php";
+        
+        } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_jabatan") && (($_GET['action']=="tampil"))) {
+        
+          include "pages/jabatan.php";
+
+        }  else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_jenis-pembayaran") && (($_GET['action']=="tampil"))) {
+        
+          include "pages/jenis_pembayaran.php";
+
+        } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="data_absen") && (($_GET['action']=="tampil"))) {
+        
+          include "pages/data_absen.php";
+
         }
   ?>
 
@@ -349,7 +380,7 @@ desired effect
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- Default to the left -->
-    <strong>OPERASIONAL KANTOR <a href="#"> KAKATU </a>.</strong>
+    <strong> OPERASIONAL KANTOR <a href="#"> KAKATU </a></strong>
   </footer>
 
   <!-- Control Sidebar -->
@@ -470,11 +501,13 @@ desired effect
 <!-- DataTables -->
 <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- Morris.js charts -->
+<script src="bower_components/raphael/raphael.min.js"></script>
+<script src="bower_components/morris.js/morris.min.js"></script>
 <!-- iCheck 1.0.1 -->
 <script src="plugins/iCheck/icheck.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<script src="pages/app.js"></script>
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 
@@ -546,14 +579,30 @@ desired effect
       'autoWidth'   : false
     })
 
+    $('#table_jabatan').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+
     })
     </script>
 
 <script type="text/javascript">
 
       <?php
-      $sql_grafik = sprintf("SELECT MONTHNAME(`tanggal`) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `status` = '2' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");
-         $hasil = $koneksi->query($sql_grafik);
+
+      $tgl_now = date("d-m-Y"); 
+      $year = date('Y', strtotime($tgl_now));
+
+      $sql = sprintf("SELECT tb_jenistransaksi.jenis, COUNT(tb_pembayaran.id_jenis) as 'jumlah transaksi' FROM tb_pembayaran JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis=tb_jenistransaksi.id_jenis WHERE YEAR(tb_pembayaran.tanggal) = '$year' GROUP BY tb_pembayaran.id_jenis");
+      $res = $koneksi -> query($sql);
+
+      $sql_grafik = sprintf("SELECT MONTHNAME(`tanggal`) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `status` = '2' AND YEAR(`tanggal`) = '$year' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");
+      $hasil = $koneksi->query($sql_grafik);
 
               if (!$hasil) {
               printf("Error: %s\n", mysqli_error($koneksi));
@@ -567,6 +616,7 @@ desired effect
           $data[] = $row_hasil;
          }
       ?>
+
       $(document).ready(function () {
        var areaChartData = {
       labels  : [
@@ -600,6 +650,7 @@ desired effect
       ]
 
     }
+
       //-------------
     //- BAR CHART -
     //---------------
@@ -640,7 +691,54 @@ desired effect
 
     barChartOptions.datasetFill = false
     barChart.Bar(barChartData, barChartOptions)
-  })
+
+ });
+</script>
+
+<script type="text/javascript">
+<?php
+
+  $tgl_now = date("d-m-Y"); 
+  $month = date('F', strtotime($tgl_now));
+
+  $sql_grafik_jenis = "SELECT tb_jenistransaksi.jenis, COUNT(tb_pembayaran.id_jenis) as 'jumlah' FROM tb_pembayaran JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis=tb_jenistransaksi.id_jenis WHERE MONTHNAME(tb_pembayaran.tanggal) = '$month' GROUP BY tb_pembayaran.id_jenis";
+        
+        $res_donut = mysqli_query($koneksi, $sql_grafik_jenis);
+
+        $data = array();
+
+          while($row = mysqli_fetch_array($res_donut))
+          {
+           $data[] = array(
+            'label'  => $row['jenis'],
+            'value'  => $row['jumlah']
+           );
+          }
+          $data = json_encode($data);
+?>
+
+  $(function () {
+    "use strict";
+     //DONUT CHART
+    var donut = new Morris.Donut({
+      element: 'sales-chart',
+      resize: true,
+      colors: ["#3c8dbc", "#f56954", "#00a65a","#DAA520","#ADEAEA","#3D1D49"],
+        data: <?php echo $data; ?>,
+      hideHover: 'auto'
+    });
+
+   $.ajax({
+    url:"pages/fetch_data_utk-morris.php",
+    method:"POST",
+    dataType:"json",
+    success:function(data)
+    {
+     donut.setData(data);
+    }
+   });
+
+  });
 </script>
 
 </body>

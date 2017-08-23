@@ -2,6 +2,7 @@
 <html>
 <?php
  error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+ session_start();
  include '/../con_db.php';
 ?>
 <head>
@@ -13,25 +14,25 @@
 <style>
 @import url('https://fonts.googleapis.com/css?family=Dosis');
 </style>
-      <!-- jQuery 3 -->
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-      <!-- Bootstrap 3.3.7 -->
-  <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<div class="container fadeIn animated">
+<!-- jQuery 3 -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+<section class="content-header">
   <h2>DAFTAR ANGGOTA TIM KAKATU</h2>   
-  <br>     
-  <a href="index.php?sidebar-menu=form_anggota&action=tampil"><span class="glyphicon glyphicon-plus"></span>TAMBAH DATA ANGGOTA</a>
-  <br>
-  <br>
-
+</section>  
+<hr>
+<br>
+<br>
+<div>
+<br>
+<a href="index.php?sidebar-menu=form_anggota&action=tampil" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>TAMBAH DATA ANGGOTA</a> 
   <table class="table" id="example1">
     <thead>
       <tr align="center">
         <th>Id Anggota</th>
         <th>Nama Anggota</th>
         <th>Jabatan</th>
-        <th>Jenis Kelamin</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -42,6 +43,8 @@
 
            $result = mysqli_query($koneksi,$sql);
            
+           $idanggota = $_SESSION['id_anggota'];
+
            if (!$result) {
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
@@ -55,16 +58,26 @@
             <tr>
               <td> <?php echo $r[id_anggota] ?> </td>
               <td> <?php echo $r[nama] ?> </td>
-              <td> <?php echo $r[jabatan] ?> </td>
-              <td> <?php echo $r[jenis_kelamin] ?> </td>           
-              <td> <center><input type="button" name="view" value="Detail" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-info btn-xs view_data" /><input type="button" name="delete" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-danger btn-xs delete_data" value="Hapus" style="margin-left: 4px;"><center></td>
+              <td> <?php echo $r[jabatan] ?> </td>  
+              <?php 
+
+                if($idanggota == $r["id_anggota"]){
+
+              ?>        
+              <td> <center><input type="button" name="view" value="DETAIL" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-info btn-xs view_data" /><input type="button" name="delete" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-danger btn-xs delete_data" value="HAPUS" disabled><center></td>
+              <?php
+              } else {
+                ?>
+                <td> <center><input type="button" name="view" value="DETAIL" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-info btn-xs view_data" /><input type="button" name="delete" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-danger btn-xs delete_data" value="HAPUS"><center></td>
+                <?php
+              }
+              ?>
             </tr>
 
               <?php
                 $no++;
               }
-            ?>
-      </tr>           
+          ?>          
     </tbody>
   </table>
   <br>
@@ -72,7 +85,6 @@
       <input type="submit" class="btn btn-primary pull-right" value="Convert To CSV" name="submit_csv-anggota">  
   </form>
 </div>
-
 </body>
 
          <div id="dataModal" class="modal fade">  

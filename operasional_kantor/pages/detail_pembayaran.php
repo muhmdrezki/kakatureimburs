@@ -25,7 +25,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 		  $id_pembayaran = $_GET['id'];
 		  $_SESSION['id_pembayaran'] = $id_pembayaran;
 
-		  $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.id_pembayaran='$id_pembayaran'";
+		  $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.id_jenis, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.id_pembayaran='$id_pembayaran'";
 
 		  $result=mysqli_query($koneksi,$sql);
 
@@ -56,7 +56,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 					  		$path = $r[bukti];
 					  		?>
 					  	 	
-					            <td style="padding: 5px;"> 
+					    <td style="padding: 5px;"> 
 					      <a class='popupimage' href='<?php echo "dist/fotobukti/".$path; ?>' data-target="#myModal_img">
 					      	<img <?php echo "src='dist/fotobukti/".$path."'"; ?> class="img-responsive" width="260" height="60">
 					      </a>
@@ -71,6 +71,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 					    <div class="modal fade" id="myModal_img" role="dialog">
 						    <div class="modal-dialog">
 						  	    <div class="modal-content">
+
 								        <img src='' class="img-responsive" style="width: 100%;" />							    
 								</div>
 						      </div>
@@ -92,35 +93,51 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 						</tr>
 					</table>	
 					    <hr style="border-color: #3c8dbc;">
+					<section class="content-header" >
+						<div class="container" style="width: 80%;">    
 					    <div class="form-group">
 					      <label for="id_pembayaran">ID</label>
-					      <input type="text" class="form-control" id="id_pembayaran" placeholder="Id Pembayaran" name="id_pembayaran" value="<?php echo $row['id_pembayaran']; ?>" disabled>
+					      <input type="text" class="form-control" id="id_pembayaran" placeholder="Id Pembayaran" name="id_pembayaran" value="<?php echo $row['id_pembayaran']; ?>" readonly>
 					    </div>
 
 					    <div class="form-group">
 					      <label for="Id_anggota">ID Anggota</label>
-					      <input type="text" class="form-control" id="id_anggota" name="id_anggota" value="<?php echo $row['id_anggota'];?>" disabled>
+					      <input type="text" class="form-control" id="id_anggota" name="id_anggota" value="<?php echo $row['id_anggota'];?>" readonly >
 					    </div>
 
 					    <div class="form-group">
 					      <label for="Id_anggota">Jenis Pembayaran</label>
-					      <input type="text" class="form-control" id="id_anggota" name="id_anggota" value="<?php echo $row['jenis'];?>" disabled>
+					      <input type="text" class="form-control" id="id_anggota" name="<?php echo $row['id_jenis']?>" value="<?php echo $row['jenis'];?>" readonly>
 					    </div>
 
 					    <div class="form-group">
 					      <label for="nominal"> Nominal </label>
-					      <input class="form-control" type="number" id="nominal" name="nominal" value="<?php echo $row['nominal']?>" disabled>
+					      <input class="form-control" type="number" id="nominal" name="nominal" value="<?php echo $row['nominal']?>" readonly>
 					    </div>
 
 					    <div class="form-group">
 					      <label for="keterangan"> Keterangan </label>
-					      <textarea class="form-control" rows="5" id="keterangan" name="keterangan" placeholder="Keterangan Pembayaran" disabled> <?php echo $row['keterangan']; ?> </textarea>
+					      <textarea class="form-control" rows="5" id="keterangan" name="keterangan" placeholder="Keterangan Pembayaran" readonly> <?php echo $row['keterangan']; ?> </textarea>
 					    </div>
-
+				
 					    <?php  list($one, $two) = explode(",", $_SESSION['jabatan'] , 2); ?>
 
 					    <!-- Trigger the modal with a button -->
 						  <Button type="button" class="btn btn-primary " data-toggle="modal" data-target="#myModal_pesan">KONFIRMASI</Button>
+						   <a href="index.php?sidebar-menu=form_edit-pembayaran&action=tampil&id=<?php echo $id_pembayaran?>&id_jenis=<?php echo $row['id_jenis']?>" class="btn btn-warning pull-right" id="editbtn">EDIT DATA</a>
+						  <?php 
+
+						  	if($one == "Admin"){
+						  		?>
+						  	  <script type="text/javascript">
+				                  document.getElementById('editbtn').style.display="none";
+				              </script>
+						  		<?php
+						  	}
+						  ?>
+						 
+						  </div>
+							</section>  
 						  <br><br>
 						  <!-- Modal -->
 						  <div class="modal fade" id="myModal_pesan" role="dialog">
