@@ -201,7 +201,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 								          	
 								          		if($status_admin != "2"){
 								          			?>
-								          				  	<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger" disabled>  
+								          				  	<input type="submit" name="submit" value="KONFIRMASI SUDAH TERKIRIM" class="btn btn-danger" disabled>  
 								          			<?php
 								          		} else if($status_admin == "2"){
 								          			?>
@@ -221,7 +221,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 
 								          		if($status_admin == "2"){
 									          		?>
-									          				<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger" disabled>  
+									          				<input type="submit" name="submit" value="KONFIRMASI SUDAH TERKIRIM" class="btn btn-danger" disabled>  
 									          		<?php
 									          		} else if($status_admin != "2"){
 									          		?>

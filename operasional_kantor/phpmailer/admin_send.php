@@ -1,0 +1,70 @@
+<?php
+	$id_pembayaran = $_SESSION['id_pembayaran'];
+
+	$sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.id_jenis, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status, tb_anggota.email FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.id_pembayaran='$id_pembayaran'";
+
+	$result=mysqli_query($koneksi,$sql);
+
+	 if (!$result) {
+              printf("Error: %s\n", mysqli_error($koneksi));
+              exit();
+              } 
+
+	$value=mysqli_fetch_assoc($result);
+
+	$recipient = $value['email'];
+
+	require 'PHPMailerAutoload.php';
+
+	$mail = new PHPMailer;
+
+	//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+	$mail->isSMTP();                                      // Set mailer to use SMTP
+	$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+	$mail->SMTPAuth = true;                               // Enable SMTP authentication
+	$mail->Username = 'operasionalkantorkp@gmail.com';    // SMTP username
+	$mail->Password = 'kiwikiwi';                         // SMTP password
+	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->Port = 587;                                    // TCP port to connect to
+
+	$mail->setFrom('operasionalkantorkp@gmail.com','Admin');
+
+
+
+	$mail->addAddress($recipient);     // Add a recipient
+	
+	//$mail->addReplyTo('info@example.com', 'Information');
+
+	//$mail->addCC('cc@example.com');
+	//$mail->addBCC('bcc@example.com');
+
+	//$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+	//$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+	$mail->isHTML(true);                                  // Set email format to HTML
+
+	$mail->Subject = "CEK REIMBURSE (ID Pembayaran: $id_pembayaran, Perihal : $value[jenis])";
+	$mail->Body    = "$value[nama], <br><br>
+	Uang <b>$value[jenis]</b> dengan ID Pembayaran <b>$value[id_pembayaran]</b>, tanggal <b>$value[tanggal]</b>. Sebesar <b>Rp. $value[nominal]</b> sudah di Transfer ke Rekening Bank Anda, silahkan di cek. <br><br>
+	Regards, <br> 
+	Admin
+	";
+	
+	//$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+		if(!$mail->send()) {
+			?>
+			<script type="text/javascript">
+		    alert('Gagal Mengirim Email Konfirmasi.'. $mail->ErrorInfo);
+			</script>
+			<?php
+		} else {
+			?>
+			<script type="text/javascript">
+		    alert('Email Konfirmasi Terkirim');
+			</script>
+			<?php
+		}
+
+?>

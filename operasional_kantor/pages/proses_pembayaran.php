@@ -49,6 +49,7 @@
 	}
 
 
+include "../phpmailer/anggota_send.php";
 
 ?>
 <script> alert("Pembayaran Berhasil"); document.location.href="../index.php?sidebar-menu=list_bayar&action=tampil" </script> 

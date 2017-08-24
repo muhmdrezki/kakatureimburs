@@ -22,7 +22,7 @@
 		<?php
 	} else {
 
-	$query = "SELECT tb_anggota.id_anggota, tb_anggota.password, tb_anggota.nama, GROUP_CONCAT(tb_jabatan.jabatan SEPARATOR ', ') as 'jabatan' FROM `tb_anggota` JOIN jabatan_anggota ON tb_anggota.id_anggota = jabatan_anggota.id_anggota JOIN tb_jabatan ON tb_jabatan.id_jabatan = jabatan_anggota.id_jabatan WHERE tb_anggota.id_anggota = '$id' AND tb_anggota.password = '$password' GROUP BY tb_anggota.id_anggota";
+	$query = "SELECT tb_anggota.id_anggota, tb_anggota.password, tb_anggota.nama, GROUP_CONCAT(tb_jabatan.jabatan SEPARATOR ', ') as 'jabatan', tb_anggota.email FROM `tb_anggota` JOIN jabatan_anggota ON tb_anggota.id_anggota = jabatan_anggota.id_anggota JOIN tb_jabatan ON tb_jabatan.id_jabatan = jabatan_anggota.id_jabatan WHERE tb_anggota.id_anggota = '$id' AND tb_anggota.password = '$password' GROUP BY tb_anggota.id_anggota";
 
 	 $result = mysqli_query($koneksi,$query);
 
@@ -30,10 +30,13 @@
 	 $nama = $values['nama'];
 	 $jabatan = $values['jabatan'];
 	 $id_anggota = $values['id_anggota'];
-	
+	 $email = $values['email'];
+
 	$_SESSION["nama"] = $nama;
 	$_SESSION["jabatan"] = $jabatan;
 	$_SESSION["id_anggota"] = $id_anggota;
+	$_SESSION["email"] = $email;
+	$_SESSION["pass"] = $values['password'];
 
 	 $count = mysqli_num_rows($result);
 		if($count>0) {
