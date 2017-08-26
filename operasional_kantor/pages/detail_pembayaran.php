@@ -89,6 +89,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 					  </script>
 					    <?php
 							while ($row=mysqli_fetch_array($result)) {	
+								$jml_uang = number_format($row['nominal']);
 						?>
 						</tr>
 					</table>	
@@ -112,7 +113,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 
 					    <div class="form-group">
 					      <label for="nominal"> Nominal </label>
-					      <input class="form-control" type="number" id="nominal" name="nominal" value="<?php echo $row['nominal']?>" readonly>
+					      <input class="form-control" type="text" id="nominal" name="nominal" value="<?php echo 'Rp. '.$jml_uang ?>" readonly>
 					    </div>
 
 					    <div class="form-group">
@@ -128,6 +129,14 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 						  <?php 
 
 						  	if($one == "Admin"){
+						  		?>
+						  	  <script type="text/javascript">
+				                  document.getElementById('editbtn').style.display="none";
+				              </script>
+						  		<?php
+						  	}
+
+						  	if($row[status] == "2" || $row[status] == "1") {
 						  		?>
 						  	  <script type="text/javascript">
 				                  document.getElementById('editbtn').style.display="none";

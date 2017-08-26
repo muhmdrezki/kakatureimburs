@@ -18,18 +18,19 @@
 </div>
   <div class="row">        
         <?php 
-           $query = "SELECT tb_absen.id, tb_absen.id_anggota, tb_anggota.nama, tb_absen.tanggal, tb_absen.jam_masuk, tb_absen.jam_keluar, tb_absen.keterangan FROM tb_absen JOIN tb_anggota ON tb_absen.id_anggota = tb_anggota.id_anggota WHERE DAY(tb_absen.tanggal) = '$day' AND tb_absen.keterangan = 'hadir'";  
+           $query = "SELECT tb_absen.id, tb_absen.id_anggota, tb_anggota.nama, tb_absen.tanggal, tb_absen.jam_masuk, tb_absen.jam_keluar, tb_absen.keterangan, tb_absen.latitude, tb_absen.longitude FROM tb_absen JOIN tb_anggota ON tb_absen.id_anggota = tb_anggota.id_anggota WHERE DAY(tb_absen.tanggal) = '23' AND tb_absen.keterangan = 'hadir'";  
            $result = mysqli_query($koneksi, $query);  
         ?>
             <div class="table-responsive">  
                <table class="table table-hover" id="example">
                <thead>
                   <tr>  
-                         <th> Tanggal </th>  
                          <th> ID Anggota </th> 
                          <th> Nama </th> 
                          <th> Keterangan </th>
-                         <th> Action </th>
+                         <th> Latitude </th>
+                         <th> Longitude </th>
+                         <th> Foto </th>
                   </tr>
                </thead>
                <tbody>
@@ -38,7 +39,6 @@
                       while($row = mysqli_fetch_array($result)) {  
                ?>
                     <tr>  
-                         <td> <?php echo $row[tanggal] ?> </td>  
                          <td> <?php echo $row[id_anggota] ?> </td>  
                          <td> <?php echo $row[nama] ?> </td>
                          <?php 
@@ -53,7 +53,9 @@
 
                          ?>
                          <td> <?php echo $ket ?> </td>
-                         <td> <a href="#" id="<?php echo $row[id] ?>" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a> </td>
+                         <td> <?php echo $row[latitude] ?> </td>  
+                         <td> <?php echo $row[longitude] ?> </td>  
+                         <td> <?php echo $row[foto] ?> </td>  
                     </tr>
               <?php 
                   $no++;

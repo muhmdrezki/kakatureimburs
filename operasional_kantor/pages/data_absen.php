@@ -7,14 +7,17 @@
 
 <section id="form_jabatan-jenis" style="margin: 0 auto;">
 
-<div class="content-header">
+<div class="container fadeIn animated">
   
   <h2> DATA ABSENSI </h2>
-
+<hr style="  
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);"
+    >
 </div>
-
-<div class="container">
-<hr>
+<div class="container bounceInLeft animated">
   <div class="row">        
         <?php 
            $query = "SELECT tb_absen.id, tb_absen.id_anggota, tb_anggota.nama, tb_absen.tanggal, tb_absen.jam_masuk, tb_absen.jam_keluar, tb_absen.keterangan FROM tb_absen JOIN tb_anggota ON tb_absen.id_anggota = tb_anggota.id_anggota";  

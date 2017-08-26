@@ -4,13 +4,13 @@
 
 <section id="form_jenis-pembayaran" style="margin: 0 auto;">
 
-<div class="content-header">
+<div class="content-header bounceInRight animated">
   
-  <h2> DATA JABATAN </h2>
+  <h2> JENIS PEMBAYARAN OPERASIONAL </h2>
 
 </div>
 
-<div class="container">
+<div class="container bounceInUp animated">
 <hr>
   <div class="row">
         <div class="col-md-6">
@@ -24,7 +24,8 @@
                 </div>
                 <div class="form-group">
                   <label for="jenis_pembayaran">Jenis Pembayaran</label>
-                  <input type="text" class="form-control" id="jenis" name="jenis" placeholder="Isi Jenis Pembayaran">
+                  <input type="text" class="form-control" id="jenis" name="jenis" placeholder="Isi Jenis Pembayaran"
+                  data-validation="required" data-validation-error-msg="Field Tidak Boleh Kosong !">
                 </div>
                 <button type="submit" name="submit_jenis" class="btn btn-primary">Tambah Data</button>
              </div>
@@ -37,7 +38,7 @@
            $query = "SELECT * FROM tb_jenistransaksi";  
            $result = mysqli_query($koneksi, $query);  
         ?>
-        <h3> LIST JABATAN </h3>
+        <h3> LIST JENIS PEMBAYARAN </h3>
             <div class="table-responsive">  
                <table class="table" id="example">
                <thead>

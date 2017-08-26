@@ -36,11 +36,14 @@
     <form action="pages/proses_save-pegawai.php" method="POST">
       <div class="form-group">
         <label for="id">ID Anggota </label>
-        <input type="text" class="form-control" id="id" placeholder="Id Anggota" name="id" value="<?php echo $id; ?>">
+        <input type="text" class="form-control" id="id" placeholder="Id Anggota" name="id" value="<?php echo $id; ?>" readonly>
       </div>
       <div class="form-group">
         <label for="nama"> Nama </label>
-        <input type="text" class="form-control" id="nama" placeholder="Masukan Nama" name="nama">
+        <input 
+        type="text" class="form-control" id="nama" placeholder="Masukan Nama" name="nama"
+        data-validation="required" data-validation-error-msg="Field Nama Harus Diisi !"
+        >
       </div>
 
       <?php 
@@ -52,7 +55,9 @@
               <div class="form-group">
                 <label>Jabatan</label>
                 <select class="form-control select2 btn-primary" multiple="multiple" data-placeholder="Pilih Jabatan" name="jabatan[]"
-                        style="width: 100%; color: #212121;">
+                        style="width: 100%; color: #212121;"
+                        data-validation="length" data-validation-length="min1" data-validation-error-msg="Pilih Setidaknya 1 Jabatan"
+                        >
                         <?php 
                           while ($row = mysqli_fetch_array($result)){
                         ?>
@@ -63,7 +68,7 @@
                 </select>
               </div>
       <div class="form-group">
-        <label for="email"> Email </label>
+        <label for="email"> Email (Harus Aktif) </label>
         <input type="email" class="form-control" id="email" placeholder="Masukan Email" name="email">
       </div>
       <div class="form-group">

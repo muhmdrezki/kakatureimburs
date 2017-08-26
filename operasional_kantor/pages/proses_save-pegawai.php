@@ -38,4 +38,4 @@
 	}
 }
 ?>
-<script> alert("Data Anggota Berhasil Disimpan <?php echo $tgl_new_format ?>"); document.location.href="../index.php?sidebar-menu=anggota&action=tampil" </script>
+<script> alert("Data Anggota Berhasil Disimpan"); document.location.href="../index.php?sidebar-menu=anggota&action=tampil" </script>

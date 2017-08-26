@@ -4,13 +4,34 @@
 
 <section id="form_jabatan-jenis" style="margin: 0 auto;">
 
-<div class="content-header">
+<div class="content-header bounceInRight animated">
   
   <h2> DATA JABATAN </h2>
 
 </div>
 
-<div class="container">
+ <!-- jQuery 3 -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../inputmask/jquery.number.js"></script>
+    <script type="text/javascript">
+      
+      $(function(){
+        // Set up the number formatting.
+        
+        $('#gaji').on('change',function(){
+          console.log('Change event.');
+          var val = $('#gaji').val();
+        });
+        
+        $('#gaji').change(function(){
+          console.log('Second change event...');
+        });
+        
+        $('#gaji').number( true, 2);
+      });
+    </script>
+
+<div class="container bounceInUp animated">
 <hr>
   <div class="row">
         <div class="col-md-6">
@@ -24,11 +45,13 @@
                 </div>
                 <div class="form-group">
                   <label for="Jabatan">Jabatan</label>
-                  <input type="text" class="form-control" id="jabatan" name="jabatan" placeholder="Isi Jabatan">
+                  <input type="text" class="form-control" id="jabatan" name="jabatan" placeholder="Isi Jabatan"
+                  data-validation="required" data-validation-error-msg="Field Jabatan Tidak Boleh Kosong !">
                 </div>
                 <div class="form-group">
                   <label for="Gaji">Gaji</label>
-                  <input type="number" min="0" class="form-control" id="gaji" name="gaji" placeholder="Isi Gaji">
+                  <input type="text" class="form-control" id="gaji" name="gaji" placeholder="Isi Gaji"
+                  data-validation="required" data-validation-error-msg="Field Gaji Tidak Boleh Kosong !">
                 </div>
                 <button type="submit" name="submit_jabatan" class="btn btn-primary">Tambah Data</button>
               </div>
@@ -61,7 +84,7 @@
                     <tr>  
                          <td> <?php echo $row[id_jabatan] ?> </td>  
                          <td> <?php echo $row[jabatan] ?> </td>  
-                         <td> Rp. <?php echo $row[gaji] ?> </td>
+                         <td> Rp. <?php echo number_format($row[gaji]) ?> </td>
                          <td> <a href="#" class="btn btn-danger btn-xs"> HAPUS </a><a href="#" class="btn btn-warning btn-xs"> EDIT </a> </td>
                     </tr>
               <?php 

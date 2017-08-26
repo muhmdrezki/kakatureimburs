@@ -19,7 +19,9 @@
 	$id = $_POST['id_pembayaran'];
 	$id_anggota = $_POST['id_anggota'];
 	$jenis = $_POST['jenis'];
-	$nominal = $_POST['nominal'];
+	$jumlah = $_POST['nominal'];
+	$decimal = str_replace(',','',$jumlah);
+	$nominal = str_replace('.00','',$decimal);
 	$keterangan = $_POST['keterangan'];
 
 	//query untuk memasukan ke database

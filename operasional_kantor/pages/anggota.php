@@ -17,16 +17,21 @@
 
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
-
-<section class="content-header">
-  <h2>DAFTAR ANGGOTA TIM KAKATU</h2>   
-</section>  
-<hr>
-<br>
-<br>
+<div class="container">
+  <h2 class="bounceInLeft animated">DAFTAR ANGGOTA TIM KAKATU</h2>   
 <div>
-<br>
-<a href="index.php?sidebar-menu=form_anggota&action=tampil" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>TAMBAH DATA ANGGOTA</a> 
+<hr class="bounceInLeft animated" style="  
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);"
+    >
+  <div class="row">
+                  <div class="col col-xs-6 flipInX animated">
+                     <a href="index.php?sidebar-menu=form_anggota&action=tampil" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>TAMBAH DATA ANGGOTA</a>
+                  </div>
+  </div>
+<div class="bounceInUp animated">
   <table class="table" id="example1">
     <thead>
       <tr align="center">
@@ -80,10 +85,12 @@
           ?>          
     </tbody>
   </table>
+  </div>
   <br>
    <form action="pages/proses_convert-csv.php" method="POST">
       <input type="submit" class="btn btn-primary pull-right" value="Convert To CSV" name="submit_csv-anggota">  
   </form>
+</div>
 </div>
 </body>
 

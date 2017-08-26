@@ -3,6 +3,13 @@ include "../con_db.php";
 	session_start();
 	$pembayaranid = $_SESSION['pembayaranid'];
 
+	$sql_cek = "SELECT * FROM tb_buktipembayaran WHERE id_pembayaran = '$pembayaranid'";
+	$cek_res = mysqli_query($koneksi, $sql_cek);
+	$data = mysqli_fetch_assoc($cek_res);
+
+	if($data['bukti'] != ''){
+
+
 	$sql_bukti = "SELECT GROUP_CONCAT(bukti SEPARATOR ', ') as 'filenames' FROM tb_buktipembayaran WHERE id_pembayaran='$pembayaranid'";
 	$res = mysqli_query($koneksi,$sql_bukti);
 
@@ -44,10 +51,23 @@ include "../con_db.php";
 
 ?>
   	<script type="text/javascript">
-	alert("Data Pembayaran dengan id <?php echo $pembayaranid ?>, Berhasil Dihapus ");
+	alert("Data Pembayaran dengan id , Berhasil Dihapus ");
 	document.location.href="../index.php?sidebar-menu=list_bayar&action=tampil" 
 	</script>
 <?php 
+	}
+} else if($data['bukti'] == '') {
+	$sql = "DELETE FROM tb_pembayaran WHERE id_pembayaran='$pembayaranid'";
+	mysqli_query($koneksi,$sql);
+
+	$sql_hapus_bukti = "DELETE FROM tb_buktipembayaran WHERE id_pembayaran = '$pembayaranid'";
+	mysqli_query($koneksi, $sql_hapus_bukti);
+?>
+	<script type="text/javascript">
+	alert("Data Pembayaran dengan id <?php echo $pembayaranid ?> , Berhasil Dihapus ");
+	document.location.href="../index.php?sidebar-menu=list_bayar&action=tampil" 
+	</script>
+<?php
 }
 ?>
 

@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     ?>
     <script>
     alert('Anda Belum Login, Silahkan Login dulu');
-    window.open('pages/login.php','_self');
+    window.open('pages/form_login.php','_self');
     </script>
     <?php
   } 
@@ -33,6 +33,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.css">
+  <!-- Animate CSS -->
+  <link rel="stylesheet" href="dist/css/Animate.css">
   <!-- Morris charts -->
   <link rel="stylesheet" href="bower_components/morris.js/morris.css">
   <!-- daterange picker -->
@@ -144,7 +146,7 @@ desired effect
               <i class="fa fa-bell-o"></i>
               <span class="label label-danger" id="notif_label"><?php echo $jumlah ?></span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu fadeIn animated">
             <li class="header">Anda Punya <?php echo $jumlah ?> Notifikasi ! </li>
               <li>
                 <!-- Inner Menu: contains the notifications -->
@@ -190,7 +192,7 @@ desired effect
                 }
                 ?>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu fadeIn animated">
               <!-- The user image in the menu -->
               <li class="user-header"  style="height: 115px;">
                  <?php
@@ -222,9 +224,6 @@ desired effect
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
-          <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
         </ul>
       </div>
     </nav>
@@ -296,7 +295,7 @@ desired effect
           } else {
             ?>
             <script type="text/javascript">
-                  document.getElementById('menu_anggota').style.visibility="visible";
+                  document.getElementById('menu_master').style.visibility="visible";
             </script>
             <?php
           }
@@ -382,101 +381,6 @@ desired effect
     <!-- Default to the left -->
     <strong> OPERASIONAL KANTOR <a href="#"> KAKATU </a></strong>
   </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="glyphicon glyphicon-book"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="glyphicon glyphicon-question-sign"></i></a></li>
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <!-- Home tab content -->
-      <div class="tab-pane active" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Recent Activity</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:;">
-              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-                <p>Will be 23 on April 24th</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
-
-        <h3 class="control-sidebar-heading">Tasks Progress</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:;">
-              <h4 class="control-sidebar-subheading">
-                Custom Template Design
-                <span class="pull-right-container">
-                    <span class="label label-danger pull-right">70%</span>
-                  </span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-              </div>
-
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
-
-      </div>
-      <!-- /.tab-pane -->
-      <!-- Stats tab content -->
-      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-      <!-- /.tab-pane -->
-      <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-settings-tab">
-        <form method="post">
-          <h3 class="control-sidebar-heading">Penjelasan Simbol</h3>
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              <a href="#" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span> </a>
-            </label>
-            <p>
-              Pembayaran Operasional belum di Reimbers
-            </p>
-          </div>
-          <!-- /.form-group -->
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              <a href="#" class="btn btn-success"> <span class="glyphicon glyphicon-ok"></span> </a>
-            </label>
-            <p>
-              Pembayaran Operasional sudah di Reimbers
-            </p>
-          </div>
-          <!-- /.form-group -->
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              <a href="#" class="btn btn-warning"> <span class="glyphicon glyphicon-hourglass"></span> </a>
-            </label>
-            <p>
-              Menunggu Konfirmasi Reimbers
-            </p>
-          </div>
-          <!-- /.form-group -->
-        </form>
-      </div>
-      <!-- /.tab-pane -->
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
-  <!-- Add the sidebar's background. This div must be placed
-  immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
-</div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
@@ -510,6 +414,14 @@ desired effect
 <script src="dist/js/adminlte.min.js"></script>
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+<script src="inputmask/jquery.number.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+
+<script>
+  $.validate({
+  });
+</script>
 
 
  <!-- Page script -->
@@ -623,7 +535,7 @@ desired effect
                 <?php
                 foreach ($data as $key => $row_hasil):
                 ?>
-                  '<?= $row_hasil["Bulan"] ?>'<?= ($key == ($total - 1)) ? '' : ','?>
+                  '<?php echo $row_hasil["Bulan"] ?>'<?= ($key == ($total - 1)) ? '' : ','?>
                 <?php
                 endforeach;
                 ?>
@@ -640,8 +552,9 @@ desired effect
           data                : [
                 <?php
                 foreach ($data as $key => $row_hasil):
+                  $total_penjualan = $row_hasil[Total];
                 ?>
-                  '<?= $row_hasil["Total"] ?>'<?= ($key == ($total - 1)) ? '' : ','?>
+                  '<?php echo $total_penjualan ?>'<?= ($key == ($total - 1)) ? '' : ','?>
                 <?php
                 endforeach;
                 ?>
@@ -740,6 +653,7 @@ desired effect
 
   });
 </script>
+
 
 </body>
 </html>

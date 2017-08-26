@@ -15,34 +15,35 @@
 
 </head>
 <body style="background-color: #f9f9f9">
-<section class="content-header">
+ <div class="container">
+<section class="content-header bounceInDown animated">
   <h2>LIST PEMBAYARAN OPERASIONAL KANTOR</h2>        
 </section>  
-<br>
-<section>
-<a href="index.php?sidebar-menu=form_bayar&action=tampil" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span>BAYAR OPERASIONAL</a>
 <hr>
-      <div class="form-group">
-   <label> FILTER STATUS </label>
-            <form method="POST" action="index.php?sidebar-menu=list_bayar&action=tampil"> 
-
-             <div class="input-group"> 
-              <a href="index.php?sidebar-menu=list_bayar&action=tampil" class="btn btn-default">VIEW ALL</a>              
-                  <input type="submit" name="status_belum" value="BELUM" class="btn btn-danger" style="margin-left: 3px;">
-                  <input type="submit" name="status_sudah" value="SUDAH" class="btn btn-success" style="margin-left: 3px;">
-                  <input type="submit" name="status_menunggu" value="MENUNGGU" class="btn btn-warning" style="margin-left: 3px;">
-             </div>
+<section>
+<a href="index.php?sidebar-menu=form_bayar&action=tampil" class="btn btn-primary bounceInRight animated"><span class="glyphicon glyphicon-plus"></span>BAYAR OPERASIONAL</a>
+<br>
+<br>
+            <div class="form-group flipInX animated">
+            <label> FILTER STATUS </label>
+              <form method="POST" action="index.php?sidebar-menu=list_bayar&action=tampil"> 
+                 <div class="input-group"> 
+                  <a href="index.php?sidebar-menu=list_bayar&action=tampil" class="btn btn-default">VIEW ALL</a>              
+                      <input type="submit" name="status_belum" value="BELUM" class="btn btn-danger" style="margin-left: 3px;">
+                      <input type="submit" name="status_sudah" value="SUDAH" class="btn btn-success" style="margin-left: 3px;">
+                      <input type="submit" name="status_menunggu" value="MENUNGGU" class="btn btn-warning" style="margin-left: 3px;">
+                 </div>
             </div>
-             </form>         
-              <div class="form-group">
-                <label> FILTER TANGGAL </label>
-                 <form method="POST" action="index.php?sidebar-menu=list_bayar&action=tampil">
-                <div class="input-group"> 
-                  <input type="text" class="form-control" id="start_date" name="start_date" style="width: 100px;" placeholder="Dari"> 
-                  <input type="text" class="form-control" id="end_date" name="end_date" style="width: 100px; margin-left: 3px;" placeholder="Sampai">
-                  <input type="submit" name="submit" value="APPLY" class="btn btn-info" style="margin-left: 3px;">
-                </div>
-                </div>
+            </form>         
+            <div class="form-group flipInX animated">
+            <label> FILTER TANGGAL </label>
+              <form method="POST" action="index.php?sidebar-menu=list_bayar&action=tampil">
+                  <div class="input-group"> 
+                    <input type="text" class="form-control" id="start_date" name="start_date" style="width: 100px;" placeholder="Dari"> 
+                    <input type="text" class="form-control" id="end_date" name="end_date" style="width: 100px; margin-left: 3px;" placeholder="Sampai">
+                    <input type="submit" name="submit" value="APPLY" class="btn btn-info" style="margin-left: 3px;">
+                  </div>
+            </div>
             </form>
 
             <?php 
@@ -57,7 +58,8 @@
 
 </section>
   <hr>
-  <div class="table-responsive">
+ 
+  <div class="table-responsive fadeIn animated">
   <table class="table" id="example">
     <thead>
       <tr>
@@ -179,20 +181,25 @@
               <?php 
                 if($r[status]=='0'){
                   ?>
-                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-danger btn-xs"> <span> BELUM </span></a> <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS"></td>
+                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-danger btn-xs"> <span> BELUM </span></a> 
+                       <?php if ($one == 'Admin'){?>
+                       <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS" disabled>
+                       <?php } else { ?>
+                       <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS">
+                       <?php } ?>
+                       </td>
                   <?php 
                 } else if($r[status]=='2'){
                   ?>
-                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-success btn-xs"> <span> SUDAH </span></a> <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS"></td>
+                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-success btn-xs"> <span> SUDAH </span></a></td>
                   <?php 
                 } else if($r[status]=='1'){
                   ?>
-                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-warning btn-xs"> <span> MENUNGGU </span></a> <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS"></td> 
+                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-warning btn-xs"> <span> MENUNGGU </span></a></td> 
                 <?php
                 }
               ?>
             </tr>
-
               <?php
                 $no++;
               }
@@ -200,6 +207,7 @@
       </tbody>
   </table>
   <br>
+  </div>
   </div>
     <form action="pages/proses_convert-csv.php" method="POST">
       <input type="submit" class="btn btn-primary pull-right" value="Convert To CSV" name="submit_csv-pembayaran">  

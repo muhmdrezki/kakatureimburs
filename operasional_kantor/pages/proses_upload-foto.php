@@ -10,14 +10,8 @@ session_start();
 	if(isset($_POST["submit"])) {
 	    $check = getimagesize($_FILES["image"]["tmp_name"]);
 	    if($check !== false) {
-	    	?>
-	        <script type="text/javascript"> alert("<?php echo  "File is an image - " . $check["mime"] . "."; ?>");</script>
-	        <?php
 	        $uploadOk = 1;
 	    } else {
-	        ?>
-	        <script type="text/javascript"> alert("<?php echo "File is not an image."; ?>"); </script>
-	    	<?php
 	        $uploadOk = 0;
 	    }
 	}

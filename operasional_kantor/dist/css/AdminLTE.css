@@ -3261,7 +3261,8 @@ table.text-center th {
 }
 .login-box-body,
 .register-box-body {
-  background: #fff;
+  border-radius: 25px;
+  background: #424242;
   padding: 20px;
   border-top: 0;
   color: #666;
