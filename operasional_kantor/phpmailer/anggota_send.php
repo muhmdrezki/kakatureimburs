@@ -21,12 +21,12 @@
 
 	$mail = new PHPMailer;
 
-	//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+	//$mail->SMTPDebug = 2;                               // Enable verbose debug output
 
 	$mail->isSMTP();                                      // Set mailer to use SMTP
 	$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 	$mail->SMTPAuth = true;                               // Enable SMTP authentication
-	$mail->Username = $email;    // SMTP username
+	$mail->Username = $email;    					 // SMTP username
 	$mail->Password = $pass;                         // SMTP password
 	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 	$mail->Port = 587;                                    // TCP port to connect to
@@ -47,9 +47,33 @@
 
 	$mail->isHTML(true);                                  // Set email format to HTML
 
+	$jml_uang = number_format($nominal);
+
+	  $datenow = date('d-m-Y', strtotime($tgl_new_format)); 
+      $dayname = date('l', strtotime($tgl_new_format));
+      $day = date('j', strtotime($tgl_new_format));
+      $month = date('F', strtotime($tgl_new_format));
+      $year = date('Y', strtotime($tgl_new_format));
+
+       if($dayname =="Monday"){
+      	$hari = "Senin";
+      } else if($dayname == "Tuesday"){
+      	$hari = "Selasa";
+      } else if ($dayname == "Wednesday"){
+      	$hari = "Rabu";
+      } else if ($dayname == "Thursday"){
+      	$hari = "Kamis";
+      } else if ($dayname == "Friday"){
+      	$hari = "Jumat";
+      } else if($dayname == "Saturday"){
+      	$hari = "Sabtu";
+      } else if($dayname == "Sunday"){
+      	$hari = "Minggu";
+      }
+
 	$mail->Subject = "NEW REIMBURSE (ID Pembayaran: $id, Perihal : $value[jenis])";
 	$mail->Body    = "Admin, <br><br>
-	Saya baru saja <b> $value[jenis]</b> dengan ID Pembayaran <b>$id</b> , tanggal <b>$tgl_new_format</b>. Sebesar <b>Rp.$nominal</b>. Mohon segera di Reimburse. <br><br>
+	Saya baru saja <b> $value[jenis]</b> dengan ID Pembayaran <b>$id</b>, pada hari <b>$hari, $datenow</b>. Sebesar <b>Rp.$jml_uang</b>. Mohon segera di Reimburse. <br><br>
 	Regards, <br>
 	$nama
 	";
@@ -57,11 +81,7 @@
 	//$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
 		if(!$mail->send()) {
-			?>
-			<script type="text/javascript">
-		    alert('Gagal Mengirim Email Konfirmasi.'. $mail->ErrorInfo);
-			</script>
-			<?php
+			 echo "Mailer Error: " . $mail->ErrorInfo;
 		} else {
 			?>
 			<script type="text/javascript">

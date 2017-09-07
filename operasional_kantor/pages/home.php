@@ -63,16 +63,16 @@
         <!-- ./col -->
         <div class="col-lg-4 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-yellow">
+          <div class="small-box" style="background-color: #fffc4c;">
             <div class="inner">
-            <b><p style="font-size: 27px;">ART</p></b>
+            <b><p style="font-size: 27px; color: #35352b;">ART</p></b>
 
-              <p>Shortcut Pembayaran</p>
+              <p style="color: #35352b;">Shortcut Pembayaran</p>
             </div>
             <div class="icon">
               <i class="ion ion-home"></i>
             </div>
-            <a href="index.php?sidebar-menu=form_bayar&action=tampil&jenis=ART" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="index.php?sidebar-menu=form_bayar&action=tampil&jenis=ART" class="small-box-footer" style="color: #35352b;">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -108,7 +108,7 @@
         <!-- ./col -->
         <div class="col-lg-4 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-default">
+          <div class="small-box bg-yellow">
             <div class="inner">
             <b><p style="font-size: 27px;">Sampah</p></b>
 
@@ -125,8 +125,6 @@
       <!-- /.row -->
       </section>
 
-      <hr>
-
     <?php 
 
         $tgl_now = date("d-m-Y"); 
@@ -134,19 +132,19 @@
         $month = date('F', strtotime($tgl_now));
         $year = date('Y', strtotime($tgl_now));
 
-        include "../con_db.php";
+        include "../../con_db.php";
 
-        $count_sakit = "SELECT COUNT(id_anggota) as 'izin_sakit' FROM `tb_absen` WHERE DAY(tanggal) = '23' AND keterangan = 'sakit'";
+        $count_sakit = "SELECT COUNT(id_anggota) as 'izin_sakit' FROM `tb_absen` WHERE DAY(tanggal) = '4' AND keterangan = 'sakit'";
         $res_sakit = mysqli_query($koneksi, $count_sakit);
 
         $val_sakit = mysqli_fetch_assoc($res_sakit);
 
-        $count_izin = "SELECT COUNT(id_anggota) as 'izin' FROM `tb_absen` WHERE DAY(tanggal) = '23' AND keterangan = 'izin'";
+        $count_izin = "SELECT COUNT(id_anggota) as 'izin' FROM `tb_absen` WHERE DAY(tanggal) = '4' AND keterangan = 'izin'";
         $res_izin = mysqli_query($koneksi, $count_izin);
 
         $val_izin = mysqli_fetch_assoc($res_izin);
 
-        $count_hadir = "SELECT COUNT(id_anggota) as 'hadir' FROM `tb_absen` WHERE DAY(tanggal) = '23' AND keterangan = 'hadir'";
+        $count_hadir = "SELECT COUNT(id_anggota) as 'hadir' FROM `tb_absen` WHERE DAY(tanggal) = '4' AND keterangan = 'hadir'";
         $res_hadir = mysqli_query($koneksi, $count_hadir);
 
         $val_hadir = mysqli_fetch_assoc($res_hadir);
@@ -161,7 +159,7 @@
             <div class="info-box-content">
               <span class="info-box-text">Izin Sakit</span>
               <span class="info-box-number"><?php echo $val_sakit[izin_sakit]." Anggota" ?></span>
-               <a href="#" class="small-box-footer">
+               <a href="#" id="" class="small-box-footer detail_sakit">
               More info <i class="fa fa-arrow-circle-right"></i>
             </a>
             </div>
@@ -177,7 +175,7 @@
             <div class="info-box-content">
               <span class="info-box-text">Izin Lain-lain</span>
               <span class="info-box-number"><?php echo $val_izin[izin]." Anggota" ?></span>
-               <a href="#" class="small-box-footer">
+               <a href="#" id="" class="small-box-footer detail_izin">
               More info <i class="fa fa-arrow-circle-right"></i>
             </a>
             </div>
@@ -188,8 +186,9 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
+
       <?php
-       include "pages/daftar_hadir.php";
+       include "pages/datalist/daftar_hadir.php";
       ?>   
     </section>  
     <hr>
@@ -203,31 +202,30 @@
 
       <div class="row">
          <div class="col-md-6">
-               <div class="box box-success">
-                  <div class="box-header with-border">
-                    <h3 class="box-title">Total Pengeluaran dari Pembayaran Operasional</h3>
+               <!-- BAR CHART -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Total Pengeluaran dari Pembayaran Operasional</h3>
 
-                    <div class="box-tools">
-                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                      </button>
-                      <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                  </div>
-                  <div class="box-body">
-                    <div class="chart">
-                      <canvas id="barChart" style="height:295px;"></canvas>
-                    </div>
-                  </div>
-                  <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body chart-responsive">
+              <div class="chart" id="bar-chart" style="height: 300px;"></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
           </div>
 
         <div class="col-md-6">
           <!-- DONUT CHART -->
           <div class="box box-danger">
             <div class="box-header with-border">
-              <h4 class="box-title">Pembayaran Operasional (per-kategori) di Bulan <?php echo $month.", ".$year?></h4>
+              <h4 class="box-title">Jumlah Pembayaran Operasional (per-kategori) Bulan <?php echo $month.", ".$year?></h4>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -243,18 +241,19 @@
           <!-- /.box -->
       </div>   
     </section>
+
 </body>
 
        <?php 
           list($one, $two) = explode(",", $_SESSION['jabatan'] , 2);
 
-          if($one == "Admin"){
+          if($_SESSION['jabatan'] == "Admin"){
             ?>
               <script type="text/javascript">
                   document.getElementById('shortcut-box').style.display="none";
               </script>
             <?php 
-          } else if($one != 'Admin'){
+          } else if($_SESSION['jabatan'] != 'Admin'){
             ?>
             <script type="text/javascript">
                   document.getElementById('shortcut-box').style.visibility="visible";
@@ -271,4 +270,112 @@
           } 
       ?>
 
+
+<?php 
+
+  include "../../con_db.php";
+
+  $sql_data = "SELECT id_anggota, password, email FROM tb_anggota WHERE id_anggota = '$_SESSION[id_anggota]'";
+  $query = mysqli_query($koneksi, $sql_data);
+
+  $val_data = mysqli_fetch_assoc($query);
+
+  $data_id = $val_data[id_anggota];
+  $data_pass = $val_data[password];
+  $data_email = $val_data[email];
+?>
+
+
+<?php
+if($_SESSION['jabatan'] == 'Admin'){
+  ?>
+    <script type="text/javascript">
+          document.getElementById('shortcut-box').style.display="none";
+    </script>
+<?php
+} else 
+if($data_id == $data_pass && $_SESSION['jabatan'] != 'Admin' || $data_email == '-'){
+?>
+    <script type="text/javascript">
+          document.getElementById('shortcut-box').style.display="none";
+    </script>
+<?php
+} else {
+?>
+     <script type="text/javascript">
+          document.getElementById('shortcut-box').style.display="block";
+    </script>
+<?php
+}
+?>
+
 </html>
+
+<div id="sakitModal" class="modal fade">  
+      <div class="modal-dialog">  
+           <div class="modal-content">  
+                <div class="modal-header">  
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                     <h4 class="modal-title">Sakit</h4>  
+                </div>  
+                <div class="modal-body" id="detail_Sakit">  
+                </div>  
+                <div class="modal-footer">    
+                     <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>  
+                </div>  
+           </div>  
+      </div>  
+ </div>  
+
+
+<script>
+     $(document).ready(function(){  
+      $('.detail_sakit').click(function(){  
+         var id = $(this).attr("id");
+          $.ajax({  
+                url:"pages/fetchdata/fetch_data_sakit.php",  
+                method:"post",  
+                data:{id:id},  
+                success:function(data){
+                 $('#detail_Sakit').html(data);           
+                 $('#sakitModal').modal("show");  
+             }
+         });
+      });  
+ });  
+</script>
+
+<div id="izinModal" class="modal fade">  
+      <div class="modal-dialog">  
+           <div class="modal-content">  
+                <div class="modal-header">  
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                     <h4 class="modal-title">Izin</h4>  
+                </div>  
+                <div class="modal-body" id="detail_Izin">  
+                </div>  
+                <div class="modal-footer">    
+                     <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>  
+                </div>  
+           </div>  
+      </div>  
+ </div>  
+
+
+<script>
+     $(document).ready(function(){  
+      $('.detail_izin').click(function(){  
+         var id = $(this).attr("id");
+          $.ajax({  
+                url:"pages/fetchdata/fetch_data_izin.php",  
+                method:"post",  
+                data:{id:id},  
+                success:function(data){
+                 $('#detail_Izin').html(data);           
+                 $('#izinModal').modal("show");  
+             }
+         });
+      });  
+ });  
+</script>
+

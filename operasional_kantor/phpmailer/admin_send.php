@@ -44,9 +44,34 @@
 
 	$mail->isHTML(true);                                  // Set email format to HTML
 
+	$jml_uang = number_format($value[nominal]);
+
+	  $date = date('d-m-Y', strtotime($value[tanggal]));
+      $dayname = date('l', strtotime($value[tanggal]));
+      $day = date('j', strtotime($value[tanggal]));
+      $month = date('F', strtotime($value[tanggal]));
+      $year = date('Y', strtotime($value[tanggal]));
+
+      if($dayname =="Monday"){
+      	$hari = "Senin";
+      } else if($dayname == "Tuesday"){
+      	$hari = "Selasa";
+      } else if ($dayname == "Wednesday"){
+      	$hari = "Rabu";
+      } else if ($dayname == "Thursday"){
+      	$hari = "Kamis";
+      } else if ($dayname == "Friday"){
+      	$hari = "Jumat";
+      } else if($dayname == "Saturday"){
+      	$hari = "Sabtu";
+      } else if($dayname == "Sunday"){
+      	$hari = "Minggu";
+      }
+    
+
 	$mail->Subject = "CEK REIMBURSE (ID Pembayaran: $id_pembayaran, Perihal : $value[jenis])";
 	$mail->Body    = "$value[nama], <br><br>
-	Uang <b>$value[jenis]</b> dengan ID Pembayaran <b>$value[id_pembayaran]</b>, tanggal <b>$value[tanggal]</b>. Sebesar <b>Rp. $value[nominal]</b> sudah di Transfer ke Rekening Bank Anda, silahkan di cek. <br><br>
+	Uang <b>$value[jenis]</b> dengan ID Pembayaran <b>$value[id_pembayaran]</b>, pada hari <b>$hari, $date</b>. Sebesar <b>Rp. $jml_uang</b> sudah di Transfer ke Rekening Bank Anda, silahkan di cek. <br><br>
 	Regards, <br> 
 	Admin
 	";

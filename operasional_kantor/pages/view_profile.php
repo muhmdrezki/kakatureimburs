@@ -7,29 +7,17 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
    <style>
   @import url('https://fonts.googleapis.com/css?family=Dosis');
-  </style>
-
+  </style>   
   <!-- jQuery 3 -->
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>     
   </head>
 
     <body>
-      <div class="container">
-      <br>
-      <br>
+      <div>
 
-      <h3 style="text-align: center; font-family: 'Mulis' , Sans-serif;"> USER PROFILE </h3>
+      <h1 style="text-align: center; font-family: 'Mulis' , Sans-serif;"> USER PROFILE </h1>
 
       <hr>  
 
@@ -66,16 +54,44 @@
                 }
                 ?>
                 <br>
-                <form action="pages/proses_upload-foto.php" method="POST" enctype="multipart/form-data">
-                <div class="fileinput fileinput-new" data-provides="fileinput">
-                  <span class="btn btn-default btn-file"><span>Choose file</span><input type="file" name="image"></span>
-                  <span class="fileinput-filename"></span><span class="fileinput-new">No file chosen</span>
-                </div>
+                <input type="button" name="edit" value="Upload Foto" id="<?php echo $values["id_anggota"]; ?>" class="btn btn-default upload"/>
                 <br>
-                <input type="submit" name="submit" class="btn btn-info" value="Upload">
-                </div>
-                </form>
-                <br>
+
+                 <div id="data_Modal" class="modal fade">  
+                      <div class="modal-dialog">  
+                           <div class="modal-content">  
+                                <div class="modal-header">  
+                                     <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                                     <h4 class="modal-title">EDIT PROFILE</h4>  
+                                </div>  
+                                <div class="modal-body">  
+                                <form action="pages/proses/proses_upload-foto.php" method="POST" enctype="multipart/form-data">
+                                     <!-- image-preview-filename input [CUT FROM HERE]-->
+                                        <div class="input-group image-preview">
+                                            <input type="text" class="form-control image-preview-filename" disabled="disabled"> <!-- don't give a name === doesn't send on POST/GET -->
+                                            <span class="input-group-btn">
+                                                <!-- image-preview-clear button -->
+                                                <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+                                                    <span class="glyphicon glyphicon-remove"></span> Clear
+                                                </button>
+                                                <!-- image-preview-input -->
+                                                <div class="btn btn-default image-preview-input">
+                                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                                    <span class="image-preview-input-title">Browse</span>
+                                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="image"/> <!-- rename it -->
+                                                </div>
+                                            </span>
+                                        </div><!-- /input-group image-preview [TO HERE]--> 
+                                </div>
+                                </div>  
+                                <div class="modal-footer"> 
+                                      <input type="submit" name="submit" id="upload" value="Upload" class="btn btn-success" /> 
+                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>   
+                                     </form>
+                                </div>  
+                           </div>  
+                      </div>  
+                </div>  
 
                 <div class=" col-md-9 col-lg-9 "> 
                   <table class="table table-user-information">
@@ -127,7 +143,7 @@
                     </tbody>
                   </table>
                      <span class="pull-right">
-                            <input type="button" name="edit" value="<?php echo $values["id_anggota"]; ?>" id="<?php echo $values["id_anggota"]; ?>" class="btn btn-warning edit_data"/>
+                            <input type="button" name="edit" value="Edit Profile" id="<?php echo $values["id_anggota"]; ?>" class="btn btn-warning edit_data"/>
                         </span>
                 </div>
               </div>
@@ -145,7 +161,7 @@
                      <h4 class="modal-title">EDIT PROFILE</h4>  
                 </div>  
                 <div class="modal-body">  
-                     <form method="post" action="pages/proses_edit-anggota.php">  
+                     <form method="post" action="pages/proses/proses_edit-anggota.php">  
                           <label>ID Anggota</label>
                           <input type="text" name="id_anggota" id="id_anggota" class="form-control" readonly />   
                           <br />
@@ -164,6 +180,9 @@
                           <label>Email</label>  
                           <input type="email" name="email" id="email" class="form-control" /> 
                           <br /> 
+                          <label>Password<i style="color: #f44242;"> (Harus sama dengan password email) </i></label>  
+                          <input type="text" name="password" id="password" class="form-control" /> 
+                          <br /> 
                       
                 </div>  
                 <div class="modal-footer"> 
@@ -178,7 +197,7 @@
   $(document).on('click', '.edit_data', function(){ 
   var id_anggota = $(this).attr("id");   
              $.ajax({  
-                url:"pages/fetch_data_anggota-json.php",  
+                url:"pages/fetchdata/fetch_data_anggota-json.php",  
                 method:"POST",  
                 data:{id_anggota:id_anggota},  
                 dataType:"json",  
@@ -189,8 +208,21 @@
                      $('#tempat_lahir').val(data.tempat_lahir);  
                      $('#tgl_lahir').val(data.tgl_lahir);  
                      $('#email').val(data.email);  
+                     $('#password').val(data.password);  
                      $('#insert').val("Update");  
                      $('#add_data_Modal').modal('show');  
+                }  
+           });
+      });    
+</script>
+
+<script type="text/javascript">
+  $(document).on('click', '.upload', function(){ 
+  var id_anggota = $(this).attr("id");   
+             $.ajax({  
+                success:function(data){ 
+                     $('#insert').val("Update");  
+                     $('#data_Modal').modal('show');  
                 }  
            });
       });    

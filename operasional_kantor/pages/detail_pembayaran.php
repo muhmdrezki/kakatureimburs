@@ -22,7 +22,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 		  $year = date('Y', strtotime($tgl_now));
 
 
-		  $id_pembayaran = $_GET['id'];
+		  $id_pembayaran = mysqli_real_escape_string($koneksi, $_GET['id']);
 		  $_SESSION['id_pembayaran'] = $id_pembayaran;
 
 		  $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.id_jenis, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.id_pembayaran='$id_pembayaran'";
@@ -40,8 +40,9 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	?>
 		<body>
 				<div>
-					<h2 style="float: right;"> <?php echo $day." - ".$month." - ".$year; ?> </h2>
+					<h2 class="pull-right"> <?php echo $day." - ".$month." - ".$year; ?> </h2>
 					<hr>
+					<br>
 					  <h2>FORM PEMBAYARAN</h2> 
 					  <hr style="border-color:#3c8dbc;">
 					  <br>
@@ -90,6 +91,25 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 					    <?php
 							while ($row=mysqli_fetch_array($result)) {	
 								$jml_uang = number_format($row['nominal']);
+								$tgl_new_format = date("d-m-Y", strtotime($row['tanggal']));
+								$dayname = date('l', strtotime($r['tanggal']));
+
+								  if($dayname =="Monday"){
+							      	$hari = "Senin";
+							      } else if($dayname == "Tuesday"){
+							      	$hari = "Selasa";
+							      } else if ($dayname == "Wednesday"){
+							      	$hari = "Rabu";
+							      } else if ($dayname == "Thursday"){
+							      	$hari = "Kamis";
+							      } else if ($dayname == "Friday"){
+							      	$hari = "Jumat";
+							      } else if($dayname == "Saturday"){
+							      	$hari = "Sabtu";
+							      } else if($dayname == "Sunday"){
+							      	$hari = "Minggu";
+							      }
+    							
 						?>
 						</tr>
 					</table>	
@@ -143,6 +163,12 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 				              </script>
 						  		<?php
 						  	}
+
+						  	if($one == "Admin"){
+						  		$pesandari = $row['nama'];
+						  	} else {
+						  		$pesandari = "Admin";
+						  	}
 						  ?>
 						 
 						  </div>
@@ -156,38 +182,11 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 						      <div class="modal-content">
 							        <div class="modal-header">
 							          <button type="button" class="close" data-dismiss="modal">&times;</button>
-							          <h4 class="modal-title">Pesan Konfirmasi</h4>
+							          <h4 class="modal-title">Pesan konfirmasi dari : <?php echo $pesandari ?></h4>
 							        </div>
-							        <form method="POST" action="pages/proses_konfirmasi.php">
-							        <?php if($one!="Admin"){
-							        	?>
-								        <div class="modal-body">
-								        <p>
-								        	Uang Pembayaran <b><?php echo $row['jenis']?></b> dengan ID Pembayaran <b><?php echo $row['id_pembayaran']?></b>, tanggal <b><?php echo $row['tanggal']?></b>. Sebesar <b>Rp.<?php echo $row ['nominal']?></b> sudah di Transfer ke Rekening Bank Anda, silahkan di cek.
-								        </p>
-								        <hr>
-								        <p>
-								        	Jika uang belum ada bisa di informasikan kembali langsug lewat <b>WHATSAPP</b>, Jika sudah masuk 
-								        	silahkan langsung klik tombol <b>"KIRIM KONFIRMASI"</b>
-								        </p>
-								        </div>
+							        <form method="POST" action="pages/proses/proses_konfirmasi.php">
 							        <?php 
-									} else if($one == "Admin"){
-										?>
-										<div class="modal-body">
-								        <p>
-								        	Saya baru saja <b><?php echo $row['jenis']?></b> dengan ID Pembayaran <b><?php echo $row['id_pembayaran']?></b> , tanggal <b><?php echo $row['tanggal']?></b>. Sebesar <b>Rp.<?php echo $row ['nominal']?></b>. Mohon segera di Reimbers.
-								        </p>
-								        <hr>
-								        <p>	Jika sudah melakukan Reimbers, klik <b>"KIRIM KONFIRMASI"</b> </p>
-								        </div>
-									<?php
-									}
-							        ?>
-							        <div class="modal-footer">
-
-							          <?php 
-										  $sql_konfirm = "SELECT * FROM tb_konfirmasi WHERE id_pembayaran='$id_pembayaran'";
+							        	  $sql_konfirm = "SELECT * FROM tb_konfirmasi WHERE id_pembayaran='$id_pembayaran'";
 										  $result_konfirm=mysqli_query($koneksi, $sql_konfirm);
 								          $values=mysqli_fetch_assoc($result_konfirm);
 								          $status_admin = $values['konfirm_admin'];
@@ -198,23 +197,61 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 								          $values_cek = mysqli_fetch_assoc($result_cek);
 								          $status = $values_cek['status'];
 
+							        if($one!="Admin"){
+							        	
+							        	if($status_admin != "2" && $status != "2"){
+								          ?>
+								          <div class="modal-body">
+								          	<p> Tunggu Admin Me-Review Pembayaran Anda </p>
+								          </div>	
+								          <?php
+								        } else {
+							        	?>
+								        <div class="modal-body">
+								        <p>
+								        	Uang Pembayaran <b><?php echo $row['jenis']?></b> dengan ID Pembayaran <b><?php echo $row['id_pembayaran']?></b>, pada hari <b><?php echo $hari.", ".$tgl_new_format?></b>. Sebesar <b>Rp.<?php echo number_format($row['nominal'])?></b> sudah di Transfer ke Rekening Bank Anda, silahkan di cek.
+								        </p>
+								        <hr>
+								        <p>
+								        	Jika uang belum ada bisa di informasikan kembali langsug lewat <b>WHATSAPP</b>, Jika sudah masuk 
+								        	silahkan langsung klik tombol <b>"KIRIM KONFIRMASI"</b>
+								        </p>
+								        </div>
+								        }
 
+							        <?php 
+									} } 
+									if($one == "Admin"){
+										?>
+										<div class="modal-body">
+								        <p>
+								        	Saya baru saja <b><?php echo $row['jenis']?></b> dengan ID Pembayaran <b><?php echo $row['id_pembayaran']?></b> , pada hari <b><?php echo $hari.", ".$tgl_new_format?></b>. Sebesar <b>Rp.<?php echo number_format($row['nominal'])?></b>. Mohon segera di Reimburse.
+								        </p>
+								        <hr>
+								        <p>	Jika sudah melakukan Reimburse, klik <b>"KIRIM KONFIRMASI"</b> </p>
+								        </div>
+									<?php
+									}
+							        ?>
+							        <div class="modal-footer">
+
+							          <?php 
 							          		if($one != 'Admin'){
 								          	
 								          		if($status == "2" ){
 								          			?>
-								          					<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger" disabled>  
+								          					<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger btn-sm" disabled>  
 								          			<?php
 								          	
 								          		} else if($status=="0" || $status == "1") {
 								          	
 								          		if($status_admin != "2"){
 								          			?>
-								          				  	<input type="submit" name="submit" value="KONFIRMASI SUDAH TERKIRIM" class="btn btn-danger" disabled>  
+								          				  	<input type="submit" name="submit" value="BELUM DI CEK OLEH ADMIN" class="btn btn-danger btn-sm" disabled>  
 								          			<?php
 								          		} else if($status_admin == "2"){
 								          			?>
-								          			  		<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger">  
+								          			  		<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger btn-sm">  
 								          			<?php
 								          		} 
 								          	}
@@ -223,31 +260,63 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 							          		 
 							          		 if($status == "2" ){
 								          			?>
-								          					<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger" disabled>  
+								          					<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger btn-sm" disabled>  
 								          			<?php
 								          			
 								          		} else if($status == "0" || $status=="1") {
 
 								          		if($status_admin == "2"){
 									          		?>
-									          				<input type="submit" name="submit" value="KONFIRMASI SUDAH TERKIRIM" class="btn btn-danger" disabled>  
+									          				<input type="submit" name="submit" value="KONFIRMASI TERKIRIM" class="btn btn-danger btn-sm" disabled>  
 									          		<?php
 									          		} else if($status_admin != "2"){
 									          		?>
-									          				<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger">  
+									          				<input type="submit" name="submit" value="KIRIM KONFIRMASI" class="btn btn-danger btn-sm">  
 									          		<?php
 								          		} 
 								          	}
 							          	}
+
+							          	if($one != 'Admin'){
+							          		?>
+							          	<a href="whatsapp://send?text=Uang <?php echo $row['jenis']?> dengan ID Pembayaran <?php echo $row['id_pembayaran']?>, pada hari <?php echo $hari.", ".$tgl_new_format?>. Sebesar Rp.<?php echo number_format($row['nominal'])?> sudah di Transfer ke Rekening Bank Anda, silahkan di cek.
+								        
+								        	" class="btn btn-success btn-sm" data-action="share/whatsapp/share" id="whatsapp">SEND TO <i class="fa fa-whatsapp"></i></a>
+							          		<?php
+							  
+							          	} else if($one == 'Admin'){
+							  				?>
+							          	<a href="whatsapp://send?text=Saya baru saja <?php echo $row['jenis'] ?> dengan ID Pembayaran <?php echo $row['id_pembayaran']?> , pada hari <?php echo $hari.", ".$tgl_new_format?>. Sebesar Rp.<?php echo number_format($row['nominal'])?>. Mohon segera di Reimburse.
+								      				        
+								        " class="btn btn-success btn-sm" data-action="share/whatsapp/share">SEND TO <i class="fa fa-whatsapp"></i></a>
+							          		<?php
+							          	}
 							          ?>
-							          <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+							          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">CLOSE</button>
 						        	</div>
 						      </div>
 						     
 						    </div>
 						  </div>
 					    <?php } ?>
-					 
+					 	
+					 	<?php 
+
+                if($status_admin != "2" && $status != "2"){
+                  ?>
+                  <script type="text/javascript">
+                          document.getElementById('whatsapp').style.display="none";
+                      </script>
+                  <?php
+                } else  {
+                  ?>
+                  <script type="text/javascript">
+                          document.getElementById('whatsapp').style.visibility="visible";
+                      </script>
+                  <?php
+                }
+              ?>
+
 				</div>
 		</body>
 </html>
