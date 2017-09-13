@@ -2,6 +2,7 @@
 <html>
 <?php
  error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+ date_default_timezone_set("Asia/Jakarta");
  session_start();
  include '/../con_db.php';
 ?>
@@ -40,7 +41,7 @@
 </div>
 </div>
 <div class="bounceInUp animated">
-  <table class="table table-responsive" id="example1">
+  <table class="table" id="example1">
     <thead>
       <tr align="center">
         <th>Id Anggota</th>

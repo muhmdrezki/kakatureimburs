@@ -28,8 +28,8 @@
 	$mail->SMTPAuth = true;                               // Enable SMTP authentication
 	$mail->Username = $email;    					 // SMTP username
 	$mail->Password = $pass;                         // SMTP password
-	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-	$mail->Port = 587;                                    // TCP port to connect to
+	$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->Port = 465;                                    // TCP port to connect to
 
 	$mail->setFrom($email,$nama);
 

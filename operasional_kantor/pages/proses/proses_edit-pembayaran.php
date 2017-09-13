@@ -60,7 +60,7 @@ include "../../con_db.php";
       
         $jenis = $_POST["jenis"];  
         $jumlah = $_POST['nominal'];
-        $nominal = str_replace(',','',$jumlah);
+        $nominal = str_replace('.','',$jumlah);
         $keterangan = $_POST["keterangan"];
 
             $query = "UPDATE tb_pembayaran SET id_jenis='$jenis', nominal = '$nominal', keterangan = '$keterangan'   

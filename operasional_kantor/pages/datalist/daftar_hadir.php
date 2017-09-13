@@ -8,6 +8,7 @@
 <section id="form_jabatan-jenis" style="margin: 0 auto;">
 
 <?php 
+    date_default_timezone_set("Asia/Jakarta");
     $tgl_now = date("d-m-Y"); 
     $day = date('j', strtotime($tgl_now));
 ?>
@@ -16,13 +17,14 @@
 <div class="content-header">
         <b><h3> DAFTAR HADIR </h3></b>
 </div>
+<br>
   <div class="row">        
         <?php 
            $query = "SELECT tb_absen.id, tb_absen.id_anggota, tb_anggota.nama, tb_absen.tanggal, tb_absen.jam_masuk, tb_absen.jam_keluar, tb_absen.keterangan, tb_absen.latitude, tb_absen.longitude FROM tb_absen JOIN tb_anggota ON tb_absen.id_anggota = tb_anggota.id_anggota WHERE DAY(tb_absen.tanggal) = '4' AND tb_absen.keterangan = 'hadir'";  
            $result = mysqli_query($koneksi, $query);  
         ?>
-            <div class="table-responsive">  
-               <table class="table table-hover table-responsive" id="example">
+            <div>  
+               <table class="table table-hover" id="example">
                <thead>
                   <tr>  
                          <th> ID Anggota </th> 

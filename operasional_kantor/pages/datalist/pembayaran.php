@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<?php
- error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-?>
 <html lang="en">
 <head>
   <title>List Pembayaran</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+<?php
+ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+?>
 
   <style>
     @import url('https://fonts.googleapis.com/css?family=Dosis');
@@ -118,13 +118,14 @@ if($_SESSION['jabatan'] == 'Admin'){
   <hr>
  </div>
   <div class="fadeIn animated">
-  <table class="table table-responsive" id="example">
+  <table class="table" style="font-size: 13px;" id="example">
     <thead>
       <tr>
-        <th style="width: 14%;">Nama Anggota</th>
-        <th style="width: 10%;">Tanggal</th>
-        <th style="width: 14%;">Jenis</th>
-        <th style="width: 10%;">Status</th>
+        <th style="width: 4%;  font-size: 12px;"> Tanggal </th>
+        <th style="width: 10%; font-size: 12px;">Nama</th>
+        <th style="width: 3%; font-size: 12px;"> ID </th>
+        <th style="width: 14%; font-size: 12px;">Jenis</th>
+        <th style="width: 10%;  font-size: 12px;">Status</th>
       </tr>
     </thead>
     <tbody>
@@ -188,7 +189,7 @@ if($_SESSION['jabatan'] == 'Admin'){
         } else if($one != 'Admin'){
           
            if(isset($_POST['submit'])){
-        $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota WHERE tb_pembayaran.tanggal >= '$startdate' AND tb_pembayaran.tanggal <= '$enddate' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
+        $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_jenistransaksi.jenis, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.tanggal >= '$startdate' AND tb_pembayaran.tanggal <= '$enddate' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
 
           $result = mysqli_query($koneksi,$sql);
             if (!$result) {
@@ -229,11 +230,12 @@ if($_SESSION['jabatan'] == 'Admin'){
             while($r = mysqli_fetch_array($result))
             {
                 $id = $r[id_pembayaran];
-                $tgl_new_format = date("Y-m-d", strtotime($r[tanggal]));
+                $tgl_new_format = date("Y-m-d" , strtotime($r[tanggal]));
             ?>
             <tr>
+              <td> <?php echo $tgl_new_format ?> </td>
               <td> <?php echo $r[nama] ?> </td>
-              <td> <?php echo $tgl_new_format; ?></td>
+              <td> <?php echo $id ?> </td>
               <td> <?php echo $r[jenis] ?> </td>         
               <?php 
                 if($r[status]=='0'){
@@ -252,7 +254,7 @@ if($_SESSION['jabatan'] == 'Admin'){
                   <?php 
                 } else if($r[status]=='1'){
                   ?>
-                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-warning btn-xs"> <span> MENUNGGU </span></a></td> 
+                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-warning btn-xs"> MENUNGGU </a></td> 
                 <?php
                 }
               ?>

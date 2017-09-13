@@ -116,7 +116,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 
 							    <div class="form-group">
 							      <label for="nominal"> Nominal </label>
-							      <input class="form-control" type="text" id="nominal" name="nominal" value="<?php echo $row['nominal']?>" data-validation="required">
+							      <input class="form-control" type="text" id="numeric" name="nominal" value="<?php echo $row['nominal']?>" data-validation="required">
 							    </div>
 
 							    <div class="form-group">

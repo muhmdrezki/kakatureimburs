@@ -1,5 +1,6 @@
       <?php 
         $id_jabatan = mt_rand(100,999);
+        date_default_timezone_set("Asia/Jakarta");
       ?>
 
       <!-- jQuery 3 -->
@@ -23,7 +24,7 @@
            $query = "SELECT tb_absen.id, tb_absen.id_anggota, tb_anggota.nama, tb_absen.tanggal, tb_absen.jam_masuk, tb_absen.jam_keluar, tb_absen.keterangan FROM tb_absen JOIN tb_anggota ON tb_absen.id_anggota = tb_anggota.id_anggota";  
            $result = mysqli_query($koneksi, $query);  
         ?>
-            <div class="table-responsive">  
+            <div>  
                <table class="table" id="example">
                <thead>
                   <tr>  

@@ -59,7 +59,7 @@ session_start();
     ?>
         <div class="form-group">
       <label for="jenis"> Jenis Pembayaran </label>
-      <select class="form-control btn-success" id="jenis" name="jenis">
+      <select class="form-control btn-success" id="jenis" name="jenis" onChange="myNewFunction(this);">
         <option value="<?php echo $value['id_jenis']?>"> <?php echo $value['jenis']?> </option>
       </select>
     </div>
@@ -73,7 +73,7 @@ session_start();
     ?> 
         <div class="form-group">
       <label for="jenis"> Jenis Pembayaran </label>
-      <select class="form-control btn-info" id="jenis" name="jenis">
+      <select class="form-control btn-info" id="jenis" name="jenis" onChange="myNewFunction(this);">
         <option value="<?php echo $value['id_jenis']?>"> <p style="color: #f9f9f9;"><?php echo $value['jenis']?></p> </option>
       </select>
       </div>
@@ -87,7 +87,7 @@ session_start();
         ?>
           <div class="form-group">
       <label for="jenis"> Jenis Pembayaran </label>
-      <select class="form-control" style="background-color: #fffc4c;" id="jenis" name="jenis">
+      <select class="form-control" style="background-color: #fffc4c;" id="jenis" name="jenis" onChange="myNewFunction(this);">
         <option value="<?php echo $value['id_jenis']?>"> <b><?php echo $value['jenis']?></b> </option>
       </select>
       </div>
@@ -101,7 +101,7 @@ session_start();
         ?>
           <div class="form-group">
       <label for="jenis"> Jenis Pembayaran </label>
-      <select class="form-control btn-warning" id="jenis" name="jenis">
+      <select class="form-control btn-warning" id="jenis" name="jenis" onChange="myNewFunction(this);">
         <option value="<?php echo $value['id_jenis']?>"> <?php echo $value['jenis']?> </option>
       </select>
       </div>
@@ -115,7 +115,7 @@ session_start();
         ?>
           <div class="form-group">
       <label for="jenis"> Jenis Pembayaran </label>
-      <select class="form-control btn-primary" id="jenis" name="jenis">
+      <select class="form-control btn-primary" id="jenis" name="jenis" onChange="myNewFunction(this);">
         <option value="<?php echo $value['id_jenis']?>"> <?php echo $value['jenis']?> </option>
       </select>
       </div>
@@ -129,7 +129,7 @@ session_start();
         ?>
           <div class="form-group">
       <label for="jenis"> Jenis Pembayaran </label>
-      <select class="form-control btn-danger" id="jenis" name="jenis" >
+      <select class="form-control btn-danger" id="jenis" name="jenis" onChange="myNewFunction(this);" >
         <option value="<?php echo $value['id_jenis']?>"> <?php echo $value['jenis']?> </option>
       </select>
       </div>
@@ -155,7 +155,6 @@ session_start();
         
       </select>
     </div>
-
     <?php } ?>
     <!-- jQuery 3 -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
@@ -185,14 +184,17 @@ session_start();
     <div id="myAlert" class="alert alert-danger collapse">
     <a id="linkClose" href="#" class="close">&times;</a>
     <strong>Warning!</strong> Pembayaran diatas Rp. 70,000 harus disertai bukti !
-</div>
+    </div>
+    <div id="myAlertTrans" class="alert alert-danger collapse">
+    <a id="linkCloseTrans" href="#" class="close">&times;</a>
+    <strong>Warning!</strong> Pembayaran Transport harus disertai bukti !
+    </div>
 
     <br>
     <input name="submit" type="submit" id="btnSubmit" class="btn btn-primary" value="SUBMIT"> 
     <br>
     <br>
   </form>
-
 </div>
 </body>
 </html>
@@ -202,10 +204,18 @@ session_start();
 
         $('#btnSubmit').click(function () {
           var nominal = document.getElementById('numeric').value
-          var value_1 = nominal.replace('.','');
+          var value_1 = nominal.replace(/\./g,'');
           var value = value_1;
+
+          var e = document.getElementById("jenis");
+          var str = e.options[e.selectedIndex].value;
+
           if(document.getElementById("fotobukti").files.length == 0 && value >= 70000){
             $('#myAlert').show('fade');
+            return false;
+          } else if(document.getElementById("fotobukti").files.length == 0 && str == "TR-05"){
+            $('#myAlertTrans').show('fade');
+            return false;
           }
         });
 
@@ -213,7 +223,10 @@ session_start();
             $('#myAlert').hide('fade');
         });
 
+         $('#linkCloseTrans').click(function () {
+            $('#myAlertTrans').hide('fade');
+        });
+
     });
-</script>
 </script>
 

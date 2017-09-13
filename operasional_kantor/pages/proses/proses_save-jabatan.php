@@ -17,7 +17,7 @@
 	$id = $_POST['id_jabatan'];
 	$jabatan = $_POST['jabatan'];
 	$nominal= $_POST['gaji'];
-	$gaji = str_replace(',', '', $nominal);
+	$gaji = str_replace('.', '', $nominal);
 	//query untuk memasukan ke database
 	$query = "INSERT INTO tb_jabatan (id_jabatan, jabatan, gaji) VALUES ('$id', '$jabatan','$gaji')";
 	$insert = mysqli_query($koneksi, $query);

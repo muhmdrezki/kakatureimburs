@@ -1,6 +1,11 @@
+<html>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+</html>
 <?php
 	error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	session_start();
+	date_default_timezone_set("Asia/Jakarta");
 	$nama = $_SESSION["nama"];
 	if($_SESSION["nama"]==''){
 		?>
@@ -15,14 +20,31 @@
 
      $tgl_new_format = date("Y-m-d H:i:s");
 
+     $tgl_now = date("d-m-Y", strtotime($tgl_new_format));
+	 $dayname = date('l', strtotime($tgl_now));
+
+								  if($dayname =="Monday"){
+							      	$hari = "Senin";
+							      } else if($dayname == "Tuesday"){
+							      	$hari = "Selasa";
+							      } else if ($dayname == "Wednesday"){
+							      	$hari = "Rabu";
+							      } else if ($dayname == "Thursday"){
+							      	$hari = "Kamis";
+							      } else if ($dayname == "Friday"){
+							      	$hari = "Jumat";
+							      } else if($dayname == "Saturday"){
+							      	$hari = "Sabtu";
+							      } else if($dayname == "Sunday"){
+							      	$hari = "Minggu";
+							      }
+
 	//mengambil nilai dari form
 	$id = $_POST['id_pembayaran'];
 	$id_anggota = $_POST['id_anggota'];
 	$jenis = $_POST['jenis'];
 	$jumlah = $_POST['nominal'];
-	$decimal = str_replace(',','',$jumlah);
-	$repRp = str_replace('Rp ','',$decimal);
-	$nominal = str_replace('.00','',$repRp);
+	$nominal= str_replace('.','',$jumlah);
 	$keterangan = $_POST['keterangan'];
 
 	//query untuk memasukan ke database
@@ -94,7 +116,53 @@
 	mysqli_query($koneksi,$sql_c);
 
 	?>
-	<script> alert("Pembayaran Berhasil"); document.location.href="../../index.php?sidebar-menu=list_bayar&action=tampil" </script> 
+	<script> alert("Pembayaran Berhasil");  </script> 
+	<!-- JS dependencies -->
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- bootbox code -->
+    <script src="../../bootbox.min.js"></script>
+    <?php 
+    	$sqljenis = "SELECT jenis FROM tb_jenistransaksi WHERE id_jenis = '$jenis'";
+    	$resjenis = mysqli_query($koneksi,$sqljenis);
+    	$value_jenis = mysqli_fetch_assoc($resjenis);
+    	$namajenis = $value_jenis['jenis'];
+    ?>
+     <script>
+    var wa_admin_anggota = "whatsapp://send?text=Uang <?php echo $namajenis?> dengan ID Pembayaran <?php echo $id ?>, pada hari <?php echo $hari.", ".$tgl_now?>. Sebesar Rp.<?php echo $jumlah ?> sudah di Transfer ke Rekening Bank Anda, silahkan di cek";
+    var wa_anggota_admin = "whatsapp://send?text=Saya baru saja <?php echo $namajenis ?> dengan ID Pembayaran <?php echo $id ?> , pada hari <?php echo $hari.", ".$tgl_now?>. Sebesar Rp.<?php echo $jumlah?>. Mohon segera di Reimburse";
+    var jabatan_share = <?php $_SESSION["jabatan"]?>
+
+      bootbox.confirm({
+            message: "<?php echo '<h4>' ?>Pembayaran Berhasil Dilakukan, Email Konfirmasi Sudah Terkirim. <?php echo '<br><br>' ?> Anda bisa mengingatkan Admin lewat share Whatsapp (<b>Khusus jika anda sedang menggunakan Smartphone, jika anda menggunakan PC/Desktop pilih 'NANTI'</b>). <?php echo '</h4><br><h3>' ?>  Share Sekarang? <?php echo '</h3>'?>",
+            buttons: {
+                confirm: {
+                    label: 'SHARE',
+                    className: 'btn-success btn-sm'
+
+                },
+                cancel: {
+                    label: 'NANTI',
+                    className: 'btn-danger btn-sm'
+                }
+            },
+    callback: function (result) {
+        console.log('This was logged in the callback: ' + result)
+        if (result){
+        	window.location=wa_anggota_admin
+        		bootbox.alert({ 
+			  size: "small",
+			  message: "<?php echo '<h4>' ?>Anda bisa Share lagi melalui Button Share yang tersedia di Form Detail Pembayaran <?php echo '</h4><br>' ?><?php echo '<h4>' ?>Klik Ok, Untuk kembali ke menu Pembayaran<?php echo '</h4>'?>", 
+			  callback: function(){window.location="../../index.php?sidebar-menu=list_bayar&action=tampil" }
+			})
+    	} else {
+    	window.location="../../index.php?sidebar-menu=list_bayar&action=tampil"
+    	}
+    }
+});
+
+    </script>
 	<?php
 
     } else {
@@ -104,6 +172,50 @@
 	mysqli_query($koneksi,$sql_c);    
 
 	?>
-	<script> alert("Pembayaran Berhasil"); document.location.href="../../index.php?sidebar-menu=list_bayar&action=tampil" </script> 
+	<script> alert("Pembayaran Berhasil");  </script> 
+	<!-- JS dependencies -->
+    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<?php 
+    	$sqljenis = "SELECT jenis FROM tb_jenistransaksi WHERE id_jenis = '$jenis'";
+    	$resjenis = mysqli_query($koneksi,$sqljenis);
+    	$value_jenis = mysqli_fetch_assoc($resjenis);
+    	$namajenis = $value_jenis['jenis'];
+    ?>
+    <!-- bootbox code -->
+    <script src="../../bootbox.min.js"></script>
+    <script>
+    var wa_admin_anggota = "whatsapp://send?text=Uang <?php echo $namajenis?> dengan ID Pembayaran <?php echo $id ?>, pada hari <?php echo $hari.", ".$tgl_now?>. Sebesar Rp.<?php echo $jumlah ?> sudah di Transfer ke Rekening Bank Anda, silahkan di cek";
+    var wa_anggota_admin = "whatsapp://send?text=Saya baru saja <?php echo $namajenis ?> dengan ID Pembayaran <?php echo $id_pembayaran ?> , pada hari <?php echo $hari.", ".$tgl_now?>. Sebesar Rp.<?php echo $jumlah?>. Mohon segera di Reimburse";
+    var jabatan_share = <?php $_SESSION["jabatan"]?>
+
+      bootbox.confirm({
+            message: "<?php echo '<h4>' ?>Pembayaran Berhasil Dilakukan, Email Konfirmasi Sudah Terkirim. <?php echo '<br><br>' ?> Anda bisa mengingatkan Admin lewat share Whatsapp (<b>Khusus jika anda sedang menggunakan Smartphone, jika anda menggunakan PC/Desktop pilih 'NANTI'</b>). <?php echo '</h4><br><h3>' ?>  Share Sekarang? <?php echo '</h3>'?>",
+            buttons: {
+                confirm: {
+                    label: 'SHARE',
+                    className: 'btn-success btn-sm'
+
+                },
+                cancel: {
+                    label: 'NANTI',
+                    className: 'btn-danger btn-sm'
+                }
+            },
+    callback: function (result) {
+        console.log('This was logged in the callback: ' + result)
+        if (result){
+        	window.location=wa_anggota_admin
+        		bootbox.alert({ 
+			  size: "small",
+			  message: "<?php echo '<h4>' ?>Anda bisa Share lagi melalui Button Share yang tersedia di Form Detail Pembayaran <?php echo '</h4><br>' ?><?php echo '<h4>' ?>Klik Ok, Untuk kembali ke menu Pembayaran<?php echo '</h4>'?>", 
+			  callback: function(){window.location="../../index.php?sidebar-menu=list_bayar&action=tampil" }
+			})
+    	} else {
+    	window.location="../../index.php?sidebar-menu=list_bayar&action=tampil"
+    	}
     }
+});
+
+    </script>
 <?php } ?>

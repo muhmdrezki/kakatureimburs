@@ -6,6 +6,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <?php 
   session_start();
   error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+  date_default_timezone_set("Asia/Jakarta");
   $_SESSION["nama"];
   $_SESSION["id_pegawai"];
   
@@ -38,7 +39,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Overlay CSS -->
   <link rel="stylesheet" href="dist/css/overlay.css">
   <!-- Animate CSS -->
-  <link rel="stylesheet" href="dist/css/Animate.css">
+  <link rel="stylesheet" href="dist/css/animate.css">
   <!-- Image Prev CSS -->
   <link rel="stylesheet" href="dist/css/img-prev.css">
   <!-- Morris charts -->
@@ -344,7 +345,7 @@ desired effect
        
         } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_bayar") && (($_GET['action']=="tampil"))){
           
-          include "pages/datalist/Pembayaran.php";
+          include "pages/datalist/pembayaran.php";
         
         } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="form_anggota") && (($_GET['action']=="tampil"))) {
           
@@ -398,7 +399,7 @@ desired effect
 <!-- Select2 -->
 <script src="bower_components/select2/dist/js/select2.full.min.js"></script>
 <!-- ChartJS -->
-<script src="bower_components/Chart.js/Chart.js"></script>
+<script src="bower_components/chart.js/Chart.js"></script>
 <!-- InputMask -->
 <script src="plugins/input-mask/jquery.inputmask.js"></script>
 <script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
@@ -499,6 +500,7 @@ $(function() {
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
+      'scrollX'     : true,
       'info'        : true,
       'autoWidth'   : false
     })
@@ -509,6 +511,7 @@ $(function() {
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
+      'scrollX'     : true,
       'autoWidth'   : false
     })
 
@@ -518,6 +521,7 @@ $(function() {
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
+      'scrollX'     : true,
       'autoWidth'   : false
     })
 
@@ -525,105 +529,7 @@ $(function() {
     </script>
 
 <script type="text/javascript">
-
-      <?php
-
-      $tgl_now = date("d-m-Y"); 
-      $year = date('Y', strtotime($tgl_now));
-
-      $sql = sprintf("SELECT tb_jenistransaksi.jenis, COUNT(tb_pembayaran.id_jenis) as 'jumlah transaksi' FROM tb_pembayaran JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis=tb_jenistransaksi.id_jenis WHERE YEAR(tb_pembayaran.tanggal) = '$year' GROUP BY tb_pembayaran.id_jenis");
-      $res = $koneksi -> query($sql);
-
-      $sql_grafik = sprintf("SELECT MONTHNAME(`tanggal`) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `status` = '2' AND YEAR(`tanggal`) = '$year' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");
-      $hasil = $koneksi->query($sql_grafik);
-
-              if (!$hasil) {
-              printf("Error: %s\n", mysqli_error($koneksi));
-              exit();
-              }
-
-              $total = 0;
-
-         foreach ($hasil as $row_hasil) {
-          $total += 1;
-          $data[] = $row_hasil;
-         }
-      ?>
-
-      $(document).ready(function () {
-       var areaChartData = {
-      labels  : [
-                <?php
-                foreach ($data as $key => $row_hasil):
-                ?>
-                  '<?php echo $row_hasil["Bulan"] ?>'<?= ($key == ($total - 1)) ? '' : ','?>
-                <?php
-                endforeach;
-                ?>
-                ],
-      datasets: [
-        {
-          label               : 'Total',
-          fillColor           : 'rgba(60,141,188,0.9)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [
-               100000, 200000
-          ]
-        }
-      ]
-
-    }
-
-      //-------------
-    //- BAR CHART -
-    //---------------
-    var element = $('#barChart').get(0);
-    if(element == null){
-       return false;
-    } 
-    var barChartCanvas                   = element.getContext('2d');
-    var barChart                         = new Chart(barChartCanvas);
-    var barChartData                     = areaChartData
-    var barChartOptions                  = {
-      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-      scaleBeginAtZero        : true,
-      //Boolean - Whether grid lines are shown across the chart
-      scaleShowGridLines      : true,
-      //String - Colour of the grid lines
-      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-      //Number - Width of the grid lines
-      scaleGridLineWidth      : 1,
-      //Boolean - Whether to show horizontal lines (except X axis)
-      scaleShowHorizontalLines: true,
-      //Boolean - Whether to show vertical lines (except Y axis)
-      scaleShowVerticalLines  : true,
-      //Boolean - If there is a stroke on each bar
-      barShowStroke           : true,
-      //Number - Pixel width of the bar stroke
-      barStrokeWidth          : 2,
-      //Number - Spacing between each of the X value sets
-      barValueSpacing         : 5,
-      //Number - Spacing between data sets within X values
-      barDatasetSpacing       : 1,
-      //String - A legend template
-      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-      //Boolean - whether to make the chart responsive
-      responsive              : true,
-      maintainAspectRatio     : true
-    }
-
-    barChartOptions.datasetFill = false
-    barChart.Bar(barChartData, barChartOptions)
-
- });
-
- <?php 
-//index.php
-
+<?php 
       $tgl_now = date("d-m-Y"); 
       $year = date('Y', strtotime($tgl_now));
 
@@ -645,8 +551,12 @@ $(function() {
 
  $(function () {
 //BAR CHART
+elements = 'bar-chart';
+    if(elements === null ){
+      return false;
+    }
     var bar = new Morris.Bar({
-      element: 'bar-chart',
+      element: elements,
       resize: true,
       data: [ <?php echo $chart_data ?>
       ],
@@ -667,7 +577,7 @@ $(function() {
   $tgl_now = date("d-m-Y"); 
   $month = date('F', strtotime($tgl_now));
 
-  $sql_grafik_jenis = "SELECT tb_jenistransaksi.jenis, COUNT(tb_pembayaran.id_jenis) as 'jumlah' FROM tb_pembayaran JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis=tb_jenistransaksi.id_jenis WHERE MONTHNAME(tb_pembayaran.tanggal) = 'august' GROUP BY tb_pembayaran.id_jenis";
+  $sql_grafik_jenis = "SELECT tb_jenistransaksi.jenis, COUNT(tb_pembayaran.id_jenis) as 'jumlah' FROM tb_pembayaran JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis=tb_jenistransaksi.id_jenis WHERE MONTHNAME(tb_pembayaran.tanggal) = '$month' GROUP BY tb_pembayaran.id_jenis";
         
         $res_donut = mysqli_query($koneksi, $sql_grafik_jenis);
 
@@ -685,8 +595,12 @@ $(function() {
 
   $(function () {
      //DONUT CHART
+     elements1 = 'sales-chart';
+     if(elements1 === null){
+      return false;
+     }
     var donut = new Morris.Donut({
-      element: 'sales-chart',
+      element: elements1,
       resize: true,
       colors: ["#3c8dbc", "#f56954", "#00a65a","#DAA520","#ADEAEA","#3D1D49"],
         data: <?php echo $data; ?>,

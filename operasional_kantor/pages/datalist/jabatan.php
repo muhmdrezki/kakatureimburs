@@ -1,5 +1,6 @@
       <?php 
         $id_jabatan = mt_rand(100,999);
+        date_default_timezone_set("Asia/Jakarta");
       ?>
 
 <section id="form_jabatan-jenis" style="margin: 0 auto;">
@@ -48,7 +49,7 @@
            $result = mysqli_query($koneksi, $query);  
         ?>
         <h3> LIST JABATAN </h3>
-            <div class="table-responsive">  
+            <div>  
                <table class="table" id="example">
                <thead>
                   <tr>  

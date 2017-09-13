@@ -24,9 +24,9 @@
 	$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 	$mail->SMTPAuth = true;                               // Enable SMTP authentication
 	$mail->Username = 'operasionalkantorkp@gmail.com';    // SMTP username
-	$mail->Password = 'kiwikiwi';                         // SMTP password
-	$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-	$mail->Port = 587;                                    // TCP port to connect to
+	$mail->Password = 'kiwikiwi12';                         // SMTP password
+	$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->Port = 465;                                    // TCP port to connect to
 
 	$mail->setFrom('operasionalkantorkp@gmail.com','Admin');
 
@@ -45,6 +45,7 @@
 	$mail->isHTML(true);                                  // Set email format to HTML
 
 	$jml_uang = number_format($value[nominal]);
+	date_default_timezone_set("Asia/Jakarta");
 
 	  $date = date('d-m-Y', strtotime($value[tanggal]));
       $dayname = date('l', strtotime($value[tanggal]));
