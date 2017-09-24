@@ -5,7 +5,7 @@ include "../../con_db.php";
       $id = $_POST["id_jabatan"];
       $jabatan = $_POST["jabatan"];  
       $nominal= $_POST['gaji'];
-      $nominal1 = str_replace(',', '', $nominal);
+      $nominal1 = str_replace('.', '', $nominal);
       $gaji = str_replace('Rp ', '', $nominal1);
 
            $query = "UPDATE tb_jabatan SET jabatan='$jabatan', gaji='$gaji' WHERE id_jabatan='$id'";   

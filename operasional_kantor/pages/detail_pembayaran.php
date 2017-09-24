@@ -16,7 +16,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 		  include "../con_db.php";
 		  session_start();
 		  date_default_timezone_set("Asia/Jakarta");
-   		  $tgl_now = date("d-m-Y H:i:s"); 
+   		  $tgl_now = date("d-m-Y"); 
 		  $day = date('j', strtotime($tgl_now));
 		  $month = date('F', strtotime($tgl_now));
 		  $year = date('Y', strtotime($tgl_now));
@@ -40,7 +40,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	?>
 		<body>
 				<div>
-					<h2 class="pull-right"> <?php echo $day." - ".$month." - ".$year."-".$tgl_now; ?> </h2>
+					<h2 class="pull-right"> <?php echo $day." - ".$month." - ".$year; ?> </h2>
 					<hr>
 					<br>
 					  <h2>FORM PEMBAYARAN</h2> 
