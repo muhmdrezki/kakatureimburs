@@ -6,9 +6,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <?php 
   session_start();
   error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-  date_default_timezone_set("Asia/Jakarta");
   $_SESSION["nama"];
-  $_SESSION["id_pegawai"];
+  $_SESSION["id_anggota"];
   
   if($_SESSION["nama"]==''){
     ?>
@@ -19,10 +18,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <?php
   } 
 ?>
+
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,initial-scale=1.0, user-scalable=no">
   <title> Kinest Kreatif Ideata </title>
   
   <!-- Tell the browser to be responsive to screen width -->
@@ -57,7 +57,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
   <link rel="stylesheet" href="dist/css/profile.css">
-
+<!-- fullCalendar -->
+  <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.min.css">
+  <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -68,6 +70,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <style>
+  *{
+    /**border:1px dotted red;**/
+  }
+  </style>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -119,7 +126,16 @@ desired effect
         $result1=mysqli_query($koneksi, $sql1);
         $values1=mysqli_fetch_assoc($result1);
         $id_anggota = $values1['id_anggota'];  
-
+		    $sql2 = "SELECT total_credit FROM tb_credits_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
+        $result2=mysqli_query($koneksi, $sql2);
+        $values2=mysqli_fetch_assoc($result2);
+        $jumlah2= $values2['total_credit'];
+        $sql3 = "SELECT cuti_used,cuti_qty FROM tb_cuti_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
+        $result3=mysqli_query($koneksi, $sql3);
+        $values3=mysqli_fetch_assoc($result3);
+        $jumlah3= $values3['cuti_qty'] - $values3['cuti_used'];
+        $_SESSION['sisacuti']=$jumlah3;
+        $id_anggota = $values1['id_anggota']; 
         if($one == 'Admin'){
 
         $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_pembayaran` WHERE `status`= '0'";
@@ -147,6 +163,8 @@ desired effect
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Notifications Menu -->
+          <li ><a  style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;display:block;" href="#"><p style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;font-size:9px;">Sisa Cuti</p><p style="padding-top: 0px;padding-bottom: 0px;text-align: center;"><span class="label label-default"><?php echo $jumlah3?> hari</span></p></a></li>
+		      <li ><a  style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;display:block;" href="#"><p style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;font-size:9px;">Credit Anda</p><p style="padding-top: 0px;padding-bottom: 0px;"><span class="label label-default"><?php echo "Rp".number_format($jumlah2)?></span></p></a></li>
           <li class="dropdown notifications-menu">
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -269,7 +287,17 @@ desired effect
         </li>
         <li><a href="index.php?sidebar-menu=list_bayar&action=tampil"><i class='glyphicon glyphicon-usd'></i><span>Pembayaran</span></a></li>
         </li>
-        <li><a id="menu_absen" href="index.php?sidebar-menu=data_absen&action=tampil"><i class='fa fa-book'></i><span>Absensi</span></a></li>
+		<li id="menu_absen" class="treeview">
+          <a href="#">
+            <i class="fa fa-book"></i> <span>Absensi</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="index.php?sidebar-menu=form_absensi&action=tampil"><i class="glyphicon glyphicon-user"></i><span> Form Absensi</span></a>
+            <li><a href="index.php?sidebar-menu=list_data_absensi&action=tampil"><i class="fa fa-black-tie"></i> Data Absensi </a></li>
+          </ul>
         </li>
         <li id="menu_master" class="treeview">
           <a href="#">
@@ -281,7 +309,12 @@ desired effect
           <ul class="treeview-menu">
             <li><a href="index.php?sidebar-menu=anggota&action=tampil"><i class="glyphicon glyphicon-user"></i><span> Data Anggota</span></a>
             <li><a href="index.php?sidebar-menu=list_jabatan&action=tampil"><i class="fa fa-black-tie"></i> Data Jabatan </a></li>
-            <li><a href="index.php?sidebar-menu=list_jenis-pembayaran&action=tampil"><i class="fa fa-money"></i> Jenis Pembayaran </a></li>
+            <li><a href="index.php?sidebar-menu=list_jenis-pembayaran&action=tampil"><i class="fa fa-cc-visa"></i> Jenis Pembayaran </a></li>
+			      <li><a href="index.php?sidebar-menu=list_data_absensi_admin&action=tampil"><i class="fa fa-book"></i> Data Absensi </a></li>
+			      <li><a href="index.php?sidebar-menu=list_data_credits&action=tampil"><i class="fa fa-money"></i> Data Credits </a></li>
+            <li><a href="index.php?sidebar-menu=list_data_libur&action=tampil"><i class="fa fa-calendar"></i> Data Libur Nasional</a></li>
+            <li><a href="index.php?sidebar-menu=list_data_cuti&action=tampil"><i class="fa fa-files-o"></i> Data Quota Cuti </a></li>
+            <li><a href="index.php?sidebar-menu=list_data_rekap&action=tampil"><i class="fa fa-table"></i> Data Rekap Absen </a></li>
           </ul>
         </li>
       </ul>
@@ -295,7 +328,7 @@ desired effect
           if($one != "Admin"){
             ?>
               <script type="text/javascript">
-                  document.getElementById('menu_absen').style.display="none";
+                  //document.getElementById('menu_absen').style.display="none";
                   document.getElementById('menu_master').style.display="none";
               </script>
             <?php 
@@ -345,7 +378,7 @@ desired effect
        
         } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_bayar") && (($_GET['action']=="tampil"))){
           
-          include "pages/datalist/pembayaran.php";
+          include "pages/datalist/Pembayaran.php";
         
         } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="form_anggota") && (($_GET['action']=="tampil"))) {
           
@@ -371,11 +404,28 @@ desired effect
         
           include "pages/datalist/jenis_pembayaran.php";
 
-        } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="data_absen") && (($_GET['action']=="tampil"))) {
+        } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_data_absensi_admin") && (($_GET['action']=="tampil"))) {
         
-          include "pages/datalist/data_absen.php";
-
-        }
+          include "pages/datalist/data_absen_admin.php";
+		  
+		} else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_data_absensi") && (($_GET['action']=="tampil"))) {
+        
+          include "pages/datalist/data_absen.php"; 
+		  
+        } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="form_absensi") && (($_GET['action']=="tampil"))) {
+          
+          include "pages/forms/form_submit-absensi.php";
+		  
+		}  else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_data_credits") && (($_GET['action']=="tampil"))) {
+          
+          include "pages/datalist/credits.php";
+		} else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_data_cuti") && (($_GET['action']=="tampil"))) {
+      
+      include "pages/datalist/cuti.php";
+    } else if((isset($_GET['sidebar-menu'])) && ($_GET['sidebar-menu']=="list_data_libur") && (($_GET['action']=="tampil"))) {
+      
+      include "pages/datalist/tgllibur.php";
+    }
   ?>
 
     </section>
@@ -425,7 +475,136 @@ desired effect
 <script src="inputmask/jquery.number.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 <script src="inputmask-jquery/dist/jquery.maskMoney.js" type="text/javascript"></script>
+<!-- Google Maps API With API KEY -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn0sCC7HGqbJbWhwkgJnvyWFiTa7QGtVI"></script> 
+<!-- fullCalendar -->
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
 
+    /* initialize the external events
+     -----------------------------------------------------------------*/
+    function init_events(ele) {
+      ele.each(function () {
+
+        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+        // it doesn't need to have a start or end
+        var eventObject = {
+          title: $.trim($(this).text()) // use the element's text as the event title
+        }
+
+        // store the Event Object in the DOM element so we can get to it later
+        $(this).data('eventObject', eventObject)
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+          zIndex        : 1070,
+          revert        : true, // will cause the event to go back to its
+          revertDuration: 0  //  original position after the drag
+        })
+
+      })
+    }
+
+    init_events($('#external-events div.external-event'))
+
+    /* initialize the calendar
+     -----------------------------------------------------------------*/
+    //Date for the calendar events (dummy data)
+    var date = new Date()
+    var d    = date.getDate(),
+        m    = date.getMonth(),
+        y    = date.getFullYear()
+    $('#calendar').fullCalendar({
+      header    : {
+        left  : 'prev,next today',
+        center: 'title',
+        right : 'month,agendaDay,listMonth'
+      },
+      buttonText: {
+        today: 'Hari Ini',
+        month: 'Bulan',
+        day  : 'Hari',
+        list : 'List'
+      },
+      //Random default events
+      events    : "http://localhost/WEB/kakatureimburs/operasional_kantor2/pages/fetchdata/fetch_data_calendar-absen.php",
+      eventLimit: true,
+      editable  : true,
+      droppable : true, // this allows things to be dropped onto the calendar !!!
+      drop      : function (date, allDay) { // this function is called when something is dropped
+
+        // retrieve the dropped element's stored Event Object
+        var originalEventObject = $(this).data('eventObject')
+
+        // we need to copy it, so that multiple events don't have a reference to the same object
+        var copiedEventObject = $.extend({}, originalEventObject)
+
+        // assign it the date that was reported
+        copiedEventObject.start           = date
+        copiedEventObject.allDay          = allDay
+        copiedEventObject.backgroundColor = $(this).css('background-color')
+        copiedEventObject.borderColor     = $(this).css('border-color')
+
+        // render the event on the calendar
+        // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true)
+
+        // is the "remove after drop" checkbox checked?
+        if ($('#drop-remove').is(':checked')) {
+          // if so, remove the element from the "Draggable Events" list
+          $(this).remove()
+        }
+
+      },
+      eventClick: function(calEvent, jsEvent, view) {
+
+        alert('Event: ' + calEvent.title);
+        // change the border color just for fun
+        $(this).css('border-color', 'red');
+
+    }
+    })
+
+    /* ADDING EVENTS */
+    var currColor = '#3c8dbc' //Red by default
+    //Color chooser button
+    var colorChooser = $('#color-chooser-btn')
+    $('#color-chooser > li > a').click(function (e) {
+      e.preventDefault()
+      //Save color
+      currColor = $(this).css('color')
+      //Add color effect to button
+      $('#add-new-event').css({ 'background-color': currColor, 'border-color': currColor })
+    })
+    $('#add-new-event').click(function (e) {
+      e.preventDefault()
+      //Get value and make sure it is not null
+      var val = $('#new-event').val()
+      if (val.length == 0) {
+        return
+      }
+
+      //Create events
+      var event = $('<div />')
+      event.css({
+        'background-color': currColor,
+        'border-color'    : currColor,
+        'color'           : '#fff'
+      }).addClass('external-event')
+      event.html(val)
+      $('#external-events').prepend(event)
+
+      //Add draggable funtionality
+      init_events(event)
+
+      //Remove event from text input
+      $('#new-event').val('')
+    })
+  })
+</script>
 <script>
   $.validate({
      modules : 'file'
@@ -457,9 +636,114 @@ $(function() {
         $('[data-mask]').inputmask()
 
      //Date range picker
-    $('#reservation').daterangepicker()   
+    $('#tglRentangAbsenAdmin').daterangepicker({drops: 'up'})
+    $('#tglRentangAbsenAdmin').on('apply.daterangepicker', function(ev, picker) {
+      var start= picker.startDate.format('MM/DD/YYYY');
+      var end = picker.endDate.format('MM/DD/YYYY');
+      var date1 = new Date(start);
+      var date2 = new Date(end);
+      var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))+1; 
+      var sisacuti= <?php echo $_SESSION["sisacuti"] ?>;
+      var today= new Date();
+      var timeDiff2 = date1.getTime() - today.getTime();
+      var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
+      //var tglskrg = (today.getMonth()+1) + '/' + today.getDate() + '/' + today.getFullYear();
+      var status=$("#status_id_adminEdit").val();
+      //console.log(status);
+      var validate = diffDays>sisacuti;
+      if (diffDays2<0) {
+          alert("Tidak boleh memilih tanggal yang telah lewat");
+          $('#tglRentangCuti').val('');
+      } else {
+        if (diffDays>sisacuti && status=="5") {
+          alert("Total hari tidak boleh melebihi jatah cuti");
+          $('#tglRentangCuti').val('');
+        }
+      }
+    })
+
+    $('#tglRentangLibur').daterangepicker({drops: 'up'}) 
+    $('#tglRentangLibur').on('apply.daterangepicker', function(ev, picker) {
+      var start= picker.startDate.format('MM/DD/YYYY');
+      var end = picker.endDate.format('MM/DD/YYYY');
+      var date1 = new Date(start);
+      var date2 = new Date(end);
+      var today= new Date();
+      var timeDiff2 = date1.getTime() - today.getTime();
+      var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
+      if (diffDays2<0) {
+          alert("Tidak boleh memilih tanggal yang telah lewat");
+          $('#tglRentangLibur').val('');
+      }
+    })
+    $('#tglRentangLiburEdit').daterangepicker() 
+    $('#tglRentangLiburEdit').on('apply.daterangepicker', function(ev, picker) {
+      var start= picker.startDate.format('MM/DD/YYYY');
+      var end = picker.endDate.format('MM/DD/YYYY');
+      var date1 = new Date(start);
+      var date2 = new Date(end);
+      var today= new Date();
+      var timeDiff2 = date1.getTime() - today.getTime();
+      var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
+      if (diffDays2<0) {
+          alert("Tidak boleh memilih tanggal yang telah lewat");
+          $('#tglRentangLiburEdit').val('');
+      }
+    })
+    $('#tglRentangCuti').daterangepicker() 
+    $('#tglRentangCuti').on('apply.daterangepicker', function(ev, picker) {
+      var start= picker.startDate.format('MM/DD/YYYY');
+      var end = picker.endDate.format('MM/DD/YYYY');
+      var date1 = new Date(start);
+      var date2 = new Date(end);
+      var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))+1; 
+      var sisacuti= <?php echo $_SESSION["sisacuti"] ?>;
+      var today= new Date();
+      var timeDiff2 = date1.getTime() - today.getTime();
+      var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
+      //var tglskrg = (today.getMonth()+1) + '/' + today.getDate() + '/' + today.getFullYear();
+      if (diffDays2<0) {
+          alert("Tidak boleh memilih tanggal yang telah lewat");
+          $('#tglRentangCuti').val('');
+      } else {
+        if (diffDays>sisacuti) {
+          alert("Total hari tidak boleh melebihi jatah cuti");
+          $('#tglRentangCuti').val('');
+        }
+      }
+    })
+    $('#tglRentangIzin').daterangepicker({drops: 'up'})
+    $('#tglRentangIzin').on('apply.daterangepicker', function(ev, picker) {
+      var start= picker.startDate.format('MM/DD/YYYY');
+      var end = picker.endDate.format('MM/DD/YYYY');
+      var date1 = new Date(start);
+      var date2 = new Date(end);
+      var today= new Date();
+      var timeDiff2 = date1.getTime() - today.getTime();
+      var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
+      if (diffDays2<0) {
+          alert("Tidak boleh memilih tanggal yang telah lewat");
+          $('#tglRentangIzin').val('');
+      }
+    })
+    $('#tglRentangSakit').daterangepicker({drops: 'up'}) 
+    $('#tglRentangSakit').on('apply.daterangepicker', function(ev, picker) {
+      var start= picker.startDate.format('MM/DD/YYYY');
+      var end = picker.endDate.format('MM/DD/YYYY');
+      var date1 = new Date(start);
+      var date2 = new Date(end);
+      var today= new Date();
+      var timeDiff2 = date1.getTime() - today.getTime();
+      var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
+      if (diffDays2<0) {
+          alert("Tidak boleh memilih tanggal yang telah lewat");
+          $('#tglRentangSakit').val('');
+      }
+    })
     //Date range picker with time picker
-    $('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'Y-m-d H:i:a' })
+    $('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'Y-m-d H:i:a',drops: 'up' })
     //Date range as a button
     $('#daterange-btn').daterangepicker(
       {
@@ -494,24 +778,49 @@ $(function() {
     $('#end_date').datepicker({
       autoclose: true
     })
-
+    //Konfigurasi Tabel
     $('#example').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
-      'scrollX'     : true,
       'info'        : true,
-      'autoWidth'   : false
+      'autoWidth'   : false,
+      "order": [[ 1, "desc" ]]
     })
-
+    $('#data_credits').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false,
+      "order": [[ 1, "desc" ]]
+    })
+    $('#data_absen_admin').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false,
+      "order": [[ 0, "desc" ]]
+    })
+    $('#data_absen').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false,
+      "order": [[ 0, "desc" ]]
+    })
     $('#example1').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'scrollX'     : true,
       'autoWidth'   : false
     })
 
@@ -521,7 +830,6 @@ $(function() {
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'scrollX'     : true,
       'autoWidth'   : false
     })
 
@@ -529,8 +837,106 @@ $(function() {
     </script>
 
 <script type="text/javascript">
-<?php 
+
+      <?php
+	     date_default_timezone_set('Asia/Jakarta');
       $tgl_now = date("d-m-Y"); 
+      $year = date('Y', strtotime($tgl_now));
+
+      $sql = sprintf("SELECT tb_jenistransaksi.jenis, COUNT(tb_pembayaran.id_jenis) as 'jumlah transaksi' FROM tb_pembayaran JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis=tb_jenistransaksi.id_jenis WHERE YEAR(tb_pembayaran.tanggal) = '$year' GROUP BY tb_pembayaran.id_jenis");
+      $res = $koneksi -> query($sql);
+
+      $sql_grafik = sprintf("SELECT MONTHNAME(`tanggal`) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `status` = '2' AND YEAR(`tanggal`) = '$year' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");
+      $hasil = $koneksi->query($sql_grafik);
+
+              if (!$hasil) {
+              printf("Error: %s\n", mysqli_error($koneksi));
+              exit();
+              }
+
+              $total = 0;
+
+         foreach ($hasil as $row_hasil) {
+          $total += 1;
+          $data[] = $row_hasil;
+         }
+      ?>
+
+      $(document).ready(function () {
+       var areaChartData = {
+      labels  : [
+                <?php
+                foreach ($data as $key => $row_hasil):
+                ?>
+                  '<?php echo $row_hasil["Bulan"] ?>'<?= ($key == ($total - 1)) ? '' : ','?>
+                <?php
+                endforeach;
+                ?>
+                ],
+      datasets: [
+        {
+          label               : 'Total',
+          fillColor           : 'rgba(60,141,188,0.9)',
+          strokeColor         : 'rgba(60,141,188,0.8)',
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [
+               100000, 200000
+          ]
+        }
+      ]
+
+    }
+
+      //-------------
+    //- BAR CHART -
+    //---------------
+    var element = $('#barChart').get(0);
+    if(element == null){
+       return false;
+    } 
+    var barChartCanvas                   = element.getContext('2d');
+    var barChart                         = new Chart(barChartCanvas);
+    var barChartData                     = areaChartData
+    var barChartOptions                  = {
+      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero        : true,
+      //Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines      : true,
+      //String - Colour of the grid lines
+      scaleGridLineColor      : 'rgba(0,0,0,.05)',
+      //Number - Width of the grid lines
+      scaleGridLineWidth      : 1,
+      //Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: true,
+      //Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines  : true,
+      //Boolean - If there is a stroke on each bar
+      barShowStroke           : true,
+      //Number - Pixel width of the bar stroke
+      barStrokeWidth          : 2,
+      //Number - Spacing between each of the X value sets
+      barValueSpacing         : 5,
+      //Number - Spacing between data sets within X values
+      barDatasetSpacing       : 1,
+      //String - A legend template
+      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+      //Boolean - whether to make the chart responsive
+      responsive              : true,
+      maintainAspectRatio     : true
+    }
+
+    barChartOptions.datasetFill = false
+    barChart.Bar(barChartData, barChartOptions)
+
+ });
+
+ <?php 
+//index.php
+	  date_default_timezone_set('Asia/Jakarta');	
+      $tgl_now = date("d-m-Y");
       $year = date('Y', strtotime($tgl_now));
 
       $sql_grafik = sprintf("SELECT MONTHNAME(`tanggal`) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `status` = '2' AND YEAR(`tanggal`) = '$year' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");
@@ -551,12 +957,8 @@ $(function() {
 
  $(function () {
 //BAR CHART
-elements = 'bar-chart';
-    if(elements === null ){
-      return false;
-    }
     var bar = new Morris.Bar({
-      element: elements,
+      element: 'bar-chart',
       resize: true,
       data: [ <?php echo $chart_data ?>
       ],
@@ -568,12 +970,11 @@ elements = 'bar-chart';
     });
  });   
 
-
 </script>
 
-<script type="text/javascript">
-<?php
 
+<?php
+  date_default_timezone_set('Asia/Jakarta');
   $tgl_now = date("d-m-Y"); 
   $month = date('F', strtotime($tgl_now));
 
@@ -592,15 +993,11 @@ elements = 'bar-chart';
           }
           $data = json_encode($data);
 ?>
-
+<script type="text/javascript">
   $(function () {
      //DONUT CHART
-     elements1 = 'sales-chart';
-     if(elements1 === null){
-      return false;
-     }
     var donut = new Morris.Donut({
-      element: elements1,
+      element: 'sales-chart',
       resize: true,
       colors: ["#3c8dbc", "#f56954", "#00a65a","#DAA520","#ADEAEA","#3D1D49"],
         data: <?php echo $data; ?>,
@@ -668,8 +1065,8 @@ $(function() {
         reader.readAsDataURL(file);
     });  
 });
-</script>
 
+</script>
 
 </body>
 </html>
