@@ -530,7 +530,7 @@ desired effect
         list : 'List'
       },
       //Random default events
-      events    : "http://localhost/WEB/kakatureimburs/operasional_kantor/pages/fetchdata/fetch_data_calendar-absen.php",
+      events    : "http://localhost/WEB/kakatureimburs/operasional_kantor22/pages/fetchdata/fetch_data_calendar-absen.php",
       eventLimit: true,
       editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!
