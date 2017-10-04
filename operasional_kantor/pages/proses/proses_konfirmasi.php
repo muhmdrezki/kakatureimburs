@@ -179,4 +179,4 @@ if($row['konfirm_admin']=="2" && $row['konfirm_anggota']=="2"){
 	$remove_query = mysqli_query($koneksi,$delete_query);
 }
 ?>
- <script> alert("Konifmasi Terkirim"); </script>
+ <script> alert("Konfirmasi Terkirim"); </script>
