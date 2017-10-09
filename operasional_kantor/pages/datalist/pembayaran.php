@@ -34,7 +34,7 @@
    <b><p> Anda harus mengganti password anda </p></b>
    <b><p> dan </p></b> 
    <b><p >Mengisi email anda terlebih dahulu ! </p></b>
-      <a href="index.php?sidebar-menu=profile&action=tampil" class="btn btn-primary btn-lg" style="color: #ffffff;"">Ganti Sekarang</a>
+      <a href="index.php?sidebar-menu=profile&action=tampil" class="btn btn-primary btn-lg" style="color: #ffffff;">Ganti Sekarang</a>
   </div>
   </div>
 </div>
@@ -103,16 +103,7 @@ if($_SESSION['jabatan'] == 'Admin'){
                   </div>
             </div>
             </form>
-
-            <?php 
-
-              $start = $_POST['start_date'];
-              $end = $_POST['end_date'];
-              
-              $startdate = date("Y-m-d 00:59:59", strtotime($start));
-              $enddate = date("Y-m-d 24:00:00", strtotime($end));
-
-            ?>
+            
 
 </section>
   <hr>
@@ -163,7 +154,9 @@ if($_SESSION['jabatan'] == 'Admin'){
 
        if($one == 'Admin'){
        if(isset($_POST['submit'])){
-        $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota WHERE tb_pembayaran.tanggal >= '$startdate' AND tb_pembayaran.tanggal <= '$enddate' ORDER BY tb_pembayaran.tanggal DESC";
+        $startdate = $_POST['start_date'];
+        $enddate = $_POST['end_date'];
+        $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota WHERE DATE(tb_pembayaran.tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y')";
 
           $result = mysqli_query($koneksi,$sql);
 

@@ -22,7 +22,7 @@
                      <td width="30%">'.$row["id_anggota"].'</td> 
                 </tr>
                 <tr>     
-                     <td width="40%"><label>Total Credit</label></td>  
+                     <td width="40%"><label>Total Akomodasi</label></td>  
                      <td width="40%">'.$row["total_credit"].'</td>  
                 </tr>
                 </tbody>

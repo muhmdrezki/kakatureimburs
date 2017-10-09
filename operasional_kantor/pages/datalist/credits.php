@@ -1,7 +1,7 @@
 
 <div class="content-header bounceInRight animated">
   
-  <h2> DATA CREDITS </h2>
+  <h2> DATA UANG AKOMODASI </h2>
 
 </div>
 
@@ -22,7 +22,7 @@
 							$result = mysqli_query($koneksi, $sql_query1);
 						?>      
 					  <div class="form-group">
-						<label>ID Anggota</label>
+						<label>Nama Anggota</label>
 						<select class="form-control select2 btn-primary" data-placeholder="Pilih ID Anggota" name="id_anggota1" id="id_anggota1">
 								<?php
 								while ($row = mysqli_fetch_array($result)) {
@@ -34,9 +34,9 @@
 						</select>
 					  </div>
 						<div class="form-group">
-						  <label for="Credit">Top Up Credit</label>
+						  <label for="Credit">Jumlah Akomodasi</label>
 						  <input type="text" class="form-control" id="topup_credit1" name="topup_credit1" placeholder="Isi Topup"
-						  data-validation="required" data-validation-error-msg="Field Topup Credit Tidak Boleh Kosong !">
+						  data-validation="required" data-validation-error-msg="Field Jumlah Akomodasi Tidak Boleh Kosong !">
 						</div>
 						<!--
 						<div class="form-group">
@@ -57,16 +57,16 @@
 				   $query = "SELECT c.id_anggota,a.nama,topup_credit,total_credit FROM tb_credits_anggota c JOIN tb_anggota a WHERE c.id_anggota=a.id_anggota";
 				   $result = mysqli_query($koneksi, $query);
 				?>
-				<h3> LIST CREDITS </h3>
+				<h3> LIST AKOMODASI </h3>
 					<div class="table-responsive">  
 					   <table class="table" id="data_credits">
 						   <thead>
 							  <tr>  
 									 <th> ID</th>
 									 <th> Nama </th>  
-									 <th> Top Up Credit </th>
-									 <th> Total Credit </th>                         
-									 <th> Action </th>
+									 <th> Jumlah Akomodasi </th>
+                   <th> Total Akomodasi </th>
+                   <th> Action </th>                       
 							  </tr>
 						   </thead>
 						   <tbody>
@@ -77,9 +77,9 @@
 							  <tr>   
 								 <td> <?php echo $row["id_anggota"] ?> </td>
 								 <td> <?php echo $row["nama"] ?> </td>
-								 <td> Rp. <?php echo number_format($row[topup_credit]) ?> </td>
-								 <td> Rp. <?php echo number_format($row[total_credit]) ?> </td>
-								 <td> <a href="#" id="<?php echo $row["id_anggota"]; ?>" class="btn btn-danger btn-xs delete_data"> HAPUS </a><a href="#" id="<?php echo $row["id_anggota"]; ?>" class="btn btn-warning btn-xs topup_credit">EDIT</a><a href="#" id="<?php echo $row["id_anggota"]; ?>" class="btn btn-info btn-xs reset_total">RESET</a></td>
+								 <td><a href="#" id="<?php echo $row["id_anggota"]; ?>" class="btn btn-warning btn-xs topup_credit">EDIT</a> Rp. <?php echo number_format($row[topup_credit]) ?> </td>
+								 <td><a href="#" id="<?php echo $row["id_anggota"]; ?>" class="btn btn-info btn-xs reset_total" style="float:left;">RESET</a> Rp. <?php echo number_format($row[total_credit]) ?> </td>
+								 <td> <a href="#" id="<?php echo $row["id_anggota"]; ?>" class="btn btn-danger btn-xs delete_data"> HAPUS </a></td>
 							  </tr>
 							<?php
 							$no++;
@@ -97,7 +97,7 @@
 								   $row_total = mysqli_fetch_assoc($result_total);
 								  ?>
 								  <th>Rp.<?php echo number_format($row_total["sum_credit"]) ?></th>
-								  <th><a  href="#" class="btn btn-danger btn-xs reset_all_totalcredit">RESET TOTAL</a></th>
+								  <th><a  href="#" class="btn btn-danger btn-xs reset_all_totalcredit">RESET ALL</a></th>
 								</tr>
 							</tfoot>
 					   </table
@@ -147,14 +147,14 @@
            <div class="modal-content">  
                 <div class="modal-header">  
                      <button type="button" class="close" data-dismiss="modal">&times;</button>  
-                     <h4 class="modal-title">EDIT DATA CREDIT</h4>  
+                     <h4 class="modal-title">EDIT DATA AKOMODASI</h4>  
                 </div>  
                 <div class="modal-body">  
                      <form method="post" action="pages/proses/proses_edit-credit.php">  
                           <label>ID Anggota</label>
                           <input type="text" name="id_anggota" id="id_anggota" class="form-control" readonly />   
                           <br />
-                          <label>TopUp</label>  
+                          <label>Jumlah</label>  
                           <input type="text" name="topup_credit" id="topup_credit" class="form-control" />                    
                 </div>  
                 <div class="modal-footer"> 
@@ -189,7 +189,7 @@
            <div class="modal-content">  
                 <div class="modal-header">  
                      <button type="button" class="close" data-dismiss="modal">&times;</button>  
-                     <h4 class="modal-title">Reset Total Credit</h4>  
+                     <h4 class="modal-title">Reset Total Akomodasi</h4>  
                 </div>  
                 <div class="modal-body" id="credit_detail_reset">  
                 </div>  
@@ -225,7 +225,7 @@
            <div class="modal-content">  
                 <div class="modal-header">  
                      <button type="button" class="close" data-dismiss="modal">&times;</button>  
-                     <h4 class="modal-title">Reset All Total Credit</h4>  
+                     <h4 class="modal-title">Reset All Total Akomidasi</h4>  
                 </div>  
                 <div class="modal-body" id="credit_all_reset">  
                 </div>  

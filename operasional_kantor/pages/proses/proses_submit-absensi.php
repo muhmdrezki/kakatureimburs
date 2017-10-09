@@ -316,10 +316,10 @@
 					var wa_msg = "HADIR"+ "\n"+"---"+ "\n"+"Saya,<?php echo $nama?> sudah hadir dikantor pada hari ini pukul "+tglskrg.getHours()+":"+tglskrg.getMinutes();
 					break;
 				case "2":
-					var wa_msg = "HADIR DILUAR"+ "\n"+"Saya,<?php echo $nama?> sedang bertugas diluar kantor pada hari ini mulai pukul "+tglskrg.getHours()+":"+tglskrg.getMinutes()+" untuk keperluan '<?php echo $keterangan?>'\n<?php echo $url_location?>";
+					var wa_msg = "HADIR DILUAR"+ "\n"+"Saya,<?php echo $nama?> sedang bertugas diluar kantor pada hari ini mulai pukul "+tglskrg.getHours()+":"+tglskrg.getMinutes()+" untuk keperluan <?php echo $keterangan?>\n<?php echo $url_location?>";
 					break;
 				case "3":
-					var wa_msg = "SAKIT"+ "\n"+"Saya,<?php echo $nama?> mohon izin pada hari ini tidak bisa masuk kerja karena '<?php echo $keterangan?>'. Mohon doanya ya agar saya lekas sembuh. Amin\n<?php echo $url_location?>";
+					var wa_msg = "SAKIT"+ "\n"+"Saya, <?php echo $nama?> mohon izin pada hari ini tidak bisa masuk kerja karena <?php echo $keterangan?>. Mohon doanya ya agar saya lekas sembuh. Amin\n<?php echo $url_location?>";
 					break;
 				case "4":
 					//var tglcoba="<?php echo $tgl_awal_izin?>";
@@ -329,13 +329,13 @@
 					var timeDiff = Math.abs(date2.getTime() - date1.getTime());
 					var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 					if (diffDays==0) {
-						var wa_msg = "IZIN"+ "\n"+"Saya,<?php echo $nama?> mohon izin pada hari ini tidak bisa masuk kerja karena '<?php echo $keterangan?>'.\n<?php echo $url_location?>";
+						var wa_msg = "IZIN"+ "\n"+"Saya, <?php echo $nama?> mohon izin pada hari ini tidak bisa masuk kerja karena <?php echo $keterangan?>.\n<?php echo $url_location?>";
 					} else {
-						var wa_msg = "IZIN"+ "\n"+"Saya,<?php echo $nama?> mohon izin pada hari ini sampai <?php echo $tgl_akhir_izin?> tidak bisa masuk kerja karena '<?php echo $keterangan?>'.\n<?php echo $url_location?>";
+						var wa_msg = "IZIN"+ "\n"+"Saya, <?php echo $nama?> mohon izin pada hari ini sampai <?php echo $tgl_akhir_izin?> tidak bisa masuk kerja karena <?php echo $keterangan?>.\n<?php echo $url_location?>";
 					}
 					break;
 				case "5":
-				var wa_msg = "CUTI"+ "\n"+"Saya,<?php echo $nama?> mohon izin cuti dari tanggal <?php echo $tgl_awal_cuti?> sampai <?php echo $tgl_akhir_cuti?> karena '<?php echo $keterangan?>'.Sisa cuti saya tahun "+tglskrg.getFullYear()+" ini <?php echo $_SESSION['sisacuti']?> hari \n<?php echo $url_location?>";
+				var wa_msg = "CUTI"+ "\n"+"Saya,<?php echo $nama?> mohon izin cuti dari tanggal <?php echo $tgl_awal_cuti?> sampai <?php echo $tgl_akhir_cuti?> karena <?php echo $keterangan?>.Sisa cuti saya tahun "+tglskrg.getFullYear()+" ini <?php echo $_SESSION['sisacuti']?> hari \n<?php echo $url_location?>";
 					break;
 				default:
 					break;

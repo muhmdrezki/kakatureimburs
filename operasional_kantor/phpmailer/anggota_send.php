@@ -35,7 +35,7 @@
 
 
 
-	$mail->addAddress('operasionalkantorkp@gmail.com');     // Add a recipient
+	$mail->addAddress('kakatukantor123@gmail.com');     // Add a recipient
 	
 	//$mail->addReplyTo('info@example.com', 'Information');
 

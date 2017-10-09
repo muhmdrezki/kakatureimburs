@@ -126,60 +126,85 @@
       <!-- /.row -->
       </section>
 
+    <?php
+        date_default_timezone_set('Asia/Jakarta');
+        $tgl_now = date("d-m-Y");
+        $day = date('j', strtotime($tgl_now));
+        $month = date('F', strtotime($tgl_now));
+        $year = date('Y', strtotime($tgl_now));
+
+        include "../../con_db.php";
+
+        $count_sakit = "SELECT COUNT(id_anggota) as 'izin_sakit' FROM `tb_detail_absen` WHERE DAY(tanggal) = '$day' AND status_id = 3";
+        $res_sakit = mysqli_query($koneksi, $count_sakit);
+
+        $val_sakit = mysqli_fetch_assoc($res_sakit);
+
+        $count_izin = "SELECT COUNT(id_anggota) as 'izin' FROM `tb_detail_absen` WHERE DAY(tanggal) = '$day' AND status_id = 4";
+        $res_izin = mysqli_query($koneksi, $count_izin);
+
+        $val_izin = mysqli_fetch_assoc($res_izin);
+
+        $count_hadir = "SELECT COUNT(id_anggota) as 'hadir' FROM `tb_detail_absen` WHERE DAY(tanggal) = '$day' AND (status_id = 1 OR status_id = 2)";
+        $res_hadir = mysqli_query($koneksi, $count_hadir);
+
+        $val_hadir = mysqli_fetch_assoc($res_hadir);
+?>
  <!-- /.info-box-content -->
-     <Section class="content fadeInRight animated" id="progressbar">
-		 <!-- Apply any bg-* class to to the info-box to color it -->
-	 <!-- DONUT CHART -->
-   <div class="container">
-   <div class="content-header">
-        <b><h3> Report Absensi </h3></b>
-    </div>
+      <section class="content fadeInRight animated" id="statistik_absen">
 
-    <br>
-	 <div class="col-md-6">
-          <div class="box box-danger">
-            <div class="box-header with-border">
-              <h3 class="box-title">Absensi Hari ini</h3>
+     <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-plus-square"></i></span>
 
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
+            <div class="info-box-content">
+              <span class="info-box-text">Sakit</span>
+              <span class="info-box-number"><?php echo $val_sakit[izin_sakit]." Anggota" ?></span>
+               <a href="#" id="" class="small-box-footer detail_sakit">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
             </div>
-            <div class="box-body">
-              <canvas id="pieChart" style="height:250px"></canvas>
-            </div>
-            <!-- /.box-body -->
+            <!-- /.info-box-content -->
           </div>
-          <!-- /.box -->
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-hand-peace-o"></i></span>
 
-   </div>
-	<div class="col-md-6">
-      <div class="info-box bg-red">
-        <span class="info-box-icon"><i class="ion ion-person-add"></i></span>
-        <div class="info-box-content">
-          <span class="info-box-text">Progress Absensi Hari ini</span>
-          <!-- The progress section is optional -->
-          <div class="progress progress-lg active">
-            <div class="progress-bar" style="width: 70%"></div>
+            <div class="info-box-content">
+              <span class="info-box-text">Izin</span>
+              <span class="info-box-number"><?php echo $val_izin[izin]." Anggota" ?></span>
+               <a href="#" id="" class="small-box-footer detail_izin">
+              More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+            </div>
+            <!-- /.info-box-content -->
           </div>
-          <span class="progress-description">
-            70% Increase in 30 Days
-          </span>
-        </div><!-- /.info-box-content -->
-      </div><!-- /.info-box -->
-	</div>
-  </div>
-	 </Section>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+        <?php
+        //include "pages/datalist/daftar_hadir.php";
+        ?>   
+    </section>  
     <section class="content fadeInRight animated" id="grafik">
-    
-    <div class="container">
+	<!-- Content Wrapper. Contains page content -->
+              <!-- THE CALENDAR -->
+              <div id="calendar"></div>
+
+  <!-- /.content-wrapper -->
     <div class="content-header">
         <b><h3> STATISTIK </h3></b>
     </div>
 
     <br>
+
       <div class="row">
          <div class="col-md-6">
                <!-- BAR CHART -->
@@ -220,18 +245,7 @@
           </div>
           <!-- /.box -->
       </div>  
-		</div>
-		</div>
-	<div class="container">
-    
-      <div class="row">
-         <div class="col-md-12">
-              <div id="calendar"></div>
-		 </div>
-	  </div>
-
-  </div>  
-  <!-- /.content-wrapper -->
+		
     </section>
 
 </body>

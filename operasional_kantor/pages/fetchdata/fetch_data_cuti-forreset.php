@@ -23,7 +23,7 @@
                      <td width="30%">'.$row["id_anggota"].'</td> 
                 </tr>
                 <tr>     
-                     <td width="40%"><label>Cuti Used</label></td>  
+                     <td width="40%"><label>Cuti Terpakai</label></td>  
                      <td width="40%">'.$row["cuti_used"].'</td>  
                 </tr>
 				<tr>     

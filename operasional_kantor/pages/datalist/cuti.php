@@ -64,7 +64,7 @@
 							  <tr>  
 									 <th> ID</th>
 									 <th> Nama </th>  
-									 <th> Cuti Used </th>
+									 <th> Cuti Terpakai </th>
 									 <th> Quota Cuti </th>                         
 									 <th> Action </th>
 							  </tr>
@@ -155,7 +155,7 @@
            <div class="modal-content">  
                 <div class="modal-header">  
                      <button type="button" class="close" data-dismiss="modal">&times;</button>  
-                     <h4 class="modal-title">Reset Cuti Used</h4>  
+                     <h4 class="modal-title">Reset Cuti Terpakai</h4>  
                 </div>  
                 <div class="modal-body" id="cuti_detail_reset">  
                 </div>  
@@ -191,7 +191,7 @@
            <div class="modal-content">  
                 <div class="modal-header">  
                      <button type="button" class="close" data-dismiss="modal">&times;</button>  
-                     <h4 class="modal-title">Reset All Cuti Used</h4>  
+                     <h4 class="modal-title">Reset All Cuti Terpakai</h4>  
                 </div>  
                 <div class="modal-body" id="cuti_all_reset">  
                 </div>  

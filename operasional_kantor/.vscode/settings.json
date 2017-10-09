@@ -1,7 +1,7 @@
 {
     "git.ignoreLimitWarning": true,
     // My Setting --
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -1,
     "window.openFilesInNewWindow": "off",
     "files.autoSave": "afterDelay",
     //"editor.wrappingColumn": 0,
