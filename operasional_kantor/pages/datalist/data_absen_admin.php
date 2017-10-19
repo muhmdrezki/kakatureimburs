@@ -1,4 +1,9 @@
-
+<?php
+   if (!defined('DIDALAM_INDEX_PHP')){ 
+    //echo "Dilarang broh!";
+        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+    }
+?>
       <!-- jQuery 3 -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <section id="form_data-absen-admin" style="margin: 0 auto;">

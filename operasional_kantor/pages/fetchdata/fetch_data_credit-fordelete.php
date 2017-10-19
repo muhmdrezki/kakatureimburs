@@ -3,9 +3,9 @@
       $output = '';  
       include "../../con_db.php";
 
-      $id_anggota = $_POST['id_anggota'];
+      $id = $_POST['id'];
 
-      $query = "SELECT * FROM tb_credits_anggota WHERE id_anggota = '$id_anggota'";  
+      $query = "SELECT * FROM tb_credits_anggota WHERE id = '$id'";  
       $result = mysqli_query($koneksi, $query);  
       $output .= ' 
       <label><h4>   Anda yakin akan menghapus data ini?</h4></label>
@@ -19,11 +19,19 @@
                 <tbody>
                 <tr>  
                      <td width="30%"><label>ID Anggota</label></td>  
-                     <td width="30%">'.$row["id_anggota"].'</td> 
+                     <td width="30%">'.$row["id"].'</td> 
                 </tr>
-				<tr>     
+				        <tr>     
                      <td width="40%"><label>Jumlah Akomodasi</label></td>  
                      <td width="40%">'.$row["topup_credit"].'</td>  
+                </tr>
+                <tr>     
+                      <td width="40%"><label>Jumlah Akomodasi</label></td>  
+                      <td width="40%">'.$row["status"].'</td>  
+                </tr>
+                <tr>     
+                      <td width="40%"><label>Jumlah Akomodasi</label></td>  
+                      <td width="40%">'.$row["tanggal_set"].'</td>  
                 </tr>
                 <tr>     
                      <td width="40%"><label>Total Akomodasi</label></td>  
@@ -36,6 +44,6 @@
            </table>   
       ';  
       session_start();
-      $_SESSION["idcredit"] = $id_anggota;
+      $_SESSION["idcredit"] = $id;
       echo $output;   
  ?>

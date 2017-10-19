@@ -11,21 +11,22 @@
 		if (!$result) {
 			printf("Error: %s\n", mysqli_error($conn));
 			exit();
-		}
-		while ($row = mysqli_fetch_array($result)){
-			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),1,'$lat','$lng','$address',CURRENT_DATE(),CURRENT_DATE())";
-			$insert = mysqli_query($conn, $query);
-			if (!$insert) {
-				printf("Error: %s\n", mysqli_error($conn));
-				exit();
+		} else {
+			while ($row = mysqli_fetch_array($result)){
+				$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),1,'$lat','$lng','$address',CURRENT_DATE(),CURRENT_DATE())";
+				$insert = mysqli_query($conn, $query);
+				if (!$insert) {
+					printf("Error: %s\n", mysqli_error($conn));
+					exit();
+				}
+				$query2= "UPDATE tb_credits_anggota SET total_credit=total_credit + topup_credit WHERE id_anggota='$row[id_anggota]'  AND status='unpaid' AND MONTH(tanggal_set)=MONTH(CURRENT_DATE()) AND YEAR(tanggal_set)=YEAR(CURRENT_DATE())";
+				$update = mysqli_query($conn, $query2);
+				if (!$update) {
+					printf("Error: %s\n", mysqli_error($conn));
+					exit();
+				}
 			}
-			$query2= "UPDATE tb_credits_anggota SET total_credit=total_credit + topup_credit WHERE id_anggota='$row[id_anggota]'";
-			$update = mysqli_query($conn, $query2);
-			if (!$update) {
-				printf("Error: %s\n", mysqli_error($conn));
-				exit();
-			}
-		}
+		}	
 	}
 		
 	//functions

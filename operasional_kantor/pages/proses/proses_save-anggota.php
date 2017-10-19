@@ -11,11 +11,12 @@
 		<?php
 	} 
 	include "../../con_db.php"; //sambung ke database
-
+	include "../../fungsi_kakatu.php"; //sambung ke database
+	
 	//mengambil nilai dari form
 	$id = $_POST['id'];
 	$nama = $_POST['nama'];
-	$password = $_POST['id'];
+	$password = encodeData($_POST['id']);
 	
 	if($_POST['email'] != ''){
 		$email = $_POST['email'];	

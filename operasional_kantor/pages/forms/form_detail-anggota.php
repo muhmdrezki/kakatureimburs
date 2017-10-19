@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<?php
+  if (!defined('DIDALAM_INDEX_PHP')){ 
+     //echo "Dilarang broh!";
+     header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+  }
+?>
 <html>
 <head>
   <title>Form Tambah Anggota</title>

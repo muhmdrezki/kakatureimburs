@@ -4,7 +4,7 @@ include "../../con_db.php";
 	session_start();
 	$id = $_SESSION['idcredit'];
 
-	$sql = "DELETE FROM tb_credits_anggota WHERE id_anggota='$id'";
+	$sql = "DELETE FROM tb_credits_anggota WHERE id='$id'";
 	$result = mysqli_query($koneksi,$sql);
 
 	 if (!$result) {

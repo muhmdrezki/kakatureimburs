@@ -1,3 +1,9 @@
+<?php
+   if (!defined('DIDALAM_INDEX_PHP')){ 
+    //echo "Dilarang broh!";
+        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+    }
+?>
 <html lang="en">
 <head>
   <title>List Pembayaran</title>
@@ -5,7 +11,7 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
 <?php
- error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING | E_DEPRECATED));
 ?>
 
   <style>
@@ -16,16 +22,15 @@
 
 <?php 
 
-  include "../../con_db.php";
-
   $sql_data = "SELECT id_anggota, password, email FROM tb_anggota WHERE id_anggota = '$_SESSION[id_anggota]'";
   $query = mysqli_query($koneksi, $sql_data);
 
   $val_data = mysqli_fetch_assoc($query);
 
-  $data_id = $val_data[id_anggota];
-  $data_pass = $val_data[password];
-  $data_email = $val_data[email];
+  $data_id = $val_data['id_anggota'];
+  $data_pass = $val_data['password'];
+  $data_pass=decodeData($data_pass);
+  $data_email = $val_data['email'];
 ?>
 
 <div class="login-page" id="overlay">

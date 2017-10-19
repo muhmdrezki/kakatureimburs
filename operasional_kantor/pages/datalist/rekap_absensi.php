@@ -50,7 +50,12 @@
 </div>
 </div>
 
-        
+<?php
+   if (!defined('DIDALAM_INDEX_PHP')){ 
+    //echo "Dilarang broh!";
+        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+    }
+?>        
 <div class="bounceInUp animated table-responsive">
   <table class="table table-bordered" id="table_rekap">
     <thead>
@@ -62,7 +67,7 @@
         <th>Jumlah Izin</th>
         <th>Jumlah Cuti</th>
         <th>Jumlah Alpha</th>
-        <th>Total Credit</th>
+        <th>Akomodasi(Ideal)</th>
       </tr>
     </thead>
     <tbody>
@@ -77,9 +82,9 @@
               session_start();
               $_SESSION["tglfilterrekapabsen1"]=$startdate;
               $_SESSION["tglfilterrekapabsen2"]=$enddate;
-              $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,c.total_credit AS totcredit FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE DATE(tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y') GROUP BY a.id_anggota";
+              $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE DATE(tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y') GROUP BY a.id_anggota";
             } else {
-              $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,c.total_credit AS totcredit FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota GROUP BY a.id_anggota";
+              $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE MONTH(tanggal)=MONTH(CURRENT_DATE()) AND YEAR(tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota";
             }
            
            $result = mysqli_query($koneksi,$sql);
@@ -87,11 +92,32 @@
            if (!$result) {
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
-              } 
+              }
+            
            
-           $no = 1;
+            $no = 1;
+            $totalhadir=0;
+            $totalsakit=0;
+            $totalizin=0;
+            $totalcuti=0;
+            $totalalpha=0;
+            $totalakomodasi=0;
             while($r = mysqli_fetch_array($result))
             {
+              $totalhadir+=$r["jumhadir"];
+              $totalsakit+=$r["jumsakit"];
+              $totalizin+=$r["jumizin"];
+              $totalcuti+=$r["jumcuti"];
+              $totalalpha+=$r["jumalpha"];
+              $sql2="SELECT topup_credit FROM tb_credits_anggota WHERE status='unpaid' AND id_anggota='$r[id_ang]'";
+              $result2 = mysqli_query($koneksi,$sql2);
+              if (!$result2) {
+                printf("Error: %s\n", mysqli_error($koneksi));
+                exit();
+                }
+              $r2 = mysqli_fetch_assoc($result2);
+              $jumlahakomodasi=$r2["topup_credit"]*$r["jumhadir"]+$r2["topup_credit"]*$r["jumcuti"];
+              $totalakomodasi+=$jumlahakomodasi;
             ?>
             
             <tr>
@@ -102,29 +128,24 @@
               <td> <?php echo $r["jumizin"] ?> </td>
               <td> <?php echo $r["jumcuti"] ?> </td>
               <td> <?php echo $r["jumalpha"] ?> </td>
-              <td> Rp<?php echo number_format($r["totcredit"]) ?> </td> 
+              <td> Rp<?php echo number_format($jumlahakomodasi) ?></td> 
             </tr>
 
               <?php
                 $no++;
-              }
+            }
           ?>          
     </tbody>
     <tfoot>
-                  <?php
-								   $query_total = "SELECT COUNT(CASE WHEN status_id = 1 OR status_id=2 THEN 1 ELSE NULL END) AS tothadir,COUNT(CASE WHEN status_id = 3 THEN 1 ELSE NULL END) AS totsakit,COUNT(CASE WHEN status_id = 4 THEN 1 ELSE NULL END) AS totizin,COUNT(CASE WHEN status_id = 5 THEN 1 ELSE NULL END) AS totcuti,COUNT(CASE WHEN status_id = 6 THEN 1 ELSE NULL END) AS totalpha, (SELECT SUM(total_credit) FROM tb_credits_anggota) AS totcredit FROM tb_detail_absen";
-								   $result_total = mysqli_query($koneksi, $query_total);
-								   $row_total = mysqli_fetch_assoc($result_total);
-								  ?>
 								<tr>
 								  <th>Total</th>
 								  <th></th>
-								  <th><?php echo $row_total["tothadir"]?></th>
-								<th><?php echo $row_total["totsakit"]?></th>
-								  <th><?php echo $row_total["totizin"]?></th>
-								  <th><?php echo $row_total["totcuti"]?></th>
-									<th><?php echo $row_total["totalpha"]?></th>
-								  <th>Rp.<?php echo number_format($row_total["totcredit"]) ?></th>
+								  <th><?php echo $totalhadir?></th>
+								<th><?php echo $totalsakit?></th>
+								  <th><?php echo $totalizin?></th>
+								  <th><?php echo $totalcuti?></th>
+									<th><?php echo $totalalpha?></th>
+								  <th>Rp<?php echo number_format($totalakomodasi) ?></th>
                 </tr>  
     </tfoot>              
   </table>

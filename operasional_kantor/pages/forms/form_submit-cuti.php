@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang='en'>
-<?php 
+<?php
+if (!defined('DIDALAM_INDEX_PHP')){ 
+   //echo "Dilarang broh!";
+   header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+}
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 ?>
 	<head>

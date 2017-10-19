@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <?php
+ if (!defined('DIDALAM_INDEX_PHP')){ 
+    //echo "Dilarang broh!";
+    header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+ }
  error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
  date_default_timezone_set("Asia/Jakarta");
  session_start();
- include '/../con_db.php';
+ include '../../con_db.php';
 ?>
 <head>
   <title>Bootstrap Example</title>

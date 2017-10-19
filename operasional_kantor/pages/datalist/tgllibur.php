@@ -1,4 +1,9 @@
-
+<?php
+   if (!defined('DIDALAM_INDEX_PHP')){ 
+    //echo "Dilarang broh!";
+        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+    }
+?>
 <div class="content-header bounceInRight animated">
   
   <h2> DATA TANGGAL LIBUR </h2>

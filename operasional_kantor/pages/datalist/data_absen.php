@@ -1,3 +1,9 @@
+<?php
+   if (!defined('DIDALAM_INDEX_PHP')){ 
+    //echo "Dilarang broh!";
+        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+    }
+?>
       <?php 
         $id_jabatan = mt_rand(100,999);
       ?>

@@ -20,7 +20,7 @@
 	$topup = str_replace(',', '', $nominal1);
 	//$total_credit = str_replace(',', '', $nominal2);
 	//query untuk memasukan ke database
-		$query = "INSERT INTO tb_credits_anggota (id_anggota, topup_credit) VALUES ('$id', $topup)";
+		$query = "INSERT INTO tb_credits_anggota (id_anggota, topup_credit,status,tanggal_set) VALUES ('$id', $topup,'unpaid',CURRENT_DATE())";
 		$insert = mysqli_query($koneksi, $query);
 	if (!$insert) {
         printf("Error: %s\n", mysqli_error($koneksi));
