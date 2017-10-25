@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2017 at 05:38 PM
+-- Generation Time: Oct 25, 2017 at 04:19 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -153,7 +153,7 @@ INSERT INTO `tb_credits_anggota` (`id`, `id_anggota`, `topup_credit`, `status`, 
 (25, '72555', 70000, 'paid', '2017-09-01', 210000),
 (26, '88863', 50000, 'paid', '2017-09-01', 150000),
 (27, '62541', 70000, 'paid', '2017-09-01', 350000),
-(39, '00001', 97000, 'unpaid', '2017-10-11', 7178000),
+(39, '00001', 97000, 'unpaid', '2017-10-11', 21146000),
 (40, '14048', 95000, 'unpaid', '2017-10-11', 855000),
 (42, '72555', 70000, 'unpaid', '2017-10-11', 420000),
 (43, '88863', 50000, 'unpaid', '2017-10-11', 300000),
@@ -185,7 +185,7 @@ CREATE TABLE `tb_cuti_anggota` (
 --
 
 INSERT INTO `tb_cuti_anggota` (`id_cuti`, `id_anggota`, `cuti_used`, `cuti_qty`) VALUES
-(1, '00001', 16, 15),
+(1, '00001', 0, 10),
 (2, '27225', 15, 12),
 (3, '14048', 0, 9),
 (4, '87553', 0, 13),
@@ -330,19 +330,11 @@ INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `stat
 (128, '88863', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
 (129, '90706', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
 (130, '00001', '2017-10-11', '00:22:03', 1, '', -6.8868488999999995, 107.6167905, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(131, '72555', '2017-11-11', '00:24:53', 4, 'grsgsgsg', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-11', '2017-11-11', NULL),
 (132, '14048', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(133, '27225', '2017-11-11', '00:24:53', 6, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-11', '2017-11-11', NULL),
 (134, '62541', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '0000-00-00', NULL),
-(135, '72555', '2017-11-11', '00:24:53', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-11', '2017-11-11', NULL),
-(136, '87553', '2017-11-11', '00:24:53', 3, 'feafa', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-11', '2017-11-11', NULL),
-(137, '88863', '2017-11-11', '00:24:53', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
 (138, '90706', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(139, '27225', '2017-11-11', '04:03:03', 4, 'fesfsfs', -6.8868497, 107.61679699999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-11', '2017-11-11', NULL),
 (140, '14048', '2017-10-11', '10:37:19', 1, '', -6.8868408, 107.6168169, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
 (141, '14048', '2017-10-11', '11:13:22', 3, 'Malaria', -6.8868477, 107.6167929, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(142, '87553', '2017-11-11', '21:42:04', 2, 'sdfsfesf', -6.8868792999999995, 107.6167541, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-11', '2017-11-11', NULL),
-(143, '62541', '2017-11-11', '21:43:21', 3, 'Malaria', -6.8868911, 107.6167596, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-11', '2017-10-11', NULL),
 (151, '00001', '2017-10-12', '14:37:05', 1, '', -6.886879400000001, 107.6167605, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
 (169, '00001', '2017-10-12', '16:14:33', 3, 'malaria', -6.8901569, 107.58022179999999, 'Jl. Sukasari I No.8, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-12', '2017-10-12', NULL),
 (170, '00001', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
@@ -376,39 +368,19 @@ INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `stat
 (199, '00001', '2017-10-17', '22:46:43', 4, 'sakit', -6.88707074909483, 107.61672789759983, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-17', '2017-10-17', NULL),
 (214, '00001', '2017-10-18', '21:40:02', 2, 'presentasi kakatu di SMA 3 Bandung', -6.8868623, 107.6168386, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-18', '2017-10-18', NULL),
 (215, '00001', '2017-10-18', '21:42:23', 1, '', -6.8868623, 107.6168386, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-18', '2017-10-18', NULL),
-(216, '00001', '2017-10-19', '01:15:57', 2, 'Lapar', -6.886902699999999, 107.61678479999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(217, '00001', '2017-10-19', '01:20:50', 2, 'naik keretea api', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(218, '00001', '2017-10-19', '01:25:12', 2, 'gfsgfdgdf', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(219, '00001', '2017-10-19', '01:30:59', 2, 'kasihan dia', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(220, '00001', '2017-10-19', '01:32:12', 2, 'jangan gila', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(221, '00001', '2017-10-19', '01:42:51', 2, 'dia gila', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(222, '00001', '2017-10-19', '01:50:53', 3, 'kamu sakit?', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(223, '00001', '2017-10-19', '01:54:20', 4, 'dssdvsdvsdvds', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(224, '00001', '2017-10-19', '01:55:30', 4, 'siang2 ajaga', -6.8868939, 107.61678669999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(225, '00001', '2017-10-19', '01:58:10', 1, '', -6.886851843656564, 107.61681378368532, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(226, '00001', '2017-10-19', '02:08:20', 5, 'bertamasya', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(227, '00001', '2017-10-19', '02:12:22', 5, 'ngantuk', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(228, '00001', '2017-10-19', '17:12:47', 1, '', -6.886863000000001, 107.6168811, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(229, '00001', '2017-10-19', '17:14:30', 1, '', -6.8868607, 107.6168184, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(230, '00001', '2017-10-19', '17:27:47', 3, 'tumor\'', -6.8868621999999995, 107.6168216, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(231, '00001', '2017-10-19', '20:46:50', 3, 'merinding liat dia', -6.8868626, 107.616823, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(232, '00001', '2017-10-19', '20:48:05', 1, '', -6.8868626, 107.61681659999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(233, '00001', '2017-10-19', '20:54:17', 1, '', -6.886862499999999, 107.6168103, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(234, '00001', '2017-10-19', '20:57:26', 4, 'garang', -6.8868621999999995, 107.6168161, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(235, '00001', '2017-10-19', '22:08:38', 1, '', -6.8868604, 107.61681519999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(236, '00001', '2017-10-19', '22:15:46', 1, '', -6.886862, 107.61681159999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(237, '00001', '2017-10-19', '22:18:10', 1, '', -6.8869355, 107.61674629999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(238, '00001', '2017-10-19', '22:19:44', 4, 'sial lo', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(239, '00001', '2017-10-19', '22:20:53', 2, 'gelo', -6.8869168, 107.6167658, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(240, '00001', '2017-10-19', '22:21:54', 3, 'sfdgdf', -6.8868626, 107.6168153, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(241, '00001', '2017-10-19', '22:22:47', 3, 'dsfsdfsd', -6.8869454999999995, 107.6167385, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(242, '00001', '2017-10-19', '22:24:01', 3, 'fgdfgdf', -6.8868626, 107.6168153, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(243, '00001', '2017-10-19', '22:25:56', 3, 'uyiyuiyuiy', -6.8868982999999995, 107.6167859, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(244, '00001', '2017-10-19', '22:29:55', 3, '', -6.886862, 107.61681159999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(245, '00001', '2017-10-19', '22:30:49', 1, '', -6.8868987, 107.61678479999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(246, '00001', '2017-10-19', '22:31:56', 4, 'htff tfhfhfh', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(247, '00001', '2017-10-19', '22:32:30', 3, 'gergr e ge ge', -6.8868955, 107.616821, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(248, '00001', '2017-10-19', '22:33:08', 3, 'jgjgyjg', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL);
+(256, '00001', '2017-10-19', '23:38:43', 1, '', -6.8868161, 107.6168283, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
+(257, '00001', '2017-10-19', '23:38:55', 2, '', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
+(258, '00001', '2017-10-19', '23:40:38', 3, '', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
+(259, '00001', '2017-10-19', '23:41:23', 5, '', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
+(260, '00001', '2017-10-22', '15:41:55', 1, '', -6.8866681, 107.6168625, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-22', '2017-10-22', NULL),
+(385, '00001', '2017-10-24', '21:31:01', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-24', '2017-11-09', NULL),
+(386, '00001', '2017-10-24', '21:31:01', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-25', '2017-11-09', NULL),
+(387, '00001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-30', '2017-11-09', NULL),
+(388, '00001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-31', '2017-11-09', NULL),
+(389, '00001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-03', '2017-11-09', NULL),
+(390, '00001', '2017-10-24', '21:31:03', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-06', '2017-11-09', NULL),
+(391, '00001', '2017-10-24', '21:31:03', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-09', '2017-11-09', NULL),
+(392, '00001', '2017-10-24', '21:41:49', 1, '', -6.8868583, 107.6168356, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-24', '2017-10-24', NULL);
 
 -- --------------------------------------------------------
 
@@ -574,9 +546,11 @@ CREATE TABLE `tb_tgllibur` (
 
 INSERT INTO `tb_tgllibur` (`id`, `nama_libur`, `tglawal`, `tglakhir`, `jmlhari`) VALUES
 (1, 'Hari Natal', '2017-12-24', '2017-12-26', 3),
-(2, 'Tahun Baru 2018', '2018-01-01', '2018-01-01', 1),
-(8, 'Libur Kantor', '2017-10-28', '2017-10-28', 1),
-(9, 'Idul Adha', '2017-10-02', '2017-10-03', 2);
+(2, 'Tahun Baru 2018', '2018-01-01', '2018-01-04', 1),
+(8, 'Libur Kantor', '2017-11-07', '2017-11-08', 2),
+(9, 'Idul Adha', '2017-10-02', '2017-10-03', 2),
+(10, 'nyoba 1', '2017-11-01', '2017-11-02', 2),
+(11, 'nyoba 2', '2017-10-26', '2017-10-28', 3);
 
 --
 -- Indexes for dumped tables
@@ -694,13 +668,13 @@ ALTER TABLE `tb_cuti_anggota`
 -- AUTO_INCREMENT for table `tb_detail_absen`
 --
 ALTER TABLE `tb_detail_absen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=249;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=393;
 
 --
 -- AUTO_INCREMENT for table `tb_tgllibur`
 --
 ALTER TABLE `tb_tgllibur`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

@@ -271,7 +271,7 @@
         "order": [[ 0, "asc" ]]
       })
       //END KONFIGURASI TABEL
-
+      
      //DATE PICKER
         $('.select2').select2()    
 
@@ -289,7 +289,7 @@
           var timeDiff = Math.abs(date2.getTime() - date1.getTime());
           var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))+1; 
           //var sisacuti= <?php echo $_SESSION["sisacuti"] ?>;
-		  var sisacuti =6;
+          var sisacuti=1000;
           var today= new Date();
           var timeDiff2 = date1.getTime() - today.getTime();
           var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
@@ -345,7 +345,14 @@
           var timeDiff = Math.abs(date2.getTime() - date1.getTime());
           var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))+1; 
           //var sisacuti= <?php echo $_SESSION["sisacuti"] ?>;
-		  var sisacuti= 5;
+          var sisacuti;
+          $.ajax({
+            'async': false, 
+            'url': "pages/fetchdata/fetch_data-sisacuti.php",
+            'success': function (data) {
+              sisacuti=data;
+            }
+          });
           var today= new Date();
           var timeDiff2 = date1.getTime() - today.getTime();
           var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
@@ -467,7 +474,7 @@
       //Number - The width of each segment stroke
       segmentStrokeWidth   : 2,
       //Number - The percentage of the chart that we cut out of the middle
-      percentageInnerCutout: 50, // This is 0 for Pie charts
+      percentageInnerCutout: 0, // This is 0 for Pie charts
       //Number - Amount of animation steps
       animationSteps       : 100,
       //String - Animation easing effect
@@ -500,8 +507,11 @@
               var middleAngle = startAngle + ((endAngle - startAngle)/2);
 
               // Compute text location
-              var posX = ((radius/2)+(radius/4)) * Math.cos(middleAngle) + midX;
-              var posY = ((radius/2)+(radius/4)) * Math.sin(middleAngle) + midY;
+			  //Untuk Donat
+              //var posX = ((radius/2)+(radius/4)) * Math.cos(middleAngle) + midX;
+              //var posY = ((radius/2)+(radius/4)) * Math.sin(middleAngle) + midY;
+			  var posX = (radius/2) * Math.cos(middleAngle) + midX;
+              var posY = (radius/2) * Math.sin(middleAngle) + midY;
               //console.log(radius);
               // Text offside by middle
               var w_offset = ctx.measureText(value).width/2;
@@ -655,7 +665,7 @@
         });
       }
 	// END Progress BAR ABSENSI HARI INI
-
+ 
   //Panggil Semua Fungsi
   ajaxProgressAbsenHariIni();
   ajaxchartConfigAbsen(true);

@@ -180,29 +180,28 @@
 					  </div>
 					</div>
 					<div class="box-body">
-						
-							<div class="col-md-8">
+							  <ul class="chart-legend clearfix list-inline">
+								<li><i class="fa fa-circle-o text-aqua list-inline-item"></i>Hadir</li>
+								<li><i class="fa fa-circle-o text-light-blue list-inline-item"></i>Hadir Diluar</li>
+								<li><i class="fa fa-circle-o text-red list-inline-item"></i>Sakit</li>
+								<li><i class="fa fa-circle-o text-yellow list-inline-item"></i>Izin</li>
+								<li><i class="fa fa-circle-o text-green list-inline-item"></i>Cuti</li>
+								<li><i class="fa fa-circle-o text-gray list-inline-item"></i>Alpha</li>
+							  </ul>
+							  <br>
+							  <div class="col-md-11">
 							  <div class="chart-responsive">
-								<canvas id="chart_absensi-hari-ini" height="150"></canvas>
+								<canvas id="chart_absensi-hari-ini"></canvas>
+							  </div>
 							  </div>
 							  <!-- ./chart-responsive -->
-							</div>
 							<!-- /.col -->
-							<div class="col-md-4">
-							  <ul class="chart-legend clearfix">
-								<li><i class="fa fa-circle-o text-aqua"></i>Hadir</li>
-								<li><i class="fa fa-circle-o text-light-blue"></i>Hadir Diluar</li>
-								<li><i class="fa fa-circle-o text-red"></i>Sakit</li>
-								<li><i class="fa fa-circle-o text-yellow"></i>Izin</li>
-								<li><i class="fa fa-circle-o text-green"></i>Cuti</li>
-								<li><i class="fa fa-circle-o text-gray"></i>Alpha</li>
-							  </ul>
-							</div>
+
 							<!-- /.col -->
 						  <!-- /.row -->
 						</div>
 					<!-- /.box-body -->
-				  </div>
+				</div>
 				  <!-- /.box -->
 			</div>
 			<div class="col-md-6">

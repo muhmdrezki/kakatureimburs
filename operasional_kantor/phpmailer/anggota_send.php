@@ -14,7 +14,6 @@
 
 	$email = $_SESSION['email'];
 	$pass = $_SESSION['pass'];
-
 	$nama = $_SESSION['nama'];
 
 	require 'PHPMailerAutoload.php';

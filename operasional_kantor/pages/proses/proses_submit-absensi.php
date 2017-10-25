@@ -51,6 +51,7 @@
 	$tgl_akhir_izin = substr($tglRentangIzin,13,25);
 	$tgl_awal_cuti = substr($tglRentangCuti,0,11);
 	$tgl_akhir_cuti = substr($tglRentangCuti,13,25);
+	$query=null;
 	switch ($status) {
 		case 1:
 			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address',CURRENT_DATE(),CURRENT_DATE())";
@@ -62,19 +63,25 @@
 			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address',CURRENT_DATE(),CURRENT_DATE())";
 		break;
 		case 3:
+			$tgl_awal= $tgl_awal_sakit;
+			$tgl_akhir=$tgl_akhir_sakit;
 			$keterangan = $keterangan_sakit;
 			$filename = "image_sakit";
-			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address',STR_TO_DATE('$tgl_awal_sakit', '%m/%d/%Y'),STR_TO_DATE('$tgl_akhir_sakit', '%m/%d/%Y'))";
+			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address',STR_TO_DATE('$tgl_awal', '%m/%d/%Y'),STR_TO_DATE('$tgl_akhir', '%m/%d/%Y'))";
 		break;
 		case 4:
+			$tgl_awal= $tgl_awal_izin;
+			$tgl_akhir=$tgl_akhir_izin;
 			$keterangan = $keterangan_izin;
 			$filename = "image_izin";
-			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address',STR_TO_DATE('$tgl_awal_izin', '%m/%d/%Y'),STR_TO_DATE('$tgl_akhir_izin', '%m/%d/%Y'))";
+			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address',STR_TO_DATE('$tgl_awal', '%m/%d/%Y'),STR_TO_DATE('$tgl_akhir', '%m/%d/%Y'))";
 		break;
 		case 5:
+			$tgl_awal= $tgl_awal_cuti;
+			$tgl_akhir=$tgl_akhir_cuti;
 			$keterangan = $keterangan_cuti;
 			$filename = "image_cuti";
-			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address',STR_TO_DATE('$tgl_awal_cuti', '%m/%d/%Y'),STR_TO_DATE('$tgl_akhir_cuti', '%m/%d/%Y'))";
+			$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address',STR_TO_DATE('$tgl_awal', '%m/%d/%Y'),STR_TO_DATE('$tgl_akhir', '%m/%d/%Y'))";
 		break;
 	}
 	
@@ -86,6 +93,7 @@
 	<?php		
 		} else {
 			if( $distance < 100 ) {
+				//call fungsi submit absensi
 				submitAbsensi($koneksi,$query,$id,$status,$target_dir,$filename,$ukuran);
 			} else {
 			?>
@@ -94,76 +102,57 @@
 			}
 		}
 	} else {
-		submitAbsensi($koneksi,$query,$id,$status,$target_dir,$filename,$ukuran);
-		//call fungsi update cuti
-		updateCutiUsed($koneksi,$id,$status,$tgl_awal_cuti,$tgl_akhir_cuti);
-	}
-	
+			if ($tgl_awal==$tgl_akhir) {
+				//call fungsi submit absensi
+				submitAbsensi($koneksi,$query,$id,$status,$target_dir,$filename,$ukuran);
+				//call fungsi update cuti
+				updateCutiUsed($koneksi,$id,$status,$tgl_awal,$tgl_akhir);
+			} else {
+				//ambil tanggal awal dan akhir
+				$begin = new DateTime($tgl_awal);
+				$end = new DateTime($tgl_akhir);
+				$end = $end->modify('+1 day');
+				//echo $tgl_awal." ".$tgl_akhir;
+				//echo "<br>";
+				//Query untuk mengambil tgl_libur yang berada diantara range tanggal yg dipilih
 
-?>
-		<script>
-			var status = <?php echo $status?>;
-			var tglskrg = new Date();
-			var wa_msg;
-			
-			switch (status) {
-				case "1":
-					var wa_msg = "HADIR"+ "\n"+"---"+ "\n"+"Saya,<?php echo $nama?> sudah hadir dikantor pada hari ini pukul "+tglskrg.getHours()+":"+tglskrg.getMinutes();
-					break;
-				case "2":
-					var wa_msg = "HADIR DILUAR"+ "\n"+"Saya,<?php echo $nama?> sedang bertugas diluar kantor pada hari ini mulai pukul "+tglskrg.getHours()+":"+tglskrg.getMinutes()+" untuk keperluan <?php echo $keterangan?>\n<?php echo $url_location?>";
-					break;
-				case "3":
-					var wa_msg = "SAKIT"+ "\n"+"Saya, <?php echo $nama?> mohon izin pada hari ini tidak bisa masuk kerja karena <?php echo $keterangan?>. Mohon doanya ya agar saya lekas sembuh. Amin\n<?php echo $url_location?>";
-					break;
-				case "4":
-					//var tglcoba="<?php echo $tgl_awal_izin?>";
-					//console.log(tglcoba);
-					var date1 = new Date("<?php echo $tgl_awal_izin?>");
-					var date2 = new Date("<?php echo $tgl_akhir_izin?>");
-					var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-					var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-					if (diffDays==0) {
-						var wa_msg = "IZIN"+ "\n"+"Saya, <?php echo $nama?> mohon izin pada hari ini tidak bisa masuk kerja karena <?php echo $keterangan?>.\n<?php echo $url_location?>";
+				//hitung interval
+				$interval = DateInterval::createFromDateString('1 day');
+				//dapatkan periode increment per 1 hari
+				$period = new DatePeriod($begin, $interval, $end);
+				//$tgl_onrange=null;
+				//loop ke tanggal range increment satu hari
+				foreach ( $period as $dt ){
+					$validAbsen=true;
+					$tgl_onrange = $dt->format( "Y-m-d" );
+					//echo $tgl_onrange;
+					//echo "<br>";
+					$dayNameOnTglRange = date('D', strtotime($tgl_onrange));
+					//Check tanggal apakah tanggal ada di hari sabtu atau tidak
+					if ($dayNameOnTglRange=="Sat" || $dayNameOnTglRange=="Sun"){
+						$validAbsen=false;
 					} else {
-						var wa_msg = "IZIN"+ "\n"+"Saya, <?php echo $nama?> mohon izin pada hari ini sampai <?php echo $tgl_akhir_izin?> tidak bisa masuk kerja karena <?php echo $keterangan?>.\n<?php echo $url_location?>";
-					}
-					break;
-				case "5":
-				var wa_msg = "CUTI"+ "\n"+"Saya,<?php echo $nama?> mohon izin cuti dari tanggal <?php echo $tgl_awal_cuti?> sampai <?php echo $tgl_akhir_cuti?> karena <?php echo $keterangan?>.Sisa cuti saya tahun "+tglskrg.getFullYear()+" ini <?php echo $_SESSION['sisacuti']?> hari \n<?php echo $url_location?>";
-					break;
-				default:
-					break;
-			}
-			var wa_msg = window.encodeURIComponent(wa_msg);
-			var wa_absen = "whatsapp://send?text="+wa_msg;
-			console.log( wa_absen);
-			bootbox.confirm({
-					message: "<?php echo '<h4>' ?>Absen Berhasil. <?php echo '<br><br>' ?> Yuk share ke Whatsapp untuk absensi anda hari ini <?php echo '</h4><br><h3>' ?>  Share Sekarang? <?php echo '</h3>'?>",
-					buttons: {
-						confirm: {
-							label: 'SHARE',
-							className: 'btn-success btn-sm'
-
-						},
-						cancel: {
-							label: 'NANTI',
-							className: 'btn-danger btn-sm'
+						$SELECTLIBUR = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE (tglawal>=STR_TO_DATE('$tgl_awal', '%m/%d/%Y') AND tglakhir<=STR_TO_DATE('$tgl_akhir', '%m/%d/%Y')) AND tglakhir>=STR_TO_DATE('$tgl_awal', '%m/%d/%Y')";
+						$reslibur=mysqli_query($koneksi, $SELECTLIBUR);
+						while ($rowlibur=mysqli_fetch_array($reslibur)) {
+							$awal = $rowlibur['tglawal'];
+							$akhir = $rowlibur['tglakhir'];
+							//echo $awal." ".$akhir;
+							//echo "<br>";
+							if ($tgl_onrange>=$awal && $tgl_onrange<=$akhir) {
+								//Dapatkan nama hari dari tanggal
+								$validAbsen=false;
+							}	
 						}
-					},
-			callback: function (result) {
-				console.log('This was logged in the callback: ' + result)
-				if (result){
-					window.location=wa_absen
-						bootbox.alert({ 
-						size: "small",
-						message: "<?php echo '<h4>' ?>Terimakasih telah melakukan absen<?php echo '</h4>'?>", 
-						callback: function(){window.location="../../index.php?sidebar-menu=list_data_absensi&action=tampil" }
-					})
-				} else {
-					window.location="../../index.php?sidebar-menu=list_data_absensi&action=tampil"
+					}
+					if ($validAbsen==true) {
+						$query2 = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address','$tgl_onrange',STR_TO_DATE('$tgl_akhir', '%m/%d/%Y'))";
+						submitAbsensi($koneksi,$query2,$id,$status,$target_dir,$filename,$ukuran);
+						//call fungsi update cuti
+						updateCutiUsed($koneksi,$id,$status,$tgl_awal,$tgl_akhir);
+					}
 				}
-			}
-		});
-
-    </script>
+			} 
+		}	
+?>
+		

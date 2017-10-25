@@ -7,7 +7,8 @@
 	 if (!$result) {
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
-              } 
+			  } 
+			  
 
 	date_default_timezone_set('Asia/Jakarta');
 	$tgl_now_absen = date("d-m-Y");

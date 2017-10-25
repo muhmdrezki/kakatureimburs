@@ -70,7 +70,8 @@
 		//Function update cuti
 		function updateCutiUsed($conn,$id,$stat,$tgl1,$tgl2){
 			if ($stat==5) {
-				$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +DATEDIFF(STR_TO_DATE('$tgl2', '%m/%d/%Y'),STR_TO_DATE('$tgl1', '%m/%d/%Y'))+1) WHERE id_anggota='$id'";
+				//$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +DATEDIFF(STR_TO_DATE('$tgl2', '%m/%d/%Y'),STR_TO_DATE('$tgl1', '%m/%d/%Y'))+1) WHERE id_anggota='$id'";
+				$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +1) WHERE id_anggota='$id'";
 				$updateCuti = mysqli_query($conn, $queryCuti);
 				//$printf($updateCuti);
 				if (!$updateCuti) {
