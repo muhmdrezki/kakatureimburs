@@ -5,10 +5,7 @@
 	date_default_timezone_set('Asia/Jakarta');
 	$tgl_now = date("Y-m-d");
 	$dayname = date('D', strtotime($tgl_now));
-	$latKantor = -6.8869112;
-	$lngKantor = 107.6168524;
-	
 	if($dayname!="Sat" && $dayname!="Sun"){
-		autoAbsenHadir($latKantor,$lngKantor,$koneksi,$tgl_now);
+		autoAbsenAlpha($koneksi,$tgl_now);
 	}
 ?>

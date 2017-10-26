@@ -1,4 +1,5 @@
 <?php
+    chdir(dirname(__FILE__));
 	include "../../con_db.php";
 	//$sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.id_jenis, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status, tb_anggota.email FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.id_pembayaran='$id_pembayaran'";
 	$sql = "SELECT nama,email FROM tb_anggota WHERE id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal=CURRENT_DATE())";

@@ -284,7 +284,32 @@
 		}
 		
 	}
+	function autoAbsenAlpha($conn,$tgl_skrg){
+		$SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
+		$reslibur2=mysqli_query($conn, $SELECTLIBUR2);
+		if (!$reslibur2) {
+			printf("Error: %s\n", mysqli_error($conn));
+			exit();
+		}	
+		if(mysqli_num_rows($reslibur2)==0){
+			$selectalpha = "SELECT id_anggota FROM tb_anggota WHERE id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal=CURRENT_DATE())";
+			$resalpha=mysqli_query($conn,$selectalpha);
+			if (!$resalpha) {
+				printf("Error: %s\n", mysqli_error($conn));
+				exit();
+			} else {
+				while ($row = mysqli_fetch_array($resalpha)){
+					$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),6,CURRENT_DATE(),CURRENT_DATE())";
+					$insert = mysqli_query($conn, $query);
+					if (!$insert) {
+						printf("Error: %s\n", mysqli_error($conn));
+						exit();
+					}
+				}
+			}	
+		}
 		
+	}	
 	//functions
 
 	//End Cronjob Fungsi
