@@ -146,6 +146,7 @@
 						}
 					}
 					if ($validAbsen==true) {
+						//query absen
 						$query2 = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$id', CURRENT_DATE(),CURRENT_TIME(),'$status','$keterangan','$latitude','$longitude','$address','$tgl_onrange',STR_TO_DATE('$tgl_akhir', '%m/%d/%Y'))";
 						submitAbsensi($koneksi,$query2,$id,$status,$target_dir,$filename,$ukuran);
 						//call fungsi update cuti

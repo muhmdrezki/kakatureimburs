@@ -249,7 +249,45 @@
 				 $client->close();
 			}
 	//End List Fungsi Submit Absensi
+	//CronJob Fungsi
+	function autoAbsenHadir($lat,$lng,$conn,$tgl_skrg){
+		$SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
+		$reslibur2=mysqli_query($conn, $SELECTLIBUR2);
+		if (!$reslibur2) {
+			printf("Error: %s\n", mysqli_error($conn));
+			exit();
+		}	
+		if(mysqli_num_rows($reslibur2)!=0){
+			$address = getAddress($lat, $lng);
+			$address = $address?$address:'Tidak Ketemu';
+			$select="SELECT id_anggota FROM tb_anggota";
+			$result=mysqli_query($conn,$select);
+			if (!$result) {
+				printf("Error: %s\n", mysqli_error($conn));
+				exit();
+			} else {
+				while ($row = mysqli_fetch_array($result)){
+					$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),1,'$lat','$lng','$address',CURRENT_DATE(),CURRENT_DATE())";
+					$insert = mysqli_query($conn, $query);
+					if (!$insert) {
+						printf("Error: %s\n", mysqli_error($conn));
+						exit();
+					}
+					$query2= "UPDATE tb_credits_anggota SET total_credit=total_credit + topup_credit WHERE id_anggota='$row[id_anggota]'  AND status='unpaid' AND MONTH(tanggal_set)=MONTH(CURRENT_DATE()) AND YEAR(tanggal_set)=YEAR(CURRENT_DATE())";
+					$update = mysqli_query($conn, $query2);
+					if (!$update) {
+						printf("Error: %s\n", mysqli_error($conn));
+						exit();
+					}
+				}
+			}	
+		}
+		
+	}
+		
+	//functions
 
+	//End Cronjob Fungsi
 	//Enkripsi dan Dekripsi Data (Encode atau Decode)
 	function getSaltKey(){
 		//Tidak Boleh Diubah
