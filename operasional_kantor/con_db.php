@@ -1,8 +1,8 @@
 <?php
 
 	$db_host = "localhost";
-	$db_user = "admin";
-	$db_pass = "toor";
+	$db_user = "root";
+	$db_pass = "";
 	$db_name = "db_operasional-kantor";
 
 	$koneksi = mysqli_connect($db_host, $db_user, $db_pass);

@@ -9,6 +9,8 @@
 	$lngKantor = 107.6168524;
 	
 	if($dayname!="Sat" && $dayname!="Sun"){
-		autoAbsenHadir($latKantor,$lngKantor,$koneksi,$tgl_now);
+		autoAbsen($latKantor,$lngKantor,$koneksi,$tgl_now);
+		//Emit Data dengan Socket IO
+		emitData();
 	}
 ?>

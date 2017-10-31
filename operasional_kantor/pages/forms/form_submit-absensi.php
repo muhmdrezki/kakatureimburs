@@ -13,7 +13,6 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
       <!-- Google Font -->
           <!-- jQuery 3 -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="dist\js\myjs\form_submit-absensi.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <style type="text/css">    
         @media (max-width: 640px) {
@@ -75,7 +74,6 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
         session_start();
         date_default_timezone_set('Asia/Jakarta');
 		$tgl_now = date("d-m-Y");
-		
         $day = date('j', strtotime($tgl_now));
         $month = date('F', strtotime($tgl_now));
         $year = date('Y', strtotime($tgl_now));
@@ -222,7 +220,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
 												</div>
-												<input type="text" class="form-control pull-right" id="tglRentangSakit" name="tglRentangSakit" readonly>
+												<input type="text" class="form-control pull-right" id="tglRentangSakit" name="tglRentangSakit">
 											</div>
 											<!-- /.input group -->
 										</div>
@@ -247,7 +245,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
                                         </div><!-- /input-group image-preview [TO HERE]--> 
 										<div class="modal-footer">
 											<input type="submit" name="submit_sakit" value="Submit Sakit" class="btn btn-danger btn-sm">
-											<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">CLOSE</button>
+											<button type="button" class="btn btn-default btn-sm submit_sakit" data-dismiss="modal">CLOSE</button>
 										</div>
 									</div>
 								</div>
@@ -279,7 +277,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
 												</div>
-												<input type="text" class="form-control pull-right" id="tglRentangIzin" name="tglRentangIzin" readonly>
+												<input type="text" class="form-control pull-right" id="tglRentangIzin" name="tglRentangIzin">
 											</div>
 											<!-- /.input group -->
 										</div>
@@ -303,7 +301,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
                                         </div><!-- /input-group image-preview [TO HERE]--> 
 										<div class="modal-footer">
 											<input type="submit" name="submit_izin" value="Submit Izin" class="btn btn-danger btn-sm">
-											<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">CLOSE</button>
+											<button type="button" class="btn btn-default btn-sm submit_izin" data-dismiss="modal">CLOSE</button>
 										</div>
 									</div>
 								</div>
@@ -339,7 +337,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
 												</div>
-												<input type="text" class="form-control pull-right" id="tglRentangCuti" name="tglRentangCuti" readonly>
+												<input type="text" class="form-control pull-right" id="tglRentangCuti" name="tglRentangCuti">
 											</div>
 											<!-- /.input group -->
 										</div>
@@ -368,7 +366,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
                                         </div><!-- /input-group image-preview [TO HERE]--> 
 										<div class="modal-footer">
 											<input type="submit" name="submit_cuti" value="Submit Cuti" class="btn btn-danger btn-sm">
-											<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">CLOSE</button>
+											<button type="button" class="btn btn-default btn-sm submit_cuti" data-dismiss="modal">CLOSE</button>
 										</div>
 									</div>
 								</div>

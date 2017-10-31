@@ -486,6 +486,6 @@ desired effect
 <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js'></script>
 <!-- Page specific script -->
 
-<script type="text/javascript" src='dist/js/myjs/myjs.js'></script>
+<script type="text/javascript" src='fungsi_kakatu.js'></script>
 </body>
 </html>

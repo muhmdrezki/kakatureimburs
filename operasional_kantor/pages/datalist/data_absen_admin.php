@@ -4,8 +4,7 @@
         header("Location: ../../index.php?sidebar-menu=home&action=tampil");
     }
 ?>
-      <!-- jQuery 3 -->
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
 <section id="form_data-absen-admin" style="margin: 0 auto;">
 
 <div class="container fadeIn animated">
@@ -51,10 +50,12 @@
                          } else if($status == "Hadir Diluar"){
                           $ket = "<span class=\"label label-primary\">HADIR DILUAR</span>";
                          } else if($status == "Hadir"){
-							 $ket = "<span class=\"label label-info\">HADIR</span>";
-						 } else if($status == "Cuti"){
-							 $ket = "<span class=\"label label-success\">CUTI</span>";
-						 }
+                            $ket = "<span class=\"label label-info\">HADIR</span>";
+                          } else if($status == "Cuti"){
+                            $ket = "<span class=\"label label-success\">CUTI</span>";
+                          } else if($status == "Alpha"){
+                            $ket = "<span class=\"label label-default\">Alpha</span>";
+                          }
 
                          ?>
                          <td id="statusDetailAbsen"> <?php echo $ket ?> </td>
@@ -67,13 +68,22 @@
                               $blndataformat=$blndata->format('Ym');
                               $disabled="";
                               if (intval($blndataformat)<intval($blnskrgformat)) {
+                                  if ( $status!="Alpha") {
                          ?>
                          <td> <a href="#" id="<?php echo $row["id"] ?>" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a></td>
                          <?php
+                                  }
                               } else {
+                                if ( $status!="Alpha") {
                          ?>
                           <td> <a href="#" id="<?php echo $row["id"] ?>" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a><a href="#" id="<?php echo $row["id"]; ?>" class="btn btn-warning btn-xs edit_absen">EDIT</a> </td>    
-                         <?php } 
+                          <?php 
+                                } else {
+                          ?>
+                           <td> <a href="#" id="<?php echo $row["id"] ?>" class="btn btn-info btn-xs detail_kehadiran disabled" disabled > DETAIL </a><a href="#" id="<?php echo $row["id"]; ?>" class="btn btn-warning btn-xs edit_absen">EDIT</a> </td>
+                        <?php
+                                } 
+                         } 
                          ?>
                     </tr>
               <?php 
@@ -163,151 +173,3 @@
            </div>  
       </div>  
  </div>    
-<script>
-// Fetch Detail Data Absen
-     $(document).ready(function(){  
-      $('.detail_kehadiran').click(function(){  
-         var id = $(this).attr("id");
-          $.ajax({  
-                url:"pages/fetchdata/fetch_data_absen.php",  
-                method:"post",  
-                data:{id:id},  
-                success:function(data){
-                 $('#detail_kehadiran').html(data);           
-                 $('#dataModal').modal("show");
-                 $('#dataModal').on('shown.bs.modal', function() {
-                    var lat = parseFloat($('#latDetailAbsen').text());
-                     var lng = parseFloat($('#lngDetailAbsen').text());
-                     //console.log(lat);
-                     //console.log(lng);
-                     console.log("Center");
-                     google.maps.event.addDomListener(window, 'load', initMap(lat,lng));
-                     google.maps.event.addDomListener(window, "resize", function() {
-                      var waktu = $('#waktuDetailAbsen').text();
-                          var nama = $('#namaDetailAbsen').text();
-                          var status = $('#statusDetailAbsen').text();
-                          //var myLatLng = {lat: lat1,lng: lng1};
-                          console.log("Inisiasi Map");
-                          var myLatLng = new google.maps.LatLng(lat,lng);
-                          var map = new google.maps.Map(document.getElementById('peta'), {
-                            zoom: 18,
-                            center: myLatLng,
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
-                          });
-                          console.log("Buat marker");
-                          var marker = new google.maps.Marker({
-                            position: myLatLng,
-                            map: map,
-                            title: 'Lokasi '+nama+' pada '+waktu+' saat '+status
-                          });
-                          var center = map.getCenter();
-                          google.maps.event.trigger(map, "resize");
-                          map.setCenter(center);
-                      });
-                     //google.maps.event.trigger(map, 'resize');
-                     //Foto Di klik
-                    $('.pop').on('click', function() {
-                        $('.imagepreview').attr('src', $(this).attr('src'));
-                        $('#imagemodal').modal('show');   
-                    }); 
-                })
-             }
-         });
-      });
-      
-        
-    });
-    //Edit Absen
-    $(document).on('click', '.edit_absen', function(){ 
-    var id_absen = $(this).attr("id");   
-              $.ajax({  
-                  url:"pages/fetchdata/fetch_data_absen-json.php",  
-                  method:"POST",  
-                  data:{id:id_absen},  
-                  dataType:"json",  
-                  success:function(data){ 
-                      $('#id_absen').val(data.id);
-                      $('#id_anggota_absen').val(data.id_anggota);
-                      $('#status_id_adminEdit').val(data.status_id); 
-                      $('#keterangan_absen').val(data.keterangan);
-                      $('#tglRentangAbsenAdmin').val(data.tglawal+" - "+data.tglakhir);  
-                      $('#insert').val("Update");  
-                      $('#editAbsen_Modal').modal('show');
-                      $('#editAbsen_Modal').on('shown.bs.modal', function() {
-                        //console.log("status"+data.status_id);
-                        var value = parseInt(data.status_id);
-                        gantiWarnaStatusAbsenSelect(value);
-                      });  
-                  }  
-            });
-        });    
-    //Buat Map
-    function initMap(lat1,lng1) {
-        var waktu = $('#waktuDetailAbsen').text();
-        var nama = $('#namaDetailAbsen').text();
-        var status = $('#statusDetailAbsen').text();
-        //var myLatLng = {lat: lat1,lng: lng1};
-        console.log("Inisiasi Map");
-        var myLatLng = new google.maps.LatLng(lat1,lng1);
-        var map = new google.maps.Map(document.getElementById('peta'), {
-          zoom: 18,
-          center: myLatLng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
-        console.log("Buat marker");
-        var marker = new google.maps.Marker({
-          position: myLatLng,
-          map: map,
-          title: 'Lokasi '+nama+' pada '+waktu+' saat '+status
-        });
-        //Resize Function
-        
-        google.maps.event.addDomListener(window, "resize", function() {
-            var center = map.getCenter();
-            google.maps.event.trigger(map, "resize");
-            map.setCenter(center);
-        });
-          console.log("Responsive Center");
-      }
-      //Proses Pembuatan Map end
-      //Ganti Warna Select Status Absen
-      function gantiWarnaStatusAbsenSelect(value){
-        switch (value) {
-          case 1:
-            $("#status_id_adminEdit").attr("class","form-control btn-info");
-            $("#keterangan_absen").prop('disabled', true);
-            $("#insert").attr("class","btn btn-info");
-            $("#keterangan_absen").val("");
-            break;
-          case 2:
-            $("#status_id_adminEdit").attr("class","form-control btn-primary");
-            $("#insert").attr("class","btn btn-primary");
-            $("#keterangan_absen").prop('disabled', false);
-          break;
-          case 3:
-            $("#status_id_adminEdit").attr("class","form-control btn-danger");
-            $("#keterangan_absen").prop('disabled', false);
-            $("#insert").attr("class","btn btn-danger");
-          break;
-          case 4:
-            $("#status_id_adminEdit").attr("class","form-control btn-warning");
-            $("#keterangan_absen").prop('disabled', false);
-            $("#insert").attr("class","btn btn-warning");
-          break;
-          case 5:
-            $("#status_id_adminEdit").attr("class","form-control btn-success");
-            $("#keterangan_absen").prop('disabled', false);
-            $("#insert").attr("class","btn btn-success");
-          break;
-          case 6:
-            $("#status_id_adminEdit").attr("class","form-control btn-default");
-            $("#keterangan_absen").prop('disabled', false);
-            $("#insert").attr("class","btn btn-default");
-          break;
-        }
-      }
-      $("#status_id_adminEdit").change(function(){
-        var value = parseInt($(this).val());
-        gantiWarnaStatusAbsenSelect(value);
-    }); 
-</script>

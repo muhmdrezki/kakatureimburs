@@ -41,9 +41,13 @@
       width: 20px;
       height: 100%;
       border-radius: 5px;
-}
+	}
+	.chartjs-hidden-iframe {
+		height: 100% !important;
+	}
+
     </style>
-<body>
+<body onload="loadChartKakatu();zoomLoadEvent();">
  <!-- Content Header (Page header) -->
     <section class="content-header">
 
@@ -161,68 +165,59 @@
       </div>
       <!-- /.row -->
       </section>
-
- <!-- /.info-box-content -->
 	<Section class="content fadeInRight animated" id="absensi_hari_ini">
 		 <!-- Apply any bg-* class to to the info-box to color it -->
 	 <!-- DONUT CHART -->
 		<br>
 		<div class="row" id="updateAbsensiHariIni">
-			<div class="col-md-6">
+			<div class="col-md-12">
 					   <!-- BAR CHART -->
 				  <div class="box box-info">
 					<div class="box-header with-border">
-					  <h3 class="box-title">Absensi <?php if($_SESSION['jabatan'] != 'Admin'){echo " Anda ";}?> Hari Ini</h3>
-
+					  <h3 class="box-title">Statistik Absensi Hari Ini</h3>
 					  <div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 						</button>
 					  </div>
 					</div>
 					<div class="box-body">
-							  <ul class="chart-legend clearfix list-inline">
-								<li><i class="fa fa-circle-o text-aqua list-inline-item"></i>Hadir</li>
-								<li><i class="fa fa-circle-o text-light-blue list-inline-item"></i>Hadir Diluar</li>
-								<li><i class="fa fa-circle-o text-red list-inline-item"></i>Sakit</li>
-								<li><i class="fa fa-circle-o text-yellow list-inline-item"></i>Izin</li>
-								<li><i class="fa fa-circle-o text-green list-inline-item"></i>Cuti</li>
-								<li><i class="fa fa-circle-o text-gray list-inline-item"></i>Alpha</li>
-							  </ul>
-							  <br>
-							  <div class="col-md-11">
-							  <div class="chart-responsive">
-								<canvas id="chart_absensi-hari-ini"></canvas>
+							  <div class="col-md-4">
+								  <div class="row">
+									  <div class="">
+										  <ul class="chart-legend clearfix list-inline">
+											  <li id="listHadir"><span class="list-inline-item label label-info badge" id="jumhadir" ></span>Hadir</li>
+											  <li id="listHadirDiluar"><span class="list-inline-item label label-primary badge" id="jumhadirdiluar"></span>Hadir Diluar</li>
+											  <li id="listSakit"><span class="list-inline-item label label-danger badge" id="jumsakit"></span>Sakit</li>
+											  <li id="listIzin"><span class="list-inline-item label label-warning badge" id="jumizin"></span>Izin</li>
+											  <li id="listCuti"><span class="list-inline-item label label-success badge" id="jumcuti"></span>Cuti</li>
+											  <li id="listAlpha"><span class="list-inline-item label label-default badge" id="jumalpha"></span>Alpha</li>
+										  </ul>
+									  </div>
+									  <br>
+									  <div class="chart-responsive col-md-12 col-md-pull-2">
+										<canvas id="chart_absensi-hari-ini"></canvas>
+									  </div>
+								  </div>
 							  </div>
+							  <div class="col-md-8">
+									<div id="galleryFotoAbsensi"></div>
 							  </div>
 							  <!-- ./chart-responsive -->
 							<!-- /.col -->
 
 							<!-- /.col -->
 						  <!-- /.row -->
-						</div>
+					</div>
 					<!-- /.box-body -->
+					  <div class="box-footer with-border">
+						<h4 class="box-title">Progress Absensi Hari ini</h4>
+						<div class="progress" id="progres-absen-hari-ini2">
+							<div class="progress-bar " id="progres-absen-hari-ini" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">0%</div>
+						</div>
+					  </div>
 				</div>
 				  <!-- /.box -->
 			</div>
-			<div class="col-md-6">
-			  <div class="box box-success">
-				<div class="box-header with-border">
-				  <h3 class="box-title">Progress Absensi Hari Ini</h3>
-          <div class="box-tools pull-right">
-						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-						</button>
-					  </div>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body">
-                    <div class="progress active">
-                        <div class="progress-bar progress-bar-striped" id="progres-absen-hari-ini" style="width:0%">0%</div>
-                    </div>
-				</div>
-				</div>
-				<!-- /.box-body -->
-			  </div>
-			  <!-- /.box -->
         </div>
 	 </Section>
     <Section class="content fadeInRight animated" id="statistik_absen">
@@ -242,7 +237,7 @@
 					  </div>
 					</div>
 					<div class="box-body">
-								<ul class="chart-legend clearfix list-inline">
+							  <ul class="chart-legend clearfix list-inline">
 								<li><i class="fa fa-square text-aqua list-inline-item"></i>Hadir</li>
 								<li><i class="fa fa-square text-red list-inline-item"></i>Sakit</li>
 								<li><i class="fa fa-square text-yellow list-inline-item"></i>Izin</li>
@@ -319,7 +314,9 @@
 	</section>
 
 </body>
+  <script>
 
+ </script>
         <?php
           list($one, $two) = explode(",", $_SESSION['jabatan'], 2);
 
@@ -383,7 +380,6 @@ if ($_SESSION['jabatan'] == 'Admin') {
 <?php
 }
 ?>
-
 </html>
 
 

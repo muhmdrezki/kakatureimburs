@@ -39,17 +39,17 @@ if(isset($_POST["submit_csv-pembayaran"]))
       $output = fopen("php://output", "w");
       session_start();
       if ((isset($_SESSION['tglfilterrekapabsen1']) && $_SESSION['tglfilterrekapabsen1'] == 1) && (isset($_SESSION['tglfilterrekapabsen2']) && $_SESSION['tglfilterrekapabsen2'] == 1)) {
-            $query = "SELECT b.nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,c.total_credit AS totcredit FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE DATE(tanggal) BETWEEN STR_TO_DATE('$_SESSION[tglfilterrekapabsen1]', '%m/%d/%Y') AND STR_TO_DATE('$_SESSION[tglfilterrekapabsen2]', '%m/%d/%Y') GROUP BY a.id_anggota";
+            $query = "SELECT a.id_anggota,b.nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha AS totcredit FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota  WHERE DATE(a.tanggal) BETWEEN STR_TO_DATE('$_SESSION[tglfilterrekapabsen1]', '%m/%d/%Y') AND STR_TO_DATE('$_SESSION[tglfilterrekapabsen2]', '%m/%d/%Y') GROUP BY a.id_anggota";
             unset($_SESSION["tglfilterrekapabsen1"]);
             unset($_SESSION["tglfilterrekapabsen2"]);
       } else {
-            $query = "SELECT b.nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,c.total_credit AS totcredit FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota GROUP BY a.id_anggota";
+            $query = "SELECT a.id_anggota,b.nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota";
       }
-      fputcsv($output, array('Nama', 'Jumlah Hadir', 'Jumlah Sakit', 'Jumlah Izin', 'Jumlah Cuti', 'Jumlah Alpha', 'Total Akomodasi'));
+      fputcsv($output, array('ID Anggota','Nama', 'Jumlah Hadir', 'Jumlah Sakit', 'Jumlah Izin', 'Jumlah Cuti', 'Jumlah Alpha'));
       $result = mysqli_query($koneksi, $query);  
       while($row = mysqli_fetch_assoc($result))  
       {  
-           fputcsv($output, $row);  
+           fputcsv($output, $row); 
       }  
       fclose($output);  
 }  

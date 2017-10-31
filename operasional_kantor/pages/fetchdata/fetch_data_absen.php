@@ -5,7 +5,7 @@
 
       $output = '';  
       include "../../con_db.php";
-
+      include "../../fungsi_kakatu.php";
       $query = "SELECT * FROM tb_detail_absen WHERE id = '$id'";  
       $result = mysqli_query($koneksi, $query);
       $output .= '
@@ -15,6 +15,8 @@
       while($row = mysqli_fetch_array($result))  
       {     
             $status = $row[status_id];
+            $alamat = getAddress($row["latitude"],$row["longitude"]);
+            $alamat = $alamat?$alamat:'Tidak Ketemu';
             $output .= ' 
             <tr style="display:none">  
                  <td width="30%"><label>Lattitude </label></td>  
@@ -45,7 +47,7 @@
                 </tr>
                 <tr>
                     <td width="30%"><label> Alamat Lokasi </label></td>  
-                    <td width="70%" style="white-space:normal">'.$row["alamat_lokasi"].'</td> 
+                    <td width="70%" style="white-space:normal">'.$alamat.'</td> 
                 </tr>
                 <tr>
                     <td colspan="2" width="70%" tyle="position:relative;"><div id="peta" style="height:300px;
@@ -75,7 +77,7 @@
                 </tr>
                 <tr>
                     <td width="30%"><label> Alamat Lokasi </label></td>  
-                    <td width="70%" style="white-space:normal">'.$row["alamat_lokasi"].'</td> 
+                    <td width="70%" style="white-space:normal">'.$alamat .'</td> 
                 </tr>
                 <tr>
                     <td colspan="2" width="70%" tyle="position:relative;"><div id="peta" style="height:300px;
@@ -97,7 +99,7 @@
                 </tr>
                 <tr>
                     <td width="30%"><label> Alamat Lokasi </label></td>  
-                    <td width="70%" style="white-space:normal">'.$row["alamat_lokasi"].'</td> 
+                    <td width="70%" style="white-space:normal">'.$alamat.'</td> 
                 </tr>
                 <tr>
                     <td colspan="2" width="70%" tyle="position:relative;"><div id="peta" style="height:300px;
@@ -112,7 +114,7 @@
                 $output .= ' 
                 <tr>
                     <td width="30%"><label> Alamat Lokasi </label></td>  
-                    <td width="70%" style="white-space:normal">'.$row["alamat_lokasi"].'</td> 
+                    <td width="70%" style="white-space:normal">'.$alamat.'</td> 
                 </tr>
                 <tr>
                     <td colspan="2" width="70%" tyle="position:relative;"><div id="peta" style="height:300px;
@@ -142,7 +144,7 @@
                 </tr>
                 <tr>
                     <td width="30%"><label> Alamat Lokasi </label></td>  
-                    <td width="70%" style="white-space:normal">'.$row["alamat_lokasi"].'</td> 
+                    <td width="70%" style="white-space:normal">'.$alamat.'</td> 
                 </tr>
                 <tr>
                     <td colspan="2" width="70%" tyle="position:relative;"><div id="peta" style="height:300px;
@@ -151,6 +153,13 @@
                     padding-top: 30px;
                     position: relative;"></div></td> 
                 </tr>
+                '; 
+            } else if($status == 6){
+                $output .= ' 
+                    <tr>  
+                            <td width="30%"><label> Keterangan </label></td>  
+                            <td width="70%" style="white-space:normal">Tanpa Keterangan</td>  
+                    </tr>
                 '; 
             }
             

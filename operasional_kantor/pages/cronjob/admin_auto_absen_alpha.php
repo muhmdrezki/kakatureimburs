@@ -7,5 +7,7 @@
 	$dayname = date('D', strtotime($tgl_now));
 	if($dayname!="Sat" && $dayname!="Sun"){
 		autoAbsenAlpha($koneksi,$tgl_now);
+		//Emit Data dengan Socket IO
+		emitData();
 	}
 ?>

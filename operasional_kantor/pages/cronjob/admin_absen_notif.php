@@ -64,7 +64,6 @@
 				while ($row = mysqli_fetch_array($result)){
 					$mail->ClearAllRecipients();
 					$mail->addAddress($row['email'],$row['nama']); // Add a recipient
-					
 					$mail->Subject = "Reminder: Yuk isi absen,".$row['nama'];
 					$mail->Body    = "Dear, ".$row['nama'].". <br><br>
 					Anda belum mengisi absensi pada hari <b>".$dayname." , ".$day." ".$month." ".$year."</b> hingga pukul <b>".$timenow."</b><br><br>
@@ -75,10 +74,5 @@
 					} 
 				}
 		}
-	}
-
-	
-
-	
-	
+	}	
 ?>

@@ -3,7 +3,96 @@
      modules : 'file'
   });
   //rezki
-
+ //Fungsi Form Absensi
+        //Proses Ambil Latitude & Longitude
+        var y = document.getElementById("nonsupport");
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(getPosition);
+            } else {
+                y.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        var latitude = document.getElementById("latitude");
+        var longitude = document.getElementById("longitude");
+        function getPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var API_KEY = 'AIzaSyAn0sCC7HGqbJbWhwkgJnvyWFiTa7QGtVI';
+            $.ajax({
+                url: 'pages/fetchdata/fetch_data-alamat.php',
+                type: 'post',
+                data: {
+                    latitude: lat,
+                    longitude: lng
+                },
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    console.log('address', response.address);
+                    ///tes
+                    $('#latitude').val(response.latitude);
+                    $('#longitude').val(response.longitude);
+                    //$('#address').val(response.address);
+                    //tes
+                    $('#address_hadirdiluar').val(response.address);
+                    $('#address_sakit').val(response.address);
+                    $('#address_izin').val(response.address);
+                    $('#address_cuti').val(response.address);
+                    //gambar lokasi
+                    //var src = 'http://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + lng + '&markers=size:midcolor:red|label:|' + lat + ',' + lng + '&zoom=17&size=600x400&key=' + API_KEY;
+                    //$('#img-location').attr("src", src);
+                },
+                error: function (response) {
+                    console.log(response);
+    
+                }
+            });
+    
+        }
+        var statussaya = document.getElementById("statussaya");
+        var ketsaya = document.getElementById("statussaya")
+        function formatPesan() {
+            var waktuAbsen = document.getElementById("waktuAbsen").innerHTML;
+            var idAbsen = document.getElementById("id_anggota_absen").value;
+            document.getElementById("idsaya").innerHTML = idAbsen;
+            var namaAbsen = document.getElementById("nama_absen").value;
+            document.getElementById("namasaya").innerHTML = namaAbsen;
+            var stat = x.options[x.selectedIndex].tex;
+            var ket1;
+            switch (stat) {
+                case "Hadir":
+                    ket1 = "Hadir";
+                    break;
+                case "Hadir (Diluar)":
+                    ket1 = "Hadir diluar";
+                    break;
+                case "Sakit":
+                    ket1 = "Sakit";
+                    break;
+                case "Izin":
+                    ket1 = "Izin";
+                    break;
+            }
+            statussaya.innerHTML = ket1;
+            var ket2 = document.getElementById("keterangan_absen").value;
+            document.getElementById("ketsaya").innerHTML = ket2;
+            var lokasi = document.getElementById("adress").value;
+            document.getElementById("lokasi").innerHTML = lokasi;
+            var waMsg1 = "Waktu Absen: " + "\n" + waktuAbsen + "\n\n" + "ID Anggota: " + "\n" + idAbsen + "\n\n" + "Nama: " + "\n" + namaAbsen + "\n\n" + "Status: " + "\n" + ket1 + "\n\n" + "Keterangan: " + "\n" + ket2 + "\n\n" + "Lokasi: " + "\n" + lokasi;
+            var waMsg1 = window.encodeURIComponent(waMsg1);
+            var waMsg2 = document.getElementById("isiPesanWA").innerText;
+            var isiPesanWA = "whatsapp://send?text=" + waMsg1;
+            //alert(isiPesanWA);
+            document.getElementById("pesanWA").setAttribute("href", isiPesanWA);
+        }
+        // End Proses Ambil Latitude & Longitude
+        function validasiCuti(){
+            var sisacuti = $("#sisacuti").val();
+    
+        }
+        //End Fungsi Form Absensi
+        
  //MASK MONEY
  $(function() {
     $(function(){
@@ -286,26 +375,37 @@
           var end = picker.endDate.format('MM/DD/YYYY');
           var date1 = new Date(start);
           var date2 = new Date(end);
-          var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))+1; 
-          //var sisacuti= <?php echo $_SESSION["sisacuti"] ?>;
-          var sisacuti=1000;
+          //var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+          //var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))+1; 
+          var sisaCuti;
+          var cutiUsed;
+          $.ajax({
+            async: false, 
+            type: "POST",
+            url: "pages/fetchdata/fetch_data-hitungcutiused.php",
+            data: {start:start,end:end},
+            dataType:"json", 
+            success: function (data) {
+              console.log("Sisa Cuti: "+data.sisaCuti+" Cuti Used: "+data.cutiUsed);
+              sisaCuti = data.sisaCuti;
+              cutiUsed=data.cutiUsed;
+            }
+          });
+          var status=$("#status_id_adminEdit").val();
           var today= new Date();
           var timeDiff2 = date1.getTime() - today.getTime();
           var diffDays2 = Math.ceil(timeDiff2 / (1000 * 3600 * 24));
           //var tglskrg = (today.getMonth()+1) + '/' + today.getDate() + '/' + today.getFullYear();
-          var status=$("#status_id_adminEdit").val();
-          //console.log(status);
-          var validate = diffDays>sisacuti;
           if (diffDays2<0) {
               alert("Tidak boleh memilih tanggal yang telah lewat");
               $('#tglRentangCuti').val('');
           } else {
-            if (diffDays>sisacuti && status=="5") {
-              alert("Total hari tidak boleh melebihi jatah cuti");
+            if (cutiUsed>sisaCuti && status=="5") {
+              alert("Cuti yang digunakan melebihi jatah cuti!");
               $('#tglRentangCuti').val('');
             }
           }
+
         })
 
         $('#tglRentangLibur').daterangepicker({drops: 'up'}) 
@@ -342,15 +442,22 @@
           var end = picker.endDate.format('MM/DD/YYYY');
           var date1 = new Date(start);
           var date2 = new Date(end);
-          var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))+1; 
+          console.log(start+"-"+end);
+          //var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+          //var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))+1; 
           //var sisacuti= <?php echo $_SESSION["sisacuti"] ?>;
-          var sisacuti;
+          var sisaCuti;
+          var cutiUsed;
           $.ajax({
-            'async': false, 
-            'url': "pages/fetchdata/fetch_data-sisacuti.php",
-            'success': function (data) {
-              sisacuti=data;
+            async: false, 
+            type: "POST",
+            url: "pages/fetchdata/fetch_data-hitungcutiused.php",
+            data: {start:start,end:end},
+            dataType:"json", 
+            success: function (data) {
+              console.log("Sisa Cuti: "+data.sisaCuti+" Cuti Used: "+data.cutiUsed);
+              sisaCuti = data.sisaCuti;
+              cutiUsed=data.cutiUsed;
             }
           });
           var today= new Date();
@@ -361,8 +468,8 @@
               alert("Tidak boleh memilih tanggal yang telah lewat");
               $('#tglRentangCuti').val('');
           } else {
-            if (diffDays>sisacuti) {
-              alert("Total hari tidak boleh melebihi jatah cuti");
+            if (cutiUsed>sisaCuti) {
+              alert("Cuti yang digunakan melebihi jatah cuti!");
               $('#tglRentangCuti').val('');
             }
           }
@@ -432,7 +539,7 @@
           autoclose: true
         })
      //END DATE PICKER
-
+   
     // DONUT CHART PEMBAYARAN
     function configChartJumlahOperasional(dataJumlahOperasional){
       var donut = new Morris.Donut({
@@ -486,7 +593,7 @@
       //Boolean - whether to make the chart responsive to window resizing
       responsive           : true,
       // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-      maintainAspectRatio  : true,
+      maintainAspectRatio  : false,
       onAnimationProgress: drawSegmentValues
     }
     //Create pie or douhnut chart
@@ -684,7 +791,7 @@
 	//Socket IO
 	var socket = io.connect("https://localhost:3000");
 	    socket.on("submit_baru", function (data) {
-			  console.log(data);
+			  //console.log(data);
         ajaxProgressAbsenHariIni();
         ajaxchartConfigAbsen(false);
         ajaxchartConfigTotalAbsen();

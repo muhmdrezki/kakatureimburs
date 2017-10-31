@@ -2,6 +2,7 @@
 session_start();
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	include "../../con_db.php";
+	include "../../fungsi_kakatu.php";
 	$target_dir = "../../dist/fotoprofile/";
 	$target_file = $target_dir . basename($_FILES["image"]["name"]);
 	$file = basename($_FILES["image"]["name"]);
@@ -46,6 +47,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	// if everything is ok, try to upload file
 	} else {
 	    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+			emitData();
 	    	?>
 	         <script type="text/javascript"> alert(" <?php  echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded."; ?>"); </script>
 	    	<?php

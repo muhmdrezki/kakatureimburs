@@ -133,7 +133,7 @@
 				} else {
 					$namatgl = new DateTime();
 					$namatgl->setTimezone(new DateTimeZone('Asia/Jakarta'));
-					$namabaru= $namatgl->format('Y-m-d-H-i-s');
+					$namabaru= $namatgl->format('YmdHis');
 					$sementara = explode(".", $_FILES[$filename]["name"]);
 					$newfilename = $namabaru.'.'.end($sementara);
 					if (move_uploaded_file($_FILES[$filename]["tmp_name"], $targetdir.$newfilename)) {
@@ -146,7 +146,7 @@
 						<?php
 					}
 				
-				$sql = "UPDATE tb_detail_absen SET foto_lokasi = '$file' WHERE id_anggota = '$_SESSION[id_anggota]' AND tanggal=CURRENT_DATE()";
+				$sql = "UPDATE tb_detail_absen SET foto_lokasi = '$newfilename' WHERE id_anggota = '$_SESSION[id_anggota]' AND tanggal=CURRENT_DATE()";
 				$res = mysqli_query($conn, $sql);    
 		
 				if (!$res) {
@@ -171,7 +171,86 @@
 	
 		}
 
-
+		//Fungsi validasi Hitungan Cuti dari range tanggal
+		function countCuti($tgl_awal,$tgl_akhir,$conn){
+			$begin = new DateTime($tgl_awal);
+			$end = new DateTime($tgl_akhir);
+			//$end = $end->modify('+1 day');
+			//$tgl_akhir = $end->format('Y-m-d');
+			//echo $tgl_awal." ".$tgl_akhir;
+			//echo "<br>";
+			//Query untuk mengambil tgl_libur yang berada diantara range tanggal yg dipilih
+		
+			//hitung interval
+			$interval = DateInterval::createFromDateString('1 day');
+			//dapatkan periode increment per 1 hari
+			$period = new DatePeriod($begin, $interval, $end);
+			//$tgl_onrange=null;
+			//loop ke tanggal range increment satu hari
+			$cutiUsed = 0;
+			foreach ( $period as $dt ){
+				$validAbsen=true;
+				$tgl_onrange = $dt->format( "Y-m-d" );
+				$dayNameOnTglRange = date('D', strtotime($tgl_onrange));
+				//Check tanggal apakah tanggal ada di hari sabtu atau tidak
+				if ($dayNameOnTglRange=="Sat" || $dayNameOnTglRange=="Sun"){
+					$validAbsen=false;
+				} else {
+					$SELECTLIBUR = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE (tglawal>=STR_TO_DATE('$tgl_awal', '%m/%d/%Y') AND tglakhir<=STR_TO_DATE('$tgl_akhir', '%m/%d/%Y')) AND tglakhir>=STR_TO_DATE('$tgl_awal', '%m/%d/%Y')";
+					$reslibur=mysqli_query($conn, $SELECTLIBUR);
+					while ($rowlibur=mysqli_fetch_array($reslibur)) {
+						$awal = $rowlibur['tglawal'];
+						$akhir = $rowlibur['tglakhir'];
+						if ($tgl_onrange>=$awal && $tgl_onrange<=$akhir) {
+							$validAbsen=false;
+						}	
+					}
+				}
+				if ($validAbsen==true) {
+					$cutiUsed++;
+				}
+			}
+			return $cutiUsed;
+		}
+		//End Fungsi validasi Hitungan Cuti dari range tanggal
+		//Fungsi validasi Hitungan Cuti dari range tanggal
+		function countMaxDateFromSisaCuti($sisaCuti,$conn){
+			date_default_timezone_set('Asia/Jakarta');
+			//var_dump($begin);
+			
+			date_default_timezone_set('Asia/Jakarta');
+			$begin= new DateTime();
+			$tgl = $begin->format('Y-m-d');
+			$namaHariBegin=date('D', strtotime($tgl));
+			$cutiUsed = 0;
+			while($cutiUsed<$sisaCuti) {
+				//echo $tgl."<br>";
+				$validAbsen=1;
+				$namaHariBegin=date('D', strtotime($tgl));
+				if ($namaHariBegin=="Sat" || $namaHariBegin=="Sun"){
+					$validAbsen=0;
+				} else {
+					$SELECTLIBUR21 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl' AND tglakhir>='$tgl'";
+					$reslibur21=mysqli_query($conn, $SELECTLIBUR21);
+					if (!$reslibur21) {
+						printf("Error: %s\n", mysqli_error($conn));
+						exit();
+					}
+					if(mysqli_num_rows($reslibur21)!=0){
+						$validAbsen=0;
+					}
+				}
+				if ($validAbsen==1) {
+					$cutiUsed++;
+				}
+				$begin= $begin->modify('+1 day');
+				$tgl = $begin->format('Y-m-d');
+			}
+			$begin= $begin->modify('-1 day');
+			//echo $cutiUsed;
+			return $begin;
+		}
+		//End Fungsi validasi Hitungan Cuti dari range tanggal
 		//Fungsi Haversine Formula hitung jarak dari dua lat lng
 		function getDistance2($latitude1, $longitude1, $latitude2, $longitude2) {  
 			$earth_radius = 6371;  
@@ -238,8 +317,8 @@
 				return $s; 
 			}
 
-			//fungsi untuk mengemit data darri SocketIO
-			function emitData(){
+	//fungsi untuk mengemit data dari SocketIO
+	function emitData(){
 				//Socket IO mulai
 				 $version = new Version2X("https://localhost:3000", ['context' => ['ssl' => ['verify_peer_name' =>false, 'verify_peer' => false]]]);
 				 $client = new Client($version);
@@ -247,19 +326,23 @@
 				 $masuk=array("Submit");
 				 $client->emit("submit_baru",$masuk);
 				 $client->close();
-			}
+	}
 	//End List Fungsi Submit Absensi
 	//CronJob Fungsi
-	function autoAbsenHadir($lat,$lng,$conn,$tgl_skrg){
+	function autoAbsen($lat,$lng,$conn,$tgl_skrg){
 		$SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
+		//echo $SELECTLIBUR2;
 		$reslibur2=mysqli_query($conn, $SELECTLIBUR2);
 		if (!$reslibur2) {
 			printf("Error: %s\n", mysqli_error($conn));
 			exit();
-		}	
-		if(mysqli_num_rows($reslibur2)!=0){
-			$address = getAddress($lat, $lng);
-			$address = $address?$address:'Tidak Ketemu';
+		}
+		//$tes = mysqli_num_rows($reslibur2);
+		//echo "tes".$tes."<br>";
+		//Jika hari libur bukan dihari sabtu minggu	
+		if(mysqli_num_rows($reslibur2)==0){
+			//$address = getAddress($lat, $lng);
+			//$address = $address?$address:'Tidak Ketemu';
 			$select="SELECT id_anggota FROM tb_anggota";
 			$result=mysqli_query($conn,$select);
 			if (!$result) {
@@ -267,20 +350,41 @@
 				exit();
 			} else {
 				while ($row = mysqli_fetch_array($result)){
-					$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,alamat_lokasi,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),1,'$lat','$lng','$address',CURRENT_DATE(),CURRENT_DATE())";
+					$query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),1,'$lat','$lng',CURRENT_DATE(),CURRENT_DATE())";
+					//echo $query;
 					$insert = mysqli_query($conn, $query);
 					if (!$insert) {
 						printf("Error: %s\n", mysqli_error($conn));
 						exit();
 					}
 					$query2= "UPDATE tb_credits_anggota SET total_credit=total_credit + topup_credit WHERE id_anggota='$row[id_anggota]'  AND status='unpaid' AND MONTH(tanggal_set)=MONTH(CURRENT_DATE()) AND YEAR(tanggal_set)=YEAR(CURRENT_DATE())";
+					//echo $query2;
 					$update = mysqli_query($conn, $query2);
 					if (!$update) {
 						printf("Error: %s\n", mysqli_error($conn));
 						exit();
 					}
 				}
-			}	
+			}
+		} else {
+			//echo "rencana<br>";
+			//Jika hari kerja
+			$selectRencanaAbsen="SELECT * FROM tb_cronjob_rencana_absen WHERE tglawal<=CURRENT_DATE() AND tglakhir>=CURRENT_DATE()";
+			$resRencanaAbsen=mysqli_query($conn,$selectRencanaAbsen);
+			if (!$resRencanaAbsen) {
+				printf("Error: %s\n", mysqli_error($conn));
+				exit();
+			}
+			while ($rowRencanaAbsen=mysqli_fetch_array($resRencanaAbsen)) {
+				//$alamat=getAddress($rowRencanaAbsen['lat'], $rowRencanaAbsen['lng']);
+				$insertAbsen= "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir,foto_lokasi) VALUES ('$rowRencanaAbsen[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),'$rowRencanaAbsen[status_id]','$rowRencanaAbsen[keterangan]','$rowRencanaAbsen[lat]','$rowRencanaAbsen[lng]',CURRENT_DATE(),'$rowRencanaAbsen[tglakhir]','$rowRencanaAbsen[foto_lokasi]')";
+				$resInsertAbsen = mysqli_query($conn, $insertAbsen);
+				if (!$resInsertAbsen) {
+					printf("Error: %s\n", mysqli_error($conn));
+					exit();
+				}
+				topupCredit($conn,$rowRencanaAbsen['id_anggota'],$rowRencanaAbsen['id_anggota']);
+			}  
 		}
 		
 	}
@@ -308,11 +412,30 @@
 				}
 			}	
 		}
-		
 	}	
 	//functions
 
 	//End Cronjob Fungsi
+
+	//Fungsi Cron Rencana Absen
+	function cronRencanaAbsen($id,$stat,$ket,$lat,$lng,$tawal,$takhir,$conn){
+		$ambilNamaFoto="SELECT foto_lokasi FROM tb_detail_absen WHERE id_anggota='$id' AND tanggal=CURRENT_DATE() ORDER BY jam_masuk DESC";
+		$resNamaFoto=mysqli_query($conn,$ambilNamaFoto);
+		if (!$resNamaFoto) {
+			printf("Error: %s\n", mysqli_error($conn));
+			exit();
+		}
+
+		$rowNamaFoto=mysqli_fetch_assoc($resNamaFoto);
+		$insertRencanaAbsen = "INSERT INTO tb_cronjob_rencana_absen (id_anggota,status_id,keterangan,lat,lng,tglawal,tglakhir,foto_lokasi) VALUES ('$id','$stat','$ket','$lat','$lng',STR_TO_DATE('$tawal', '%m/%d/%Y'),STR_TO_DATE('$takhir', '%m/%d/%Y'),'$rowNamaFoto[foto_lokasi]')";
+		$resRencanaAbsen=mysqli_query($conn,$insertRencanaAbsen);
+		if (!$resRencanaAbsen) {
+			printf("Error: %s\n", mysqli_error($conn));
+			exit();
+		}
+	}
+	//End Fungsi Cron Rencana Absen
+
 	//Enkripsi dan Dekripsi Data (Encode atau Decode)
 	function getSaltKey(){
 		//Tidak Boleh Diubah
@@ -320,11 +443,13 @@
 		//$key2 = "#k@KaTu_1nT3rNEt_$3H@t";
 		return $key;
 	}
+
 	function encodeData($data){
 		//echo "MasukEncode<br>";
 		$encoded = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5(getSaltKey()), $data, MCRYPT_MODE_CBC, md5(md5(getSaltKey()))));
 		return $encoded;
 	}
+
 	function decodeData($data){
 		//echo "MasukDecode<br>";
 		$decoded = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5(getSaltKey()), base64_decode($data), MCRYPT_MODE_CBC, md5(md5(getSaltKey()))), "\0");
