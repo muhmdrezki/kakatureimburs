@@ -15,7 +15,7 @@ include "../../con_db.php";
 ?>
   	<script type="text/javascript">
 	alert("Cuti Used dengan ID <?php echo $id ?>, berhasil direset");
-	document.location.href="../../index.php?sidebar-menu=list_data_cuti&action=tampil" 
+	document.location.href="../../tampil/data-cuti" 
 	</script>
 <?php 
 }

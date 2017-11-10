@@ -1,3 +1,10 @@
+<?php
+if (!defined('DIDALAM_INDEX_PHP')){ 
+     //echo "Dilarang broh!";
+     header("Location: ../home");
+     exit();
+  } else {
+?>
 <!DOCTYPE html>
 <html lang='en'>
 <?php 
@@ -8,10 +15,9 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	  <!-- Google Font -->
 		  <!-- jQuery 3 -->
-	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script type="text/javascript" src="bower_components/bootbox/bootbox.min.js"></script>
 	  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 	</head>
-
 	<?php 
 		  include "../con_db.php";
 		  session_start();
@@ -145,7 +151,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 
 					    <!-- Trigger the modal with a button -->
 						  <Button type="button" class="btn btn-primary btn-sm" id="btnkonfirm" data-toggle="modal" data-target="#myModal_pesan">KONFIRMASI</Button>
-						   <a href="index.php?sidebar-menu=form_edit-pembayaran&action=tampil&id=<?php echo $id_pembayaran?>&id_jenis=<?php echo $row['id_jenis']?>" class="btn btn-warning btn-sm" id="editbtn">EDIT</a>
+						   <a href="tampil/form-edit-pembayaran/<?php echo $id_pembayaran?>/<?php echo $row['id_jenis']?>" class="btn btn-warning btn-sm" id="editbtn">EDIT</a>
 						         <?php
 						     if($one == 'Admin'){
 						     	if($row[status] == "1"){
@@ -391,7 +397,8 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
                           document.getElementById('btnkonfirm').style.display="none";
                       </script>
                   <?php
-                }
+								}
+							}
 ?>
 				</div>
 		</body>

@@ -1,3 +1,10 @@
+<?php
+if (!defined('DIDALAM_INDEX_PHP')){ 
+     //echo "Dilarang broh!";
+     header("Location: ../tampil/home");
+     exit();
+  } else {
+?>
 <html>
   <head>
      <meta charset="utf-8">
@@ -7,11 +14,6 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-   <style>
-  @import url('https://fonts.googleapis.com/css?family=Dosis');
-  </style>   
-  <!-- jQuery 3 -->
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>     
   </head>
 
     <body>
@@ -54,7 +56,7 @@
                 }
                 ?>
                 <br>
-                <input type="button" name="edit" value="Upload Foto" id="<?php echo $values["id_anggota"]; ?>" class="btn btn-default upload"/>
+                <input type="button" name="edit" value="Upload Foto" id="<?php echo $values["id_anggota"]; ?>" class="btn btn-default upload_foto_profile"/>
                 <br>
 
                  <div id="data_Modal" class="modal fade">  
@@ -143,7 +145,7 @@
                     </tbody>
                   </table>
                      <span class="pull-right">
-                            <input type="button" name="edit" value="Edit Profile" id="<?php echo $values["id_anggota"]; ?>" class="btn btn-warning edit_data"/>
+                            <input type="button" name="edit" value="Edit Profile" id="<?php echo $values["id_anggota"]; ?>" class="btn btn-warning edit_data_profile"/>
                         </span>
                 </div>
               </div>
@@ -193,41 +195,9 @@
            </div>  
       </div>  
  </div>  
-<script type="text/javascript">
-  $(document).on('click', '.edit_data', function(){ 
-  var id_anggota = $(this).attr("id");   
-             $.ajax({  
-                url:"pages/fetchdata/fetch_data_anggota-json.php",  
-                method:"POST",  
-                data:{id_anggota:id_anggota},  
-                dataType:"json",  
-                success:function(data){ 
-                     $('#id_anggota').val(data.id_anggota); 
-                     $('#nama').val(data.nama);  
-                     $('#alamat').val(data.alamat);  
-                     $('#tempat_lahir').val(data.tempat_lahir);  
-                     $('#tgl_lahir').val(data.tgl_lahir);  
-                     $('#email').val(data.email);  
-                     $('#password').val(data.password);  
-                     $('#insert').val("Update");  
-                     $('#add_data_Modal').modal('show');  
-                }  
-           });
-      });    
-</script>
-
-<script type="text/javascript">
-  $(document).on('click', '.upload', function(){ 
-  var id_anggota = $(this).attr("id");   
-             $.ajax({  
-                success:function(data){ 
-                     $('#insert').val("Update");  
-                     $('#data_Modal').modal('show');  
-                }  
-           });
-      });    
-</script>
-
     </body>
 
 </html>
+<?php
+}
+?>

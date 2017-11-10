@@ -26,7 +26,7 @@ include "../../con_db.php";
 ?>
   	<script type="text/javascript">
 	alert("Semua AKOMODASI anggota telah dibayar");
-	document.location.href="../../index.php?sidebar-menu=list_data_credits&action=tampil" 
+	document.location.href="../../tampil/data-credits" 
 	</script>
 <?php 
 }

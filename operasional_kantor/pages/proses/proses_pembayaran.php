@@ -1,6 +1,10 @@
 <html>
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+	    <!-- bootbox code -->
+	<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../bower_components/bootbox/bootbox.min.js"></script>
 </html>
 <?php
 	error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
@@ -16,7 +20,7 @@
 		<?php
 	} 
 	include "../../con_db.php"; //sambung ke database
-
+	include "../../fungsi_kakatu.php";
 
      $tgl_new_format = date("Y-m-d H:i:s");
 
@@ -114,13 +118,10 @@
 
 	$sql_c = "DELETE FROM tb_buktipembayaran WHERE bukti = ''";
 	mysqli_query($koneksi,$sql_c);
-
+	
 	?>
 	<script> alert("Pembayaran Berhasil");  </script> 
 	<!-- JS dependencies -->
-    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
     <!-- bootbox code -->
     <script src="../../bootbox.min.js"></script>
     <?php 
@@ -154,10 +155,10 @@
         		bootbox.alert({ 
 			  size: "small",
 			  message: "<?php echo '<h4>' ?>Anda bisa Share lagi melalui Button Share yang tersedia di Form Detail Pembayaran <?php echo '</h4><br>' ?><?php echo '<h4>' ?>Klik Ok, Untuk kembali ke menu Pembayaran<?php echo '</h4>'?>", 
-			  callback: function(){window.location="../../index.php?sidebar-menu=list_bayar&action=tampil" }
+			  callback: function(){window.location="../../tampil/list-bayar" }
 			})
     	} else {
-    	window.location="../../index.php?sidebar-menu=list_bayar&action=tampil"
+    	window.location="../../tampil/list-bayar"
     	}
     }
 });
@@ -174,8 +175,6 @@
 	?>
 	<script> alert("Pembayaran Berhasil");  </script> 
 	<!-- JS dependencies -->
-    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <?php 
     	$sqljenis = "SELECT jenis FROM tb_jenistransaksi WHERE id_jenis = '$jenis'";
     	$resjenis = mysqli_query($koneksi,$sqljenis);
@@ -183,7 +182,6 @@
     	$namajenis = $value_jenis['jenis'];
     ?>
     <!-- bootbox code -->
-    <script src="../../bootbox.min.js"></script>
     <script>
     var wa_admin_anggota = "whatsapp://send?text=Uang <?php echo $namajenis?> dengan ID Pembayaran <?php echo $id ?>, pada hari <?php echo $hari.", ".$tgl_now?>. Sebesar Rp.<?php echo $jumlah ?> sudah di Transfer ke Rekening Bank Anda, silahkan di cek";
     var wa_anggota_admin = "whatsapp://send?text=Saya baru saja <?php echo $namajenis ?> dengan ID Pembayaran <?php echo $id_pembayaran ?> , pada hari <?php echo $hari.", ".$tgl_now?>. Sebesar Rp.<?php echo $jumlah?>. Mohon segera di Reimburse";
@@ -209,13 +207,15 @@
         		bootbox.alert({ 
 			  size: "small",
 			  message: "<?php echo '<h4>' ?>Anda bisa Share lagi melalui Button Share yang tersedia di Form Detail Pembayaran <?php echo '</h4><br>' ?><?php echo '<h4>' ?>Klik Ok, Untuk kembali ke menu Pembayaran<?php echo '</h4>'?>", 
-			  callback: function(){window.location="../../index.php?sidebar-menu=list_bayar&action=tampil" }
+			  callback: function(){window.location="../../tampil/list-bayar" }
 			})
     	} else {
-    	window.location="../../index.php?sidebar-menu=list_bayar&action=tampil"
+    		window.location="../../tampil/list-bayar/"
     	}
     }
 });
-
-    </script>
-<?php } ?>
+</script>
+<?php 
+}
+emitData();
+?>

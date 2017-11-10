@@ -1,17 +1,17 @@
 <?php
    if (!defined('DIDALAM_INDEX_PHP')){ 
     //echo "Dilarang broh!";
-        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
-    }
+        header("Location: ../../tampil/home");
+		}
+		if ($_SESSION['jabatan']!="Admin") {
+      echo '<script>alert("Maaf, Anda bukan Admin"); window.location="../../tampil/home"</script>';
+   }
 ?>
 <div class="content-header bounceInRight animated">
   
   <h2> DATA CUTI </h2>
 
 </div>
-
- <!-- jQuery 3 -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
 <div class="container bounceInUp animated">
 	<hr>
@@ -22,7 +22,6 @@
 					<form role="form" action="pages/proses/proses_save-cutiquota.php" method="POST">
 					  <div class="box-body" style="margin-right: 20px;">
 						<?php
-							include "../../con_db.php";
 							$sql_query1 = "SELECT tb_anggota.id_anggota,tb_anggota.nama FROM tb_anggota WHERE tb_anggota.id_anggota NOT IN (SELECT tb_cuti_anggota.id_anggota FROM tb_cuti_anggota)";
 							$result = mysqli_query($koneksi, $sql_query1);
 						?>      
@@ -64,7 +63,7 @@
 				?>
 				<h3> LIST CUTI </h3>
 					<div class="table-responsive">  
-					   <table class="table" id="example">
+					   <table class="table" id="data_cuti">
 						   <thead>
 							  <tr>  
 									 <th> ID</th>
@@ -84,7 +83,7 @@
 								 <td> <?php echo $row["nama"] ?> </td>
 								 <td> <?php echo $row[cuti_used] ?> </td>
 								 <td> <?php echo $row[cuti_qty] ?> </td>
-								 <td><a href="#" id="<?php echo $row["id_anggota"]; ?>" class="btn btn-warning btn-xs edit_quota">UPDATE</a><a href="#" id="<?php echo $row["id_anggota"]; ?>" class="btn btn-info btn-xs reset_quotaUsed">RESET</a></td>
+								 <td><a id="<?php echo $row["id_anggota"]; ?>" class="btn btn-warning btn-xs edit_quota">UPDATE</a><a id="<?php echo $row["id_anggota"]; ?>" class="btn btn-info btn-xs reset_quotaUsed">RESET</a></td>
 							  </tr>
 							<?php
 							$no++;
@@ -102,7 +101,7 @@
 								  ?>
 								  <th><?php echo $row_total["sum_cuti_used"] ?></th>
 								  <th></th>
-								  <th><a  href="#" class="btn btn-danger btn-xs reset_all_cuti_used">RESET ALL CUTTI</a></th>
+								  <th><a class="btn btn-danger btn-xs reset_all_cuti_used">RESET ALL CUTTI</a></th>
 								</tr>
 							</tfoot>
 					   </table
@@ -135,26 +134,6 @@
            </div>  
       </div>  
  </div>  
-
- <script type="text/javascript">
-  $(document).on('click', '.edit_quota', function(){ 
-  var id_anggota = $(this).attr("id"); 
-	
-             $.ajax({  
-                url:"pages/fetchdata/fetch_data_cuti-json.php",  
-                method:"POST",  
-                data:{id_anggota:id_anggota},  
-                dataType:"json",  
-                success:function(data){ 
-                     $('#id_anggota').val(data.id_anggota); 
-                     $('#cuti_quota').val(data.cuti_qty);   
-                     $('#insert').val("Update");  
-                     $('#cuti_Modal').modal('show');  
-                }  
-           });
-      });    
-</script>
-
 <div id="resetModal" class="modal fade">  
       <div class="modal-dialog">  
            <div class="modal-content">  
@@ -172,25 +151,6 @@
       </div>  
  </div>  
 
-
-
-  <script>
-     $(document).ready(function(){  
-      $('.reset_quotaUsed').click(function(){  
-         var id_anggota = $(this).attr("id");
-          $.ajax({
-                url:"pages/fetchdata/fetch_data_cuti-forreset.php",  
-                method:"post",  
-                data:{id_anggota:id_anggota},  
-                success:function(data){
-                 $('#cuti_detail_reset').html(data);           
-                 $('#resetModal').modal("show");  
-             }
-         });
-      });  
- });  
- </script>
- 
  <div id="resetCutiModal" class="modal fade">  
       <div class="modal-dialog">  
            <div class="modal-content">  
@@ -207,21 +167,3 @@
            </div>  
       </div>  
  </div>  
-
-
-
-  <script>
-     $(document).ready(function(){  
-      $('.reset_all_cuti_used').click(function(){  
-          $.ajax({
-                url:"pages/fetchdata/fetch_data_cuti-forresetallcuti.php",  
-                method:"post",  
-                data:{},  
-                success:function(data){
-                 $('#cuti_all_reset').html(data);           
-                 $('#resetCutiModal').modal("show");  
-             }
-         });
-      });  
- });  
- </script>

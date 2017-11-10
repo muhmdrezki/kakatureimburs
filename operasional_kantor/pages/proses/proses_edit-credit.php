@@ -1,19 +1,8 @@
  <?php  
-include "../../con_db.php";
- error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-
-      $id = $_POST["id_credit"];
-      $nominal= $_POST["topup_credit"];
-      $nominal1 = str_replace(',', '', $nominal);
-      $topup = str_replace('Rp ', '', $nominal1);
-
-           $query = "UPDATE tb_credits_anggota SET topup_credit='$topup' WHERE id='$id'";   
-           
-           $result =  mysqli_query($koneksi, $query);
-           
-           if (!$result) {
-              printf("Error: %s\n", mysqli_error($koneksi));
-              exit();
-              } 
-      ?>
-      <script> alert("Data Jumlah Akomodasi dengan ID <?php echo $id ?>, Berhasil Di Update"); document.location.href="../../index.php?sidebar-menu=list_data_credits&action=tampil" </script>   
+      include "../../fungsi_kakatu.php";
+      error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+      //$nominal1 = str_replace(',', '', $nominal);
+      //$topup = str_replace('Rp ', '', $nominal1);
+      prosesEditCredit($_POST["id_anggota_credit"],$_POST["topup_credit"]);
+      echo '<script>alert("Data Jumlah Akomodasi dengan ID '.$id.', Berhasil Di Update"); document.location.href="../../tampil/data-credits"</script>';
+?>   

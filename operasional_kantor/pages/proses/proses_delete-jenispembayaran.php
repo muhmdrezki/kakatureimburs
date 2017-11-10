@@ -12,11 +12,6 @@ include "../../con_db.php";
               exit();
               } else {
 
-?>
-  	<script type="text/javascript">
-	alert("Data jenis pembayaran dengan ID <?php echo $id ?>, berhasil dihapus");
-	document.location.href="../../index.php?sidebar-menu=list_jenis-pembayaran&action=tampil" 
-	</script>
-<?php 
+  	echo '<script type="text/javascript">alert("Data jenis pembayaran dengan ID '.$id.' , berhasil dihapus");document.location.href="../../tampil/jenis-pembayaran"</script>';
 }
 ?>

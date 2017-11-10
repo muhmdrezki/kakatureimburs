@@ -8,15 +8,9 @@ include "../../con_db.php";
 	$result = mysqli_query($koneksi,$sql);
 
 	 if (!$result) {
-              printf("Error: %s\n", mysqli_error($koneksi));
-              exit();
-              } else {
-
-?>
-  	<script type="text/javascript">
-	alert("Data tanggal libur dengan ID <?php echo $id ?>, berhasil dihapus");
-	document.location.href="../../index.php?sidebar-menu=list_data_libur&action=tampil" 
-	</script>
-<?php 
-}
+        printf("Error: %s\n", mysqli_error($koneksi));
+        exit();
+    } else {
+		echo '<script type="text/javascript">alert("Data tanggal libur dengan ID'.$id.', berhasil dihapus");document.location.href="../../tampil/data-libur"</script>';
+	}
 ?>

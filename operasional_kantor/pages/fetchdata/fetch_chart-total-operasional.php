@@ -6,9 +6,9 @@
   $tgl_now = date("d-m-Y");
   $year = date('Y', strtotime($tgl_now));
   if ($_SESSION['jabatan'] == "Admin") {
-    $sql_grafik = sprintf("SELECT MONTHNAME(`tanggal`) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `status` = '2' AND YEAR(`tanggal`) = '$year' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");
+    $sql_grafik = sprintf("SELECT  SUBSTRING(MONTHNAME(`tanggal`),1,3) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `status` = '2' AND YEAR(`tanggal`) = '$year' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");
   } else {
-    $sql_grafik = sprintf("SELECT MONTHNAME(`tanggal`) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `id_anggota`='$_SESSION[id_anggota]' AND `status` = '2' AND YEAR(`tanggal`) = '$year' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");  
+    $sql_grafik = sprintf("SELECT SUBSTRING(MONTHNAME(`tanggal`),1,3) as Bulan, SUM(`nominal`) as Total FROM `tb_pembayaran` WHERE `id_anggota`='$_SESSION[id_anggota]' AND `status` = '2' AND YEAR(`tanggal`) = '$year' GROUP BY Bulan, MONTH(`tanggal`), YEAR(`tanggal`) ORDER BY Year(`tanggal`),month(`tanggal`)");  
   }
   $hasil4 = $koneksi->query($sql_grafik);
   if (!$hasil4) {

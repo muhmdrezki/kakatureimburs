@@ -23,12 +23,6 @@ include "../../con_db.php";
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
               } else {
-
-?>
-  	<script type="text/javascript">
-	alert("Gambar Berhasil Dihapus ");
-	document.location.href="../../index.php?sidebar-menu=form_edit-pembayaran&action=tampil&id=<?php echo $id_pembayaran?>" 
-	</script>
-<?php 
-}
+  				echo '<script type="text/javascript">alert("Gambar Berhasil Dihapus ");document.location.href="../../tampil/form-edit-pembayaran/'.$id_pembayaran.'</script>';
+			  }
 ?>

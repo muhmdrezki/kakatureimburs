@@ -11,7 +11,7 @@ include "../../con_db.php";
 ?>
   	<script type="text/javascript">
 	alert("Semua Data cuti used anggota, berhasil direset");
-	document.location.href="../../index.php?sidebar-menu=list_data_cuti&action=tampil" 
+	document.location.href="../../tampil/data-cuti" 
 	</script>
 <?php 
 }

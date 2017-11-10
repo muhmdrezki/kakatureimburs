@@ -21,5 +21,5 @@ include "../../fungsi_kakatu.php";
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
               } 
-      ?>
-      <script> alert("Data Anggota Berhasil Di Update <?php echo $id ?>"); document.location.href="../../index.php?sidebar-menu=profile&action=tampil" </script>   
+            echo '<script>alert("Data Anggota Berhasil Di Update '.$id.'); document.location.href="../../tampil/profil" </script>';  
+?>

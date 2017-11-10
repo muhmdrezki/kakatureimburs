@@ -1,8 +1,11 @@
 <?php
    if (!defined('DIDALAM_INDEX_PHP')){ 
     //echo "Dilarang broh!";
-        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+        header("Location: ../../home");
     }
+    if ($_SESSION['jabatan']!="Admin") {
+      echo '<script>alert("Maaf, Anda bukan Admin"); window.location="home"</script>';
+   }
 ?>
 
 <section id="form_data-absen-admin" style="margin: 0 auto;">
@@ -18,11 +21,61 @@
     >
 </div>
 <div class="container bounceInLeft animated">
-  <div class="row">  
-        <?php 
-           $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota ORDER BY d.tanggal DESC" ; 
+  <div class="row">
+	<div class="row">
+                  <div class="col col-xs-6 flipInX animated">
+                  <div class="form-group flipInX animated">
+					<label> FILTER TANGGAL </label>
+					  <form method="POST" action="tampil/data-absensi-admin">
+						  <div class="input-group"> 
+							<input type="text" class="form-control" id="start_date" name="start_date" style="width: 100px;" placeholder="Dari"> 
+							<input type="text" class="form-control" id="end_date" name="end_date" style="width: 100px; margin-left: 3px;" placeholder="Sampai">
+							<input type="submit" name="submit_tanggal" value="Apply" class="btn btn-info" style="margin-left: 3px;">
+						
+						  </div>
+					  </form>
+					</div> 
+                 </div>
+  </div>
+  <div class="form-group flipInX animated">
+            <label> FILTER STATUS </label>
+              <form method="POST" action="tampil/data-absensi-admin"> 
+                <div class="input-group"> 
+                      <a href="tampil//data-absensi-admin" class="btn btn-default btn-xs">VIEW ALL</a>              
+                      <input type="submit" name="status_hadir" value="HADIR" class="btn btn-info btn-xs" style="margin-left: 3px;">
+                      <input type="submit" name="status_hadir_diluar" value="HADIR DILUAR" class="btn btn-primary btn-xs" style="margin-left: 3px;">
+                      <input type="submit" name="status_sakit" value="SAKIT" class="btn btn-danger btn-xs" style="margin-left: 3px;">
+                      <input type="submit" name="status_izin" value="IZIN" class="btn btn-warning btn-xs" style="margin-left: 3px;">
+                      <input type="submit" name="status_cuti" value="CUTI" class="btn btn-success btn-xs" style="margin-left: 3px;">
+                      <input type="submit" name="status_alpha" value="ALPHA" class="btn btn-default btn-xs" style="margin-left: 3px;">
+                </div>
+			  </form>  
+   </div>
+        <?php
+                if (isset($_POST["status_hadir"])) {
+                  $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota WHERE d.status_id=1 ORDER BY d.tanggal DESC" ;
+                } else if (isset($_POST["status_hadir_diluar"])) {
+                  $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota WHERE d.status_id=2 ORDER BY d.tanggal DESC" ;
+                } else if (isset($_POST["status_sakit"])) {
+                  $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota WHERE d.status_id=3 ORDER BY d.tanggal DESC" ;
+                } else if (isset($_POST["status_izin"])) {
+                  $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota WHERE d.status_id=4 ORDER BY d.tanggal DESC" ;
+                } else if (isset($_POST["status_cuti"])) {
+                  $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota WHERE d.status_id=5 ORDER BY d.tanggal DESC" ;
+                }  else if (isset($_POST["status_alpha"])) {
+                  $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota WHERE d.status_id=6 ORDER BY d.tanggal DESC" ;
+                } else if(isset($_POST["submit_tanggal"])){
+					          //echo "<script>alert('asup')</script>";
+                    $startdate = $_POST["start_date"];
+					          //echo "<script>alert('$startdate')</script>";
+                    $enddate = $_POST["end_date"];
+                    $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota WHERE DATE(d.tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y') ORDER BY d.tanggal DESC" ;
+                } else {
+                  $query = "SELECT d.id, d.id_anggota, a.nama, d.tanggal, d.jam_masuk, b.status, d.keterangan FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota ORDER BY d.tanggal DESC" ;
+                }
+            
            $result = mysqli_query($koneksi, $query);  
-        ?>
+        ?>  
             <div class="table-responsive">  
                <table class="table table-bordered table-hover" id="data_absen_admin">
                <thead>
@@ -42,18 +95,18 @@
                          <td id="waktuDetailAbsen"> <?php echo $row['tanggal']." ".$row['jam_masuk'] ?> </td>    
                          <td id="namaDetailAbsen"> <?php echo $row['nama'] ?> </td>
                          <?php 
-                         $status = $row['status'];
-                         if($status == "Sakit"){
-                          $ket = "<span class=\"label label-danger\">SAKIT</span>";
-                         } else if($status == "Izin"){
-                          $ket = "<span class=\"label label-warning\">IZIN</span>";
-                         } else if($status == "Hadir Diluar"){
-                          $ket = "<span class=\"label label-primary\">HADIR DILUAR</span>";
-                         } else if($status == "Hadir"){
+                         $status2 = $row['status'];
+                         if($status2 == "Sakit"){
+                            $ket = "<span class=\"label label-danger\">SAKIT</span>";
+                          } else if($status2 == "Izin"){
+                            $ket = "<span class=\"label label-warning\">IZIN</span>";
+                          } else if($status2 == "Hadir Diluar"){
+                            $ket = "<span class=\"label label-primary\">HADIR DILUAR</span>";
+                          } else if($status2 == "Hadir"){
                             $ket = "<span class=\"label label-info\">HADIR</span>";
-                          } else if($status == "Cuti"){
+                          } else if($status2 == "Cuti"){
                             $ket = "<span class=\"label label-success\">CUTI</span>";
-                          } else if($status == "Alpha"){
+                          } else if($status2 == "Alpha"){
                             $ket = "<span class=\"label label-default\">Alpha</span>";
                           }
 
@@ -68,22 +121,13 @@
                               $blndataformat=$blndata->format('Ym');
                               $disabled="";
                               if (intval($blndataformat)<intval($blnskrgformat)) {
-                                  if ( $status!="Alpha") {
                          ?>
-                         <td> <a href="#" id="<?php echo $row["id"] ?>" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a></td>
+                         <td> <a id="<?php echo $row["id"] ?>" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a></td>
                          <?php
-                                  }
                               } else {
-                                if ( $status!="Alpha") {
                          ?>
-                          <td> <a href="#" id="<?php echo $row["id"] ?>" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a><a href="#" id="<?php echo $row["id"]; ?>" class="btn btn-warning btn-xs edit_absen">EDIT</a> </td>    
-                          <?php 
-                                } else {
-                          ?>
-                           <td> <a href="#" id="<?php echo $row["id"] ?>" class="btn btn-info btn-xs detail_kehadiran disabled" disabled > DETAIL </a><a href="#" id="<?php echo $row["id"]; ?>" class="btn btn-warning btn-xs edit_absen">EDIT</a> </td>
-                        <?php
-                                } 
-                         } 
+                          <td> <a id="<?php echo $row["id"] ?>" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a><a id="<?php echo $row["id"]; ?>" class="btn btn-warning btn-xs edit_absen">EDIT</a> </td>    
+                         <?php } 
                          ?>
                     </tr>
               <?php 
@@ -96,7 +140,6 @@
         </div>
 </div> 
 </section>
-
  <div id="dataModal" class="modal fade" style="overflow: auto !important;">  
       <div class="modal-dialog modal-lg">  
            <div class="modal-content">  

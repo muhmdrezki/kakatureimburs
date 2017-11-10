@@ -1,13 +1,12 @@
-<html lang="en">
+
 <?php
   if (!defined('DIDALAM_INDEX_PHP')){ 
      //echo "Dilarang broh!";
-     header("Location: ../index.php?sidebar-menu=home&action=tampil");
-  }
-  session_start();
+     header("Location: ../tampil/home");
+     exit();
+  } else {
 ?>
 <!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
 <style>
     canvas {
         -moz-user-select: none;
@@ -45,12 +44,14 @@
 	.chartjs-hidden-iframe {
 		height: 100% !important;
 	}
-
-    </style>
-<body onload="loadChartKakatu();zoomLoadEvent();">
+  /* Sembunyikan carousel-control */
+  .carousel .carousel-control { visibility: hidden; }
+  .carousel:hover .carousel-control { visibility: visible; }
+  /* End Sembunyikan carousel-control */
+</style>
  <!-- Content Header (Page header) -->
+<body onload="loadChartKakatu()">
     <section class="content-header">
-
     <?php
       date_default_timezone_set('Asia/Jakarta');
       $tgl_now = date("d-m-Y");
@@ -68,10 +69,9 @@
     <br>
     <br>
 
-    <section class="content-header fadeInRight animated" id="shortcut-box">
       <!-- Main content -->
        <!-- Small boxes (Stat box) -->
-      <div class="row">
+      <div class="row" id="shortcut-box">
         <div class="col-lg-4 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-aqua">
@@ -83,7 +83,7 @@
             <div class="icon">
               <i class="ion ion-waterdrop"></i>
             </div>
-            <a href="index.php?sidebar-menu=form_bayar&action=tampil&jenis=air" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="tampil/form-bayar/air" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -98,7 +98,7 @@
             <div class="icon">
               <i class="ion ion-flash"></i>
             </div>
-            <a href="index.php?sidebar-menu=form_bayar&action=tampil&jenis=listrik" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="tampil/form-bayar/listrik" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -113,7 +113,7 @@
             <div class="icon">
               <i class="ion ion-home"></i>
             </div>
-            <a href="index.php?sidebar-menu=form_bayar&action=tampil&jenis=ART" class="small-box-footer" style="color: #35352b;">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="tampil/form-bayar/ART" class="small-box-footer" style="color: #35352b;">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -128,7 +128,7 @@
             <div class="icon">
               <i class="ion ion-model-s"></i>
             </div>
-            <a href="index.php?sidebar-menu=form_bayar&action=tampil&jenis=transport" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="tampil/form-bayar/transport" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -143,7 +143,7 @@
             <div class="icon">
               <i class="ion ion-spoon"></i><i class="ion ion-fork"></i>
             </div>
-            <a href="index.php?sidebar-menu=form_bayar&action=tampil&jenis=konsumsi" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="tampil/form-bayar/konsumsi" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -158,26 +158,24 @@
             <div class="icon">
               <i class="ion ion-trash-a"></i>
             </div>
-            <a href="index.php?sidebar-menu=form_bayar&action=tampil&jenis=sampah" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="tampil/form-bayar/sampah" class="small-box-footer">Klik Disini <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
       </div>
       <!-- /.row -->
-      </section>
-	<Section class="content fadeInRight animated" id="absensi_hari_ini">
 		 <!-- Apply any bg-* class to to the info-box to color it -->
-	 <!-- DONUT CHART -->
-		<br>
-		<div class="row" id="updateAbsensiHariIni">
+	 
+   <!-- DONUT CHART -->
+		<div class="row" id="updateAbsensiHariIni" style="display:none">
 			<div class="col-md-12">
 					   <!-- BAR CHART -->
 				  <div class="box box-info">
 					<div class="box-header with-border">
 					  <h3 class="box-title">Statistik Absensi Hari Ini</h3>
 					  <div class="box-tools pull-right">
-						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-						</button>
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						<button id="removeChartAbsensiHariIni" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
 					  </div>
 					</div>
 					<div class="box-body">
@@ -219,12 +217,25 @@
 				  <!-- /.box -->
 			</div>
         </div>
-	 </Section>
-    <Section class="content fadeInRight animated" id="statistik_absen">
-		 <!-- Apply any bg-* class to to the info-box to color it -->
-	 <!-- DONUT CHART -->
-		<br>
 		<div class="row">
+			<div class="col-md-6">
+				   <!-- BAR CHART -->
+			  <div class="box box-primary">
+				<div class="box-header with-border">
+				  <h3 class="box-title">Total Uang Akomodasi <?php if($_SESSION['jabatan'] != 'Admin'){echo " Anda ";}?> tahun <?php echo $year;?></h3>
+
+				  <div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+					<button id="removeChartJumlahOperasional" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>	
+				  </div>
+				</div>
+				<div class="box-body chart-responsive">
+				  <div class="chart" id="credit-chart" style="height: 317px;position: relative;float:right;"></div>
+				</div>
+				<!-- /.box-body -->
+			  </div>
+			  <!-- /.box -->
+			 </div>
 			<div class="col-md-6">
 					   <!-- BAR CHART -->
 				  <div class="box box-info">
@@ -233,11 +244,12 @@
 
 					  <div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            <button id="removeChartSatistikAbsensi" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
 						</button>
 					  </div>
 					</div>
 					<div class="box-body">
-							  <ul class="chart-legend clearfix list-inline">
+							  <ul class="chart-legend clearfix list-inline col-md-12 col-md-push-3">
 								<li><i class="fa fa-square text-aqua list-inline-item"></i>Hadir</li>
 								<li><i class="fa fa-square text-red list-inline-item"></i>Sakit</li>
 								<li><i class="fa fa-square text-yellow list-inline-item"></i>Izin</li>
@@ -250,28 +262,8 @@
 					</div>
 				  </div>
 			</div>
-			<div class="col-md-6">
-				   <!-- BAR CHART -->
-			  <div class="box box-primary">
-				<div class="box-header with-border">
-				  <h3 class="box-title">Total Uang Akomodasi <?php if($_SESSION['jabatan'] != 'Admin'){echo " Anda ";}?> tahun <?php echo $year;?></h3>
-
-				  <div class="box-tools pull-right">
-					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-					</button>
-				  </div>
-				</div>
-				<div class="box-body chart-responsive">
-				  <div class="chart" id="credit-chart" style="height: 317px;position: relative;float:right;"></div>
-				</div>
-				<!-- /.box-body -->
-			  </div>
-			  <!-- /.box -->
-			 </div>
 		</div>
-	 </Section>
 	 
-    <section class="content fadeInRight animated" id="grafik">
 	   <div class="row">
 			 <div class="col-md-6">
 				   <!-- BAR CHART -->
@@ -280,8 +272,8 @@
 
 				  <h3 class="box-title">Total Pengeluaran dari Pembayaran Operasional <?php if ($_SESSION['jabatan'] != 'Admin'){echo "Anda";}?> tahun <?php echo $year;?></h3>
 				  <div class="box-tools pull-right">
-					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-					</button>
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+					<button id="removeChartTotalOperasional" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
 				  </div>
 				</div>
 				<div class="box-body chart-responsive">
@@ -299,8 +291,8 @@
 				  <h4 class="box-title">Jumlah Pembayaran Operasional <?php if($_SESSION['jabatan'] != 'Admin'){echo " Anda ";}?>(per-kategori) <?php echo $month.", ".$year;?></h4>
 
 				  <div class="box-tools pull-right">
-					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-					</button>
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+					<button id="removeChartJumlahOperasional" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
 				  </div>
 				</div>
 				<div class="box-body chart-responsive">
@@ -311,27 +303,20 @@
 			  <!-- /.box -->
 			</div>
 	   </div>
-	</section>
-
 </body>
-  <script>
-
- </script>
         <?php
           list($one, $two) = explode(",", $_SESSION['jabatan'], 2);
 
         if ($_SESSION['jabatan'] == "Admin") {
             ?>
             <script type="text/javascript">
-                document.getElementById('shortcut-box').style.display="none";
-				document.getElementById('absensi_hari_ini').style.display="block";
+                $('#shortcut-box').hide();
             </script>
             <?php
         } elseif ($_SESSION['jabatan'] != 'Admin') {
             ?>
             <script type="text/javascript">
-                document.getElementById('shortcut-box').style.visibility="visible";
-				document.getElementById('absensi_hari_ini').style.display="none";
+                 $('#shortcut-box').show();
             </script>
             <?php
         }
@@ -339,13 +324,11 @@
         if ($jumlah == "0") {
             ?>
             <script type="text/javascript">
-                document.getElementById('notif_label').style.display="none";
+                $('#notif_label').hide();
             </script>
             <?php
         }
         ?>
-
-
 <?php
   
   $sql_data = "SELECT id_anggota, password, email FROM tb_anggota WHERE id_anggota = '$_SESSION[id_anggota]'";
@@ -357,29 +340,26 @@
   $data_pass = decodeData($val_data['password']);
   $data_email = $val_data['email'];
 ?>
-
-
 <?php
 if ($_SESSION['jabatan'] == 'Admin') {
     ?>
     <script type="text/javascript">
-          document.getElementById('shortcut-box').style.display="none";
+          $('#shortcut-box').hide();
     </script>
 <?php
-} elseif ($data_id == $data_pass && $_SESSION['jabatan'] != 'Admin' || $data_email == '-') {
+	} elseif ($data_id == $data_pass && $_SESSION['jabatan'] != 'Admin' || $data_email == '-') {
 ?>
     <script type="text/javascript">
-          document.getElementById('shortcut-box').style.display="none";
+          $('#shortcut-box').hide();
     </script>
 <?php
-} else {
+	} else {
 ?>
      <script type="text/javascript">
-          document.getElementById('shortcut-box').style.display="block";;
+          $('#shortcut-box').show();
     </script>
 <?php
 }
+}
 ?>
-</html>
-
 

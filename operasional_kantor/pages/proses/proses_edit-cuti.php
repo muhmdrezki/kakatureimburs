@@ -13,5 +13,5 @@ include "../../con_db.php";
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
               } 
-      ?>
-      <script> alert("Data Quota cuto dengan ID <?php echo $id ?>, Berhasil Di Update"); document.location.href="../../index.php?sidebar-menu=list_data_cuti&action=tampil" </script>   
+      echo '<script> alert("Data Quota cuto dengan ID '.$id.', Berhasil Di Update"); document.location.href="../../tampil/data-cuti" </script>';  
+?>

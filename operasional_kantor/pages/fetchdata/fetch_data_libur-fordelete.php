@@ -1,7 +1,7 @@
    <?php  
-     error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+      error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
       $output = '';  
-      include "../../con_db.php";
+      include "../../../con_db.php";
 
       $id = $_POST['id'];
 
@@ -16,33 +16,29 @@
       {  
            $output .= '
                 <tbody>
-                <tr>  
-                     <td width="30%"><label>ID</label></td>  
-                     <td width="30%">'.$row["id"].'</td> 
-                </tr>
-				<tr>     
-                     <td width="40%"><label>Nama Libur</label></td>  
-                     <td width="40%">'.$row["nama_libur"].'</td>  
-                </tr>
-                <tr>     
-                     <td width="40%"><label>Dari</label></td>  
-                     <td width="40%">'.$row["tglawal"].'</td>  
-                </tr>
-				<tr>     
-                     <td width="40%"><label>Sampai</label></td>  
-                     <td width="40%">'.$row["tglakhir"].'</td>  
-                </tr>
-				<tr>     
-                     <td width="40%"><label>Jumlah Hari</label></td>  
-                     <td width="40%">'.$row["jmlhari"].'</td>  
-                </tr>
+                    <tr>  
+                        <td width="30%"><label>ID</label></td>  
+                        <td width="30%">'.$row["id"].'</td> 
+                    </tr>
+                    <tr>     
+                        <td width="40%"><label>Nama Libur</label></td>  
+                        <td width="40%">'.$row["nama_libur"].'</td>  
+                    </tr>
+                    <tr>     
+                        <td width="40%"><label>Dari</label></td>  
+                        <td width="40%">'.$row["tglawal"].'</td>  
+                    </tr>
+                    <tr>     
+                        <td width="40%"><label>Sampai</label></td>  
+                        <td width="40%">'.$row["tglakhir"].'</td>  
+                    </tr>
                 </tbody>
            ';  
       }  
       $output .= '  
            </table>   
       ';  
-      session_start();
-      $_SESSION["idlibur"] = $id;
+      //session_start();
+      //$_SESSION["idlibur"] = $id;
       echo $output;   
  ?>

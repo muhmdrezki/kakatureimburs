@@ -1,21 +1,40 @@
 <?php
-	include("../../vendor/autoload.php");
+	include("vendor/autoload.php");
 	use ElephantIO\Client;
 	use ElephantIO\Engine\SocketIO\Version2X;
+	//Fungsi Format Date Javascript to MySQL pakai PHP
+	function formatDateSql($tgl){
+		$tgl = date('Y-m-d', strtotime($tgl));
+		return $tgl;
+	}
+	//END Fungsi Format Date Javascript to MySQL pakai PHP
+	
 	//Fungsi buat filter form dari XSS dan SQL Injection attack
 	function antiInjection($post_get){
-		include "../../con_db.php";
+		include "con_db.php";
 		$post_get=mysqli_real_escape_string($koneksi,$post_get);
 		$post_get=htmlspecialchars($post_get);
 		return $post_get;
 	}
-
+	//Fungsi buat Koneksi
+	function createConn(){
+		$db_host = "localhost";
+		$db_user = "root";
+		$db_pass = "";
+		$db_name = "db_operasional-kantor";
+		$conn = new mysqli($db_host,$db_user, $db_pass);
+		if ($conn->connect_errno) {
+			echo "Failed to connect to MySQL: (" . $conn->connect_errno . ") " . $conn->connect_error;
+		}
+		$conn->select_db($db_name);
+		return $conn;
+	}
 	//List Fungsi Submit Absensi
 		//fungsi ambil alamat dari lattitude
-		function getAddress($latitude, $longitude) {
+	function getAddress($latitude, $longitude) {
 			if (!empty($latitude) && !empty($longitude)) {
 				//Send request and receive json data by address
-				$API_KEY='AIzaSyAn0sCC7HGqbJbWhwkgJnvyWFiTa7QGtVI';
+				$API_KEY=getLastConfig('api_key_google');
 				$geocodeFromLatLong = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?latlng='.trim($latitude).','.trim($longitude).'&sensor=true&key='.trim($API_KEY));
 				$output = json_decode($geocodeFromLatLong);
 				$status = $output->status;
@@ -33,64 +52,64 @@
 		}
 
 		//fungsi submit absensi
-		function submitAbsensi($conn,$sql,$id,$stat,$tgtdir,$filename,$size){
+	function submitAbsensi($id,$stat,$ket,$lat,$lng,$tgl1,$tgl2,$tgtdir,$filename,$size,&$errmsg,&$scsmsg){
 			//query untuk memasukan ke database
-			$insert = mysqli_query($conn, $sql);
+			$last_inserted_id=null;
+			$conn = createConn();
+			if ($conn->connect_error) {
+				$errmsg = "Error: ".$conn->connect_error;
+				die("Connection failed: " . $conn->connect_error);
+			}
+			//echo "<script>alert('Query: '".$qry." Error: ".$conn->error."')</script>";
+			//echo "Error: " . $qry . "<br>" . $conn->error;
+			if ($stmt = $conn->prepare("INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir) VALUES (?, CURRENT_DATE(),CURRENT_TIME(),?,?,?,?,?,?)")) {
+				$stmt->bind_param("sisddss", $id, $stat, $ket,$lat,$lng,$tgl1,$tgl2);
+				$stmt->execute();
+				$last_inserted_id = $stmt->insert_id;
+				$stmt->close();
+				$conn->close();
+			} else {
+				$errmsg ="Query: ".$qry." Error: ".$conn->error;
+			}
+			//inUpDel($qry);
 			if ($stat!=1) {
-				uploadSingleGambar($conn,$tgtdir,$filename,$size);
-			}
-			if (!$insert) {
-				printf("Error: %s\n", mysqli_error($conn));
-				exit();
-			}
-			//update cuti used
-			//panggil fungsi tambah credit
-			topupCredit($conn,$id,$stat);
-			
-			//Emit Data dengan Socket IO
-			emitData();
-			
-		}
-
-		//fungsi mendapatkan status absen
-		function getStatusAbsen(){
-			if (isset($_POST["submit_hadir"])) {
-				return 1;
-			} else if (isset($_POST["submit_hadirdiluar"])) {
-				return 2;
-			} else if (isset($_POST["submit_sakit"])) {
-				return 3;
-			} else if (isset($_POST["submit_izin"])) {
-				return 4;
-			} else if (isset($_POST["submit_cuti"])) {
-				return 5;
-			}
-		}
-
-		//Function update cuti
-		function updateCutiUsed($conn,$id,$stat,$tgl1,$tgl2){
-			if ($stat==5) {
-				//$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +DATEDIFF(STR_TO_DATE('$tgl2', '%m/%d/%Y'),STR_TO_DATE('$tgl1', '%m/%d/%Y'))+1) WHERE id_anggota='$id'";
-				$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +1) WHERE id_anggota='$id'";
-				$updateCuti = mysqli_query($conn, $queryCuti);
-				//$printf($updateCuti);
-				if (!$updateCuti) {
-					printf("Error: %s\n", mysqli_error($conn));
-					exit();
-				} else {
-					$sql3 = "SELECT cuti_used,cuti_qty FROM tb_cuti_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
-					$result3=mysqli_query($conn, $sql3);
-					$values3=mysqli_fetch_assoc($result3);
-					$jumlah3= $values3['cuti_qty'] - $values3['cuti_used'];
-					$_SESSION['sisacuti']=$jumlah3;
+				$foto=basename($_FILES[$filename]["name"]);
+				if(!empty($foto)){
+					uploadSingleGambar($last_inserted_id,$tgtdir,$filename,$size,$errmsg,$scsmsg);
 				}
 			}
+			//panggil fungsi tambah credit
+			topupCredit($last_inserted_id,$stat,$errmsg);
+			//Update Cuti jika satus = 5
+			updateCutiUsed($id,$stat,$tgl1,$tgl2,$errmsg);
+			//Emit Data dengan Socket IO
+			$now1 = date("Y-m-d");
+			if($tgl1>$now1){
+				cronRencanaAbsen($id,$stat,$ket,$lat,$lng,$tgl1,$tgl2,$errmsg);
+			}
+			emitData();
 		}
 
-		//FUngsi Upload satu gambar
-		function uploadSingleGambar($conn,$targetdir,$filename,$ukuran){
+
+		//Fungsi update cuti
+	function updateCutiUsed($id,$stat,$tgl1,$tgl2,&$errmsg){
+			if ($stat==5) {
+				//$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +DATEDIFF(STR_TO_DATE('$tgl2', '%m/%d/%Y'),STR_TO_DATE('$tgl1', '%m/%d/%Y'))+1) WHERE id_anggota='$id'";
+				$qry= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +1) WHERE id_anggota='$id'";
+				inUpDel($qry,$errmsg);
+				$sql3 = "SELECT cuti_used,cuti_qty FROM tb_cuti_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
+				$result3=mysqli_query($conn, $sql3);
+				$values3=mysqli_fetch_assoc($result3);
+				$jumlah3= $values3['cuti_qty'] - $values3['cuti_used'];
+				$_SESSION['sisacuti']=$jumlah3;
+			}
+		}
+
+	//FUngsi Upload satu gambar
+	function uploadSingleGambar($id,$targetdir,$filename,$ukuran,&$errmsg,&$scsmsg){
 			$target_file = $targetdir . basename($_FILES[$filename]["name"]);
 			$file = basename($_FILES[$filename]["name"]);
+			$newfilename = null;
 			if (!empty($file)) {
 				$uploadOk = 1;
 				$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -111,24 +130,17 @@
 				}*/
 				// Check file size
 				if ($_FILES[$filename]["size"] > $ukuran) {
-					?>
-					<script> alert("<?php echo "Maaf, file anda terlalu besar.";?>"); </script>
-					<?php
+					$errmsg="Maaf, file anda terlalu besar!";
 					$uploadOk = 0;
 				}
 				// Allow certain file formats
-				if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-				&& $imageFileType != "gif" ) {
-					?>
-					<script type="text/javascript"> alert("<?php echo "Maaf, hanya file format JPG, JPEG, PNG & GIF yang diizinkan."; ?>");</script> 
-					<?php
+				if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+					$errmsg="Maaf, hanya file format JPG, JPEG, PNG & GIF yang diizinkan!";
 					$uploadOk = 0;
 				}
 				// Check if $uploadOk is set to 0 by an error
 				if ($uploadOk == 0) {
-					?>
-					<script type="text/javascript"> alert("<?php echo "Maaf, file anda tidak terupload."; ?>");</script>  
-					<?php
+					$errmsg="Maaf, file anda tidak terupload!";
 				// if everything is ok, try to upload file
 				} else {
 					$namatgl = new DateTime();
@@ -137,42 +149,25 @@
 					$sementara = explode(".", $_FILES[$filename]["name"]);
 					$newfilename = $namabaru.'.'.end($sementara);
 					if (move_uploaded_file($_FILES[$filename]["tmp_name"], $targetdir.$newfilename)) {
-						?>
-						<script type="text/javascript"> alert(" <?php  echo "File ini ". basename( $_FILES[$filename]["tmp_name"]). " telah diupload."; ?>"); </script>
-						<?php
+						$scsmsg=$newfilename;
 					} else {
-						?>
-						<script type="text/javascript"> alert("<?php echo "Maaf, terjadi error saat mengupload file anda.";?>");</script>  
-						<?php
+						$errmsg="Maaf, terjadi error saat mengupload file anda!";
 					}
-				
-				$sql = "UPDATE tb_detail_absen SET foto_lokasi = '$newfilename' WHERE id_anggota = '$_SESSION[id_anggota]' AND tanggal=CURRENT_DATE()";
-				$res = mysqli_query($conn, $sql);    
-		
-				if (!$res) {
-						printf("Error: %s\n", mysqli_error($conn));
-						exit();
-						} 
+					$qry = "UPDATE tb_detail_absen SET foto_lokasi = '$newfilename' WHERE id='$id'";
+					inUpDel($qry,$errmsg);
+				}
 				}
 			}
-		}
 
 		//Fungsi tambah credit atau uang akomodasi
-		function	topupCredit($conn,$id,$stat){
-			//jika hadir dikantor atau diluar kantor topup credit
-			if($stat==1 || $stat==2 || $stat=5){
-				$query2= "UPDATE tb_credits_anggota SET total_credit=total_credit + topup_credit WHERE id_anggota='$id' AND status='unpaid' AND MONTH(tanggal_set)=MONTH(CURRENT_DATE()) AND YEAR(tanggal_set)=YEAR(CURRENT_DATE())";
-				$update = mysqli_query($conn, $query2);
-				if (!$update) {
-					printf("Error: %s\n", mysqli_error($koneksi));
-					exit();
-				}
+	function topupCredit($last_id,$stat,&$errmsg){
+			if($stat==1 || $stat==2 || $stat==5){
+				$qry= "UPDATE tb_detail_absen a JOIN tb_credits_anggota b SET a.credit_id=b.id,a.credit_in=b.topup_credit,a.credit_stat='unpaid' WHERE a.id='$last_id'";
+				inUpDel($qry,$errmsg);
 			}
-	
 		}
-
 		//Fungsi validasi Hitungan Cuti dari range tanggal
-		function countCuti($tgl_awal,$tgl_akhir,$conn){
+	function countCuti($tgl_awal,$tgl_akhir,$conn){
 			$begin = new DateTime($tgl_awal);
 			$end = new DateTime($tgl_akhir);
 			//$end = $end->modify('+1 day');
@@ -214,7 +209,7 @@
 		}
 		//End Fungsi validasi Hitungan Cuti dari range tanggal
 		//Fungsi validasi Hitungan Cuti dari range tanggal
-		function countMaxDateFromSisaCuti($sisaCuti,$conn){
+	function countMaxDateFromSisaCuti($sisaCuti,$conn){
 			date_default_timezone_set('Asia/Jakarta');
 			//var_dump($begin);
 			
@@ -252,7 +247,7 @@
 		}
 		//End Fungsi validasi Hitungan Cuti dari range tanggal
 		//Fungsi Haversine Formula hitung jarak dari dua lat lng
-		function getDistance2($latitude1, $longitude1, $latitude2, $longitude2) {  
+	function getDistance2($latitude1, $longitude1, $latitude2, $longitude2) {  
 			$earth_radius = 6371;  
 			  
 			$dLat = deg2rad($latitude2 - $latitude1);  
@@ -267,7 +262,7 @@
 
 		
 		// Fungsi jarak Vincenty formula to calculate great circle distance between 2 locations
-		function getDistance($lat1,$lon1,$lat2,$lon2){ 
+	function getDistance($lat1,$lon1,$lat2,$lon2){ 
 			$a = 6378137 - 21 * sin(lat); 
 			$b = 6356752.3142; 
 			$f = 1/298.257223563; 
@@ -340,7 +335,7 @@
 		//$tes = mysqli_num_rows($reslibur2);
 		//echo "tes".$tes."<br>";
 		//Jika hari libur bukan dihari sabtu minggu	
-		if(mysqli_num_rows($reslibur2)==0){
+		if(mysqli_num_rows($reslibur2)!=0){
 			//$address = getAddress($lat, $lng);
 			//$address = $address?$address:'Tidak Ketemu';
 			$select="SELECT id_anggota FROM tb_anggota";
@@ -357,13 +352,7 @@
 						printf("Error: %s\n", mysqli_error($conn));
 						exit();
 					}
-					$query2= "UPDATE tb_credits_anggota SET total_credit=total_credit + topup_credit WHERE id_anggota='$row[id_anggota]'  AND status='unpaid' AND MONTH(tanggal_set)=MONTH(CURRENT_DATE()) AND YEAR(tanggal_set)=YEAR(CURRENT_DATE())";
-					//echo $query2;
-					$update = mysqli_query($conn, $query2);
-					if (!$update) {
-						printf("Error: %s\n", mysqli_error($conn));
-						exit();
-					}
+					topupCredit($row['id_anggota'],1);
 				}
 			}
 		} else {
@@ -383,7 +372,7 @@
 					printf("Error: %s\n", mysqli_error($conn));
 					exit();
 				}
-				topupCredit($conn,$rowRencanaAbsen['id_anggota'],$rowRencanaAbsen['id_anggota']);
+				topupCredit($rowRencanaAbsen['id_anggota'],$rowRencanaAbsen['status_id']);
 			}  
 		}
 		
@@ -409,51 +398,263 @@
 						printf("Error: %s\n", mysqli_error($conn));
 						exit();
 					}
+					topupCredit($row['id_anggota'],6);
 				}
 			}	
 		}
 	}	
 	//functions
-
+	function formatkanRekap($jumlah,$format){
+		if ($jumlah==0 || is_null($jumlah)) {
+			  return "-";
+		} else {
+			  switch ($format) {
+					case 'hari':
+						  return $jumlah." hari";
+						  break;
+					case 'rupiah':
+						  return "Rp".number_format($jumlah);
+						  break;
+					case 'orang':
+						  return $jumlah." orang";
+						  break;
+			  }
+		}
+  }
 	//End Cronjob Fungsi
 
 	//Fungsi Cron Rencana Absen
-	function cronRencanaAbsen($id,$stat,$ket,$lat,$lng,$tawal,$takhir,$conn){
-		$ambilNamaFoto="SELECT foto_lokasi FROM tb_detail_absen WHERE id_anggota='$id' AND tanggal=CURRENT_DATE() ORDER BY jam_masuk DESC";
+	function cronRencanaAbsen($id,$stat,$ket,$lat,$lng,$tawal,$takhir,&$errmsg){
+		$qry="SELECT foto_lokasi FROM tb_detail_absen WHERE id_anggota='$id' AND tanggal=CURRENT_DATE() ORDER BY jam_masuk DESC LIMIT 1";
+		$conn=createConn();  
+		if (!$conn->query($qry)) {
+			$errmsg="Error: " . $qry . "<br>" . $conn->error;
+			exit();
+		}
+		/*
 		$resNamaFoto=mysqli_query($conn,$ambilNamaFoto);
 		if (!$resNamaFoto) {
 			printf("Error: %s\n", mysqli_error($conn));
 			exit();
 		}
-
-		$rowNamaFoto=mysqli_fetch_assoc($resNamaFoto);
+		*/
+		$row=$conn->query($qry)->fetch_assoc();
+		//$conn->close();
 		$insertRencanaAbsen = "INSERT INTO tb_cronjob_rencana_absen (id_anggota,status_id,keterangan,lat,lng,tglawal,tglakhir,foto_lokasi) VALUES ('$id','$stat','$ket','$lat','$lng',STR_TO_DATE('$tawal', '%m/%d/%Y'),STR_TO_DATE('$takhir', '%m/%d/%Y'),'$rowNamaFoto[foto_lokasi]')";
-		$resRencanaAbsen=mysqli_query($conn,$insertRencanaAbsen);
-		if (!$resRencanaAbsen) {
-			printf("Error: %s\n", mysqli_error($conn));
+		//$resRencanaAbsen=mysqli_query($conn,$insertRencanaAbsen);
+		if (!$conn->query($insertRencanaAbsen)) {
+			$errmsg="Error: " . $insertRencanaAbsen . "<br>" . $conn->error;
 			exit();
 		}
+		$conn->close();
 	}
 	//End Fungsi Cron Rencana Absen
 
-	//Enkripsi dan Dekripsi Data (Encode atau Decode)
+	//Enkripsi dan Dekripsi Data (Encode atau Decode) - Deprecated
+	/*
 	function getSaltKey(){
 		//Tidak Boleh Diubah
 		$key = "#k@KaTu_1nT3rNEt_$3H@t";
 		//$key2 = "#k@KaTu_1nT3rNEt_$3H@t";
 		return $key;
 	}
-
+	*/
+	/*
+	function executeQueryPro($qry,$action,$format){
+		$db_host = "localhost";
+		$db_user = "root";
+		$db_pass = "";
+		$db_name = "db_operasional-kantor";
+		$con = mysqli_connect($db_host, $db_user, $db_pass);
+		$find_db = mysqli_select_db($con, $db_name);
+		$res = mysqli_query($con, $qry);
+		if (!$resRencanaAbsen) {
+			printf("Error: %s\n", mysqli_error($conn));
+			mysqli_close($con);
+			exit();
+		}
+		if($action=="select"){
+			switch ($format) {
+				case 'fassoc':
+					return mysqli_fetch_assoc($res);
+					break;
+				case 'farray':
+					return mysqli_fetch_array($res);
+					break;
+				case 'frows':
+					return mysqli_fetch_row($res);
+					break;
+				case 'fnumrows':
+					return mysqli_num_rows($res);
+					break;
+				case 'fall':
+					return mysqli_fetch_all($res,MYSQLI_ASSOC);
+				break;
+				default:
+					echo "belom ada";
+					break;
+			}
+		}
+	}
+	*/
+	//Fungsi Update Delete Query
+	function inUpDel($qry,&$errmsg){
+		$conn = createConn();
+		$res = $conn->query($qry);
+		if ($res) {
+			//$res->free();
+			$conn->close();
+		} else {
+			$errmsg="Query: ".$qry." Error: ".$conn->error;
+			//echo "Error: " . $qry . "<br>" . $conn->error;
+			$conn->close();
+		}
+	}
+	//DataList Credit
+	function fetchCreditsJSON($id){
+		$id=antiInjection($_POST["id_anggota"]);
+		$qry = "SELECT id_anggota,topup_credit FROM tb_credits_anggota WHERE id_anggota = '$id'";
+		$conn=createConn();  
+		if (!$conn->query($qry)) {
+			echo "Error: " . $qry . "<br>" . $conn->error;
+			exit();
+		}
+		echo json_encode($conn->query($qry)->fetch_array());
+		$conn->close();
+	}
+	function fetchCreditForPaid($id){
+		$output = '';
+		$id=antiInjection($id);
+		$qry = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.credit_id=c.id WHERE a.id_anggota='$id' AND a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(a.tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota";
+		$conn=createConn();
+		$res = $conn->query($qry);
+		if (!$res ) {
+			echo "Error: " . $qry . "<br>" . $conn->error;
+			exit();
+		}
+		//$conn->close();
+		$output .= ' <br><table class="table table-hover table-responsive">';
+		//$topupcredit = 0;
+		//$id_anggota="";
+		//$row = fetchArray($qry);
+		
+		while($row=$res->fetch_array()) 
+		{  
+		   $id_anggota=$row['id_anggota'];
+		   $topupcredit = formatkanRekap($row['jumlah'],"rupiah");
+		   echo "<script>console.log(".$topupcredit.")</script>";
+		   $total_credit = formatkanRekap($row['total'],"rupiah");
+			 $output .= '
+				  <tbody>
+				  <tr>  
+					   <td width="30%"><label>ID Anggota</label></td>  
+					   <td width="30%">'.$id_anggota.'</td> 
+				  </tr>
+				  <tr>  
+						<td width="30%"><label>Nama</label></td>  
+						<td width="30%">'.$row["nama"].'</td> 
+				  </tr>
+				  <tr>  
+					<td width="30%"><label>Bulan</label></td>  
+					<td width="30%">'.$row["bulan"].'</td> 
+				  </tr>
+				  <tr>     
+					<td width="40%"><label>Jumla Akomodasi</label></td>  
+					<td width="40%">'.$topupcredit.'</td>  
+				</tr>
+				  <tr>     
+					   <td width="40%"><label>Total Akomodasi</label></td>  
+					   <td width="40%">'.$total_credit.'</td>  
+				  </tr>
+				  <tr>  
+					<td width="30%"><label>Status</label></td>  
+					<td width="30%"><span class=\'label label-danger\'>'.strtoupper($row['status']).'</span></td> 
+				  </tr>
+				  </tbody>
+			 ';  
+		}  
+		$output .= '  
+			 </table>   
+		';
+		$conn->close();
+		session_start();
+		$_SESSION["id_anggota_credit"]= $id; 
+		return $output;   
+	}
+	function prosesEditCredit($id,$nominal){
+		$id = antiInjection($id);
+		$nominal= antiInjection($nominal);
+		$qry = "UPDATE tb_credits_anggota SET topup_credit='$nominal' WHERE id_anggota='$id'";
+		inUpDel($qry);
+	}
+	function prosesPaidCredit($id){
+		$qry = "UPDATE tb_detail_absen SET credit_stat='paid' WHERE id_anggota='$id' AND credit_stat='unpaid' AND MONTH(tanggal)=MONTH(CURRENT_DATE()) AND YEAR(tanggal)=YEAR(CURRENT_DATE())";
+		inUpDel($qry);
+	}
+	//DataList Credit
+	//Enkripsi dan Dekripsi Data (Encode atau Decode) dengan open SSL encrypt decrypt metode AES-256-CBC
+	function getKey(){
+		//$secret_key = '"#k@KaTu_1nT3rNEt_$3H@t"';
+		$secret_key = getLastConfig('secret_key');
+		$key = hash('sha256', $secret_key);
+		return $key;
+	}
+	function getIv(){
+		//$secret_iv = '"#k1N3sH_kR3at1F_iDe@tA"';
+		$secret_iv = getLastConfig('secret_iv');
+		$iv = substr(hash('sha256', $secret_iv), 0, 16);
+		return $iv;
+	}
+	function getEncryptMethod(){
+		$encrypt_method = "AES-256-CBC";
+		return $encrypt_method;
+	}
+	
 	function encodeData($data){
 		//echo "MasukEncode<br>";
-		$encoded = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5(getSaltKey()), $data, MCRYPT_MODE_CBC, md5(md5(getSaltKey()))));
-		return $encoded;
+		//$encoded = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5(getSaltKey()), $data, MCRYPT_MODE_CBC, md5(md5(getSaltKey()))));
+		//return $encoded;
+		$output = openssl_encrypt($data, getEncryptMethod(), getKey(), 0, getIv());
+		$output = base64_encode($output);
+		return $output;
 	}
-
 	function decodeData($data){
 		//echo "MasukDecode<br>";
-		$decoded = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5(getSaltKey()), base64_decode($data), MCRYPT_MODE_CBC, md5(md5(getSaltKey()))), "\0");
-		return $decoded;
+		//$decoded = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5(getSaltKey()), base64_decode($data), MCRYPT_MODE_CBC, md5(md5(getSaltKey()))), "\0");
+		//return $decoded;
+		$output = openssl_decrypt(base64_decode($data), getEncryptMethod(), getKey(), 0,getIv());
+		return $output;
 	}
 	//END Enkripsi dan Dekripsi Data (Encode atau Decode)
+	function getLastConfig($str){
+		//$qry = "SELECT lat_kantor AS lat,lng_kantor AS lng, api_key_google AS apigoogle, metode_enkripsi AS metode, secret_key AS key, secret_iv AS iv FROM tb_konfigurasi_kakatu ORDER BY tanggal_set DESC,jam_set DESC LIMIT 1";
+		$qry = "SELECT ".$str." FROM tb_konfigurasi_kakatu ORDER BY tanggal_set DESC,jam_set DESC LIMIT 1";
+		$conn=createConn();  
+		if (!$conn->query($qry)) {
+			echo "Error: " . $qry . "<br>" . $conn->error;
+			exit();
+		}
+		$row=$conn->query($qry)->fetch_assoc();
+		$conn->close();
+		return $row[$str];
+		/*
+		switch ($str) {
+			case 'lat_kantor':
+				 return $row['lat'];
+			break;
+			case 'lng_kantor':
+				 return $row['lng'];
+			break;
+			case 'api_key_google':
+				return $row['apigoogle'];
+			break;
+			case 'metode_enkripsi':
+				return $row['metode'];
+			break;
+			case 'api_key_google':
+				return $row['apigoogle'];
+			break;
+		}
+		*/
+	}
 ?>

@@ -36,7 +36,7 @@ include "../../con_db.php";
 	for ($i=0; $i < $countAllnames ; $i++) { 
 		$path = "../../dist/fotobukti/".$allfilenames[$i];
 		if(!unlink($path)){
-			header("../../index.php?error&sidebar-menu=list_bayar&action=tampil");
+			header("../../tampil/list-bayar");
 			exit();
 		} 
 	}
@@ -52,21 +52,17 @@ include "../../con_db.php";
 ?>
   	<script type="text/javascript">
 	alert("Data Pembayaran dengan ID <?php echo $pembayaranid ?> , Berhasil Dihapus ");
-	document.location.href="../../index.php?sidebar-menu=list_bayar&action=tampil" 
+	document.location.href="../../tampil/list-bayar" 
 	</script>
 <?php 
 	}
 } else if($data['bukti'] == '') {
 	$sql = "DELETE FROM tb_pembayaran WHERE id_pembayaran='$pembayaranid'";
 	mysqli_query($koneksi,$sql);
-
 	$sql_hapus_bukti = "DELETE FROM tb_buktipembayaran WHERE id_pembayaran = '$pembayaranid'";
 	mysqli_query($koneksi, $sql_hapus_bukti);
 ?>
-	<script type="text/javascript">
-	alert("Data Pembayaran dengan ID <?php echo $pembayaranid ?> , Berhasil Dihapus ");
-	document.location.href="../../index.php?sidebar-menu=list_bayar&action=tampil" 
-	</script>
+	<script type="text/javascript">alert("Data Pembayaran dengan ID <?php echo $pembayaranid ?> , Berhasil Dihapus ");document.location.href="../../tampil/list-bayar"</script>
 <?php
 }
 ?>

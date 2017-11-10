@@ -1,7 +1,7 @@
    <?php  
       error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
       include "../../con_db.php";
-      $query = "SELECT b.nama AS nama,c.status AS status,b.foto_profile AS foto FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_absen c ON a.status_id = c.status_id WHERE a.tanggal=CURRENT_DATE()";  
+      $query = "SELECT b.nama AS nama,c.status AS status,b.foto_profile AS foto FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_absen c ON a.status_id = c.status_id WHERE a.tanggal=CURRENT_DATE() ORDER BY a.jam_masuk";  
       $result = mysqli_query($koneksi, $query);
       $jumbaris = mysqli_num_rows($result);
       //echo $jumbaris."<br>";
@@ -13,9 +13,25 @@
       
       $jumBagian = ceil($jumbaris/$jumFotoTampil);
       //echo $jumBagian."<br>";
-      $output = '<div id="galleryAbsensiHariIni" class="carousel slide" data-ride="carousel">					  
-      <div class="carousel-inner">'
+      $idSlide = "myCarousel";
+      $output = '<div id="'.$idSlide.'" class="carousel slide" data-ride="carousel">					  
+      <ol class="carousel-indicators">'
       ;
+      $inc3 = 0;
+      /*
+      while($inc3<$jumBagian){
+            if ($inc3===0) {              
+                  $output.='<li data-target="#'.$idSlide.'" data-slide-to="'.$inc3.'" class="active"></li>
+                  ';
+            } else {
+                  $output.='<li data-target="#'.$idSlide.'" data-slide-to="'.$inc3.'"></li>
+                  ';
+            }
+            $inc3++;
+      }
+      */
+      $output.='
+      </ol><div class="carousel-inner">';
       $inc = 1;
       while($inc<=$jumBagian){
             //echo $inc."<br>";
@@ -61,7 +77,7 @@
                   $output.='
                   <li>
                         <a class="users-list-name" href="#">'.$row["nama"].'</a>
-                        <img class="user-image img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
+                        <img class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
                         <span class="label '.$warnaLabel.' users-list-date">'.$statusFoto.'</span>
                   </li>
                   ';
@@ -78,11 +94,11 @@
       }
       $output .='
       </div>
-            <a class="left carousel-control" href="#galleryAbsensiHariIni" data-slide="prev">
+            <a class="left carousel-control" href="#'.$idSlide.'" data-slide="prev">
                   <span class="glyphicon glyphicon-chevron-left"></span>
                   <span class="sr-only">Previous</span>
             </a>
-            <a class="right carousel-control" href="#galleryAbsensiHariIni" data-slide="next">
+            <a class="right carousel-control" href="#'.$idSlide.'" data-slide="next">
                   <span class="glyphicon glyphicon-chevron-right"></span>
                   <span class="sr-only">Next</span>
             </a>

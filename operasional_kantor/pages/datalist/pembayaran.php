@@ -1,27 +1,11 @@
 <?php
    if (!defined('DIDALAM_INDEX_PHP')){ 
     //echo "Dilarang broh!";
-        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+        header("Location: ../../tampil/home");
     }
 ?>
-<html lang="en">
-<head>
-  <title>List Pembayaran</title>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-<?php
- error_reporting(E_ALL ^ (E_NOTICE | E_WARNING | E_DEPRECATED));
-?>
-
-  <style>
-    @import url('https://fonts.googleapis.com/css?family=Dosis');
-  </style> 
-
-</head>
 
 <?php 
-
   $sql_data = "SELECT id_anggota, password, email FROM tb_anggota WHERE id_anggota = '$_SESSION[id_anggota]'";
   $query = mysqli_query($koneksi, $sql_data);
 
@@ -39,34 +23,30 @@
    <b><p> Anda harus mengganti password anda </p></b>
    <b><p> dan </p></b> 
    <b><p >Mengisi email anda terlebih dahulu ! </p></b>
-      <a href="index.php?sidebar-menu=profile&action=tampil" class="btn btn-primary btn-lg" style="color: #ffffff;">Ganti Sekarang</a>
+      <a href="tampil/profil" class="btn btn-primary btn-lg" style="color: #ffffff;">Ganti Sekarang</a>
   </div>
   </div>
 </div>
 
-<script>
+
 <?php
 if($data_id == $data_pass && $_SESSION['jabatan'] != 'Admin' || $data_email == '-'){
 ?>
-    document.getElementById("overlay").style.display = "block";
+<script> document.getElementById("overlay").style.display = "block"</script>
 <?php
 } else {
 ?>
-    document.getElementById("overlay").style.display = "none";
+   <script> document.getElementById("overlay").style.display = "none"</script>
 <?php
 }
 ?>
-</script>
-
-
-<body style="background-color: #f9f9f9">
- <div class="container">
+<div class="container">
 <section class="content-header bounceInDown animated">
   <h2>LIST PEMBAYARAN OPERASIONAL KANTOR</h2>        
 </section>  
 <hr>
 <section>
-<a href="index.php?sidebar-menu=form_bayar&action=tampil" id="btntambah" class="btn btn-primary bounceInRight animated"><span class="glyphicon glyphicon-plus"></span>BAYAR OPERASIONAL</a>
+<a href="tampil/form-bayar" id="btntambah" class="btn btn-primary bounceInRight animated"><span class="glyphicon glyphicon-plus"></span>BAYAR OPERASIONAL</a>
 
 <?php
 
@@ -89,9 +69,9 @@ if($_SESSION['jabatan'] == 'Admin'){
 <br>
             <div class="form-group flipInX animated">
             <label> FILTER STATUS </label>
-              <form method="POST" action="index.php?sidebar-menu=list_bayar&action=tampil"> 
+              <form method="POST" action="tampil/list-bayar"> 
                  <div class="input-group"> 
-                  <a href="index.php?sidebar-menu=list_bayar&action=tampil" class="btn btn-default btn-xs">VIEW ALL</a>              
+                  <a href="tampil/list-bayar" class="btn btn-default btn-xs">VIEW ALL</a>              
                       <input type="submit" name="status_belum" value="BELUM" class="btn btn-danger btn-xs" style="margin-left: 3px;">
                       <input type="submit" name="status_sudah" value="SUDAH" class="btn btn-success btn-xs" style="margin-left: 3px;">
                       <input type="submit" name="status_menunggu" value="MENUNGGU" class="btn btn-warning btn-xs" style="margin-left: 3px;">
@@ -100,7 +80,7 @@ if($_SESSION['jabatan'] == 'Admin'){
             </form>         
             <div class="form-group flipInX animated">
             <label> FILTER TANGGAL </label>
-              <form method="POST" action="index.php?sidebar-menu=list_bayar&action=tampil">
+              <form method="POST" action="tampil/list-bayar">
                   <div class="input-group"> 
                     <input type="text" class="form-control" id="start_date" name="start_date" style="width: 100px;" placeholder="Dari"> 
                     <input type="text" class="form-control" id="end_date" name="end_date" style="width: 100px; margin-left: 3px;" placeholder="Sampai">
@@ -114,7 +94,7 @@ if($_SESSION['jabatan'] == 'Admin'){
   <hr>
  </div>
   <div class="fadeIn animated">
-  <table class="table" style="font-size: 13px;" id="example">
+  <table class="table" style="font-size: 13px;" id="data-pembayaran">
     <thead>
       <tr>
         <th style="width: 4%;  font-size: 12px;"> Tanggal </th>
@@ -238,21 +218,21 @@ if($_SESSION['jabatan'] == 'Admin'){
               <?php 
                 if($r[status]=='0'){
                   ?>
-                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-danger btn-xs"> <span> BELUM </span></a> 
+                       <td><a href="tampil/detail-pembayaran/<?php echo $id ?>" class="btn btn-danger btn-xs"> <span> BELUM </span></a> 
                        <?php if ($one == 'Admin'){?>
-                       <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS" disabled>
+                       <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data_pembayaran" value="HAPUS" disabled>
                        <?php } else { ?>
-                       <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data" value="HAPUS">
+                       <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data_pembayaran" value="HAPUS">
                        <?php } ?>
                        </td>
                   <?php 
                 } else if($r[status]=='2'){
                   ?>
-                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-success btn-xs"> <span> SUDAH </span></a></td>
+                       <td><a href="tampil/detail-pembayaran/<?php echo $id ?>" class="btn btn-success btn-xs"> <span> SUDAH </span></a></td>
                   <?php 
                 } else if($r[status]=='1'){
                   ?>
-                       <td><a href="index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id ?>" class="btn btn-warning btn-xs"> MENUNGGU </a></td> 
+                       <td><a href="tampil/detail-pembayaran/<?php echo $id ?>" class="btn btn-warning btn-xs"> MENUNGGU </a></td> 
                 <?php
                 }
               ?>
@@ -270,28 +250,15 @@ if($_SESSION['jabatan'] == 'Admin'){
       <input type="submit" class="btn btn-primary pull-right" value="Convert To CSV" name="submit_csv-pembayaran">  
   </form>
   </div>
-</body>
 
-<?php 
-
-                if($one == "Admin"){
-                  ?>
-                  <script type="text/javascript">
-                          document.getElementById('btn_convert').style.display="block";
-                      </script>
-                  <?php
-                } else 
-
-                if($one != "Admin") {
-                  ?>
-                  <script type="text/javascript">
-                          document.getElementById('btn_convert').style.display="none";
-                      </script>
-                  <?php
-                }
-              ?>
-
-
+  <?php 
+    if($one == "Admin"){
+       echo '<script type="text/javascript">document.getElementById(\'btn_convert\').style.display="block"</script>';
+    } else 
+    if($one != "Admin") {
+     echo '<script type="text/javascript">document.getElementById(\'btn_convert\').style.display="none"</script>';
+    }
+  ?>
 <div id="dataModal" class="modal fade">  
       <div class="modal-dialog">  
            <div class="modal-content">  
@@ -308,27 +275,3 @@ if($_SESSION['jabatan'] == 'Admin'){
            </div>  
       </div>  
  </div>
-
-  <!-- jQuery 3 -->
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-
-  <script type="text/javascript">
-  $(document).ready(function(){  
-          $(".delete_data").click(function(){    
-    var id_pembayaran = $(this).attr("id");
-   
-                $.ajax({  
-                url:"pages/fetchdata/fetch_data_pembayaran.php",  
-                method:"post",  
-                data:{id_pembayaran:id_pembayaran},  
-                success:function(data){
-                 $('#pembayaran_detail').html(data);           
-                 $('#dataModal').modal("show");  
-             }
-          });  
-       });     
-    });
-
-</script>
-  
-</html>

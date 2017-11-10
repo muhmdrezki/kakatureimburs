@@ -1,5 +1,5 @@
 <?php
-include "../../con_db.php";
+	include "../../con_db.php";
 	session_start();
 	$hapusid = $_SESSION['hapusid'];
 
@@ -12,14 +12,9 @@ include "../../con_db.php";
 	$values2 = mysqli_fetch_assoc($result2);
 
 	if($values['jumlah']>0 || $values2['jumlah2']>0) {
-		?>
-			<script> alert("Anggota yang bersangkutan masih mempunyai pembayaran yang belum di konfirmasi/reimburse"); document.location.href="../../index.php?sidebar-menu=anggota&action=tampil"</script>
-		<?php
+		echo '<script>"Anggota yang bersangkutan masih mempunyai pembayaran yang belum di konfirmasi/reimburse"); document.location.href="../../tampil/data-anggota"</script>';
 	}else if($values['jumlah']==0 && $values2['jumlah2']==0){
-
-	mysqli_query($koneksi, "DELETE FROM tb_anggota WHERE id_anggota='$hapusid'");
-?>
-<script> alert("Data Anggota dengan id <?php echo $hapusid ?>, Berhasil Dihapus "); document.location.href="../../index.php?sidebar-menu=anggota&action=tampil" </script>
-<?php
-}
+		mysqli_query($koneksi, "DELETE FROM tb_anggota WHERE id_anggota='$hapusid'");
+		echo '<script> alert("Data Anggota dengan id <?php echo $hapusid ?>, Berhasil Dihapus "); document.location.href="../../tampil/data-anggota" </script>';
+	}
 ?>

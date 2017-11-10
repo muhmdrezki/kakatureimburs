@@ -1,8 +1,8 @@
  <?php  
-include "../../con_db.php";
- error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-      $id_pembayaran = $_POST["id_pembayaran"];
-
+    include "../../con_db.php";
+    include "../../fungsi_kakatu.php";
+    error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
+    $id_pembayaran = $_POST["id_pembayaran"];
     $target_dir = "../../dist/fotobukti/";
     $target_file = $target_dir . basename($_FILES["bukti"]["name"]);
     $filename = basename($_FILES["bukti"]["name"]);
@@ -73,5 +73,6 @@ include "../../con_db.php";
                 exit();
                 }
   }
+  emitData();
   ?>
-      <script> alert("Data Pembayaran dengan ID <?php echo $id_pembayaran ?>, Berhasil Di Update "); document.location.href="../../index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id_pembayaran?>" </script>   
+      <script> alert("Data Pembayaran dengan ID <?php echo $id_pembayaran ?>, Berhasil Di Update "); document.location.href="../../tampil/detail-pembayaran/<?php echo $id_pembayaran?>" </script>   

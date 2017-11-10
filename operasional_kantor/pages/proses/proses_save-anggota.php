@@ -67,4 +67,4 @@
 	}
 }
 ?>
-<script> alert("Data Anggota Berhasil Disimpan"); document.location.href="../../index.php?sidebar-menu=anggota&action=tampil" </script>
+<script> alert("Data Anggota Berhasil Disimpan"); document.location.href="../../tampil/anggota" </script>

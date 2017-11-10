@@ -1,5 +1,5 @@
 <?php
-  include "../../con_db.php"; 
+  include "../../con_db.php";
   session_start();
   date_default_timezone_set('Asia/Jakarta');
   $tgl_now = date("d-m-Y"); 
@@ -13,12 +13,12 @@
 
         $data = array();
 
-          while($row = mysqli_fetch_array($res_donut))
-          {
-           $data[] = array(
-            'value'  => $row['jumlah'],
-            'label'  => $row['jenis']
-           );
-          }
-          echo json_encode($data);
+  while($row = mysqli_fetch_array($res_donut))
+  {
+    $data[] = array(
+      'value'  => $row['jumlah'],
+      'label'  => $row['jenis']
+    );
+  }
+  echo json_encode($data);
 ?>

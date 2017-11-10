@@ -63,7 +63,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	if (!$result) {
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
-              } 
+			  } 
+	echo '<script>document.location.href="../../tampil/profile" </script> ';
 }
 ?>
-<script> document.location.href="../../index.php?sidebar-menu=profile&action=tampil" </script> 

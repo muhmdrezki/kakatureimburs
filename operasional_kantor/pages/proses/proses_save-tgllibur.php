@@ -18,10 +18,10 @@
 	$rangelibur = $_POST["reservation"];
 	$tgl1 = substr($rangelibur,0,11);
 	$tgl2 = substr($rangelibur,13,25);
-	$query = "INSERT INTO tb_tgllibur (nama_libur,tglawal,tglakhir,jmlhari) VALUES ('$nama_libur',STR_TO_DATE('$tgl1', '%m/%d/%Y'),STR_TO_DATE('$tgl2', '%m/%d/%Y'),DATEDIFF(STR_TO_DATE('$tgl2', '%m/%d/%Y'),STR_TO_DATE('$tgl1', '%m/%d/%Y'))+1)";
+	$query = "INSERT INTO tb_tgllibur (nama_libur,tglawal,tglakhir,jmlhari) VALUES ('$nama_libur',STR_TO_DATE('$tgl1', '%m/%d/%Y'),STR_TO_DATE('$tgl2', '%m/%d/%Y')";
 	$insert = mysqli_query($koneksi, $query) or trigger_error("Query Failed! SQL: $query - Error: ".mysqli_error($koneksi), E_USER_ERROR);
 ?>
-<script> alert("Tanggal Libur Berhasil Disimpan"); document.location.href="../../index.php?sidebar-menu=list_data_libur&action=tampil" </script>
+<script> alert("Tanggal Libur Berhasil Disimpan"); document.location.href="../../tampil/data-libur" </script>
 <?php
 }
 ?>

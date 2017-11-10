@@ -1,8 +1,11 @@
 <?php
    if (!defined('DIDALAM_INDEX_PHP')){ 
     //echo "Dilarang broh!";
-        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+        header("Location: ../../tampil/home");
     }
+    if ($_SESSION['jabatan']!="Admin") {
+      echo '<script>alert("Maaf, Anda bukan Admin"); window.location="../../tampil/home"</script>';
+   }
 ?>    
       <?php 
         $id_jabatan = mt_rand(100,999);
@@ -16,9 +19,6 @@
   <h2> DATA JABATAN </h2>
 
 </div>
-
- <!-- jQuery 3 -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
 <div class="container bounceInUp animated">
 <hr>
@@ -56,7 +56,7 @@
         ?>
         <h3> LIST JABATAN </h3>
             <div>  
-               <table class="table" id="example">
+               <table class="table" id="data-jabatan">
                <thead>
                   <tr>  
                          <th> Jabatan </th> 
@@ -72,7 +72,7 @@
                     <tr>   
                          <td> <?php echo $row[jabatan] ?> </td>  
                          <td> Rp. <?php echo number_format($row[gaji]) ?> </td>
-                         <td> <a href="#" id="<?php echo $row["id_jabatan"]; ?>" class="btn btn-danger btn-xs delete_data"> HAPUS </a><a href="#" id="<?php echo $row["id_jabatan"]; ?>" class="btn btn-warning btn-xs edit_jabatan">EDIT</a> </td>
+                         <td> <a id="<?php echo $row["id_jabatan"]; ?>" class="btn btn-danger btn-xs delete_data_jabatan"> HAPUS </a><a id="<?php echo $row["id_jabatan"]; ?>" class="btn btn-warning btn-xs edit_jabatan">EDIT</a> </td>
                     </tr>
               <?php 
                   $no++;
@@ -105,25 +105,6 @@
       </div>  
  </div>  
 
-
-
-  <script>
-     $(document).ready(function(){  
-      $('.delete_data').click(function(){  
-         var id_jabatan = $(this).attr("id");
-          $.ajax({  
-                url:"pages/fetchdata/fetch_data_jabatan.php",  
-                method:"post",  
-                data:{id_jabatan:id_jabatan},  
-                success:function(data){
-                 $('#jabatan_detail').html(data);           
-                 $('#dataModal').modal("show");  
-             }
-         });
-      });  
- });  
- </script>
-
  <div id="jabatan_Modal" class="modal fade">  
       <div class="modal-dialog">  
            <div class="modal-content">  
@@ -150,22 +131,3 @@
            </div>  
       </div>  
  </div>  
-
- <script type="text/javascript">
-  $(document).on('click', '.edit_jabatan', function(){ 
-  var id_jabatan = $(this).attr("id");   
-             $.ajax({  
-                url:"pages/fetchdata/fetch_data_jabatan-json.php",  
-                method:"POST",  
-                data:{id_jabatan:id_jabatan},  
-                dataType:"json",  
-                success:function(data){ 
-                     $('#id_jabatan1').val(data.id_jabatan); 
-                     $('#jabatan1').val(data.jabatan);  
-                     $('#gaji1').val(data.gaji);  
-                     $('#insert').val("Update");  
-                     $('#jabatan_Modal').modal('show');  
-                }  
-           });
-      });    
-</script>

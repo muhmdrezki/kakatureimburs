@@ -1,5 +1,5 @@
 <?php
-include "../../con_db.php";
+	include "../../con_db.php";
 	error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	session_start();
 	$id = $_SESSION['idcredit'];
@@ -8,15 +8,9 @@ include "../../con_db.php";
 	$result = mysqli_query($koneksi,$sql);
 
 	 if (!$result) {
-              printf("Error: %s\n", mysqli_error($koneksi));
-              exit();
-              } else {
-
-?>
-  	<script type="text/javascript">
-	alert("Data credit dengan ID <?php echo $id ?>, berhasil dihapus");
-	document.location.href="../../index.php?sidebar-menu=list_data_credits&action=tampil" 
-	</script>
-<?php 
-}
+        printf("Error: %s\n", mysqli_error($koneksi));
+        exit();
+        } else {		
+  		echo '<script type="text/javascript">alert("Data credit dengan ID'.$id.' berhasil dihapus");document.location.href="../../tampil/list-data-credits"</script>';
+	}
 ?>

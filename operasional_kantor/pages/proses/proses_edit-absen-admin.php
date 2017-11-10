@@ -84,5 +84,5 @@ if (isset($_POST["submit"])) {
             }
       }
 }
+echo '<script> alert("Data Absen dengan ID'.$id.', Berhasil Di Update"); document.location.href="../../tampil/data-absensi-admin" </script>';
 ?>
-<script> alert("Data Absen dengan ID <?php echo $id ?>, Berhasil Di Update"); document.location.href="../../index.php?sidebar-menu=list_data_absensi_admin&action=tampil" </script>   

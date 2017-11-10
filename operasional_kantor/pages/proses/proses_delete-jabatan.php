@@ -11,12 +11,6 @@ include "../../con_db.php";
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
               } else {
-
-?>
-  	<script type="text/javascript">
-	alert("Data jabatan dengan ID <?php echo $id ?>, berhasil dihapus");
-	document.location.href="../../index.php?sidebar-menu=list_jabatan&action=tampil" 
-	</script>
-<?php 
-}
+  					echo '<script type="text/javascript">alert("Data jabatan dengan ID: '.$id.' berhasil dihapus");document.location.href="../../tampil/list-jabatan"</script>';
+			}
 ?>

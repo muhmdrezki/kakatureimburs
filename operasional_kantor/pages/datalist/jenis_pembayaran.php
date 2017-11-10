@@ -1,8 +1,11 @@
 <?php
    if (!defined('DIDALAM_INDEX_PHP')){ 
     //echo "Dilarang broh!";
-        header("Location: ../../index.php?sidebar-menu=home&action=tampil");
+        header("Location: ../../tampil/home");
     }
+   if ($_SESSION['jabatan']!="Admin") {
+      echo '<script>alert("Maaf, Anda bukan Admin"); window.location="../../tampil/home"</script>';
+   }
 ?>
       <?php 
         $id_jenis = mt_rand(06,999);
@@ -46,7 +49,7 @@
         ?>
         <h3> LIST JENIS PEMBAYARAN </h3>
             <div class="table-responsive">  
-               <table class="table" id="example">
+               <table class="table" id="data-jenis-pembayaran">
                <thead>
                   <tr>  
                          <th> ID Jenis </th>  
@@ -62,7 +65,7 @@
                     <tr>  
                          <td> <?php echo $row[id_jenis] ?> </td>  
                          <td> <?php echo $row[jenis] ?> </td>  
-                         <td> <a href="#" id="<?php echo $row["id_jenis"]; ?>" class="btn btn-danger btn-xs delete_data"> HAPUS </a><a href="#" class="btn btn-warning btn-xs edit_jenis" id="<?php echo $row["id_jenis"]; ?>"> EDIT </a> </td>
+                         <td> <a id="<?php echo $row["id_jenis"]; ?>" class="btn btn-danger btn-xs delete_jenis_pembayaran"> HAPUS </a><a class="btn btn-warning btn-xs edit_jenis_pembayaran" id="<?php echo $row["id_jenis"]; ?>"> EDIT </a> </td>
                     </tr>
               <?php 
                   $no++;
@@ -77,24 +80,6 @@
 
        
 </section>
- <!-- jQuery 3 -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script>
-     $(document).ready(function(){  
-      $('.delete_data').click(function(){  
-         var id_jenis = $(this).attr("id");
-          $.ajax({  
-                url:"pages/fetchdata/fetch_data_jenis-pembayaran.php",  
-                method:"post",  
-                data:{id_jenis:id_jenis},  
-                success:function(data){
-                 $('#detail_jenis').html(data);           
-                 $('#dataModal').modal("show");  
-             }
-         });
-      });  
- });  
- </script>
 
 <div id="dataModal" class="modal fade">  
       <div class="modal-dialog">  
@@ -137,21 +122,3 @@
            </div>  
       </div>  
  </div>  
-
- <script type="text/javascript">
-  $(document).on('click', '.edit_jenis', function(){ 
-  var id_jenis = $(this).attr("id");   
-             $.ajax({  
-                url:"pages/fetchdata/fetch_data_jenispembayaran-json.php",  
-                method:"POST",  
-                data:{id_jenis:id_jenis},  
-                dataType:"json",  
-                success:function(data){ 
-                     $('#id_jenis1').val(data.id_jenis); 
-                     $('#jenis1').val(data.jenis);  
-                     $('#insert').val("Update");  
-                     $('#jenis_Modal').modal('show');  
-                }  
-           });
-      });    
-</script>

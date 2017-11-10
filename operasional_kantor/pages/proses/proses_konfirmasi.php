@@ -1,33 +1,29 @@
 <html>
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<link rel="stylesheet" type="text/css" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+		 <!-- JS dependencies -->
+	<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- bootbox code -->
+    <script type="text/javascript" src="../../bower_components/bootbox/bootbox.min.js"></script>
 </html>
 <?php 
 include "../../con_db.php";
+include "../../fungsi_kakatu.php";
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 session_start();
 date_default_timezone_set("Asia/Jakarta");
 	$id = $_SESSION['id_pembayaran'];
 	$jabatan = $_SESSION['jabatan'];
-
-	 list($one, $two) = explode(",", $_SESSION['jabatan'] , 2);
+	list($one, $two) = explode(",", $_SESSION['jabatan'] , 2);
 	
 if($jabatan == 'Admin'){
 	$sql = "UPDATE tb_konfirmasi SET konfirm_admin='2' WHERE id_pembayaran='$id'";
 	$insert = mysqli_query($koneksi, $sql);
-
 	$update_query1 = "UPDATE tb_pembayaran SET status='1' WHERE id_pembayaran='$id'";
 	$insert_query1 = mysqli_query($koneksi,$update_query1);
-
 	include "../../phpmailer/admin_send.php";
-
 	?>
-	<!-- JS dependencies -->
-    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- bootbox code -->
-    <script src="../../bootbox.min.js"></script>
     <?php 
     	$sqldata = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE id_pembayaran ='$id'";
 		    	$resdata = mysqli_query($koneksi,$sqldata);
@@ -79,10 +75,10 @@ if($jabatan == 'Admin'){
         		bootbox.alert({ 
 				  size: "small",
 				  message: "<?php echo '<h4>' ?>Anda bisa Share lagi melalui Button Share yang tersedia di Form Detail Pembayaran <?php echo '</h4><br>' ?><?php echo '<h4>' ?>Klik Ok, Untuk kembali ke menu Pembayaran<?php echo '</h4>'?>", 
-				  callback: function(){window.location="../../index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id; ?>" }
+				  callback: function(){window.location="../../tampil/detail-pembayaran/<?php echo $id; ?>" }
 			})
     	} else {
-    	window.location="../../index.php?sidebar-menu=list_bayar&action=tampil"
+    		window.location="../../tampil/list-bayar"
     	}
     }
 });
@@ -93,7 +89,6 @@ if($jabatan == 'Admin'){
 } else if($jabatan != 'Admin'){
 	$sql = "UPDATE tb_konfirmasi SET konfirm_anggota='2' WHERE id_pembayaran='$id'";
 	$insert = mysqli_query($koneksi, $sql);
-
 	include "../../phpmailer/anggota_send_ok.php";
     	$sqldata = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE id_pembayaran ='$id'";
 		    	$resdata = mysqli_query($koneksi,$sqldata);
@@ -119,14 +114,8 @@ if($jabatan == 'Admin'){
 							      	$hari = "Minggu";
 							      }
     ?>
-	 <!-- JS dependencies -->
-    <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- bootbox code -->
-    <script src="../../bootbox.min.js"></script>
 	 <script>
-
     var wa_anggota_admin = "whatsapp://send?text=Uang <?php echo $namajenis ?> dengan ID Pembayaran <?php echo $id ?> , pada hari <?php echo $hari.", ".$tgl_now?>. Sebesar Rp.<?php echo $jumlah?>. Sudah saya terima.";
     var jabatan_share = <?php $_SESSION["jabatan"]?>
 
@@ -150,10 +139,10 @@ if($jabatan == 'Admin'){
         		bootbox.alert({ 
 				  size: "small",
 				  message: "<?php echo '<h4>' ?>Anda bisa Share lagi melalui Button Share yang tersedia di Form Detail Pembayaran <?php echo '</h4><br>' ?><?php echo '<h4>' ?>Klik Ok, Untuk kembali ke menu Pembayaran<?php echo '</h4>'?>", 
-				  callback: function(){window.location="../../index.php?sidebar-menu=detail&action=tampil&id=<?php echo $id; ?>" }
+				  callback: function(){window.location="../../tampil/detail-pembayaran/<?php echo $id; ?>" }
 			})
     	} else {
-    	window.location="../../index.php?sidebar-menu=list_bayar&action=tampil"
+    	window.location="../../tampil/list-bayar"
     	}
     }
 });
@@ -178,5 +167,6 @@ if($row['konfirm_admin']=="2" && $row['konfirm_anggota']=="2"){
 	$delete_query = "DELETE FROM tb_konfirmasi WHERE id_pembayaran='$id'";
 	$remove_query = mysqli_query($koneksi,$delete_query);
 }
+emitData();
 ?>
  <script> alert("Konfirmasi Terkirim"); </script>
