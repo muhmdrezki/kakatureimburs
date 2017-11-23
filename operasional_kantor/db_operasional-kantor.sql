@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2017 at 04:19 PM
+-- Generation Time: Nov 23, 2017 at 09:39 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -25,176 +25,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jabatan_anggota`
---
-
-CREATE TABLE `jabatan_anggota` (
-  `id_anggota` varchar(5) NOT NULL,
-  `id_jabatan` varchar(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `jabatan_anggota`
---
-
-INSERT INTO `jabatan_anggota` (`id_anggota`, `id_jabatan`) VALUES
-('00001', '111'),
-('88863', '004'),
-('72555', '541'),
-('62541', '571'),
-('87553', '557'),
-('14048', '004'),
-('27225', '002'),
-('90706', '557');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_absen`
---
-
-CREATE TABLE `tb_absen` (
-  `status_id` int(11) NOT NULL,
-  `status` varchar(30) NOT NULL,
-  `warna` varchar(7) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_absen`
---
-
-INSERT INTO `tb_absen` (`status_id`, `status`, `warna`) VALUES
-(1, 'Hadir', '#00c0ef'),
-(2, 'Hadir Diluar', '#0073b7'),
-(3, 'Sakit', '#f56954'),
-(4, 'Izin', '#f39c12'),
-(5, 'Cuti', '#00a65a'),
-(6, 'Alpha', '#c0c0c0');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_anggota`
---
-
-CREATE TABLE `tb_anggota` (
-  `id_anggota` varchar(15) NOT NULL,
-  `nama` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `alamat` varchar(200) NOT NULL,
-  `tempat_lahir` varchar(100) NOT NULL,
-  `tgl_lahir` date NOT NULL,
-  `jenis_kelamin` varchar(1) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `foto_profile` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_anggota`
---
-
-INSERT INTO `tb_anggota` (`id_anggota`, `nama`, `email`, `alamat`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `password`, `foto_profile`) VALUES
-('00001', 'Isma', 'admin@gmail.com', 'Dipati Ukur', 'Bandung', '1995-08-01', 'P', 'TYzoDemc6uiapr2nm8wqjgP7OEEzh5N8MdlWr2vHil8=', 'icon.png'),
-('14048', 'Imam Arief', 'imamariefrahmann@gmail.com', 'Jalan Dipatiukur nomor 42', 'Mataram', '1994-05-08', 'L', 'nB6PS0hngXXL1EqLEx9m3z+JWJYqlJWhAh2+xe6fCZQ=', '-'),
-('27225', 'Rizki Adam', 'rizkiadam@kakatu.id', 'Jalan Sukasari 4', 'Bandung', '1992-08-17', 'L', 'y3VQsKgL/hKXjTBSe4hXkFd74MS+0PDk3SmvQ6ua1so=', '-'),
-('62541', 'Eki', 'rezkimuhmd@gmail.com', '-', 'Ciamis', '1996-02-21', 'L', 'tFIBiXXNUgy3n6CHfoyGCvoHUSDBk4T+wav92M8/tUM=', '-'),
-('72555', 'Aldy Subagja', 'aldysubagja@gmail.com', '-', '-', '1000-01-01', '-', 'ey740agDEKcPo3p85iHVkn0LD0ornRhmjNfdej8K8uI=', '-'),
-('87553', 'Chandra', 'schandraj@gmail.com', '-', '-', '1000-01-01', '-', 'tcHIgOmtx2nwTEhT193u3NjUkEIgAuJtancrxlY3Kqc=', '-'),
-('88863', 'Imam Robani', '-', '-', '-', '1000-01-01', '-', 'fu6lEerNZng0tcoe3Py0q28qFKW2lSJXlMqgfw7pFew=', '-'),
-('90706', 'Idan Freak', 'idanfreak@gmail.com', 'Jalan Dipati Ukur nomor 20', 'Dago', '1994-05-08', 'L', 'R/v7V9ZhFBTy59EXcrlxVdko4i2cKRxvbHR1I2HZJ/A=', '-');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_buktipembayaran`
---
-
-CREATE TABLE `tb_buktipembayaran` (
-  `id` int(11) NOT NULL,
-  `id_pembayaran` varchar(5) NOT NULL,
-  `bukti` varchar(400) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_buktipembayaran`
---
-
-INSERT INTO `tb_buktipembayaran` (`id`, `id_pembayaran`, `bukti`) VALUES
-(65, '76673', 'belanda.png'),
-(66, '80133', 'IMG_20170729_094819_HDR.jpg'),
-(67, '27650', 'MainMenu (Admin).png'),
-(68, '80133', 'IMG_20170508_155537_HDR.jpg'),
-(69, '97391', '10824.jpg'),
-(70, '94100', 'elektromagnetik.png');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_credits_anggota`
---
-
-CREATE TABLE `tb_credits_anggota` (
-  `id` int(4) NOT NULL,
-  `id_anggota` varchar(15) NOT NULL,
-  `topup_credit` bigint(10) NOT NULL DEFAULT '0',
-  `status` varchar(15) NOT NULL,
-  `tanggal_set` date NOT NULL,
-  `total_credit` bigint(10) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_credits_anggota`
---
-
-INSERT INTO `tb_credits_anggota` (`id`, `id_anggota`, `topup_credit`, `status`, `tanggal_set`, `total_credit`) VALUES
-(1, '00001', 97000, 'paid', '2017-09-01', 4753000),
-(23, '14048', 95000, 'paid', '2017-09-01', 1170000),
-(24, '87553', 70000, 'paid', '2017-09-01', 210000),
-(25, '72555', 70000, 'paid', '2017-09-01', 210000),
-(26, '88863', 50000, 'paid', '2017-09-01', 150000),
-(27, '62541', 70000, 'paid', '2017-09-01', 350000),
-(39, '00001', 97000, 'unpaid', '2017-10-11', 21146000),
-(40, '14048', 95000, 'unpaid', '2017-10-11', 855000),
-(42, '72555', 70000, 'unpaid', '2017-10-11', 420000),
-(43, '88863', 50000, 'unpaid', '2017-10-11', 300000),
-(44, '62541', 70000, 'unpaid', '2017-10-11', 490000),
-(45, '87553', 78000, 'unpaid', '2017-10-11', 468000),
-(46, '27225', 80000, 'unpaid', '2017-10-11', 400000),
-(47, '90706', 87000, 'unpaid', '2017-10-11', 522000),
-(48, '14048', 45000, 'paid', '2017-08-01', 450000),
-(49, '00001', 70000, 'paid', '2017-08-01', 450000),
-(50, '27225', 75000, 'paid', '2060-00-00', 0),
-(51, '62541', 60000, 'paid', '2017-08-10', 500000),
-(52, '72555', 65000, 'paid', '2017-08-02', 900000);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_cuti_anggota`
---
-
-CREATE TABLE `tb_cuti_anggota` (
-  `id_cuti` int(11) NOT NULL,
-  `id_anggota` varchar(15) NOT NULL,
-  `cuti_used` int(4) NOT NULL DEFAULT '0',
-  `cuti_qty` int(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_cuti_anggota`
---
-
-INSERT INTO `tb_cuti_anggota` (`id_cuti`, `id_anggota`, `cuti_used`, `cuti_qty`) VALUES
-(1, '00001', 0, 10),
-(2, '27225', 15, 12),
-(3, '14048', 0, 9),
-(4, '87553', 0, 13),
-(5, '62541', 0, 12),
-(6, '72555', 0, 12);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tb_detail_absen`
 --
 
@@ -207,394 +37,386 @@ CREATE TABLE `tb_detail_absen` (
   `keterangan` varchar(255) DEFAULT '',
   `latitude` double DEFAULT NULL,
   `longitude` double DEFAULT NULL,
-  `alamat_lokasi` varchar(255) DEFAULT NULL,
   `tgl_awal` date DEFAULT NULL,
   `tgl_akhir` date DEFAULT NULL,
-  `foto_lokasi` varchar(255) DEFAULT NULL
+  `foto_lokasi` varchar(255) DEFAULT NULL,
+  `rencana_id` int(11) DEFAULT NULL,
+  `credit_id` int(11) DEFAULT NULL,
+  `credit_in` bigint(20) DEFAULT NULL,
+  `credit_stat` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tb_detail_absen`
 --
 
-INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `status_id`, `keterangan`, `latitude`, `longitude`, `alamat_lokasi`, `tgl_awal`, `tgl_akhir`, `foto_lokasi`) VALUES
-(1, '00001', '2017-09-22', '00:50:37', 5, 'Bulan madu', -6.886720180511475, 107.6164192, 'Jl. Tubagus Ismail Dalam No.32, Lebakgede, Coblong, Kota Bandung, Jawa Barat 40132, Indonesia', '2017-09-22', '2017-09-24', '10824.jpg'),
-(2, '00001', '2017-09-19', '01:46:55', 2, 'Lapar', -6.88667631149292, 107.6164022, 'Jl. Tubagus Ismail Dalam No.32, Lebakgede, Coblong, Kota Bandung, Jawa Barat 40132, Indonesia', '2017-09-19', '2017-09-21', '10824.jpg'),
-(3, '00001', '2017-09-16', '02:47:29', 4, 'Lapar', -6.886645793914795, 107.6163899, 'Jl. Tubagus Ismail Dalam No.16B, Lebakgede, Coblong, Kota Bandung, Jawa Barat 40132, Indonesia', '2017-09-16', '2017-09-18', '10824.jpg'),
-(4, '00001', '2017-09-26', '01:30:34', 3, 'Demam berdarah', -6.886902332305908, 107.6168659, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-26', '2017-09-30', '10825.jpg'),
-(5, '00001', '2017-09-25', '03:32:00', 2, '', -6.886944770812988, 107.61681139999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', NULL),
-(6, '14048', '2017-09-26', '06:37:06', 2, 'kangen mama', -6.8868794441223145, 107.61689009999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', NULL),
-(7, '14048', '2017-09-26', '07:35:25', 1, '', 0, 0, 'Tidak Ketemu', '2017-09-26', '2017-09-26', NULL),
-(8, '14048', '2017-09-26', '07:56:38', 1, '', -6.8869053, 107.61686639999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-26', '2017-09-26', NULL),
-(9, '14048', '2017-09-26', '07:58:52', 1, '', -6.8868799, 107.61689, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-26', '2017-09-26', NULL),
-(10, '14048', '2017-09-26', '08:00:46', 1, '', -6.8869359, 107.6168558, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-26', '2017-09-26', NULL),
-(11, '14048', '2017-09-26', '08:03:31', 1, '', -6.8868796, 107.61689, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-26', '2017-09-26', NULL),
-(12, '14048', '2017-09-26', '08:09:24', 1, '', -6.8869242999999996, 107.6168615, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-26', '2017-09-26', NULL),
-(13, '14048', '2017-09-26', '08:10:25', 1, '', -6.886879400000001, 107.61689, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-26', '2017-09-26', NULL),
-(14, '14048', '2017-09-26', '08:10:51', 3, 'ingat mama', -6.886908699999999, 107.61686139999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', NULL),
-(15, '14048', '2017-09-26', '08:36:44', 1, '', -6.8868796, 107.61689249999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-26', '2017-09-26', NULL),
-(16, '00001', '2017-09-27', '13:36:46', 1, '', -6.8869682999999995, 107.6168591, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-27', '2017-09-27', NULL),
-(18, '00001', '2017-09-28', '04:32:51', 3, 'Demam Malaria coy', -6.8869071, 107.6168537, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(19, '00001', '2017-09-28', '04:45:34', 3, 'Gersang sekali', -6.8868604, 107.6168778, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(20, '00001', '2017-09-28', '04:53:11', 4, 'Haus', -6.8869278, 107.61682359999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(21, '00001', '2017-09-28', '05:17:45', 5, 'Menjenguk Obama', -6.8868601, 107.616878, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-30', '10823.jpg'),
-(22, '00001', '2017-09-28', '05:22:00', 2, 'Ke SMA 5 bandung', -6.8869069000000005, 107.6168571, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(23, '00001', '2017-09-28', '05:24:45', 3, 'lapar ikan', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(24, '00001', '2017-09-28', '05:29:09', 4, 'Menjenguk mantan kedua', -6.8868601, 107.61687789999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(25, '00001', '2017-09-28', '05:31:43', 2, 'Menangis untuk keuda kalinya', -6.8868607, 107.6168778, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(26, '00001', '2017-09-28', '05:32:35', 2, 'cerita lama', -6.8868588, 107.6168794, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(27, '00001', '2017-09-28', '05:34:11', 2, 'Setelah sekian lama', -6.8868601, 107.61687769999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(28, '00001', '2017-09-28', '05:35:16', 3, 'Dia kembali', -6.8868605, 107.61687769999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(29, '00001', '2017-09-28', '05:35:54', 4, 'okay', -6.8868604, 107.6168778, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(30, '00001', '2017-09-28', '05:37:38', 2, 'keterlaluan', -6.8868604, 107.61687789999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(31, '00001', '2017-09-28', '05:40:30', 3, 'Mengapa', -6.8868586, 107.6168781, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(32, '00001', '2017-09-28', '05:41:58', 2, 'kiuta', -6.8868588, 107.61687880000001, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(33, '00001', '2017-09-28', '05:43:05', 4, 'ilang', -6.8868604, 107.6168778, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(34, '00001', '2017-09-28', '05:44:21', 4, 'fsdfdsf', -6.8868607, 107.61687769999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(35, '00001', '2017-09-28', '05:46:03', 2, 'inilah dunia', -6.8868601, 107.61687789999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(36, '00001', '2017-09-28', '05:48:38', 4, 'izinkan', -6.8868601, 107.6168778, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(37, '00001', '2017-09-28', '05:49:24', 4, 'izinkanlah', -6.8868598, 107.61688, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(38, '00001', '2017-09-28', '05:56:05', 2, 'Mengingat mantan', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(39, '00001', '2017-09-28', '05:56:58', 3, 'menghilang dari peredaran', -6.8868598, 107.61688009999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(40, '00001', '2017-09-28', '06:00:30', 5, 'ke Paris', -6.8868599999999995, 107.6168778, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-10-02', '10823.jpg'),
-(41, '00001', '2017-09-28', '06:05:55', 5, 'ke jerman', -6.8868591, 107.61687859999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-30', '10823.jpg'),
-(42, '00001', '2017-09-28', '06:24:33', 5, 'Bertemu Obama', -6.8868588, 107.6168794, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-30', '10823.jpg'),
-(43, '00001', '2017-09-28', '06:27:10', 5, 'menari disana', -6.8868599999999995, 107.6168778, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-30', '10823.jpg'),
-(44, '00001', '2017-09-28', '06:28:22', 5, 'menari dikota', -6.8868601, 107.6168778, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-30', '10823.jpg'),
-(45, '00001', '2017-09-28', '06:29:52', 5, 'menari dikota cahaya', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-09-28', '2017-09-30', '10823.jpg'),
-(46, '00001', '2017-09-28', '06:31:02', 5, 'menari diatas api', -6.8868591, 107.61687859999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-30', '10823.jpg'),
-(47, '00001', '2017-09-28', '07:21:08', 4, 'Menikam dia', -6.8869029, 107.61685879999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(48, '00001', '2017-09-28', '07:24:21', 2, 'test drive', -6.8868601, 107.61687789999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(49, '00001', '2017-09-28', '15:35:55', 1, '', -6.8901547, 107.5801977, 'Jl. Sukasari I No.8, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(50, '00001', '2017-09-28', '15:37:57', 4, 'Presentasi', -6.890166600000001, 107.58019279999999, 'Jl. Sukasari I No.8, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-09-28', '2017-09-28', '10823.jpg'),
-(51, '00001', '2017-10-04', '07:44:44', 2, 'kerja lampung', -6.8870027, 107.6168771, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(52, '00001', '2017-10-04', '07:46:39', 2, '', -6.886959399999999, 107.6168807, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(53, '00001', '2017-10-04', '07:47:11', 2, '', -6.8870759999999995, 107.6168434, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(54, '00001', '2017-10-04', '07:49:36', 2, 'tes2345', -6.8869975, 107.6168784, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(55, '00001', '2017-10-04', '08:41:10', 2, 'presentasi kakatu', -6.8869902, 107.6168804, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(56, '00001', '2017-10-04', '08:42:44', 1, '', -6.8869874, 107.6168818, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(57, '00001', '2017-10-04', '08:44:00', 1, '', -6.8869796, 107.616889, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(58, '00001', '2017-10-04', '08:46:47', 1, '', -6.8870002, 107.61687739999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(59, '00001', '2017-10-04', '08:47:59', 2, 'lapar', -6.8870138999999995, 107.6168782, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(60, '00001', '2017-10-04', '08:48:48', 2, 'LaPAr', -6.887034099999999, 107.6168583, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(61, '00001', '2017-10-04', '08:50:23', 1, '', -6.887016399999999, 107.6168784, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(62, '00001', '2017-10-04', '08:50:46', 1, '', -6.8870074, 107.61687889999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(63, '00001', '2017-10-04', '15:35:02', 2, 'Ingin THR', -6.887014700000001, 107.6168603, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(64, '00001', '2017-10-04', '15:35:37', 2, 'Ingin makan THR', -6.886995499999999, 107.61683169999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(65, '00001', '2017-10-04', '15:37:34', 2, 'Isi perut doeloe', -6.8869874, 107.6168634, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(66, '00001', '2017-10-04', '15:40:47', 2, 'ingin terbang keangkasa', -6.8870911999999995, 107.61682929999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(67, '00001', '2017-10-04', '15:47:18', 2, 'terangkanlah mereka', -6.887071, 107.6168319, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(68, '00001', '2017-10-04', '16:07:04', 2, 'makan di BIP', -6.8869668, 107.6168807, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(69, '00001', '2017-10-04', '16:20:13', 2, 'memasak kentang', -6.8870292, 107.6168263, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(70, '00001', '2017-10-04', '16:21:51', 2, 'mengenang ajsa para pahlawan', -6.8869718, 107.6168616, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(71, '00001', '2017-10-04', '16:23:30', 2, 'menembak teroris', -6.8870062999999995, 107.6168635, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(72, '00001', '2017-10-04', '16:23:51', 2, 'Menembak terror', -6.887074500000001, 107.6168381, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(73, '00001', '2017-10-04', '16:33:42', 2, 'mengenang jasa ibu', -6.8870303999999996, 107.61684419999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(74, '00001', '2017-10-04', '16:34:54', 2, 'ggdfgdfg df dfgdf', -6.8870046, 107.6168332, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(75, '00001', '2017-10-04', '16:36:29', 2, 'menebang leyalinan', -6.886982400000001, 107.6168793, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(76, '00001', '2017-10-04', '16:45:26', 2, 'mengenang mantan ke 100', -6.886977099999999, 107.6168569, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(77, '00001', '2017-10-04', '16:46:13', 2, 'mengenang mantan ke 100', -6.886977099999999, 107.6168569, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(78, '00001', '2017-10-04', '16:46:36', 2, 'ddggdg dfg df gd fg ', -6.8869948, 107.6168538, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(79, '00001', '2017-10-04', '17:13:42', 2, 'menakar tanah', -6.886802258805256, 107.61682636489604, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(80, '00001', '2017-10-04', '17:53:12', 4, 'menuju Paris kota', -6.8870491, 107.61682839999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(81, '00001', '2017-10-04', '17:55:46', 4, 'menjenguk mertua mantan', -6.8870758, 107.61683060000001, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-07', NULL),
-(82, '00001', '2017-10-04', '18:02:18', 4, 'nonton SCTV', -6.887039, 107.616851, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(83, '00001', '2017-10-04', '18:03:18', 4, 'nonton Indosiar', -6.887046499999999, 107.61685, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-06', NULL),
-(84, '00001', '2017-10-04', '18:07:47', 4, 'menuju bintang cahaya', -6.8870052, 107.6168781, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-06', NULL),
-(85, '00001', '2017-10-04', '18:10:37', 4, 'sdfsd sd fsf s', -6.887117399999999, 107.6168412, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-05', '2017-10-08', NULL),
-(86, '00001', '2017-10-04', '18:12:53', 4, 'sdvsdv sdf sdf s', -6.8870521, 107.6168347, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-06', NULL),
-(87, '00001', '2017-10-04', '18:15:33', 4, 'sdfds sd sd sdv s  sd sd vsd vs s s vdv s vsdv', -6.8869921, 107.61686209999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-07', NULL),
-(88, '00001', '2017-10-04', '18:48:39', 5, 'keliling eropa', -6.8870916, 107.61683289999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-07', NULL),
-(89, '00001', '2017-10-04', '18:49:19', 5, 'keliling Asia', -6.887049299999999, 107.61682940000001, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-08', '2017-10-11', NULL),
-(90, '00001', '2017-10-04', '18:53:36', 5, 'keliling Indonesia', -6.886980599999999, 107.616878, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-13', NULL),
-(91, '00001', '2017-10-04', '18:55:27', 5, 'keliling Jawa Barat', -6.8870099, 107.61685609999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-13', '2017-10-14', NULL),
-(92, '00001', '2017-10-04', '21:04:44', 1, '', -6.8870394, 107.61685399999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(93, '62541', '2017-10-04', '23:05:59', 1, '', -6.8869825, 107.61686429999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(94, '62541', '2017-10-04', '23:07:53', 1, '', -6.8870192999999995, 107.6168781, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(95, '62541', '2017-10-04', '23:08:17', 2, 'Menangis untuk menang', -6.8869003, 107.61687789999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-04', '2017-10-04', NULL),
-(96, '00001', '2017-10-05', '01:01:04', 3, 'demam malaria', -6.8869956, 107.61687789999999, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-05', '2017-10-07', NULL),
-(97, '00001', '2017-10-05', '15:43:41', 2, 'bebas', -6.890119299999999, 107.58022749999999, 'Jl. Sukasari I No.8, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-05', '2017-10-05', NULL),
-(98, '00001', '2017-10-05', '15:45:01', 4, 'lapar', -6.890159499999999, 107.58021869999999, 'Jl. Sukasari I No.8, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-05', '2017-10-05', NULL),
-(99, '27225', '2017-10-05', '16:00:03', 2, 'Sosialisasi SMIT AL marjan', -6.8902135, 107.580222, 'Jl. Sukasari II No.1, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-05', '2017-10-05', NULL),
-(100, '00001', '2017-10-05', '16:00:53', 4, 'bebaskahsaja', -6.8902188803272795, 107.58023928270545, 'Jl. Sukasari II No.1, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-05', '2017-10-05', NULL),
-(101, '27225', '2017-10-05', '16:01:20', 2, 'Sosialisasi sd almarjan', -6.8902007, 107.580242, 'Jl. Sukasari II No.1, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-05', '2017-10-05', NULL),
-(102, '27225', '2017-10-05', '16:03:29', 3, 'Demam', -6.8902313, 107.5802305, 'Jl. Sukasari II No.1, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-05', '2017-10-05', NULL),
-(103, '27225', '2017-10-05', '16:06:50', 4, 'Keperluan keluarga', -6.8902217, 107.5802189, 'Jl. Sukasari II No.1, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-05', '2017-10-05', NULL),
-(104, '27225', '2017-10-05', '16:09:03', 5, 'Istri melahirkan', -6.8902217, 107.5802189, 'Jl. Sukasari II No.1, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-05', '2017-10-19', NULL),
-(122, '00001', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
-(123, '14048', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
-(124, '27225', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
-(125, '62541', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
-(126, '72555', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
-(127, '87553', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
-(128, '88863', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
-(129, '90706', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-09', '2017-10-09', NULL),
-(130, '00001', '2017-10-11', '00:22:03', 1, '', -6.8868488999999995, 107.6167905, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(132, '14048', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(134, '62541', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '0000-00-00', NULL),
-(138, '90706', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(140, '14048', '2017-10-11', '10:37:19', 1, '', -6.8868408, 107.6168169, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(141, '14048', '2017-10-11', '11:13:22', 3, 'Malaria', -6.8868477, 107.6167929, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-11', '2017-10-11', NULL),
-(151, '00001', '2017-10-12', '14:37:05', 1, '', -6.886879400000001, 107.6167605, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(169, '00001', '2017-10-12', '16:14:33', 3, 'malaria', -6.8901569, 107.58022179999999, 'Jl. Sukasari I No.8, Sukawarna, Sukajadi, Kota Bandung, Jawa Barat 40164, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(170, '00001', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(171, '14048', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(172, '27225', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(173, '62541', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(174, '72555', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(175, '87553', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(176, '88863', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(177, '90706', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-12', '2017-10-12', NULL),
-(178, '00001', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(179, '14048', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(180, '27225', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(181, '62541', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(182, '72555', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(183, '87553', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(184, '88863', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(185, '90706', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(186, '00001', '2017-10-13', '20:06:45', 3, 'demam', -6.8869073, 107.61675489999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-13', '2017-10-13', NULL),
-(188, '14048', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-14', '2017-10-14', NULL),
-(189, '27225', '2017-10-14', '08:39:05', 6, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-14', '2017-10-14', NULL),
-(190, '62541', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-14', '2017-10-14', NULL),
-(191, '72555', '2017-10-14', '08:39:05', 5, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-14', '2017-10-14', NULL),
-(192, '87553', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-14', '2017-10-14', NULL),
-(193, '88863', '2017-10-14', '08:39:05', 2, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-14', '2017-10-14', NULL),
-(194, '90706', '2017-10-14', '08:39:05', 3, '', -6.8869112, 107.6168524, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-14', '2017-10-14', NULL),
-(195, '00001', '2017-10-14', '08:41:28', 4, 'malaria 3', -6.886863000000001, 107.616813, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-14', '2017-10-14', NULL),
-(196, '00001', '2017-10-15', '14:06:25', 1, '', -6.8869273, 107.61675249999999, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-15', '2017-10-15', NULL),
-(197, '00001', '2017-10-17', '21:44:49', 3, 'lapar', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-17', '2017-10-17', NULL),
-(198, '00001', '2017-10-17', '22:00:43', 1, '', -6.88692724798516, 107.61646340611168, 'Jl. Tubagus Ismail Dalam No.13, Lebakgede, Coblong, Kota Bandung, Jawa Barat 40132, Indonesia', '2017-10-17', '2017-10-17', NULL),
-(199, '00001', '2017-10-17', '22:46:43', 4, 'sakit', -6.88707074909483, 107.61672789759983, 'Jl. Tubagus Ismail Dalam No.15, Sekeloa, Coblong, Kota Bandung, Jawa Barat 40134, Indonesia', '2017-10-17', '2017-10-17', NULL),
-(214, '00001', '2017-10-18', '21:40:02', 2, 'presentasi kakatu di SMA 3 Bandung', -6.8868623, 107.6168386, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-18', '2017-10-18', NULL),
-(215, '00001', '2017-10-18', '21:42:23', 1, '', -6.8868623, 107.6168386, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-18', '2017-10-18', NULL),
-(256, '00001', '2017-10-19', '23:38:43', 1, '', -6.8868161, 107.6168283, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(257, '00001', '2017-10-19', '23:38:55', 2, '', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(258, '00001', '2017-10-19', '23:40:38', 3, '', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(259, '00001', '2017-10-19', '23:41:23', 5, '', -6.9174638999999996, 107.61912280000001, 'Gg. Kebonpisang, Kb. Pisang, Sumur Bandung, Kota Bandung, Jawa Barat 40112, Indonesia', '2017-10-19', '2017-10-19', NULL),
-(260, '00001', '2017-10-22', '15:41:55', 1, '', -6.8866681, 107.6168625, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-22', '2017-10-22', NULL),
-(385, '00001', '2017-10-24', '21:31:01', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-24', '2017-11-09', NULL),
-(386, '00001', '2017-10-24', '21:31:01', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-25', '2017-11-09', NULL),
-(387, '00001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-30', '2017-11-09', NULL),
-(388, '00001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-31', '2017-11-09', NULL),
-(389, '00001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-03', '2017-11-09', NULL),
-(390, '00001', '2017-10-24', '21:31:03', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-06', '2017-11-09', NULL),
-(391, '00001', '2017-10-24', '21:31:03', 5, '', -6.8868585, 107.6168333, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-11-09', '2017-11-09', NULL),
-(392, '00001', '2017-10-24', '21:41:49', 1, '', -6.8868583, 107.6168356, 'Gang III, Coblong, Kota Bandung, Jawa Barat, Indonesia', '2017-10-24', '2017-10-24', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_jabatan`
---
-
-CREATE TABLE `tb_jabatan` (
-  `id_jabatan` varchar(3) NOT NULL,
-  `jabatan` varchar(50) NOT NULL,
-  `gaji` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_jabatan`
---
-
-INSERT INTO `tb_jabatan` (`id_jabatan`, `jabatan`, `gaji`) VALUES
-('002', 'System Analyst', 3500000),
-('004', 'Researcher', 3900000),
-('111', 'Admin', 3900000),
-('135', 'Bendahara', 3000000),
-('468', 'Android Developer', 3500000),
-('541', 'UI/UX Designer', 3250000),
-('557', 'Web Developer', 3300000),
-('571', 'CEO ', 5000000),
-('847', 'CTO', 4850000);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_jenistransaksi`
---
-
-CREATE TABLE `tb_jenistransaksi` (
-  `id_jenis` varchar(6) NOT NULL,
-  `jenis` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_jenistransaksi`
---
-
-INSERT INTO `tb_jenistransaksi` (`id_jenis`, `jenis`) VALUES
-('TR-01', 'Bayar Listrik'),
-('TR-02', 'Bayar Air Minum'),
-('TR-03', 'Bayar Sampah'),
-('TR-04', 'Bayar ART'),
-('TR-05', 'Bayar Transport'),
-('TR-06', 'Bayar Konsumsi');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_konfirmasi`
---
-
-CREATE TABLE `tb_konfirmasi` (
-  `id_pembayaran` varchar(5) NOT NULL,
-  `id_anggota` varchar(5) NOT NULL,
-  `konfirm_anggota` varchar(1) NOT NULL,
-  `konfirm_admin` varchar(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_konfirmasi`
---
-
-INSERT INTO `tb_konfirmasi` (`id_pembayaran`, `id_anggota`, `konfirm_anggota`, `konfirm_admin`) VALUES
-('80133', '62541', '0', '0'),
-('81676', '62541', '0', '2'),
-('18823', '62541', '0', '2'),
-('89607', '62541', '0', '2'),
-('21113', '62541', '0', '2'),
-('68022', '62541', '0', '0'),
-('85887', '62541', '0', '0'),
-('40467', '90706', '0', '2'),
-('60195', '90706', '0', '2'),
-('17153', '62541', '0', '0'),
-('91901', '62541', '0', '0'),
-('97391', '62541', '0', '0'),
-('87738', '90706', '0', '0'),
-('49009', '62541', '0', '0'),
-('97130', '90706', '0', '0'),
-('59434', '14048', '0', '0'),
-('94100', '14048', '0', '0'),
-('77878', '14048', '0', '0'),
-('15665', '90706', '0', '0'),
-('83236', '14048', '0', '0'),
-('65336', '90706', '0', '0'),
-('26950', '14048', '0', '0');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_pembayaran`
---
-
-CREATE TABLE `tb_pembayaran` (
-  `id_pembayaran` varchar(5) NOT NULL,
-  `id_anggota` varchar(5) NOT NULL,
-  `tanggal` datetime NOT NULL,
-  `id_jenis` varchar(5) NOT NULL,
-  `nominal` varchar(9) NOT NULL,
-  `keterangan` varchar(1000) NOT NULL,
-  `status` varchar(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_pembayaran`
---
-
-INSERT INTO `tb_pembayaran` (`id_pembayaran`, `id_anggota`, `tanggal`, `id_jenis`, `nominal`, `keterangan`, `status`) VALUES
-('10837', '62541', '2017-09-03 12:54:44', 'TR-04', '120000', 'Test        \r\n      ', '2'),
-('15665', '90706', '2017-10-09 18:40:28', 'TR-01', '68000', 'hararta', '0'),
-('17153', '62541', '2017-09-29 04:44:43', 'TR-02', '400', 'cash', '0'),
-('18823', '62541', '2017-09-07 15:39:50', 'TR-04', '50000', 'Bayar ART', '1'),
-('21113', '62541', '2017-09-11 21:15:01', 'TR-05', '900', 'Bayar tunai', '1'),
-('26950', '14048', '2017-10-11 11:27:42', 'TR-04', '67000', 'Tidak Mahal', '0'),
-('27650', '62541', '2017-09-07 04:14:09', 'TR-03', '50000', 'Bayar sampah        \r\n      ', '2'),
-('39969', '62541', '2017-09-07 07:06:51', 'TR-01', '1000000', '2        \r\n      ', '2'),
-('40467', '90706', '2017-09-16 21:41:21', 'TR-03', '300', 'Bayar cash', '1'),
-('42232', '62541', '2017-09-03 12:50:42', 'TR-02', '50000', 'Air Galon         \r\n      ', '2'),
-('43240', '90706', '2017-09-16 21:44:44', 'TR-05', '400', 'Bayar cash', '2'),
-('47203', '62541', '2017-09-03 12:58:51', 'TR-03', '60000', '1', '2'),
-('49009', '62541', '2017-10-09 18:16:44', 'TR-06', '69000', 'Cash', '0'),
-('59434', '14048', '2017-10-09 18:30:39', 'TR-02', '68000', 'Cash dari dompet', '0'),
-('60195', '90706', '2017-09-16 22:19:05', 'TR-03', '300', 'Cash', '1'),
-('65336', '90706', '2017-10-09 19:03:46', 'TR-06', '46000', 'lapar', '0'),
-('65848', '14048', '2017-10-09 18:54:29', 'TR-03', '63000', 'murah', '2'),
-('68022', '62541', '2017-09-11 21:16:34', 'TR-05', '50000', ' Bayar tunai ', '0'),
-('76673', '62541', '2017-09-06 06:30:42', 'TR-04', '90000', 'Bayar ART\r\n      ', '2'),
-('77878', '14048', '2017-10-09 18:39:39', 'TR-06', '65000', 'bebas', '0'),
-('80133', '62541', '2017-09-06 06:35:47', 'TR-02', '50000', 'Bayar test        \r\n      ', '0'),
-('80206', '62541', '2017-09-07 09:20:57', 'TR-05', '60000', 'bayar transport meeting', '2'),
-('81676', '62541', '2017-09-07 14:16:44', 'TR-02', '50000', 'Bayar 2 Air Galon, cash ke warung', '1'),
-('83236', '14048', '2017-10-09 18:51:48', 'TR-01', '56000', 'murah sekali', '0'),
-('85887', '62541', '2017-09-15 15:11:20', 'TR-03', '300', 'Cash aja bro', '0'),
-('87738', '90706', '2017-10-09 18:08:10', 'TR-03', '65000', 'Cash', '0'),
-('89607', '62541', '2017-09-07 15:40:13', 'TR-01', '10000', 'Bayar Listrik Bulan Ini', '1'),
-('91901', '62541', '2017-10-05 10:38:25', 'TR-01', '65000', 'Bayar mandiri', '0'),
-('94100', '14048', '2017-10-09 18:38:13', 'TR-05', '30000', 'ngutang', '0'),
-('97130', '90706', '2017-10-09 18:18:19', 'TR-04', '52000', 'Cash langsung', '0'),
-('97391', '62541', '2017-10-05 10:39:40', 'TR-05', '68600', 'Naik Avansa', '0');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tb_tgllibur`
---
-
-CREATE TABLE `tb_tgllibur` (
-  `id` int(4) NOT NULL,
-  `nama_libur` varchar(50) NOT NULL,
-  `tglawal` date DEFAULT NULL,
-  `tglakhir` date DEFAULT NULL,
-  `jmlhari` mediumint(8) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tb_tgllibur`
---
-
-INSERT INTO `tb_tgllibur` (`id`, `nama_libur`, `tglawal`, `tglakhir`, `jmlhari`) VALUES
-(1, 'Hari Natal', '2017-12-24', '2017-12-26', 3),
-(2, 'Tahun Baru 2018', '2018-01-01', '2018-01-04', 1),
-(8, 'Libur Kantor', '2017-11-07', '2017-11-08', 2),
-(9, 'Idul Adha', '2017-10-02', '2017-10-03', 2),
-(10, 'nyoba 1', '2017-11-01', '2017-11-02', 2),
-(11, 'nyoba 2', '2017-10-26', '2017-10-28', 3);
+INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `status_id`, `keterangan`, `latitude`, `longitude`, `tgl_awal`, `tgl_akhir`, `foto_lokasi`, `rencana_id`, `credit_id`, `credit_in`, `credit_stat`) VALUES
+(1, '10001', '2017-09-22', '00:50:37', 5, 'Bulan madu', -6.886720180511475, 107.6164192, '2017-09-22', '2017-09-24', '10824.jpg', NULL, 1, 70000, 'paid'),
+(2, '10001', '2017-09-19', '01:46:55', 2, 'Lapar', -6.88667631149292, 107.6164022, '2017-09-19', '2017-09-21', '10824.jpg', NULL, 1, 70000, 'paid'),
+(3, '10001', '2017-09-16', '02:47:29', 4, 'Lapar', -6.886645793914795, 107.6163899, '2017-09-16', '2017-09-18', '10824.jpg', NULL, NULL, NULL, NULL),
+(5, '10001', '2017-09-25', '03:32:00', 2, '', -6.886944770812988, 107.61681139999999, '2017-09-28', '2017-09-28', NULL, NULL, 1, 70000, 'paid'),
+(6, '14048', '2017-09-26', '06:37:06', 2, 'kangen mama', -6.8868794441223145, 107.61689009999999, '2017-09-28', '2017-09-28', NULL, NULL, 3, 80000, 'paid'),
+(7, '14048', '2017-09-26', '07:35:25', 1, '', 0, 0, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
+(8, '14048', '2017-09-26', '07:56:38', 1, '', -6.8869053, 107.61686639999999, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
+(9, '14048', '2017-09-26', '07:58:52', 1, '', -6.8868799, 107.61689, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
+(10, '14048', '2017-09-26', '08:00:46', 1, '', -6.8869359, 107.6168558, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
+(11, '14048', '2017-09-26', '08:03:31', 1, '', -6.8868796, 107.61689, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
+(12, '14048', '2017-09-26', '08:09:24', 1, '', -6.8869242999999996, 107.6168615, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
+(13, '14048', '2017-09-26', '08:10:25', 1, '', -6.886879400000001, 107.61689, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
+(14, '14048', '2017-09-26', '08:10:51', 3, 'ingat mama', -6.886908699999999, 107.61686139999999, '2017-09-28', '2017-09-28', NULL, NULL, NULL, NULL, NULL),
+(15, '14048', '2017-09-26', '08:36:44', 1, '', -6.8868796, 107.61689249999999, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
+(16, '10001', '2017-09-27', '13:36:46', 1, '', -6.8869682999999995, 107.6168591, '2017-09-27', '2017-09-27', NULL, NULL, 1, 70000, 'paid'),
+(18, '10001', '2017-09-28', '04:32:51', 3, 'Demam Malaria coy', -6.8869071, 107.6168537, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(19, '10001', '2017-09-28', '04:45:34', 3, 'Gersang sekali', -6.8868604, 107.6168778, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(20, '10001', '2017-09-28', '04:53:11', 4, 'Haus', -6.8869278, 107.61682359999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(21, '10001', '2017-09-28', '05:17:45', 5, 'Menjenguk Obama', -6.8868601, 107.616878, '2017-09-28', '2017-09-30', '10823.jpg', NULL, 1, 70000, 'paid'),
+(22, '10001', '2017-09-28', '05:22:00', 2, 'Ke SMA 5 bandung', -6.8869069000000005, 107.6168571, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(23, '10001', '2017-09-28', '05:24:45', 3, 'lapar ikan', -6.9174638999999996, 107.61912280000001, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(24, '10001', '2017-09-28', '05:29:09', 4, 'Menjenguk mantan kedua', -6.8868601, 107.61687789999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(25, '10001', '2017-09-28', '05:31:43', 2, 'Menangis untuk keuda kalinya', -6.8868607, 107.6168778, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(26, '10001', '2017-09-28', '05:32:35', 2, 'cerita lama', -6.8868588, 107.6168794, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(27, '10001', '2017-09-28', '05:34:11', 2, 'Setelah sekian lama', -6.8868601, 107.61687769999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(28, '10001', '2017-09-28', '05:35:16', 3, 'Dia kembali', -6.8868605, 107.61687769999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(29, '10001', '2017-09-28', '05:35:54', 4, 'okay', -6.8868604, 107.6168778, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(30, '10001', '2017-09-28', '05:37:38', 2, 'keterlaluan', -6.8868604, 107.61687789999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(31, '10001', '2017-09-28', '05:40:30', 3, 'Mengapa', -6.8868586, 107.6168781, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(32, '10001', '2017-09-28', '05:41:58', 2, 'kiuta', -6.8868588, 107.61687880000001, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(33, '10001', '2017-09-28', '05:43:05', 4, 'ilang', -6.8868604, 107.6168778, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(34, '10001', '2017-09-28', '05:44:21', 4, 'fsdfdsf', -6.8868607, 107.61687769999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(35, '10001', '2017-09-28', '05:46:03', 2, 'inilah dunia', -6.8868601, 107.61687789999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(36, '10001', '2017-09-28', '05:48:38', 4, 'izinkan', -6.8868601, 107.6168778, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(37, '10001', '2017-09-28', '05:49:24', 4, 'izinkanlah', -6.8868598, 107.61688, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(38, '10001', '2017-09-28', '05:56:05', 2, 'Mengingat mantan', -6.9174638999999996, 107.61912280000001, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(39, '10001', '2017-09-28', '05:56:58', 3, 'menghilang dari peredaran', -6.8868598, 107.61688009999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(40, '10001', '2017-09-28', '06:00:30', 5, 'ke Paris', -6.8868599999999995, 107.6168778, '2017-09-28', '2017-10-02', '10823.jpg', NULL, 1, 70000, 'paid'),
+(41, '10001', '2017-09-28', '06:05:55', 5, 'ke jerman', -6.8868591, 107.61687859999999, '2017-09-28', '2017-09-30', '10823.jpg', NULL, 1, 70000, 'paid'),
+(42, '10001', '2017-09-28', '06:24:33', 5, 'Bertemu Obama', -6.8868588, 107.6168794, '2017-09-28', '2017-09-30', '10823.jpg', NULL, 1, 70000, 'paid'),
+(43, '10001', '2017-09-28', '06:27:10', 5, 'menari disana', -6.8868599999999995, 107.6168778, '2017-09-28', '2017-09-30', '10823.jpg', NULL, 1, 70000, 'paid'),
+(44, '10001', '2017-09-28', '06:28:22', 5, 'menari dikota', -6.8868601, 107.6168778, '2017-09-28', '2017-09-30', '10823.jpg', NULL, 1, 70000, 'paid'),
+(45, '10001', '2017-09-28', '06:29:52', 5, 'menari dikota cahaya', -6.9174638999999996, 107.61912280000001, '2017-09-28', '2017-09-30', '10823.jpg', NULL, 1, 70000, 'paid'),
+(46, '10001', '2017-09-28', '06:31:02', 5, 'menari diatas api', -6.8868591, 107.61687859999999, '2017-09-28', '2017-09-30', '10823.jpg', NULL, 1, 70000, 'paid'),
+(47, '10001', '2017-09-28', '07:21:08', 4, 'Menikam dia', -6.8869029, 107.61685879999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(48, '10001', '2017-09-28', '07:24:21', 2, 'test drive', -6.8868601, 107.61687789999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(49, '10001', '2017-09-28', '15:35:55', 1, '', -6.8901547, 107.5801977, '2017-09-28', '2017-09-28', '10823.jpg', NULL, 1, 70000, 'paid'),
+(50, '10001', '2017-09-28', '15:37:57', 4, 'Presentasi', -6.890166600000001, 107.58019279999999, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
+(51, '10001', '2017-10-04', '07:44:44', 2, 'kerja lampung', -6.8870027, 107.6168771, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(52, '10001', '2017-10-04', '07:46:39', 2, '', -6.886959399999999, 107.6168807, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(53, '10001', '2017-10-04', '07:47:11', 2, '', -6.8870759999999995, 107.6168434, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(54, '10001', '2017-10-04', '07:49:36', 2, 'tes2345', -6.8869975, 107.6168784, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(55, '10001', '2017-10-04', '08:41:10', 2, 'presentasi kakatu', -6.8869902, 107.6168804, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(56, '10001', '2017-10-04', '08:42:44', 1, '', -6.8869874, 107.6168818, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(57, '10001', '2017-10-04', '08:44:00', 1, '', -6.8869796, 107.616889, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(58, '10001', '2017-10-04', '08:46:47', 1, '', -6.8870002, 107.61687739999999, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(59, '10001', '2017-10-04', '08:47:59', 2, 'lapar', -6.8870138999999995, 107.6168782, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(60, '10001', '2017-10-04', '08:48:48', 2, 'LaPAr', -6.887034099999999, 107.6168583, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(61, '10001', '2017-10-04', '08:50:23', 1, '', -6.887016399999999, 107.6168784, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(62, '10001', '2017-10-04', '08:50:46', 1, '', -6.8870074, 107.61687889999999, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(63, '10001', '2017-10-04', '15:35:02', 2, 'Ingin THR', -6.887014700000001, 107.6168603, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(64, '10001', '2017-10-04', '15:35:37', 2, 'Ingin makan THR', -6.886995499999999, 107.61683169999999, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(65, '10001', '2017-10-04', '15:37:34', 2, 'Isi perut doeloe', -6.8869874, 107.6168634, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(66, '10001', '2017-10-04', '15:40:47', 2, 'ingin terbang keangkasa', -6.8870911999999995, 107.61682929999999, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(67, '10001', '2017-10-04', '15:47:18', 2, 'terangkanlah mereka', -6.887071, 107.6168319, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(68, '10001', '2017-10-04', '16:07:04', 2, 'makan di BIP', -6.8869668, 107.6168807, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(69, '10001', '2017-10-04', '16:20:13', 2, 'memasak kentang', -6.8870292, 107.6168263, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(70, '10001', '2017-10-04', '16:21:51', 2, 'mengenang ajsa para pahlawan', -6.8869718, 107.6168616, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(71, '10001', '2017-10-04', '16:23:30', 2, 'menembak teroris', -6.8870062999999995, 107.6168635, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(72, '10001', '2017-10-04', '16:23:51', 2, 'Menembak terror', -6.887074500000001, 107.6168381, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(73, '10001', '2017-10-04', '16:33:42', 2, 'mengenang jasa ibu', -6.8870303999999996, 107.61684419999999, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(74, '10001', '2017-10-04', '16:34:54', 2, 'ggdfgdfg df dfgdf', -6.8870046, 107.6168332, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(75, '10001', '2017-10-04', '16:36:29', 2, 'menebang leyalinan', -6.886982400000001, 107.6168793, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(76, '10001', '2017-10-04', '16:45:26', 2, 'mengenang mantan ke 100', -6.886977099999999, 107.6168569, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(77, '10001', '2017-10-04', '16:46:13', 2, 'mengenang mantan ke 100', -6.886977099999999, 107.6168569, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(78, '10001', '2017-10-04', '16:46:36', 2, 'ddggdg dfg df gd fg ', -6.8869948, 107.6168538, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(79, '10001', '2017-10-04', '17:13:42', 2, 'menakar tanah', -6.886802258805256, 107.61682636489604, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(80, '10001', '2017-10-04', '17:53:12', 4, 'menuju Paris kota', -6.8870491, 107.61682839999999, '2017-10-04', '2017-10-04', NULL, NULL, NULL, NULL, NULL),
+(81, '10001', '2017-10-04', '17:55:46', 4, 'menjenguk mertua mantan', -6.8870758, 107.61683060000001, '2017-10-04', '2017-10-07', NULL, NULL, NULL, NULL, NULL),
+(82, '10001', '2017-10-04', '18:02:18', 4, 'nonton SCTV', -6.887039, 107.616851, '2017-10-04', '2017-10-04', NULL, NULL, NULL, NULL, NULL),
+(83, '10001', '2017-10-04', '18:03:18', 4, 'nonton Indosiar', -6.887046499999999, 107.61685, '2017-10-04', '2017-10-06', NULL, NULL, NULL, NULL, NULL),
+(84, '10001', '2017-10-04', '18:07:47', 4, 'menuju bintang cahaya', -6.8870052, 107.6168781, '2017-10-04', '2017-10-06', NULL, NULL, NULL, NULL, NULL),
+(85, '10001', '2017-10-04', '18:10:37', 4, 'sdfsd sd fsf s', -6.887117399999999, 107.6168412, '2017-10-05', '2017-10-08', NULL, NULL, NULL, NULL, NULL),
+(86, '10001', '2017-10-04', '18:12:53', 4, 'sdvsdv sdf sdf s', -6.8870521, 107.6168347, '2017-10-04', '2017-10-06', NULL, NULL, NULL, NULL, NULL),
+(87, '10001', '2017-10-04', '18:15:33', 4, 'sdfds sd sd sdv s  sd sd vsd vs s s vdv s vsdv', -6.8869921, 107.61686209999999, '2017-10-04', '2017-10-07', NULL, NULL, NULL, NULL, NULL),
+(88, '10001', '2017-10-04', '18:48:39', 5, 'keliling eropa', -6.8870916, 107.61683289999999, '2017-10-04', '2017-10-07', NULL, NULL, 1, 70000, 'paid'),
+(89, '10001', '2017-10-04', '18:49:19', 5, 'keliling Asia', -6.887049299999999, 107.61682940000001, '2017-10-08', '2017-10-11', NULL, NULL, 1, 70000, 'paid'),
+(90, '10001', '2017-10-04', '18:53:36', 5, 'keliling Indonesia', -6.886980599999999, 107.616878, '2017-10-12', '2017-10-13', NULL, NULL, 1, 70000, 'paid'),
+(91, '10001', '2017-10-04', '18:55:27', 5, 'keliling Jawa Barat', -6.8870099, 107.61685609999999, '2017-10-13', '2017-10-14', NULL, NULL, 1, 70000, 'paid'),
+(92, '10001', '2017-10-04', '21:04:44', 1, '', -6.8870394, 107.61685399999999, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
+(93, '62541', '2017-10-04', '23:05:59', 1, '', -6.8869825, 107.61686429999999, '2017-10-04', '2017-10-04', NULL, NULL, 4, 80000, 'paid'),
+(94, '62541', '2017-10-04', '23:07:53', 1, '', -6.8870192999999995, 107.6168781, '2017-10-04', '2017-10-04', NULL, NULL, 4, 80000, 'paid'),
+(95, '62541', '2017-10-04', '23:08:17', 2, 'Menangis untuk menang', -6.8869003, 107.61687789999999, '2017-10-04', '2017-10-04', NULL, NULL, 4, 80000, 'paid'),
+(96, '10001', '2017-10-05', '01:01:04', 3, 'demam malaria', -6.8869956, 107.61687789999999, '2017-10-05', '2017-10-07', NULL, NULL, NULL, NULL, NULL),
+(97, '10001', '2017-10-05', '15:43:41', 2, 'bebas', -6.890119299999999, 107.58022749999999, '2017-10-05', '2017-10-05', NULL, NULL, 1, 70000, 'paid'),
+(98, '10001', '2017-10-05', '15:45:01', 4, 'lapar', -6.890159499999999, 107.58021869999999, '2017-10-05', '2017-10-05', NULL, NULL, NULL, NULL, NULL),
+(99, '27225', '2017-10-05', '16:00:03', 2, 'Sosialisasi SMIT AL marjan', -6.8902135, 107.580222, '2017-10-05', '2017-10-05', NULL, NULL, 11, 90000, 'paid'),
+(100, '10001', '2017-10-05', '16:00:53', 4, 'bebaskahsaja', -6.8902188803272795, 107.58023928270545, '2017-10-05', '2017-10-05', NULL, NULL, NULL, NULL, NULL),
+(101, '27225', '2017-10-05', '16:01:20', 2, 'Sosialisasi sd almarjan', -6.8902007, 107.580242, '2017-10-05', '2017-10-05', NULL, NULL, 11, 90000, 'paid'),
+(102, '27225', '2017-10-05', '16:03:29', 3, 'Demam', -6.8902313, 107.5802305, '2017-10-05', '2017-10-05', NULL, NULL, NULL, NULL, NULL),
+(103, '27225', '2017-10-05', '16:06:50', 4, 'Keperluan keluarga', -6.8902217, 107.5802189, '2017-10-05', '2017-10-05', NULL, NULL, NULL, NULL, NULL),
+(104, '27225', '2017-10-05', '16:09:03', 5, 'Istri melahirkan', -6.8902217, 107.5802189, '2017-10-05', '2017-10-19', NULL, NULL, 11, 90000, 'paid'),
+(122, '10001', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 1, 70000, 'paid'),
+(123, '14048', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 3, 80000, 'paid'),
+(124, '27225', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 11, 90000, 'paid'),
+(125, '62541', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 4, 80000, 'paid'),
+(126, '72555', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 6, 65000, 'paid'),
+(127, '87553', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 9, 60000, 'paid'),
+(129, '90706', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 5, 70000, 'paid'),
+(130, '10001', '2017-10-11', '00:22:03', 1, '', -6.8868488999999995, 107.6167905, '2017-10-11', '2017-10-11', NULL, NULL, 1, 70000, 'paid'),
+(132, '14048', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, '2017-10-11', '2017-10-11', NULL, NULL, 3, 80000, 'paid'),
+(134, '62541', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, '2017-10-11', '0000-00-00', NULL, NULL, 4, 80000, 'paid'),
+(138, '90706', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, '2017-10-11', '2017-10-11', NULL, NULL, 5, 70000, 'paid'),
+(140, '14048', '2017-10-11', '10:37:19', 1, '', -6.8868408, 107.6168169, '2017-10-11', '2017-10-11', NULL, NULL, 3, 80000, 'paid'),
+(141, '14048', '2017-10-11', '11:13:22', 3, 'Malaria', -6.8868477, 107.6167929, '2017-10-11', '2017-10-11', NULL, NULL, NULL, NULL, NULL),
+(151, '10001', '2017-10-12', '14:37:05', 1, '', -6.886879400000001, 107.6167605, '2017-10-12', '2017-10-12', NULL, NULL, 1, 70000, 'paid'),
+(169, '10001', '2017-10-12', '16:14:33', 3, 'malaria', -6.8901569, 107.58022179999999, '2017-10-12', '2017-10-12', NULL, NULL, NULL, NULL, NULL),
+(170, '10001', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 1, 70000, 'paid'),
+(171, '14048', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 3, 80000, 'paid'),
+(172, '27225', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 11, 90000, 'paid'),
+(173, '62541', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 4, 80000, 'paid'),
+(174, '72555', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 6, 65000, 'paid'),
+(175, '87553', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 9, 60000, 'paid'),
+(177, '90706', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 5, 70000, 'paid'),
+(178, '10001', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 1, 70000, 'paid'),
+(179, '14048', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 3, 80000, 'paid'),
+(180, '27225', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 11, 90000, 'paid'),
+(181, '62541', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 4, 80000, 'paid'),
+(182, '72555', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 6, 65000, 'paid'),
+(183, '87553', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 9, 60000, 'paid'),
+(185, '90706', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 5, 70000, 'paid'),
+(186, '10001', '2017-10-13', '20:06:45', 3, 'demam', -6.8869073, 107.61675489999999, '2017-10-13', '2017-10-13', NULL, NULL, NULL, NULL, NULL),
+(188, '14048', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, 3, 80000, 'paid'),
+(189, '27225', '2017-10-14', '08:39:05', 6, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, NULL, NULL, NULL),
+(190, '62541', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, 4, 80000, 'paid'),
+(191, '72555', '2017-10-14', '08:39:05', 5, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, 6, 65000, 'paid'),
+(192, '87553', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, 9, 60000, 'paid'),
+(194, '90706', '2017-10-14', '08:39:05', 3, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, NULL, NULL, 'paid'),
+(195, '10001', '2017-10-14', '08:41:28', 4, 'malaria 3', -6.886863000000001, 107.616813, '2017-10-14', '2017-10-14', NULL, NULL, NULL, NULL, NULL),
+(196, '10001', '2017-10-15', '14:06:25', 1, '', -6.8869273, 107.61675249999999, '2017-10-15', '2017-10-15', NULL, NULL, 1, 70000, 'paid'),
+(197, '10001', '2017-10-17', '21:44:49', 3, 'lapar', -6.9174638999999996, 107.61912280000001, '2017-10-17', '2017-10-17', NULL, NULL, NULL, NULL, NULL),
+(198, '10001', '2017-10-17', '22:00:43', 1, '', -6.88692724798516, 107.61646340611168, '2017-10-17', '2017-10-17', NULL, NULL, 1, 70000, 'paid'),
+(199, '10001', '2017-10-17', '22:46:43', 4, 'sakit', -6.88707074909483, 107.61672789759983, '2017-10-17', '2017-10-17', NULL, NULL, NULL, NULL, NULL),
+(214, '10001', '2017-10-18', '21:40:02', 2, 'presentasi kakatu di SMA 3 Bandung', -6.8868623, 107.6168386, '2017-10-18', '2017-10-18', NULL, NULL, 1, 70000, 'paid'),
+(215, '10001', '2017-10-18', '21:42:23', 1, '', -6.8868623, 107.6168386, '2017-10-18', '2017-10-18', NULL, NULL, 1, 70000, 'paid'),
+(256, '10001', '2017-10-19', '23:38:43', 1, '', -6.8868161, 107.6168283, '2017-10-19', '2017-10-19', NULL, NULL, 1, 70000, 'paid'),
+(257, '10001', '2017-10-19', '23:38:55', 2, '', -6.9174638999999996, 107.61912280000001, '2017-10-19', '2017-10-19', NULL, NULL, 1, 70000, 'paid'),
+(258, '10001', '2017-10-19', '23:40:38', 3, '', -6.9174638999999996, 107.61912280000001, '2017-10-19', '2017-10-19', NULL, NULL, NULL, NULL, NULL),
+(259, '10001', '2017-10-19', '23:41:23', 5, '', -6.9174638999999996, 107.61912280000001, '2017-10-19', '2017-10-19', NULL, NULL, 1, 70000, 'paid'),
+(260, '10001', '2017-10-22', '15:41:55', 1, '', -6.8866681, 107.6168625, '2017-10-22', '2017-10-22', NULL, NULL, 1, 70000, 'paid'),
+(385, '10001', '2017-10-24', '21:31:01', 5, '', -6.8868585, 107.6168333, '2017-10-24', '2017-11-09', NULL, NULL, 1, 70000, 'paid'),
+(386, '10001', '2017-10-24', '21:31:01', 5, '', -6.8868585, 107.6168333, '2017-10-25', '2017-11-09', NULL, NULL, 1, 70000, 'paid'),
+(387, '10001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, '2017-10-30', '2017-11-09', NULL, NULL, 1, 70000, 'paid'),
+(388, '10001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, '2017-10-31', '2017-11-09', NULL, NULL, 1, 70000, 'paid'),
+(389, '10001', '2017-10-24', '21:31:02', 5, '', -6.8868585, 107.6168333, '2017-11-03', '2017-11-09', NULL, NULL, 1, 70000, 'paid'),
+(390, '10001', '2017-10-24', '21:31:03', 5, '', -6.8868585, 107.6168333, '2017-11-06', '2017-11-09', NULL, NULL, 1, 70000, 'paid'),
+(391, '10001', '2017-10-24', '21:31:03', 5, '', -6.8868585, 107.6168333, '2017-11-09', '2017-11-09', NULL, NULL, 1, 70000, 'paid'),
+(392, '10001', '2017-10-24', '21:41:49', 1, '', -6.8868583, 107.6168356, '2017-10-24', '2017-10-24', NULL, NULL, 1, 70000, 'paid'),
+(411, '10001', '2017-10-25', '22:09:25', 5, 'penjahat kelas teri', -6.8868450999999995, 107.61685030000001, '2017-10-25', '2017-10-28', '20171026221037.jpg', NULL, 1, 70000, 'paid'),
+(412, '10001', '2017-10-25', '22:10:37', 4, 'pengamen jalanan', -6.8868688, 107.6168514, '2017-10-30', '2017-11-01', '20171026221037.jpg', NULL, NULL, NULL, NULL),
+(415, '90706', '2017-10-25', '22:38:47', 3, 'mengenal dia', -6.8868635000000005, 107.6168544, '2017-10-25', '2017-10-31', '20171026224743.jpg', NULL, NULL, NULL, NULL),
+(422, '10001', '2017-10-26', '23:58:57', 5, 'penjahat kelas teri', -6.8868450999999995, 107.61685030000001, '2017-10-26', '2017-10-28', '20171026220925.jpg', NULL, 1, 70000, 'paid'),
+(423, '90706', '2017-10-26', '23:58:57', 3, 'mengenal dia', -6.8868635000000005, 107.6168544, '2017-10-26', '2017-10-31', '20171026223847.jpg', NULL, NULL, NULL, NULL),
+(443, '10001', '2017-10-27', '22:11:16', 5, '', -6.8868725, 107.61679509999999, '2017-10-27', '2017-10-27', NULL, NULL, 1, 70000, 'paid'),
+(444, '10001', '2017-10-28', '21:23:21', 1, '', -6.8867828, 107.61653679999999, '2017-10-28', '2017-10-28', NULL, NULL, 1, 70000, 'paid'),
+(466, '10001', '2017-10-30', '21:56:48', 1, '', -6.8868636, 107.6168486, '2017-10-30', '2017-10-30', '20171030221144.jpeg', NULL, 1, 70000, 'paid'),
+(467, '10001', '2017-10-30', '22:08:30', 2, '', -6.8868889, 107.61681949999999, '2017-10-30', '2017-10-30', '20171030221144.jpeg', NULL, 1, 70000, 'paid'),
+(468, '10001', '2017-10-30', '22:09:00', 4, '', -6.8868981, 107.6168242, '2017-10-30', '2017-10-30', '20171030221144.jpeg', NULL, NULL, NULL, NULL),
+(469, '10001', '2017-10-30', '22:10:12', 3, 'tes', -6.8868981, 107.6168242, '2017-10-30', '2017-10-30', '20171030221144.jpeg', NULL, NULL, NULL, NULL),
+(470, '10001', '2017-10-30', '22:11:44', 4, '', -6.886802909642767, 107.61681140653383, '2017-10-30', '2017-10-30', '20171030221144.jpeg', NULL, NULL, NULL, NULL),
+(789, '10001', '2017-10-31', '21:48:40', 6, '', -6.8868395, 107.616523, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(790, '10001', '2017-10-31', '21:49:39', 5, 'tes', -6.8868402, 107.6165243, '2017-10-31', '2017-10-31', NULL, NULL, 1, 70000, 'paid'),
+(791, '10001', '2017-10-31', '21:50:15', 3, 'tes', -6.8868478, 107.61653419999999, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(792, '10001', '2017-10-31', '21:50:53', 4, 'tes', -6.8868445, 107.6165164, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(793, '10001', '2017-10-31', '21:51:14', 2, 'tes', -6.886859899999999, 107.6165284, '2017-10-31', '2017-10-31', NULL, NULL, 1, 70000, 'paid'),
+(794, '14048', '2017-10-31', '22:18:50', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(795, '27225', '2017-10-31', '22:18:50', 6, 'tes', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(796, '62541', '2017-10-31', '22:18:50', 3, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(797, '72555', '2017-10-31', '22:18:50', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(798, '87553', '2017-10-31', '22:18:50', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(799, '88863', '2017-10-31', '22:18:51', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(800, '90706', '2017-10-31', '22:18:51', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
+(930, '10001', '2017-11-04', '15:14:56', 2, 'tes', -6.8869221, 107.6167918, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(931, '10001', '2017-11-04', '15:15:10', 1, NULL, -6.8869665, 107.616751, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(932, '10001', '2017-11-04', '15:15:23', 5, 'tessss', -6.886879700000001, 107.6168555, '1970-01-01', '1970-01-01', NULL, NULL, 1, 70000, 'paid'),
+(933, '10001', '2017-11-04', '15:16:13', 2, 'tes', -6.8869342, 107.61679919999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(934, '10001', '2017-11-04', '15:16:31', 4, 'tesss', -6.8868787, 107.61685609999999, '1970-01-01', '1970-01-01', NULL, NULL, NULL, NULL, NULL),
+(935, '10001', '2017-11-04', '15:16:45', 5, 'dffgddfgdf', -6.886879700000001, 107.61685539999999, '1970-01-01', '1970-01-01', NULL, NULL, 1, 70000, 'paid'),
+(936, '10001', '2017-11-04', '15:28:38', 1, NULL, -6.886922800000001, 107.6167882, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(937, '10001', '2017-11-04', '15:28:46', 1, NULL, -6.886879700000001, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(938, '10001', '2017-11-04', '15:28:57', 2, 'tess', -6.886925, 107.61682049999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(939, '10001', '2017-11-04', '16:15:18', 1, NULL, -6.886969499999999, 107.6167625, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(940, '10001', '2017-11-04', '16:15:34', 2, 'tes', -6.8869837, 107.61673139999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(941, '10001', '2017-11-04', '16:15:55', 1, NULL, -6.886922900000001, 107.61680930000001, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(942, '10001', '2017-11-04', '16:20:54', 1, NULL, -6.8869736999999995, 107.6167449, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(943, '10001', '2017-11-04', '18:22:00', 2, 'tess', -6.886879200000001, 107.61685729999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(944, '10001', '2017-11-04', '18:24:32', 2, 'tesss', -6.886879700000001, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(945, '10001', '2017-11-04', '18:29:37', 1, NULL, -6.8869962, 107.6167277, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(946, '10001', '2017-11-04', '18:30:54', 2, 'tess', -6.886928200000001, 107.6167993, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(947, '10001', '2017-11-04', '21:01:19', 1, NULL, -6.8869333, 107.6167984, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(948, '10001', '2017-11-04', '21:21:26', 1, NULL, -6.886902, 107.6168304, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(949, '10001', '2017-11-04', '21:23:14', 1, NULL, -6.88688, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(950, '10001', '2017-11-04', '21:25:36', 1, NULL, -6.88688, 107.61685539999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(951, '10001', '2017-11-04', '21:27:45', 1, '', -6.886924, 107.6168028, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(952, '10001', '2017-11-04', '21:30:21', 1, '', -6.886927, 107.6167942, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(953, '10001', '2017-11-04', '21:31:17', 1, '', -6.8869586, 107.6167608, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(954, '10001', '2017-11-04', '21:35:36', 1, '', -6.8868799, 107.61685539999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(955, '10001', '2017-11-04', '21:36:55', 1, '', -6.886879700000001, 107.6168555, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(956, '10001', '2017-11-04', '21:40:19', 1, '', -6.88688, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(957, '10001', '2017-11-04', '21:41:52', 1, '', -6.88688, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(958, '10001', '2017-11-04', '21:43:11', 1, '', -6.8868784, 107.6168569, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(959, '10001', '2017-11-04', '21:44:14', 1, '', -6.88688, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(960, '10001', '2017-11-04', '21:45:00', 1, '', -6.8868784, 107.6168569, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(961, '10001', '2017-11-04', '21:45:42', 1, '', -6.88688, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(962, '10001', '2017-11-04', '21:46:16', 1, '', -6.88688, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(963, '10001', '2017-11-04', '21:46:52', 1, '', -6.88688, 107.61685539999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(964, '10001', '2017-11-04', '21:47:30', 1, '', -6.886879700000001, 107.61685539999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(965, '10001', '2017-11-04', '22:05:03', 1, '', -6.88688, 107.61685539999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(966, '10001', '2017-11-04', '22:06:13', 1, '', -6.8868801, 107.616855, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(967, '10001', '2017-11-04', '22:08:00', 1, '', -6.88688, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(968, '10001', '2017-11-04', '22:09:00', 1, '', -6.8869026, 107.6168343, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(969, '10001', '2017-11-04', '22:09:45', 1, '', -6.8868784, 107.6168569, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(970, '10001', '2017-11-04', '22:10:29', 1, '', -6.8868801, 107.61685519999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(971, '10001', '2017-11-04', '22:19:06', 1, NULL, -6.8868807, 107.6168569, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(972, '10001', '2017-11-04', '22:19:49', 1, NULL, -6.8868801, 107.61685519999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(973, '10001', '2017-11-04', '22:30:33', 1, NULL, -6.886878599999999, 107.6168557, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(974, '10001', '2017-11-04', '22:32:00', 1, NULL, -6.886879400000001, 107.61685759999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(975, '10001', '2017-11-04', '22:32:24', 1, NULL, -6.8868806, 107.6168569, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(976, '10001', '2017-11-04', '22:33:27', 1, NULL, -6.8868799, 107.6168556, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(977, '10001', '2017-11-04', '22:33:56', 1, NULL, -6.8868799, 107.6168556, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(978, '10001', '2017-11-04', '22:34:02', 1, NULL, -6.8868799, 107.6168556, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(979, '10001', '2017-11-04', '22:35:05', 1, NULL, -6.8868799, 107.6168556, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(980, '10001', '2017-11-04', '22:35:06', 1, NULL, -6.8868799, 107.6168556, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(981, '10001', '2017-11-04', '22:35:09', 1, NULL, -6.8868799, 107.6168556, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(982, '10001', '2017-11-04', '22:35:48', 1, NULL, -6.8868799, 107.6168555, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(983, '10001', '2017-11-04', '22:38:05', 1, NULL, -6.8868787, 107.61685609999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(984, '10001', '2017-11-04', '22:38:40', 1, NULL, -6.886879700000001, 107.61685539999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(985, '10001', '2017-11-04', '22:40:49', 1, NULL, -6.8868798, 107.61685510000001, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(986, '10001', '2017-11-04', '22:41:47', 1, NULL, -6.8868799, 107.6168555, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(987, '10001', '2017-11-04', '22:42:18', 1, NULL, -6.886879700000001, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(988, '10001', '2017-11-04', '22:44:22', 1, NULL, -6.886879700000001, 107.61685539999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(989, '10001', '2017-11-04', '22:44:54', 1, NULL, -6.8868787, 107.61685609999999, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(990, '10001', '2017-11-04', '22:55:29', 1, NULL, -6.8868799, 107.6168555, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(991, '10001', '2017-11-04', '23:09:36', 1, NULL, -6.886879700000001, 107.6168553, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
+(992, '10001', '2017-11-05', '00:08:29', 2, 'tes', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(993, '10001', '2017-11-05', '00:11:04', 2, 'tess', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(994, '10001', '2017-11-05', '00:11:50', 2, 'makan ikan', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(995, '10001', '2017-11-05', '00:16:11', 2, 'sdfsdfs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(996, '10001', '2017-11-05', '00:16:44', 2, 'tes', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(997, '10001', '2017-11-05', '00:17:36', 2, 'tess', -6.886933, 107.616794, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(998, '10001', '2017-11-05', '00:21:25', 2, 'makan-makan', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1002, '10001', '2017-11-05', '00:38:56', 2, 'tesss', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1005, '10001', '2017-11-05', '00:55:12', 3, 'tess', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1006, '10001', '2017-11-05', '00:56:19', 3, 'tesssss', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-08', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1007, '10001', '2017-11-05', '01:03:42', 3, 'sdfsdfsdfs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-10', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1008, '10001', '2017-11-05', '01:07:03', 3, 'biasa aja', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-08', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1009, '10001', '2017-11-05', '01:15:37', 4, 'berangat kemana', -6.886931199999999, 107.6167966, '2017-11-05', '2017-11-10', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1010, '10001', '2017-11-05', '01:17:23', 3, 'fefsfdsfsd', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1011, '10001', '2017-11-05', '02:13:57', 4, 'mencoba saja', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1012, '10001', '2017-11-05', '02:21:49', 4, 'coba upload', -6.886952699999999, 107.61677279999999, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1013, '10001', '2017-11-05', '02:24:40', 4, 'mengapa', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1014, '10001', '2017-11-05', '02:27:07', 2, 'berasa muda', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1015, '10001', '2017-11-05', '02:34:26', 2, 'sadsadsadsa', -6.886952699999999, 107.61677279999999, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1016, '10001', '2017-11-05', '02:37:16', 2, 'fsfsd sd fs fs ', -6.8869561, 107.6167719, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1017, '10001', '2017-11-05', '02:40:02', 2, 'fsdfdsf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1018, '10001', '2017-11-05', '02:40:10', 2, 'fsdfdsf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1019, '10001', '2017-11-05', '02:42:37', 2, 'fdsfsdfsf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1020, '10001', '2017-11-05', '02:43:14', 2, 'fdsfsdfsf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1021, '10001', '2017-11-05', '02:43:27', 2, 'dfsdfsdfsdf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1022, '10001', '2017-11-05', '02:43:44', 2, 'dsfdsfsdfds', -6.887143699999999, 107.6165918, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1023, '10001', '2017-11-05', '02:44:55', 2, 'dsfsfdsfs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1024, '10001', '2017-11-05', '02:47:35', 2, 'dsfsfdsfs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1025, '10001', '2017-11-05', '02:48:12', 2, 'dsfsf s fsd s', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1026, '10001', '2017-11-05', '02:51:24', 2, 'rerewrw', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1027, '10001', '2017-11-05', '02:52:27', 2, 'rerewrw', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1028, '10001', '2017-11-05', '02:53:28', 2, 'sdfdsfefsef e e fse fse', -6.8869244, 107.6167979, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1029, '10001', '2017-11-05', '02:54:41', 2, 'srgrgrgr', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1030, '10001', '2017-11-05', '02:56:06', 2, 'grdgdfgdf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1031, '10001', '2017-11-05', '02:57:41', 2, 'sdfsfsf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1032, '10001', '2017-11-05', '03:01:00', 3, 'sdfdsfsdf sd fs  ', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1033, '10001', '2017-11-05', '03:03:13', 3, 'sdfdsfsdf sd fs  ', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, NULL, NULL, NULL),
+(1034, '10001', '2017-11-05', '03:03:25', 2, 'dsfdsfs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1035, '10001', '2017-11-05', '03:10:55', 2, 'dsfsfs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1036, '10001', '2017-11-05', '03:45:52', 2, 'sdfsfsf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1037, '10001', '2017-11-05', '07:06:41', 2, 'undefined', 0, 0, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1038, '10001', '2017-11-05', '07:11:54', 2, 'undefined', 0, 0, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1039, '10001', '2017-11-05', '07:15:57', 2, 'cantik', -6.8868784, 107.6168559, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1040, '10001', '2017-11-05', '07:19:34', 2, 'bebaskanlah', -6.8869245999999995, 107.6167997, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1041, '10001', '2017-11-05', '07:22:18', 2, 'menggila', -6.8869514999999994, 107.61676990000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1042, '10001', '2017-11-05', '07:42:44', 2, 'tesss', -6.886941299999999, 107.61676879999999, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1043, '10001', '2017-11-05', '07:49:41', 2, 'fsfsd sd sdf ', -6.8868803, 107.6168553, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1044, '10001', '2017-11-05', '07:50:46', 2, 'sial', -6.88688, 107.61685519999999, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1045, '10001', '2017-11-05', '07:51:29', 2, 'siplah', -6.88688, 107.61685519999999, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1046, '10001', '2017-11-05', '07:57:48', 2, 'makan aja', -6.886879700000001, 107.6168553, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1047, '10001', '2017-11-05', '08:03:15', 2, 'gambar ku', -6.8868784, 107.6168569, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1048, '10001', '2017-11-05', '08:14:12', 2, 'bebas', -6.886933600000001, 107.6167955, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1049, '10001', '2017-11-05', '08:16:02', 2, 'fdsfdsfsg  D FDDF D ', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1050, '10001', '2017-11-05', '08:21:27', 2, 'KEREN AJA', -6.886929899999999, 107.6167837, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1051, '10001', '2017-11-05', '14:54:01', 2, 'mencoba', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1052, '10001', '2017-11-05', '14:58:37', 2, 'tessss', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1053, '10001', '2017-11-05', '15:00:43', 2, 'dsfdsfssf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1054, '10001', '2017-11-05', '15:04:26', 2, 'biasa aja', -6.8869302999999995, 107.6167955, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1055, '10001', '2017-11-05', '15:10:09', 2, 'tefsdf sd sd sfs ', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1056, '10001', '2017-11-05', '15:15:14', 2, 'gsdgdsg s sd gs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1057, '10001', '2017-11-05', '15:15:21', 2, 'gsdgdsg s sd gs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1058, '10001', '2017-11-05', '15:16:08', 2, 'bxbf sg sg s', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1059, '10001', '2017-11-05', '15:32:26', 2, 'adf sdf sdf s fs', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1060, '10001', '2017-11-05', '15:39:28', 2, 'dfs f sdf sd s d f  ', -6.8869434, 107.6167683, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1061, '10001', '2017-11-05', '15:39:34', 2, 'dfs f sdf sd s d f  ', -6.8869434, 107.6167683, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1062, '10001', '2017-11-05', '15:45:18', 2, 'mencoba mencari celah', -6.8869394, 107.61676630000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1063, '10001', '2017-11-05', '15:45:48', 2, 'aku lapaar sekali', -6.8869394, 107.61676630000001, '2017-11-05', '2017-11-05', '20171105154548.png', NULL, 1, 70000, 'paid'),
+(1064, '10001', '2017-11-05', '15:50:05', 2, 'kenapa gila', -6.8869434, 107.6167683, '2017-11-05', '2017-11-05', '20171105155005.png', NULL, 1, 70000, 'paid'),
+(1065, '10001', '2017-11-05', '15:50:41', 2, 'kenapa waeas', -6.8871199999999995, 107.6166125, '2017-11-05', '2017-11-05', '20171105155041.jpg', NULL, 1, 70000, 'paid'),
+(1066, '10001', '2017-11-05', '15:51:10', 2, 'kenapa sehat', -6.887213699999999, 107.6165403, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
+(1067, '10001', '2017-11-05', '15:54:21', 2, 'jadi2an', -6.887009099999999, 107.6167517, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
+(1068, '10001', '2017-11-05', '15:54:43', 2, 'menderita2', -6.887009099999999, 107.6167517, '2017-11-05', '2017-11-05', '20171105155443.jpg', NULL, 1, 70000, 'paid'),
+(1070, '10001', '2017-11-05', '16:13:02', 3, 'dsfsdfsf', -6.9174638999999996, 107.61912280000001, '2017-11-05', '2017-11-05', NULL, NULL, NULL, NULL, NULL),
+(1072, '10001', '2017-11-05', '16:19:15', 3, 'mencoba', -6.8869345, 107.61678739999999, '2017-11-05', '2017-11-05', NULL, NULL, NULL, NULL, NULL),
+(1074, '10001', '2017-11-05', '16:40:29', 3, 'jangan gila', -6.8869448, 107.61676670000001, '1970-01-01', '1970-01-01', NULL, NULL, NULL, NULL, NULL),
+(1075, '10001', '2017-11-05', '16:42:52', 3, 'kamu jenius', -6.9174638999999996, 107.61912280000001, '1970-01-01', '1970-01-01', '20171105164252.png', NULL, NULL, NULL, NULL),
+(1076, '10001', '2017-11-05', '17:00:41', 5, 'bulan madu wa', -6.886879700000001, 107.6168555, '1970-01-01', '1970-01-01', '20171105170041.jpg', NULL, 1, 70000, 'paid'),
+(1077, '10001', '2017-11-05', '17:01:52', 5, 'kenyang', -6.886879700000001, 107.6168555, '1970-01-01', '1970-01-01', '20171105170152.jpg', NULL, 1, 70000, 'paid'),
+(1078, '10001', '2017-11-05', '17:02:36', 4, 'kamu lapar?', -6.8869093, 107.6168264, '1970-01-01', '1970-01-01', '20171105170236.png', NULL, NULL, NULL, NULL),
+(1079, '90706', '2017-11-05', '18:38:42', 4, 'tes aja', -6.886879700000001, 107.61685539999999, '1970-01-01', '1970-01-01', '20171105183842.png', NULL, NULL, NULL, NULL),
+(1080, '90706', '2017-11-05', '18:40:33', 1, NULL, -6.8868807, 107.61685659999999, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'unpaid'),
+(1081, '90706', '2017-11-05', '18:41:05', 2, 'oke siap', -6.8868807, 107.61685659999999, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'unpaid'),
+(1082, '10001', '2017-11-05', '18:46:45', 2, 'makan cabai', -6.886821416209543, 107.61684481692414, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
+(1083, '10001', '2017-11-05', '18:49:04', 2, 'okay bro siap', -6.886851861710816, 107.61682053425247, '2017-11-05', '2017-11-05', '20171105184904.png', NULL, 1, 70000, 'paid'),
+(1084, '10001', '2017-11-05', '18:50:58', 1, NULL, -6.886851861710816, 107.61682053425247, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
+(1085, '10001', '2017-11-05', '18:51:49', 4, 'ya gitu deh\\r\\n', -6.886820352353248, 107.61684233174762, '1970-01-01', '1970-01-01', '20171105185149.jpeg', NULL, NULL, NULL, NULL),
+(1086, '10001', '2017-11-05', '18:52:38', 1, NULL, -6.8869105, 107.61683099999999, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
+(1087, '10001', '2017-11-05', '18:52:55', 2, 'tes', -6.8869105, 107.61683099999999, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
+(1088, '10001', '2017-11-05', '18:54:33', 3, 'siap\\r\\n', -6.886820352353248, 107.61684233174762, '1970-01-01', '1970-01-01', '20171105185433.jpeg', NULL, NULL, NULL, NULL),
+(1089, '10001', '2017-11-05', '18:55:47', 1, NULL, -6.88682073529552, 107.61684322890892, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
+(1090, '10001', '2017-11-05', '18:56:48', 2, 'jgn gitu', -6.886820348541906, 107.61684232700638, '2017-11-05', '2017-11-05', '20171105185648.jpeg', NULL, 1, 70000, 'paid'),
+(1091, '10001', '2017-11-05', '19:01:01', 2, 'tes', -6.886820325588906, 107.61684227347308, '2017-11-05', '2017-11-05', '20171105190101.jpeg', NULL, 1, 70000, 'paid');
+INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `status_id`, `keterangan`, `latitude`, `longitude`, `tgl_awal`, `tgl_akhir`, `foto_lokasi`, `rencana_id`, `credit_id`, `credit_in`, `credit_stat`) VALUES
+(1092, '10001', '2017-11-05', '19:04:32', 5, 'ya gitu deh', -6.886820435970539, 107.61684253089558, '1970-01-01', '1970-01-01', '20171105190432.jpeg', NULL, 1, 70000, 'paid'),
+(1093, '10001', '2017-11-05', '19:38:35', 1, NULL, -6.88688, 107.6168553, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
+(1094, '90706', '2017-11-05', '20:33:24', 1, NULL, -6.886820435970539, 107.61684253089558, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'unpaid'),
+(1095, '90706', '2017-11-05', '20:33:42', 1, NULL, -6.886809781976963, 107.61681768457387, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'unpaid'),
+(1099, '10001', '2017-11-06', '19:16:27', 2, 'tes', -6.9174638999999996, 107.61912280000001, '2017-11-06', '2017-11-06', NULL, NULL, 1, 70000, 'paid'),
+(1100, '10001', '2017-11-06', '19:17:34', 3, 'geuring', -6.8868784, 107.6168559, '1970-01-01', '1970-01-01', NULL, NULL, NULL, NULL, NULL),
+(1101, '90706', '2017-11-06', '20:44:54', 5, 'tes', -6.8868212, 107.61680059999999, '1970-01-01', '1970-01-01', NULL, NULL, 1, 70000, 'unpaid'),
+(1102, '90706', '2017-11-06', '20:48:35', 2, 'tesssss', -6.8867905, 107.6167783, '2017-11-06', '2017-11-06', NULL, NULL, 1, 70000, 'unpaid'),
+(1103, '90706', '2017-11-06', '20:49:33', 5, 'tessssss cutoi', -6.8868182, 107.61680349999999, '1970-01-01', '1970-01-01', NULL, NULL, 1, 70000, 'unpaid'),
+(1104, '10001', '2017-11-07', '18:54:28', 1, NULL, -6.8869025, 107.6168115, '2017-11-07', '2017-11-07', NULL, NULL, 1, 70000, 'paid'),
+(1105, '10001', '2017-11-09', '07:00:10', 1, NULL, -6.8866977933858395, 107.61681955317744, '2017-11-09', '2017-11-09', NULL, NULL, 1, 70000, 'paid'),
+(1106, '10001', '2017-11-11', '11:29:41', 5, 'mengenang cipta', -6.8868332, 107.6168721, '1970-01-01', '1970-01-01', NULL, NULL, 1, 70000, 'paid'),
+(1107, '10001', '2017-11-11', '11:36:36', 5, 'tes', -6.8868377999999995, 107.6168656, '1970-01-01', '1970-01-01', NULL, NULL, 1, 70000, 'paid'),
+(1108, '10001', '2017-11-11', '19:16:18', 1, NULL, -6.8868390999999995, 107.616862, '2017-11-11', '2017-11-11', NULL, NULL, 1, 70000, 'paid'),
+(1109, '10001', '2017-11-11', '19:22:58', 1, NULL, -6.8868662, 107.61683099999999, '2017-11-11', '2017-11-11', NULL, NULL, 1, 70000, 'paid'),
+(1110, '10001', '2017-11-11', '19:26:53', 2, 'tes', -6.8873133, 107.6165248, '2017-11-11', '2017-11-11', NULL, NULL, 1, 70000, 'paid'),
+(1111, '10001', '2017-11-11', '19:30:33', 1, NULL, -6.8868629, 107.6168175, '2017-11-11', '2017-11-11', NULL, NULL, 1, 70000, 'paid'),
+(1112, '10001', '2017-11-11', '19:33:13', 1, NULL, -6.8868589, 107.61682119999999, '2017-11-11', '2017-11-11', NULL, NULL, 1, 70000, 'paid'),
+(1113, '10001', '2017-11-11', '19:37:49', 2, 'tes', -6.886876999999999, 107.6168122, '2017-11-11', '2017-11-11', NULL, NULL, 1, 70000, 'paid'),
+(1114, '10001', '2017-11-11', '19:38:39', 1, NULL, -6.8868588, 107.61682789999999, '2017-11-11', '2017-11-11', NULL, NULL, 1, 70000, 'paid'),
+(1115, '10001', '2017-11-11', '19:42:40', 5, 'sakit', 1.3553794, 103.86774439999999, '1970-01-01', '1970-01-01', '20171111194240.jpg', NULL, 1, 70000, 'paid'),
+(1116, '10001', '2017-11-11', '19:49:20', 1, '', -6.8868585, 107.6168342, '1970-01-01', '1970-01-01', '20171111194920.jpg', NULL, 1, 70000, 'paid'),
+(1117, '10001', '2017-11-11', '19:50:05', 3, 'tes', -6.8868456, 107.61683500000001, '1970-01-01', '1970-01-01', '20171111195005.jpg', NULL, NULL, NULL, NULL),
+(1118, '10001', '2017-11-11', '19:55:44', 3, 'menangis', -6.8869703, 107.61673669999999, '2017-11-11', '2017-11-11', '20171111195544.png', NULL, NULL, NULL, NULL),
+(1119, '10001', '2017-11-11', '19:57:15', 4, 'tes', -6.886857099999999, 107.6168378, '2017-11-11', '2017-11-18', '20171111195715.png', NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `jabatan_anggota`
---
-ALTER TABLE `jabatan_anggota`
-  ADD KEY `id_anggota` (`id_anggota`),
-  ADD KEY `id_jabatan` (`id_jabatan`);
-
---
--- Indexes for table `tb_absen`
---
-ALTER TABLE `tb_absen`
-  ADD PRIMARY KEY (`status_id`);
-
---
--- Indexes for table `tb_anggota`
---
-ALTER TABLE `tb_anggota`
-  ADD PRIMARY KEY (`id_anggota`);
-
---
--- Indexes for table `tb_buktipembayaran`
---
-ALTER TABLE `tb_buktipembayaran`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_pembayaran` (`id_pembayaran`);
-
---
--- Indexes for table `tb_credits_anggota`
---
-ALTER TABLE `tb_credits_anggota`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_anggota` (`id_anggota`);
-
---
--- Indexes for table `tb_cuti_anggota`
---
-ALTER TABLE `tb_cuti_anggota`
-  ADD PRIMARY KEY (`id_cuti`),
-  ADD UNIQUE KEY `id_anggota` (`id_anggota`);
 
 --
 -- Indexes for table `tb_detail_absen`
@@ -602,128 +424,32 @@ ALTER TABLE `tb_cuti_anggota`
 ALTER TABLE `tb_detail_absen`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_idanggota` (`id_anggota`),
-  ADD KEY `status_id` (`status_id`);
-
---
--- Indexes for table `tb_jabatan`
---
-ALTER TABLE `tb_jabatan`
-  ADD PRIMARY KEY (`id_jabatan`);
-
---
--- Indexes for table `tb_jenistransaksi`
---
-ALTER TABLE `tb_jenistransaksi`
-  ADD PRIMARY KEY (`id_jenis`);
-
---
--- Indexes for table `tb_konfirmasi`
---
-ALTER TABLE `tb_konfirmasi`
-  ADD KEY `fk_idbayar` (`id_pembayaran`);
-
---
--- Indexes for table `tb_pembayaran`
---
-ALTER TABLE `tb_pembayaran`
-  ADD PRIMARY KEY (`id_pembayaran`),
-  ADD KEY `id_anggota` (`id_anggota`),
-  ADD KEY `id_jenis` (`id_jenis`);
-
---
--- Indexes for table `tb_tgllibur`
---
-ALTER TABLE `tb_tgllibur`
-  ADD PRIMARY KEY (`id`);
+  ADD KEY `status_id` (`status_id`),
+  ADD KEY `rencana_id` (`rencana_id`),
+  ADD KEY `credit_id` (`credit_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `tb_absen`
---
-ALTER TABLE `tb_absen`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `tb_buktipembayaran`
---
-ALTER TABLE `tb_buktipembayaran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
-
---
--- AUTO_INCREMENT for table `tb_credits_anggota`
---
-ALTER TABLE `tb_credits_anggota`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
-
---
--- AUTO_INCREMENT for table `tb_cuti_anggota`
---
-ALTER TABLE `tb_cuti_anggota`
-  MODIFY `id_cuti` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- AUTO_INCREMENT for table `tb_detail_absen`
 --
 ALTER TABLE `tb_detail_absen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=393;
-
---
--- AUTO_INCREMENT for table `tb_tgllibur`
---
-ALTER TABLE `tb_tgllibur`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1182;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `jabatan_anggota`
---
-ALTER TABLE `jabatan_anggota`
-  ADD CONSTRAINT `fk_id-anggota` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_id-jabatan` FOREIGN KEY (`id_jabatan`) REFERENCES `tb_jabatan` (`id_jabatan`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `tb_buktipembayaran`
---
-ALTER TABLE `tb_buktipembayaran`
-  ADD CONSTRAINT `fk_idpembayaran` FOREIGN KEY (`id_pembayaran`) REFERENCES `tb_pembayaran` (`id_pembayaran`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `tb_credits_anggota`
---
-ALTER TABLE `tb_credits_anggota`
-  ADD CONSTRAINT `tb_credits_anggota_ibfk_1` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `tb_cuti_anggota`
---
-ALTER TABLE `tb_cuti_anggota`
-  ADD CONSTRAINT `tb_cuti_anggota_ibfk_1` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `tb_detail_absen`
 --
 ALTER TABLE `tb_detail_absen`
   ADD CONSTRAINT `ibfk_idanggota3` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tb_detail_absen_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `tb_absen` (`status_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Constraints for table `tb_konfirmasi`
---
-ALTER TABLE `tb_konfirmasi`
-  ADD CONSTRAINT `ibfk_idbayar` FOREIGN KEY (`id_pembayaran`) REFERENCES `tb_pembayaran` (`id_pembayaran`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `tb_pembayaran`
---
-ALTER TABLE `tb_pembayaran`
-  ADD CONSTRAINT `fk_idanggota` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_idjenis` FOREIGN KEY (`id_jenis`) REFERENCES `tb_jenistransaksi` (`id_jenis`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tb_detail_absen_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `tb_absen` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_detail_absen_ibfk_2` FOREIGN KEY (`rencana_id`) REFERENCES `tb_cronjob_rencana_absen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_detail_absen_ibfk_3` FOREIGN KEY (`credit_id`) REFERENCES `tb_credits_anggota` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
