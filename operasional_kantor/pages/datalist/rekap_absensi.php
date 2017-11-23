@@ -1,8 +1,8 @@
 <?php
  error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
  date_default_timezone_set("Asia/Jakarta");
- if ($_SESSION['jabatan']!="Admin") {
-  echo '<script>alert("Maaf, Anda bukan Admin"); window.location="../../tampil/home"</script>';
+ if (strpos($_SESSION['jabatan'], 'Admin')===false) {
+  echo '<script>alert("Maaf, Anda bukan Admin"); window.location="tampil/home"</script>';
 }
 ?>
 
@@ -14,10 +14,10 @@
       $_SESSION["tglfilterrekapabsen1"]=$startdate;
       $_SESSION["tglfilterrekapabsen2"]=$enddate;
       //echo '<script>alert("'.$_SESSION["tglfilterrekapabsen1"].'")</script>';
-      $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha, SUM(a.credit_in) AS totalcredits FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE DATE(a.tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y') GROUP BY a.id_anggota";
+      $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha, SUM(a.credit_in) AS totalcredits FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE DATE(a.tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y') GROUP BY a.id_anggota WITH ROLLUP";
       echo '<h2 class="bounceInLeft animated">REKAP ABSENSI TANGGAL '.$startdate.' - '.$enddate.'</h2>';
     } else {
-      $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,SUM(a.credit_in) AS totalcredits  FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota";
+      $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,SUM(a.credit_in) AS totalcredits  FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota WITH ROLLUP";
       $tglawal = date('m/01/Y');
       $tglhariini = date('m/d/Y');
       echo '<h2 class="bounceInLeft animated">REKAP ABSENSI TANGGAL '.$tglawal.' - '.$tglhariini.'</h2>';
@@ -85,35 +85,33 @@
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
               }
-            $no = 1;
-            $totalhadir=0;
-            $totalsakit=0;
-            $totalizin=0;
-            $totalcuti=0;
-            $totalalpha=0;
-            $totalakomodasi=0;
             while($r = mysqli_fetch_array($result))
             {
-              $totalhadir+=$r["jumhadir"];
-              $totalsakit+=$r["jumsakit"];
-              $totalizin+=$r["jumizin"];
-              $totalcuti+=$r["jumcuti"];
-              $totalalpha+=$r["jumalpha"];
-              $totalakomodasi+=$r["totalcredits"];
+              if ($r["id_ang"]===null) {
+                $totalhadir=$r["jumhadir"];
+                $totalsakit=$r["jumsakit"];
+                $totalizin=$r["jumizin"];
+                $totalcuti=$r["jumcuti"];
+                $totalalpha=$r["jumalpha"];
+                $totalakomodasi=$r["totalcredits"];
+              } else {
             ?>
             
             <tr>
+              <form action="tampil/data-absensi-admin">
               <td><a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["id_ang"] ?></a></td>
               <td> <a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["nama"] ?></a></a></td>
-              <td> <a type="button" class="btn btn-info btn-block btn-sm"><?php echo $r["jumhadir"] ?> hari</a></td>
-              <td><a type="button" class="btn btn-danger btn-block btn-sm"><?php echo $r["jumsakit"] ?> hari</a></td>
-              <td><a type="button" class="btn btn-warning btn-block btn-sm"><?php echo $r["jumizin"] ?> hari</a></td>
-              <td><a type="button" class="btn btn-success btn-block btn-sm"><?php echo $r["jumcuti"] ?> hari</a></td>
-              <td><a type="button" class="btn btn-default btn-block btn-sm"><?php echo $r["jumalpha"] ?> hari</a></td>
-              <td><a type="button" class="btn btn-default btn-block btn-sm active disabled"> Rp<?php echo number_format($r["totalcredits"]) ?></a></td> 
+              <td> <button type="submit" class="btn btn-info btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',HADIR' ?>"><?php echo $r["jumhadir"] ?> hari</button></td>
+              <td><button type="submit" class="btn btn-danger btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',SAKIT' ?>"><?php echo $r["jumsakit"] ?> hari</button></td>
+              <td><button type="submit" class="btn btn-warning btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',IZIN' ?>"><?php echo $r["jumizin"] ?> hari</button></td>
+              <td><button type="submit" class="btn btn-success btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',CUTI' ?>"><?php echo $r["jumcuti"] ?> hari</button></td>
+              <td><button type="submit" class="btn btn-default btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',ALPHA' ?>"><?php echo $r["jumalpha"] ?> hari</button></td>
+              <td><a type="button" class="btn btn-default btn-block btn-sm active disabled" > Rp<?php echo number_format($r["totalcredits"]) ?></a></td>
+              </form>
             </tr>
               <?php
                 $no++;
+              }
             }
           ?>          
     </tbody>
@@ -124,8 +122,8 @@
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-info btn-block btn-md "><?php echo $totalhadir?> hari</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-danger btn-block btn-md "><?php echo $totalsakit?> hari</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-warning btn-block btn-md "><?php echo $totalizin?> hari</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-success btn-block btn-md "><?php echo $totalizin?> hari</a></th>
-									<th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md"><?php echo $totalizin?> hari</a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-success btn-block btn-md "><?php echo $totalcuti?> hari</a></th>
+									<th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md"><?php echo $totalalpha?> hari</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled">Rp<?php echo number_format($totalakomodasi) ?></a></th>
                 </tr>  
     </tfoot>              

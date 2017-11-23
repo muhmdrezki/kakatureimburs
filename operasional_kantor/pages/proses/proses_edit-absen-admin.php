@@ -15,7 +15,7 @@ if (isset($_POST["submit"])) {
       if ($status_id!=1 && $status_id!=2 && $status_id!=5) {
             if ($statusid_lama==1 || $statusid_lama==2 || $statusid_lama==5) {
                   //echo "<script>alert( 'Debug Objects: Masuk1' );</script>";
-                  $query2= "UPDATE tb_credits_anggota SET total_credit=(total_credit - topup_credit) WHERE id_anggota='$id_anggota'";
+                  $query2= "UPDATE tb_detail_absen SET credit_id=null,credit_in=null,credit_stat=null WHERE id='$id'";
                   $update = mysqli_query($koneksi, $query2);
                   if (!$update) {
                         printf("Error: %s\n", mysqli_error($koneksi));
@@ -28,7 +28,7 @@ if (isset($_POST["submit"])) {
             if ($statusid_lama!=1 && $statusid_lama!=2 && $statusid_lama!=5) {
                   //echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
                   echo "<script>console.log( 'Debug Objects: Masuk2' );</script>";
-                  $query2= "UPDATE tb_credits_anggota SET total_credit=(total_credit + topup_credit) WHERE id_anggota='$id_anggota'";
+                  $query2= "UPDATE  tb_detail_absen a JOIN tb_credits_anggota b ON a.id_anggota=b.id_anggota SET a.credit_id=b.id,a.credit_in=b.topup_credit,a.credit_stat='unpaid' WHERE a.id='$id'";
                   $update = mysqli_query($koneksi, $query2);
                   if (!$update) {
                         printf("Error: %s\n", mysqli_error($koneksi));
@@ -79,9 +79,9 @@ if (isset($_POST["submit"])) {
                         exit();
                   }
                   emitData();
-            } else {
+            } //else {
                   # code...
-            }
+           // }
       }
 }
 echo '<script> alert("Data Absen dengan ID'.$id.', Berhasil Di Update"); document.location.href="../../tampil/data-absensi-admin" </script>';

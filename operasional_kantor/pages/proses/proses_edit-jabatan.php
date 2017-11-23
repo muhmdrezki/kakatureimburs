@@ -16,4 +16,4 @@ include "../../con_db.php";
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
               } 
-      echo '<script> alert("Data Jabatan dengan ID '.$id.', Berhasil Di Update"); document.location.href="../../tampil/jabatan"</script>';   
+      echo '<script> alert("Data Jabatan dengan ID '.$id.', Berhasil Di Update"); window.location="../../tampil/data-jabatan"</script>';   

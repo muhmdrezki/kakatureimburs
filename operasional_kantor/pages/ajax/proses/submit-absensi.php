@@ -49,8 +49,8 @@
 						if (isset($_POST['tglRentangSakit']) && !empty($_POST['tglRentangSakit'])) {
 							$keterangan =antiInjection($_POST['keterangan_sakit']);
 							$tgl = antiInjection($_POST['tglRentangSakit']);
-							$tgl_awal = formatDateSql(substr($tglRentangSakit,0,11));
-							$tgl_akhir= formatDateSql(substr($tglRentangSakit,13,25));
+							$tgl_awal = formatDateSql(substr($tgl,0,11));
+							$tgl_akhir= formatDateSql(substr($tgl,13,25));
 							$filename = "image_sakit";
 						} else {
 							$errmsg="Tanggal Sakit tidak boleh kosong!";
@@ -63,9 +63,9 @@
 					if (isset($_POST['keterangan_izin']) && !empty($_POST['keterangan_izin'])) {
 						if (isset($_POST['tglRentangIzin']) && !empty($_POST['tglRentangIzin'])) {
 							$keterangan =antiInjection($_POST['keterangan_izin']);
-							$tgl = antiInjection($_POST['tgl']);
-							$tgl_awal = formatDateSql(substr($tglRentangIzinl,0,11));
-							$tgl_akhir= formatDateSql(substr($tglRentangIzin,13,25));
+							$tgl = antiInjection($_POST['tglRentangIzin']);
+							$tgl_awal = formatDateSql(substr($tgl,0,11));
+							$tgl_akhir= formatDateSql(substr($tgl,13,25));
 							$filename = "image_izin";
 						} else {
 							$errmsg="Tanggal Izin tidak boleh kosong!";
@@ -78,9 +78,9 @@
 					if (isset($_POST['keterangan_cuti']) && !empty($_POST['keterangan_cuti'])) {
 						if (isset($_POST['tglRentangCuti']) && !empty($_POST['tglRentangCuti'])) {
 							$keterangan =antiInjection($_POST['keterangan_cuti']);
-							$tgl = antiInjection($_POST['tgl']);
-							$tgl_awal = formatDateSql(substr($tglRentangCuti,0,11));
-							$tgl_akhir= formatDateSql(substr($tglRentangCuti,13,25));
+							$tgl = antiInjection($_POST['tglRentangCuti']);
+							$tgl_awal = formatDateSql(substr($tgl,0,11));
+							$tgl_akhir= formatDateSql(substr($tgl,13,25));
 							$filename = "image_cuti";
 						} else {
 							$errmsg="Tanggal Cuti tidak boleh kosong!";

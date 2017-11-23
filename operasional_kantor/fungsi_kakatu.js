@@ -1,6 +1,452 @@
-//rezki
-//MASK MONEY
 $(function () {
+  window.initMap = function (lat1, lng1) {
+    var waktu = $('#waktuDetailAbsen').text();
+    var nama = $('#namaDetailAbsen').text();
+    var status = $('#statusDetailAbsen').text();
+    //var myLatLng = {lat: lat1,lng: lng1};
+    console.log("Inisiasi Map");
+    var myLatLng = new google.maps.LatLng(lat1, lng1);
+    var map = new google.maps.Map(document.getElementById('peta'), {
+      zoom: 18,
+      center: myLatLng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    console.log("Buat marker");
+    var marker = new google.maps.Marker({
+      position: myLatLng,
+      map: map,
+      title: 'Lokasi ' + nama + ' pada ' + waktu + ' saat ' + status
+    });
+    //Resize Function
+
+    google.maps.event.addDomListener(window, "resize", function () {
+      var center = map.getCenter();
+      google.maps.event.trigger(map, "resize");
+      map.setCenter(center);
+    });
+    console.log("Responsive Center");
+  }
+  //Proses Pembuatan Map end
+  var y = document.getElementById("nonsupport");
+  window.getUserLocation = function () {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(getPosition, showError);
+    } else {
+      y.innerHTML = "Geolocation is not supported by this browser.";
+      alert("Browser ini tidak mensupport Geolocation.");
+    }
+  }
+  var latitude = document.getElementById("latitude");
+  var longitude = document.getElementById("longitude");
+  function getPosition(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    $('#latitude').val(lat);
+    $('#longitude').val(lng);
+    $.ajax({
+      url: 'pages/ajax/fetchdata/fetch_data-alamat.php',
+      type: 'post',
+      data: {
+        latitude: lat,
+        longitude: lng
+      },
+      success: function (data) {
+        $('#address_hadirdiluar').val(data);
+        $('#address_sakit').val(data);
+        $('#address_izin').val(data);
+        $('#address_cuti').val(data)
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+    $('#toggleIzinkanLokasi').attr("disabled", "disabled");
+    $('#submit_hadir_form').removeAttr("disabled");
+    $('#submit_hadirdiluar_form').removeAttr("disabled");
+    $('#submit_sakit_form').removeAttr("disabled");
+    $('#submit_izin_form').removeAttr("disabled");
+    $('#submit_cuti_form').removeAttr("disabled");
+  }
+  function showError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        $('#toggleIzinkanLokasi').prop('checked', false);;
+        alert("Anda menolak permintaan lokasi");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        $('#toggleIzinkanLokasi').prop('checked', false);;
+        alert("Informasi Lokasi Tidak Tersedia");
+        break;
+      case error.TIMEOUT:
+        $('#toggleIzinkanLokasi').prop('checked', false);;
+        alert("Terjadi Request Timeout");
+        break;
+      case error.UNKNOWN_ERROR:
+        $('#toggleIzinkanLokasi').prop('checked', false);;
+        alert("An unknown error occurred.");
+        break;
+    }
+  }
+
+  //Fungsi loadChart Kakatu untuk Load semua chart di home.php
+  window.loadChartKakatu = function () {
+    // DONUT CHART PEMBAYARAN
+
+    function configChartJumlahOperasional(dataJumlahOperasional) {
+      var donut = new Morris.Donut({
+        element: 'sales-chart',
+        resize: true,
+        colors: ["#3c8dbc", "#f56954", "#00a65a", "#DAA520", "#ADEAEA", "#3D1D49"],
+        data: dataJumlahOperasional,
+        hideHover: 'auto'
+      });
+    }
+    function ajaxConfigChartJumlahOperasional() {
+      $.ajax({
+        type: "post",
+        url: "pages/ajax/fetchdata/fetch_chart-jumlah-operasional.php",
+        dataType: "json",
+        success: function (data) {
+          configChartJumlahOperasional(data);
+        }
+      });
+    }
+
+    // END DONUT CHART PEMBAYARAN
+
+    // PIE CHART ABSENSI HARI INI
+    function chartConfigAbsen(dataAbsen, truefalse) {
+      var canvas = document.getElementById("chart_absensi-hari-ini");
+      var ctx = canvas.getContext("2d");
+      var midX = canvas.width / 2;
+      var midY = canvas.height / 2;
+      var pieChart = new Chart(ctx)
+      //console.log(dataAbsen);
+      var PieData = dataAbsen;
+      var pieOptions = {
+        showTooltips: true,
+        //Boolean - Whether we should show a stroke on each segment
+        segmentShowStroke: true,
+        //String - The colour of each segment stroke
+        segmentStrokeColor: '#fff',
+        //Number - The width of each segment stroke
+        segmentStrokeWidth: 2,
+        //Number - The percentage of the chart that we cut out of the middle
+        percentageInnerCutout: 50, // This is 0 for Pie charts
+        //Number - Amount of animation steps
+        animationSteps: 100,
+        //String - Animation easing effect
+        animationEasing: 'easeOutBounce',
+        //Boolean - Whether we animate the rotation of the Doughnut
+        animateRotate: truefalse,
+        //Boolean - Whether we animate scaling the Doughnut from the centre
+        animateScale: truefalse,
+        //Boolean - whether to make the chart responsive to window resizing
+        responsive: true,
+        // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+        maintainAspectRatio: true
+        //onAnimationProgress  : drawSegmentValues
+      }
+      //Create pie or douhnut chart
+      // You can switch between pie and douhnut using the method below.
+      var myPieChart = pieChart.Pie(PieData, pieOptions);
+      var radius = myPieChart.outerRadius;
+      function drawSegmentValues() {
+        for (var i = 0; i < myPieChart.segments.length; i++) {
+          ctx.fillStyle = "white";
+          var textSize = canvas.width / 20;
+          ctx.font = textSize + "px Verdana";
+          // Get needed variables
+          var value = myPieChart.segments[i].value;
+          var startAngle = myPieChart.segments[i].startAngle;
+          var endAngle = myPieChart.segments[i].endAngle;
+          var middleAngle = startAngle + ((endAngle - startAngle) / 2);
+
+          // Compute text location
+          //Untuk Donat
+          //var posX = ((radius/2)+(radius/4)) * Math.cos(middleAngle) + midX;
+          //var posY = ((radius/2)+(radius/4)) * Math.sin(middleAngle) + midY;
+          var posX = (radius / 2) * Math.cos(middleAngle) + midX;
+          var posY = (radius / 2) * Math.sin(middleAngle) + midY;
+          //console.log(radius);
+          // Text offside by middle
+          var w_offset = ctx.measureText(value).width / 2;
+          var h_offset = textSize / 4;
+
+          ctx.fillText(value, posX - w_offset, posY + h_offset);
+        }
+      }
+    }
+    function ajaxchartConfigAbsen(truefalse2) {
+      $.ajax({
+        url: "ajax-fetchdata/chart-absensi-hari-ini",
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          //Fungsi untuk buat chart Donut Chart.js
+          chartConfigAbsen(data, truefalse2);
+          // .hide() Semua legend pada Donut Chart.js sebelum dimunculkan lagi
+          $('#listHadir').hide();
+          $('#listHadirDiluar').hide();
+          $('#listSakit').hide();
+          $('#listIzin').hide();
+          $('#listCuti').hide();
+          $('#listAlpha').hide();
+          var status;
+          var index = 0;
+          //Proses penghitungan data absen di legend donut chart dan .show() legend
+          while (index <= (data.length - 1)) {
+            if (typeof (data[index]) !== "undefined") {
+              status = data[index].label;
+              switch (status) {
+                case "Hadir":
+                  $('#listHadir').show();
+                  $('#jumhadir').text(data[index].value);
+                  break;
+                case "Hadir Diluar":
+                  $('#listHadirDiluar').show();
+                  $('#jumhadirdiluar').text(data[index].value);
+                  break;
+                case "Sakit":
+                  $('#listSakit').show();
+                  $('#jumsakit').text(data[index].value);
+                  break;
+                case "Izin":
+                  $('#listIzin').show();
+                  $('#jumizin').text(data[index].value);
+                  break;
+                case "Cuti":
+                  $('#listCuti').show();
+                  $('#jumcuti').text(data[index].value);
+                  break;
+                case "Alpha":
+                  $('#listAlpha').show();
+                  $('#jumalpha').text(data[index].value);
+                  break;
+              }
+            }
+            index++;
+          }
+          //setTimeout(function(){ajaxchartConfigAbsen(false);}, 10000);
+        }
+      });
+    }
+
+    // PIE CHART ABSENSI HARI INI
+
+    //Line CHART Total Absensi
+    function chartConfigTotalAbsen(dataTotalAbsen) {
+      var bar = new Morris.Bar({
+        element: 'absen-chart',
+        resize: true,
+        axis: false,
+        parseTime: false,
+        data: dataTotalAbsen,
+        xkey: 'Bulan',
+        ykeys: ['hadir', 'sakit', 'izin', 'cuti', 'alpha'],
+        yLabelFormat: function (y) { return y.toString() + ' hari'; },
+        labels: ['Hadir', 'Sakit', 'Izin', 'Cuti', 'Alpha'],
+        barColors: ['#00c0ef', '#f56954', '#f39c12', '#00a65a', '#c0c0c0']
+      });
+    }
+    function ajaxchartConfigTotalAbsen() {
+      $.ajax({
+        url: "pages/ajax/fetchdata/fetch_chart-totalabsensi.php",
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          //console.log(data);
+          chartConfigTotalAbsen(data);
+          //setTimeout(function(){ajaxchartConfigTotalAbsen();}, 30000);
+        }
+      });
+    }
+
+    // END Line CHART Total Absensi
+
+    // CHART TOTAL CREDITS
+    function configChartCredit(dataCredits) {
+      var line = new Morris.Line({
+        element: 'credit-chart',
+        resize: true,
+        parseTime: false,
+
+        data: dataCredits,
+        xkey: 'Bulan',
+        ykeys: ['Total'],
+
+        yLabelFormat: function (y) {
+          var formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+          });
+          return formatter.format(y.toString());
+        },
+        labels: ['Total'],
+        lineColors: ['#3c8dbc'],
+        hoverCallback: function (index, options, content) {
+          var formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+          });
+          var uang = options.data[index].Total;
+          var uang2 = formatter.format(uang.toString());
+          return '<div style="color:#3c8dbc;">' + uang2 + '</div>';
+        }
+
+      });
+    }
+    function ajaxconfigChartCredit() {
+      $.ajax({
+        type: "post",
+        url: "pages/ajax/fetchdata/fetch_chart-total-credit.php",
+        dataType: "json",
+        success: function (data) {
+          configChartCredit(data)
+        }
+      });
+    }
+    // END CHART TOTAL CREDITS
+
+    // CHART TOTAL OPERASIONAL
+    function chartTotalOperasinal(dataTotalOperasional) {
+      var line = new Morris.Line({
+        element: 'chart-pembayaran-operasional',
+        resize: true,
+        parseTime: false,
+        data: dataTotalOperasional,
+        lineColors: ['#00a65a'],
+        xkey: 'Bulan',
+        ykeys: ['Total'],
+        yLabelFormat: function (y) {
+          var formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+          });
+          return formatter.format(y.toString());
+        },
+        labels: ['Total'],
+        hoverCallback: function (index, options, content) {
+          var formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+          });
+          var uang = options.data[index].Total;
+          var uang2 = formatter.format(uang.toString());
+          return '<div style="color:#00a65a;">' + uang2 + '</div>';
+        }
+      });
+    }
+    function ajaxChartTotalOperasinal() {
+      $.ajax({
+        type: "POST",
+        url: "pages/ajax/fetchdata/fetch_chart-total-operasional.php",
+        dataType: "json",
+        success: function (data) {
+          //console.log(data);
+          chartTotalOperasinal(data);
+        }
+      });
+    }
+    // END CHART TOTAL OPERASIONAL
+
+    // Progress BAR ABSENSI HARI INI
+    function ajaxProgressAbsenHariIni() {
+      $.ajax({
+        url: "pages/ajax/fetchdata/fetch_progress-bar-hari-ini.php",
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          var sesi = sessionKakatu();
+          //alert(sesi);
+          //$('#absensi_hari_ini').show();
+          if (data.persen != 0) {
+            $('#updateAbsensiHariIni').show();
+            ajaxGalleryAbsensiHariIni();
+            ajaxchartConfigAbsen(true);
+            var bulatkanPersen = Math.round(data.persen);
+            if (bulatkanPersen > 100) {
+              bulatkanPersen = 100;
+            }
+            $('#progres-absen-hari-ini').css({ 'width': +bulatkanPersen + '%' });
+            $('#progres-absen-hari-ini').attr("class", "progress-bar " + data.warna);
+            $('#progres-absen-hari-ini').attr("aria-valuenow", bulatkanPersen);
+            $('#progres-absen-hari-ini').text(bulatkanPersen + "%");
+          } else {
+            $('#updateAbsensiHariIni').hide();
+          }
+          //setTimeout(function(){ajaxProgressAbsenHariIni();}, 8000);
+        }
+      });
+    }
+    // END Progress BAR ABSENSI HARI INI
+    //Daftar Absensi Hari ini Gallery Absensi
+    function ajaxGalleryAbsensiHariIni() {
+      $.ajax({
+        url: "pages/ajax/fetchdata/fetch_data_daftar-absensi.php",
+        method: "post",
+        success: function (data) {
+          $('#galleryFotoAbsensi').html(data);
+          $('#myCarousel').carousel({
+            interval: 4000
+          })
+        }
+      });
+    }
+    //End Daftar Absensi hari ini
+    //Panggil Semua Fungsi
+    ajaxProgressAbsenHariIni();
+    ajaxchartConfigTotalAbsen();
+    ajaxconfigChartCredit();
+    ajaxConfigChartJumlahOperasional();
+    ajaxChartTotalOperasinal();
+    //Jika Terjadi Resize
+    //$(window).resize(function() {
+    //resize just happened, pixels changed
+    //ajaxchartConfigAbsen(false);
+    //});
+    //End Jika Terjadi Resize
+
+    //Jika Ada data permbaruan absensi, maka server push data update Dashboard ke client
+    //Socket IO
+    var socket = io.connect("https://localhost:3000");
+    socket.on("submit_baru", function (data) {
+      //console.log(data);
+      //ajaxGalleryAbsensiHariIni();
+      ajaxProgressAbsenHariIni();
+      //ajaxchartConfigAbsen(false);
+      ajaxchartConfigTotalAbsen();
+      ajaxconfigChartCredit();
+      ajaxConfigChartJumlahOperasional();
+      ajaxChartTotalOperasinal();
+    });
+    //End Socket IO
+  }
+  //EndFungsi loadChart Kakatu untuk Load semua chart di home.php
+
+  window.zoomLoadEvent = function () {
+    document.body.style.zoom = "90%";
+  }
+  function sessionKakatu() {
+    var session_kakatu;
+    $.ajax({
+      //async:false,
+      type: "post",
+      url: "ajax-fetchdata/session-jabatan",
+      data: "data",
+      success: function (data) {
+        session_kakatu = data;
+      }
+    });
+    return session_kakatu;
+  }
+
+
+  //MASK MONEY
   $("#numeric").maskMoney({ prefix: 'Rp ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
   $("#gaji").maskMoney({ prefix: 'Rp ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
   $("#gaji1").maskMoney({ prefix: 'Rp ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
@@ -9,517 +455,75 @@ $(function () {
   //Datemask dd/mm/yyyy
   $('#datemask').inputmask('dd-mm-YYYY', { 'placeholder': 'dd/mm/yyyy' })
   $('[data-mask]').inputmask()
-});
-//END MASK MONEY
-//rezki
-$.ajax({
-  type: "POST",
-  url: "ajax-fetchdata/nama-anggota",
-  success: function (response) {
-    $('#namaFormAbsensi').text(response);
-  }
-});
-$.ajax({
-  type: "POST",
-  url: "ajax-fetchdata/sisa-cuti",
-  success: function (response) {
-    $('#sisa-cuti-from-absensi').text(response);
-  }
-});
-//Non-Jquery Function
-function initMap(lat1, lng1) {
-  var waktu = $('#waktuDetailAbsen').text();
-  var nama = $('#namaDetailAbsen').text();
-  var status = $('#statusDetailAbsen').text();
-  //var myLatLng = {lat: lat1,lng: lng1};
-  console.log("Inisiasi Map");
-  var myLatLng = new google.maps.LatLng(lat1, lng1);
-  var map = new google.maps.Map(document.getElementById('peta'), {
-    zoom: 18,
-    center: myLatLng,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  });
-  console.log("Buat marker");
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    title: 'Lokasi ' + nama + ' pada ' + waktu + ' saat ' + status
-  });
-  //Resize Function
 
-  google.maps.event.addDomListener(window, "resize", function () {
-    var center = map.getCenter();
-    google.maps.event.trigger(map, "resize");
-    map.setCenter(center);
-  });
-  console.log("Responsive Center");
-}
-//Proses Pembuatan Map end
-//Ganti Warna Select Status Absen
-function gantiWarnaStatusAbsenSelect(value) {
-  switch (value) {
-    case 1:
-      $("#status_id_adminEdit").attr("class", "form-control btn-info");
-      $("#keterangan_absen").prop('disabled', true);
-      $("#insert").attr("class", "btn btn-info");
-      $("#keterangan_absen").val("");
-      break;
-    case 2:
-      $("#status_id_adminEdit").attr("class", "form-control btn-primary");
-      $("#insert").attr("class", "btn btn-primary");
-      $("#keterangan_absen").prop('disabled', false);
-      break;
-    case 3:
-      $("#status_id_adminEdit").attr("class", "form-control btn-danger");
-      $("#keterangan_absen").prop('disabled', false);
-      $("#insert").attr("class", "btn btn-danger");
-      break;
-    case 4:
-      $("#status_id_adminEdit").attr("class", "form-control btn-warning");
-      $("#keterangan_absen").prop('disabled', false);
-      $("#insert").attr("class", "btn btn-warning");
-      break;
-    case 5:
-      $("#status_id_adminEdit").attr("class", "form-control btn-success");
-      $("#keterangan_absen").prop('disabled', false);
-      $("#insert").attr("class", "btn btn-success");
-      break;
-    case 6:
-      $("#status_id_adminEdit").attr("class", "form-control btn-default");
-      $("#keterangan_absen").prop('disabled', false);
-      $("#insert").attr("class", "btn btn-default");
-      break;
-  }
-}
-$("#status_id_adminEdit").change(function () {
-  var value = parseInt($(this).val());
-  gantiWarnaStatusAbsenSelect(value);
-});
-//End Fungsi Data Absen Admin 
-
-//Fungsi Form Submit Absensi
-//Proses Ambil Latitude & Longitude
-var y = document.getElementById("nonsupport");
-function getUserLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(getPosition, showError);
-  } else {
-    y.innerHTML = "Geolocation is not supported by this browser.";
-    alert("Browser ini tidak mensupport Geolocation.");
-  }
-}
-var latitude = document.getElementById("latitude");
-var longitude = document.getElementById("longitude");
-function getPosition(position) {
-  var lat = position.coords.latitude;
-  var lng = position.coords.longitude;
-  $('#latitude').val(lat);
-  $('#longitude').val(lng);
+  //END MASK MONEY
+  //rezki
   $.ajax({
-    url: 'pages/fetchdata/fetch_data-alamat.php',
-    type: 'post',
-    data: {
-      latitude: lat,
-      longitude: lng
-    },
-    success: function (data) {
-      $('#address_hadirdiluar').val(data);
-      $('#address_sakit').val(data);
-      $('#address_izin').val(data);
-      $('#address_cuti').val(data)
-    },
-    error: function (data) {
-      console.log(data);
+    type: "POST",
+    url: "ajax-fetchdata/nama-anggota",
+    success: function (response) {
+      $('#namaFormAbsensi').text(response);
     }
   });
-  $('#toggleIzinkanLokasi').attr("disabled", "disabled");
-  $('#submit_hadir_form').removeAttr("disabled");
-  $('#submit_hadirdiluar_form').removeAttr("disabled");
-  $('#submit_sakit_form').removeAttr("disabled");
-  $('#submit_izin_form').removeAttr("disabled");
-  $('#submit_cuti_form').removeAttr("disabled");
-}
-function showError(error) {
-  switch (error.code) {
-    case error.PERMISSION_DENIED:
-      $('#toggleIzinkanLokasi').prop('checked', false);;
-      alert("Anda menolak permintaan lokasi");
-      break;
-    case error.POSITION_UNAVAILABLE:
-      $('#toggleIzinkanLokasi').prop('checked', false);;
-      alert("Informasi Lokasi Tidak Tersedia");
-      break;
-    case error.TIMEOUT:
-      $('#toggleIzinkanLokasi').prop('checked', false);;
-      alert("Terjadi Request Timeout");
-      break;
-    case error.UNKNOWN_ERROR:
-      $('#toggleIzinkanLokasi').prop('checked', false);;
-      alert("An unknown error occurred.");
-      break;
-  }
-}
-
-//Fungsi loadChart Kakatu untuk Load semua chart di home.php
-function loadChartKakatu() {
-  // DONUT CHART PEMBAYARAN
-
-  function configChartJumlahOperasional(dataJumlahOperasional) {
-    var donut = new Morris.Donut({
-      element: 'sales-chart',
-      resize: true,
-      colors: ["#3c8dbc", "#f56954", "#00a65a", "#DAA520", "#ADEAEA", "#3D1D49"],
-      data: dataJumlahOperasional,
-      hideHover: 'auto'
-    });
-  }
-  function ajaxConfigChartJumlahOperasional() {
-    $.ajax({
-      type: "post",
-      url: "pages/fetchdata/fetch_chart-jumlah-operasional.php",
-      dataType: "json",
-      success: function (data) {
-        configChartJumlahOperasional(data);
-      }
-    });
-  }
-
-  // END DONUT CHART PEMBAYARAN
-
-  // PIE CHART ABSENSI HARI INI
-  function chartConfigAbsen(dataAbsen, truefalse) {
-    var canvas = document.getElementById("chart_absensi-hari-ini");
-    var ctx = canvas.getContext("2d");
-    var midX = canvas.width / 2;
-    var midY = canvas.height / 2;
-    var pieChart = new Chart(ctx)
-    //console.log(dataAbsen);
-    var PieData = dataAbsen;
-    var pieOptions = {
-      showTooltips: true,
-      //Boolean - Whether we should show a stroke on each segment
-      segmentShowStroke: true,
-      //String - The colour of each segment stroke
-      segmentStrokeColor: '#fff',
-      //Number - The width of each segment stroke
-      segmentStrokeWidth: 2,
-      //Number - The percentage of the chart that we cut out of the middle
-      percentageInnerCutout: 50, // This is 0 for Pie charts
-      //Number - Amount of animation steps
-      animationSteps: 100,
-      //String - Animation easing effect
-      animationEasing: 'easeOutBounce',
-      //Boolean - Whether we animate the rotation of the Doughnut
-      animateRotate: truefalse,
-      //Boolean - Whether we animate scaling the Doughnut from the centre
-      animateScale: truefalse,
-      //Boolean - whether to make the chart responsive to window resizing
-      responsive: true,
-      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-      maintainAspectRatio: true
-      //onAnimationProgress  : drawSegmentValues
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var myPieChart = pieChart.Pie(PieData, pieOptions);
-    var radius = myPieChart.outerRadius;
-    function drawSegmentValues() {
-      for (var i = 0; i < myPieChart.segments.length; i++) {
-        ctx.fillStyle = "white";
-        var textSize = canvas.width / 20;
-        ctx.font = textSize + "px Verdana";
-        // Get needed variables
-        var value = myPieChart.segments[i].value;
-        var startAngle = myPieChart.segments[i].startAngle;
-        var endAngle = myPieChart.segments[i].endAngle;
-        var middleAngle = startAngle + ((endAngle - startAngle) / 2);
-
-        // Compute text location
-        //Untuk Donat
-        //var posX = ((radius/2)+(radius/4)) * Math.cos(middleAngle) + midX;
-        //var posY = ((radius/2)+(radius/4)) * Math.sin(middleAngle) + midY;
-        var posX = (radius / 2) * Math.cos(middleAngle) + midX;
-        var posY = (radius / 2) * Math.sin(middleAngle) + midY;
-        //console.log(radius);
-        // Text offside by middle
-        var w_offset = ctx.measureText(value).width / 2;
-        var h_offset = textSize / 4;
-
-        ctx.fillText(value, posX - w_offset, posY + h_offset);
-      }
-    }
-  }
-  function ajaxchartConfigAbsen(truefalse2) {
-    $.ajax({
-      url: "ajax-fetchdata/chart-absensi-hari-ini",
-      method: "POST",
-      dataType: "json",
-      success: function (data) {
-        //Fungsi untuk buat chart Donut Chart.js
-        chartConfigAbsen(data, truefalse2);
-        // .hide() Semua legend pada Donut Chart.js sebelum dimunculkan lagi
-        $('#listHadir').hide();
-        $('#listHadirDiluar').hide();
-        $('#listSakit').hide();
-        $('#listIzin').hide();
-        $('#listCuti').hide();
-        $('#listAlpha').hide();
-        var status;
-        var index = 0;
-        //Proses penghitungan data absen di legend donut chart dan .show() legend
-        while (index <= (data.length - 1)) {
-          if (typeof (data[index]) !== "undefined") {
-            status = data[index].label;
-            switch (status) {
-              case "Hadir":
-                $('#listHadir').show();
-                $('#jumhadir').text(data[index].value);
-                break;
-              case "Hadir Diluar":
-                $('#listHadirDiluar').show();
-                $('#jumhadirdiluar').text(data[index].value);
-                break;
-              case "Sakit":
-                $('#listSakit').show();
-                $('#jumsakit').text(data[index].value);
-                break;
-              case "Izin":
-                $('#listIzin').show();
-                $('#jumizin').text(data[index].value);
-                break;
-              case "Cuti":
-                $('#listCuti').show();
-                $('#jumcuti').text(data[index].value);
-                break;
-              case "Alpha":
-                $('#listAlpha').show();
-                $('#jumalpha').text(data[index].value);
-                break;
-            }
-          }
-          index++;
-        }
-        //setTimeout(function(){ajaxchartConfigAbsen(false);}, 10000);
-      }
-    });
-  }
-
-  // PIE CHART ABSENSI HARI INI
-
-  //Line CHART Total Absensi
-  function chartConfigTotalAbsen(dataTotalAbsen) {
-    var bar = new Morris.Bar({
-      element: 'absen-chart',
-      resize: true,
-      axis: false,
-      parseTime: false,
-      data: dataTotalAbsen,
-      xkey: 'Bulan',
-      ykeys: ['hadir', 'sakit', 'izin', 'cuti', 'alpha'],
-      yLabelFormat: function (y) { return y.toString() + ' hari'; },
-      labels: ['Hadir', 'Sakit', 'Izin', 'Cuti', 'Alpha'],
-      barColors: ['#00c0ef', '#f56954', '#f39c12', '#00a65a', '#c0c0c0']
-    });
-  }
-  function ajaxchartConfigTotalAbsen() {
-    $.ajax({
-      url: "pages/fetchdata/fetch_chart-totalabsensi.php",
-      method: "POST",
-      dataType: "json",
-      success: function (data) {
-        //console.log(data);
-        chartConfigTotalAbsen(data);
-        //setTimeout(function(){ajaxchartConfigTotalAbsen();}, 30000);
-      }
-    });
-  }
-
-  // END Line CHART Total Absensi
-
-  // CHART TOTAL CREDITS
-  function configChartCredit(dataCredits) {
-    var line = new Morris.Line({
-      element: 'credit-chart',
-      resize: true,
-      parseTime: false,
-
-      data: dataCredits,
-      xkey: 'Bulan',
-      ykeys: ['Total'],
-
-      yLabelFormat: function (y) {
-        var formatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 0,
-        });
-        return formatter.format(y.toString());
-      },
-      labels: ['Total'],
-      lineColors: ['#3c8dbc'],
-      hoverCallback: function (index, options, content) {
-        var formatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 0,
-        });
-        var uang = options.data[index].Total;
-        var uang2 = formatter.format(uang.toString());
-        return '<div style="color:#3c8dbc;">' + uang2 + '</div>';
-      }
-
-    });
-  }
-  function ajaxconfigChartCredit() {
-    $.ajax({
-      type: "post",
-      url: "pages/fetchdata/fetch_chart-total-credit.php",
-      dataType: "json",
-      success: function (data) {
-        configChartCredit(data)
-      }
-    });
-  }
-  // END CHART TOTAL CREDITS
-
-  // CHART TOTAL OPERASIONAL
-  function chartTotalOperasinal(dataTotalOperasional) {
-    var line = new Morris.Line({
-      element: 'chart-pembayaran-operasional',
-      resize: true,
-      parseTime: false,
-      data: dataTotalOperasional,
-      lineColors: ['#00a65a'],
-      xkey: 'Bulan',
-      ykeys: ['Total'],
-      yLabelFormat: function (y) {
-        var formatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 0,
-        });
-        return formatter.format(y.toString());
-      },
-      labels: ['Total'],
-      hoverCallback: function (index, options, content) {
-        var formatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 0,
-        });
-        var uang = options.data[index].Total;
-        var uang2 = formatter.format(uang.toString());
-        return '<div style="color:#00a65a;">' + uang2 + '</div>';
-      }
-    });
-  }
-  function ajaxChartTotalOperasinal() {
-    $.ajax({
-      type: "POST",
-      url: "pages/fetchdata/fetch_chart-total-operasional.php",
-      dataType: "json",
-      success: function (data) {
-        //console.log(data);
-        chartTotalOperasinal(data);
-      }
-    });
-  }
-  // END CHART TOTAL OPERASIONAL
-
-  // Progress BAR ABSENSI HARI INI
-  function ajaxProgressAbsenHariIni() {
-    $.ajax({
-      url: "pages/fetchdata/fetch_progress-bar-hari-ini.php",
-      method: "POST",
-      dataType: "json",
-      success: function (data) {
-        var sesi = sessionKakatu();
-        //alert(sesi);
-        //$('#absensi_hari_ini').show();
-        if (data.persen != 0) {
-          $('#updateAbsensiHariIni').show();
-          ajaxGalleryAbsensiHariIni();
-          ajaxchartConfigAbsen(true);
-          var bulatkanPersen = Math.round(data.persen);
-          if (bulatkanPersen > 100) {
-            bulatkanPersen = 100;
-          }
-          $('#progres-absen-hari-ini').css({ 'width': +bulatkanPersen + '%' });
-          $('#progres-absen-hari-ini').attr("class", "progress-bar " + data.warna);
-          $('#progres-absen-hari-ini').attr("aria-valuenow", bulatkanPersen);
-          $('#progres-absen-hari-ini').text(bulatkanPersen + "%");
-        } else {
-          $('#updateAbsensiHariIni').hide();
-        }
-        //setTimeout(function(){ajaxProgressAbsenHariIni();}, 8000);
-      }
-    });
-  }
-  // END Progress BAR ABSENSI HARI INI
-  //Daftar Absensi Hari ini Gallery Absensi
-  function ajaxGalleryAbsensiHariIni() {
-    $.ajax({
-      url: "pages/fetchdata/fetch_data_daftar-absensi.php",
-      method: "post",
-      success: function (data) {
-        $('#galleryFotoAbsensi').html(data);
-        $('#myCarousel').carousel({
-          interval: 4000
-        })
-      }
-    });
-  }
-  //End Daftar Absensi hari ini
-  //Panggil Semua Fungsi
-  ajaxProgressAbsenHariIni();
-  ajaxchartConfigTotalAbsen();
-  ajaxconfigChartCredit();
-  ajaxConfigChartJumlahOperasional();
-  ajaxChartTotalOperasinal();
-  //Jika Terjadi Resize
-  //$(window).resize(function() {
-  //resize just happened, pixels changed
-  //ajaxchartConfigAbsen(false);
-  //});
-  //End Jika Terjadi Resize
-
-  //Jika Ada data permbaruan absensi, maka server push data update Dashboard ke client
-  //Socket IO
-  var socket = io.connect("https://localhost:3000");
-  socket.on("submit_baru", function (data) {
-    //console.log(data);
-    //ajaxGalleryAbsensiHariIni();
-    ajaxProgressAbsenHariIni();
-    //ajaxchartConfigAbsen(false);
-    ajaxchartConfigTotalAbsen();
-    ajaxconfigChartCredit();
-    ajaxConfigChartJumlahOperasional();
-    ajaxChartTotalOperasinal();
-  });
-  //End Socket IO
-}
-//EndFungsi loadChart Kakatu untuk Load semua chart di home.php
-function zoomLoadEvent() {
-  document.body.style.zoom = "90%";
-}
-function sessionKakatu() {
-  var session_kakatu;
   $.ajax({
-    //async:false,
-    type: "post",
-    url: "ajax-fetchdata/session-jabatan",
-    data: "data",
-    success: function (data) {
-      session_kakatu = data;
+    type: "POST",
+    url: "ajax-fetchdata/sisa-cuti",
+    success: function (response) {
+      $('#sisa-cuti-from-absensi').text(response);
     }
   });
-  return session_kakatu;
-}
-//End Non-Jquery FUnction
+  //Non-Jquery Function
 
-//Tabel Libur
 
-$(function () {
+
+  //Fungsi Form Submit Absensi
+  //Proses Ambil Latitude & Longitude
+
+
+  //Tabel Libur
+
+  //Ganti Warna Select Status Absen
+  function gantiWarnaStatusAbsenSelect(value) {
+    switch (value) {
+      case 1:
+        $("#status_id_adminEdit").attr("class", "form-control btn-info");
+        $("#keterangan_absen").prop('disabled', true);
+        $("#insert").attr("class", "btn btn-info");
+        $("#keterangan_absen").val("");
+        break;
+      case 2:
+        $("#status_id_adminEdit").attr("class", "form-control btn-primary");
+        $("#insert").attr("class", "btn btn-primary");
+        $("#keterangan_absen").prop('disabled', false);
+        break;
+      case 3:
+        $("#status_id_adminEdit").attr("class", "form-control btn-danger");
+        $("#keterangan_absen").prop('disabled', false);
+        $("#insert").attr("class", "btn btn-danger");
+        break;
+      case 4:
+        $("#status_id_adminEdit").attr("class", "form-control btn-warning");
+        $("#keterangan_absen").prop('disabled', false);
+        $("#insert").attr("class", "btn btn-warning");
+        break;
+      case 5:
+        $("#status_id_adminEdit").attr("class", "form-control btn-success");
+        $("#keterangan_absen").prop('disabled', false);
+        $("#insert").attr("class", "btn btn-success");
+        break;
+      case 6:
+        $("#status_id_adminEdit").attr("class", "form-control btn-default");
+        $("#keterangan_absen").prop('disabled', false);
+        $("#insert").attr("class", "btn btn-default");
+        break;
+    }
+  }
+  $("#status_id_adminEdit").change(function () {
+    var value = parseInt($(this).val());
+    gantiWarnaStatusAbsenSelect(value);
+  });
+  //End Fungsi Data Absen Admin 
+
   function fetchDataLibur() {
     $('#data_libur').DataTable().destroy();
     var dataTable = $('#data_libur').DataTable({
@@ -692,7 +696,7 @@ $(function () {
   $(document).on('click', '.edit_libur', function () {
     var id_libur = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_libur-json.php",
+      url: "pages/ajax/fetchdata/fetch_data_libur-json.php",
       method: "POST",
       data: { id_libur: id_libur },
       dataType: "json",
@@ -707,16 +711,29 @@ $(function () {
   });
   //Mode Calendar Tabel
   $(document).on('click', '#modeTabelLibur', function () {
-    $('#modeTabelLibur').attr("disabled","disabled");
+    $('#modeTabelLibur').attr("disabled", "disabled");
     $('#modeCalendarLibur').removeAttr("disabled");
-    $('#external-events').attr("class","collapse");
+    $('#external-events').attr("class", "collapse");
   });
   $(document).on('click', '#modeCalendarLibur', function () {
-    $('#modeCalendarLibur').attr("disabled","disabled");
+    $('#modeCalendarLibur').attr("disabled", "disabled");
     $('#modeTabelLibur').removeAttr("disabled");
-    $('#tabelLibur').attr("class","collapse");
+    $('#tabelLibur').attr("class", "collapse");
   });
   //End Mode Calendar Tabel
+
+    //Mode Detail Master Credits
+    $(document).on('click', '#modeDetailAkomodasi', function () {
+      $('#modeDetailAkomodasi').attr("disabled", "disabled");
+      $('#modeMasterAkomodasi').removeAttr("disabled");
+      $('#masterAkomodasi').attr("class", "collapse");
+    });
+    $(document).on('click', '#modeMasterAkomodasi', function () {
+      $('#modeMasterAkomodasi').attr("disabled", "disabled");
+      $('#modeDetailAkomodasi').removeAttr("disabled");
+      $('#detailAkomodasi').attr("class", "collapse");
+    });
+    //End Mode Calendar Tabel
 
   // Kalendar Tgl Libur
   /* initialize the calendar
@@ -739,7 +756,7 @@ $(function () {
       list: 'List'
     },
     //Random default events
-    events: "pages/fetchdata/fetch_data_calendar-libur.php",
+    events: "pages/ajax/fetchdata/fetch_data_calendar-libur.php",
     eventLimit: true,
     businessHours: true, // display business hours
     navLinks: true, // can click day/week names to navigate views
@@ -801,7 +818,7 @@ $(function () {
       var id_libur = calEvent.id;
       // change the border color just for fun
       $.ajax({
-        url: "pages/fetchdata/fetch_data_libur-json.php",
+        url: "pages/ajax/fetchdata/fetch_data_libur-json.php",
         method: "POST",
         data: { id_libur: id_libur },
         dataType: "json",
@@ -949,14 +966,13 @@ $(function () {
   })
   //END KONFIGURASI FULLCALENDAR
 
-});
-//End Tabel Libur
 
-//loadChartKakatu();
-//var session_kakatu;
-//End var session_kakatu
+  //End Tabel Libur
 
-$(function () {
+  //loadChartKakatu();
+  //var session_kakatu;
+  //End var session_kakatu
+
   $.validate({
     modules: 'file'
   });
@@ -964,7 +980,7 @@ $(function () {
   $(document).on('click', '.edit_data_profile', function () {
     var id_anggota = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_anggota-json.php",
+      url: "pages/ajax/fetchdata/fetch_data_anggota-json.php",
       method: "POST",
       data: { id_anggota: id_anggota },
       dataType: "json",
@@ -992,15 +1008,15 @@ $(function () {
   });
   //End AJax View Profile
   //datalist anggota JS
-  $(document).on('click', '.view_data', function () {
+  $(document).on('click', '.view_data_anggota', function () {
     var id_anggota = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_anggota.php",
+      url: "pages/ajax/fetchdata/fetch_data_anggota.php",
       method: "post",
       data: { id_anggota: id_anggota },
       success: function (data) {
         $('#employee_detail').html(data);
-        $('#dataModal').modal("show");
+        $('#dataModalAnggota').modal("show");
       }
     });
   });
@@ -1008,12 +1024,16 @@ $(function () {
   $(document).on('click', '.delete_data_anggota', function () {
     var id_anggota = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_anggota-fordelete.php",
+      url: "pages/ajax/fetchdata/fetch_data_anggota-fordelete.php",
       method: "post",
       data: { id_anggota: id_anggota },
       success: function (data) {
+        console.log(data);
         $('#employee').html(data);
         $('#dataModal_hapus').modal("show");
+      },
+      error: function(data){
+        console.log(data);
       }
     });
   });
@@ -1024,7 +1044,7 @@ $(function () {
     var id_anggota = $(this).attr("id");
 
     $.ajax({
-      url: "pages/fetchdata/fetch_data_cuti-json.php",
+      url: "pages/ajax/fetchdata/fetch_data_cuti-json.php",
       method: "POST",
       data: { id_anggota: id_anggota },
       dataType: "json",
@@ -1039,7 +1059,7 @@ $(function () {
   $(document).on('click', '.reset_quotaUsed', function () {
     var id_anggota = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_cuti-forreset.php",
+      url: "pages/ajax/fetchdata/fetch_data_cuti-forreset.php",
       method: "post",
       data: { id_anggota: id_anggota },
       success: function (data) {
@@ -1050,7 +1070,7 @@ $(function () {
   });
   $(document).on('click', '.reset_all_cuti_used', function () {
     $.ajax({
-      url: "pages/fetchdata/fetch_data_cuti-forresetallcuti.php",
+      url: "pages/ajax/fetchdata/fetch_data_cuti-forresetallcuti.php",
       method: "post",
       data: {},
       success: function (data) {
@@ -1065,7 +1085,7 @@ $(function () {
   $(document).on('click', '.delete_data_jabatan', function () {
     var id_jabatan = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_jabatan.php",
+      url: "pages/ajax/fetchdata/fetch_data_jabatan.php",
       method: "post",
       data: { id_jabatan: id_jabatan },
       success: function (data) {
@@ -1077,7 +1097,7 @@ $(function () {
   $(document).on('click', '.edit_jabatan', function () {
     var id_jabatan = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_jabatan-json.php",
+      url: "pages/ajax/fetchdata/fetch_data_jabatan-json.php",
       method: "POST",
       data: { id_jabatan: id_jabatan },
       dataType: "json",
@@ -1096,7 +1116,7 @@ $(function () {
   $(document).on('click', '.delete_jenis_pembayaran', function () {
     var id_jenis = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_jenis-pembayaran.php",
+      url: "pages/ajax/fetchdata/fetch_data_jenis-pembayaran.php",
       method: "post",
       data: { id_jenis: id_jenis },
       success: function (data) {
@@ -1108,7 +1128,7 @@ $(function () {
   $(document).on('click', '.edit_jenis_pembayaran', function () {
     var id_jenis = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_jenispembayaran-json.php",
+      url: "pages/ajax/fetchdata/fetch_data_jenispembayaran-json.php",
       method: "POST",
       data: { id_jenis: id_jenis },
       dataType: "json",
@@ -1127,7 +1147,7 @@ $(function () {
     var id_pembayaran = $(this).attr("id");
 
     $.ajax({
-      url: "pages/fetchdata/fetch_data_pembayaran.php",
+      url: "pages/ajax/fetchdata/fetch_data_pembayaran.php",
       method: "post",
       data: { id_pembayaran: id_pembayaran },
       success: function (data) {
@@ -1144,7 +1164,7 @@ $(function () {
   $(document).on('click', '.detail_kehadiran', function () {
     var id = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_absen.php",
+      url: "ajax-fetchdata/detail-absen",
       method: "post",
       data: { id: id },
       success: function (data) {
@@ -1193,7 +1213,7 @@ $(function () {
   $(document).on('click', '.edit_absen', function () {
     var id_absen = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_absen-json.php",
+      url: "pages/ajax/fetchdata/fetch_data_absen-json.php",
       method: "POST",
       data: { id: id_absen },
       dataType: "json",
@@ -1212,7 +1232,7 @@ $(function () {
         $.ajax({
           async: false,
           type: "POST",
-          url: "pages/fetchdata/fetch_data-hitungcutiused.php",
+          url: "pages/ajax/fetchdata/fetch_data-hitungcutiused.php",
           data: { awal: awal, akhir: akhir },
           dataType: "json",
           success: function (data) {
@@ -1228,7 +1248,7 @@ $(function () {
         })
         /*
         $('#tglRentangAbsenAdmin').on('showCalendar.daterangepicker', function(ev, picker) {
-
+  
           //change the selected date range of that picker
           $('#tglRentangAbsenAdmin').data('daterangepicker').setStartDate(tglAwal);
           $('#tglRentangAbsenAdmin').data('daterangepicker').setEndDate(tglAkhir);
@@ -1391,6 +1411,7 @@ $(function () {
     var lng = $('#longitude').val();
     var url = "https://maps.google.com/?q=" + lat + "," + lng;
     var ket = $('#keterangan_hadirdiluar').val();
+    console.log(ket);
     var img = $("#image_hadirdiluar").get(0).files[0];
     ajaxFormHadirDiluar(lat, lng, stat, ket, url, img);
   });
@@ -1614,7 +1635,7 @@ $(function () {
     //console.log(tglawal);
     $.ajax({
       type: "POST",
-      url: "pages/fetchdata/fetch_data_max-tanggal-from-sisa-cuti.php",
+      url: "pages/ajax/fetchdata/fetch_data_max-tanggal-from-sisa-cuti.php",
       dataType: "json",
       success: function (data) {
         //console.log(data.tglawal+" - "+data.tglakhir);
@@ -1745,32 +1766,32 @@ $(function () {
       }
     });
   }
-});
-//End Fungsi Form Submit Absensi
-//Datalist Credits Uang Akomodasi JS ajax function
-/*
-  $(document).on('click', '.delete_data', function(){ 
-    var id = $(this).attr("id");
-      $.ajax({
-            url:"pages/fetchdata/fetch_data_credit-fordelete.php",  
-            method:"post",  
-            data:{id:id},  
-            success:function(data){
-            $('#credit_detail_hapus').html(data);           
-            $('#dataModal').modal("show");  
-        }
-    });
-  });  
-*/
-$(function () {
+
+  //End Fungsi Form Submit Absensi
+  //Datalist Credits Uang Akomodasi JS ajax function
+  /*
+    $(document).on('click', '.delete_data', function(){ 
+      var id = $(this).attr("id");
+        $.ajax({
+              url:"pages/ajax/fetchdata/fetch_data_credit-fordelete.php",  
+              method:"post",  
+              data:{id:id},  
+              success:function(data){
+              $('#credit_detail_hapus').html(data);           
+              $('#dataModal').modal("show");  
+          }
+      });
+    });  
+  */
   $(document).on('click', '.edit_topup_credit', function () {
-    var id_anggota = $(this).attr("id");
+    var id_credit = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_credit-json.php",
+      url: "pages/ajax/fetchdata/fetch_data_credit-json.php",
       method: "POST",
-      data: { id_anggota: id_anggota },
+      data: { id_credit: id_credit},
       dataType: "json",
       success: function (data) {
+        $('#id_credit').val(data.id);
         $('#id_anggota_credit').val(data.id_anggota);
         $('#topup_credit').val(data.topup_credit);
         $('#insert').val("Update");
@@ -1784,7 +1805,7 @@ $(function () {
   $(document).on('click', '.paid_total_credit', function () {
     var id = $(this).attr("id");
     $.ajax({
-      url: "pages/fetchdata/fetch_data_credit-forreset.php",
+      url: "pages/ajax/fetchdata/fetch_data_credit-forreset.php",
       method: "post",
       data: { id: id },
       success: function (data) {
@@ -1797,7 +1818,7 @@ $(function () {
 
   $(document).on('click', '.paid_all_total_credit', function () {
     $.ajax({
-      url: "pages/fetchdata/fetch_data_credit-forresetallcredit.php",
+      url: "pages/ajax/fetchdata/fetch_data_credit-forresetallcredit.php",
       method: "post",
       data: {},
       success: function (data) {
@@ -1806,72 +1827,70 @@ $(function () {
       }
     });
   });
-});
-//End Datalist Credits Uang Akomodasi JS ajax function
 
-//MODAL GAMBAR PREVIEW
-$(document).on('click', '#close-preview', function () {
-  $('.image-preview').popover('hide');
-  // Hover befor close the preview
-  $('.image-preview').hover(
-    function () {
-      $('.image-preview').popover('show');
-    },
-    function () {
-      $('.image-preview').popover('hide');
-    }
-  );
-});
+  //End Datalist Credits Uang Akomodasi JS ajax function
 
-// Create the close button
-var closebtn = $('<button/>', {
-  type: "button",
-  text: 'x',
-  id: 'close-preview',
-  style: 'font-size: initial;',
-});
-closebtn.attr("class", "close pull-right");
-// Set the popover default content
-$('.image-preview').popover({
-  trigger: 'manual',
-  html: true,
-  title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
-  content: "There's no image",
-  placement: 'bottom'
-});
-// Clear event
-$('.image-preview-clear').click(function () {
-  $('.image-preview').attr("data-content", "").popover('hide');
-  $('.image-preview-filename').val("");
-  $('.image-preview-clear').hide();
-  $('.image-preview-input input:file').val("");
-  $(".image-preview-input-title").text("Browse");
-});
-// Create the preview image
-$(".image-preview-input input:file").change(function () {
-  var img = $('<img/>', {
-    id: 'dynamic',
-    width: 250,
-    height: 200
+  //MODAL GAMBAR PREVIEW
+  $(document).on('click', '#close-preview', function () {
+    $('.image-preview').popover('hide');
+    // Hover befor close the preview
+    $('.image-preview').hover(
+      function () {
+        $('.image-preview').popover('show');
+      },
+      function () {
+        $('.image-preview').popover('hide');
+      }
+    );
   });
-  var file = this.files[0];
-  var reader = new FileReader();
-  // Set preview image into the popover data-content
-  reader.onload = function (e) {
-    $(".image-preview-input-title").text("Change");
-    $(".image-preview-clear").show();
-    $(".image-preview-filename").val(file.name);
-    img.attr('src', e.target.result);
-    $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
-  }
-  reader.readAsDataURL(file);
-});
-//END MODAL GAMBAR PREVIEW
 
-//Konfigurasi Tabel, DateRangePicker, Calendar
+  // Create the close button
+  var closebtn = $('<button/>', {
+    type: "button",
+    text: 'x',
+    id: 'close-preview',
+    style: 'font-size: initial;',
+  });
+  closebtn.attr("class", "close pull-right");
+  // Set the popover default content
+  $('.image-preview').popover({
+    trigger: 'manual',
+    html: true,
+    title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
+    content: "There's no image",
+    placement: 'bottom'
+  });
+  // Clear event
+  $('.image-preview-clear').click(function () {
+    $('.image-preview').attr("data-content", "").popover('hide');
+    $('.image-preview-filename').val("");
+    $('.image-preview-clear').hide();
+    $('.image-preview-input input:file').val("");
+    $(".image-preview-input-title").text("Browse");
+  });
+  // Create the preview image
+  $(".image-preview-input input:file").change(function () {
+    var img = $('<img/>', {
+      id: 'dynamic',
+      width: 250,
+      height: 200
+    });
+    var file = this.files[0];
+    var reader = new FileReader();
+    // Set preview image into the popover data-content
+    reader.onload = function (e) {
+      $(".image-preview-input-title").text("Change");
+      $(".image-preview-clear").show();
+      $(".image-preview-filename").val(file.name);
+      img.attr('src', e.target.result);
+      $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+    }
+    reader.readAsDataURL(file);
+  });
+  //END MODAL GAMBAR PREVIEW
+  //Konfigurasi Tabel, DateRangePicker, Calendar
 
 
-$(function () {
   //KONFIGURASI FULLCALENDAR
   function init_events(ele) {
     ele.each(function () {
@@ -1918,7 +1937,7 @@ $(function () {
       list: 'List'
     },
     //Random default events
-    events: "pages/fetchdata/fetch_data_calendar-absen.php",
+    events: "pages/ajax/fetchdata/fetch_data_calendar-absen.php",
     eventLimit: true,
     businessHours: true, // display business hours
     navLinks: true, // can click day/week names to navigate views
@@ -1993,10 +2012,9 @@ $(function () {
     //Remove event from text input
     $('#new-event').val('')
   })
-});
-//END KONFIGURASI FULLCALENDAR
 
-$(function () {
+  //END KONFIGURASI FULLCALENDAR
+
   //KONFIGURASI FULLCALENDAR
   function init_events(ele) {
     ele.each(function () {
@@ -2043,43 +2061,18 @@ $(function () {
       list: 'List'
     },
     //Random default events
-    events: "pages/fetchdata/fetch_data_calendar-absen-anggota.php",
+    events: "pages/ajax/fetchdata/fetch_data_calendar-absen-anggota.php",
     eventLimit: true,
     businessHours: true, // display business hours
     navLinks: true, // can click day/week names to navigate views
     editable: true,
-    droppable: true, // this allows things to be dropped onto the calendar !!!
-    drop: function (date, allDay) { // this function is called when something is dropped
-
-      // retrieve the dropped element's stored Event Object
-      var originalEventObject = $(this).data('eventObject')
-
-      // we need to copy it, so that multiple events don't have a reference to the same object
-      var copiedEventObject = $.extend({}, originalEventObject)
-
-      // assign it the date that was reported
-      copiedEventObject.start = date
-      copiedEventObject.allDay = allDay
-      copiedEventObject.backgroundColor = $(this).css('background-color')
-      copiedEventObject.borderColor = $(this).css('border-color')
-
-      // render the event on the calendar
-      // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-      $('#calendarAbsenAnggota').fullCalendar('renderEvent', copiedEventObject, true)
-
-      // is the "remove after drop" checkbox checked?
-      if ($('#drop-remove').is(':checked')) {
-        // if so, remove the element from the "Draggable Events" list
-        $(this).remove()
-      }
-
-    },
+    droppable: false, // this allows things to be dropped onto the calendar !!!
     eventClick: function (calEvent, jsEvent, view) {
-      var id=calEvent.id;
-      console.log("id: "+id);
+      var id = calEvent.id;
+      console.log("id: " + id);
       $.ajax({
         //async: false,
-        url: "pages/fetchdata/fetch_data_absen.php",
+        url: "ajax-fetchdata/detail-absen",
         method: "post",
         data: { id: id },
         success: function (data) {
@@ -2122,12 +2115,12 @@ $(function () {
               $('#imagemodal').modal('show');
             });
           })
-         
+
         },
-      error: function(data){
-        console.log("error: ");
-        console.log(data);
-      }
+        error: function (data) {
+          console.log("error: ");
+          console.log(data);
+        }
       });
 
     }
@@ -2168,29 +2161,28 @@ $(function () {
     //Remove event from text input
     $('#new-event').val('')
   })
-});
-//END KONFIGURASI FULLCALENDAR ANGGOTA
 
-// End Event Ajax JS Data Libur
+  //END KONFIGURASI FULLCALENDAR ANGGOTA
 
-//KONFIGURASI TABEL
-/*
-$('#data_libur').DataTable({
-  'paging'      : true,
-  'lengthChange': false,
-  'searching'   : true,
-  'ordering'    : true,
-  'info'        : true,
-  'autoWidth'   : false,
-  "order": [[ 2, "desc" ]],
-  dom: 'Bfrtip',
-  buttons: [
-    { extend: 'Add', editor: editor },
-    { extend: 'Edit', editor: editor },
-    { extend: 'Delete', editor: editor }
-]
-});*/
-$(function () {
+  // End Event Ajax JS Data Libur
+
+  //KONFIGURASI TABEL
+  /*
+  $('#data_libur').DataTable({
+    'paging'      : true,
+    'lengthChange': false,
+    'searching'   : true,
+    'ordering'    : true,
+    'info'        : true,
+    'autoWidth'   : false,
+    "order": [[ 2, "desc" ]],
+    dom: 'Bfrtip',
+    buttons: [
+      { extend: 'Add', editor: editor },
+      { extend: 'Edit', editor: editor },
+      { extend: 'Delete', editor: editor }
+  ]
+  });*/
   $('#data-jabatan').DataTable({
     'paging': true,
     'lengthChange': false,
@@ -2227,7 +2219,7 @@ $(function () {
     'autoWidth': false,
     "order": [[0, "desc"]],
   })
-  $('#data_credits').DataTable({
+  $('#detail_credits').DataTable({
     'paging': true,
     'lengthChange': false,
     'searching': true,
@@ -2244,6 +2236,16 @@ $(function () {
       { extend: 'print', footer: true }
     ]
   })
+  $('#data_credits').DataTable({
+    'paging': true,
+    'lengthChange': false,
+    'searching': true,
+    'ordering': true,
+    'info': true,
+    'autoWidth': false,
+    "order": [[1, "desc"]],
+  })
+  /*
   $('#data_absen_admin').DataTable({
     'paging': true,
     'lengthChange': false,
@@ -2261,6 +2263,41 @@ $(function () {
       { extend: 'print', footer: true }
     ]
   })
+  */
+  function fetchDataAbsen(tgl1, tgl2) {
+    console.log(tgl1);
+    console.log(tgl2);
+    $('#data_absen_admin').DataTable().destroy();
+    $('#data_absen_admin').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "order": [],
+      'paging': true,
+      'lengthChange': true,
+      'searching': true,
+      'ordering': true,
+      'info': false,
+      'autoWidth': false,
+      //Menghilangkan sorting pada kolom 'action'
+      "columnDefs": [{
+        "targets": 5,
+        "orderable": false
+      }],
+      "ajax": {
+        url: "ajax-fetchdata/data-absen",
+        type: "POST",
+        data: (tgl1!=='')? { tgl1: tgl1, tgl2: tgl2 }:{ tgl1: '', tgl2: '' },
+        succes: function (data) {
+          console.log('Success: ' + data);
+        },
+        error: function (data) {
+          console.log('Error:\n');
+          console.log(data);
+        }
+      }
+    });
+  }
+  fetchDataAbsen('', '');
   $('#data_absen').DataTable({
     'paging': true,
     'lengthChange': false,
@@ -2320,12 +2357,23 @@ $(function () {
     ],
     "order": [[0, "asc"]]
   })
-});
-//END KONFIGURASI TABEL
 
-//DATE PICKER
-$(function () {
+  //END KONFIGURASI TABEL
 
+  //DATE PICKER
+  $('#tglRentangFilterAbsen').daterangepicker();
+  $('#tglRentangFilterAbsen').val('');
+  $('#tglRentangFilterAbsen').on('apply.daterangepicker', function (ev, picker) {
+    var start = picker.startDate.format('YYYY-MM-DD');
+    var end = picker.endDate.format('YYYY-MM-DD');
+    //console.log(start);
+    //console.log(end);
+    fetchDataAbsen(start, end);
+    $('#tglRentangFilterAbsen').val('');
+    var start1 = picker.startDate.format('MM/DD/YYYY');
+    var end2 = picker.endDate.format('MM/DD/YYYY');
+    $('#filterLabelAbsen').text(start1+' - '+end2);
+  })
   $('#tglRentangLibur').daterangepicker({ drops: 'up' })
   $('#tglRentangLibur').on('apply.daterangepicker', function (ev, picker) {
     var start = picker.startDate.format('MM/DD/YYYY');
@@ -2420,50 +2468,75 @@ $(function () {
   })
   //END DATE PICKER
   //End Konfigurasi Tabel, DateRangePicker, Calendar
-});
- //Kumpulan fungsi
+
+  //Kumpulan fungsi
 
 
-/*
-function convertPDF() {
-  var pdf = new jsPDF('p', 'pt', 'letter');
-  // source can be HTML-formatted string, or a reference
-  // to an actual DOM element from which the text will be scraped.
-  source = $('#generatePDF')[0];
-
-  // we support special element handlers. Register them with jQuery-style 
-  // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
-  // There is no support for any other type of selectors 
-  // (class, of compound) at this time.
-  specialElementHandlers = {
-      // element with id of "bypass" - jQuery style selector
-      '#bypassme': function (element, renderer) {
-          // true = "handled elsewhere, bypass text extraction"
-          return true
-      }
-  };
-  margins = {
-      top: 80,
-      bottom: 60,
-      left: 40,
-      width: 900
-  };
-  // all coords and widths are in jsPDF instance's declared units
-  // 'inches' in this case
-  pdf.fromHTML(
-  source, // HTML string or DOM elem ref.
-  margins.left, // x coord
-  margins.top, { // y coord
-      'width': margins.width, // max width of content on PDF
-      'elementHandlers': specialElementHandlers
-  },
-
-  function (dispose) {
-      // dispose: object with X, Y of the last line add to the PDF 
-      //          this allow the insertion of new lines after html
-      pdf.save('Test.pdf');
-  }, margins);
-}
-*/
+  /*
+  function convertPDF() {
+    var pdf = new jsPDF('p', 'pt', 'letter');
+    // source can be HTML-formatted string, or a reference
+    // to an actual DOM element from which the text will be scraped.
+    source = $('#generatePDF')[0];
+  
+    // we support special element handlers. Register them with jQuery-style 
+    // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+    // There is no support for any other type of selectors 
+    // (class, of compound) at this time.
+    specialElementHandlers = {
+        // element with id of "bypass" - jQuery style selector
+        '#bypassme': function (element, renderer) {
+            // true = "handled elsewhere, bypass text extraction"
+            return true
+        }
+    };
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 900
+    };
+    // all coords and widths are in jsPDF instance's declared units
+    // 'inches' in this case
+    pdf.fromHTML(
+    source, // HTML string or DOM elem ref.
+    margins.left, // x coord
+    margins.top, { // y coord
+        'width': margins.width, // max width of content on PDF
+        'elementHandlers': specialElementHandlers
+    },
+  
+    function (dispose) {
+        // dispose: object with X, Y of the last line add to the PDF 
+        //          this allow the insertion of new lines after html
+        pdf.save('Test.pdf');
+    }, margins);
+  }
+  */
   //Chart onClick Remove
   //Endchart onClick Remove
+
+  //Event Click Button Filter Absen
+  $(document).on('click', '#buttom_filter_status_hadir', function () {
+    $('input[type="search"]').val('HADIR').keyup()
+  });
+  $(document).on('click', '#buttom_filter_status_hadir_diluar', function () {
+    $('input[type="search"]').val('HADIR DILUAR').keyup()
+  });
+  $(document).on('click', '#buttom_filter_status_sakit', function () {
+    $('input[type="search"]').val('SAKIT').keyup()
+  });
+  $(document).on('click', '#buttom_filter_status_izin', function () {
+    $('input[type="search"]').val('IZIN').keyup()
+  });
+  $(document).on('click', '#buttom_filter_status_cuti', function () {
+    $('input[type="search"]').val('CUTI').keyup()
+  });
+  $(document).on('click', '#buttom_filter_status_alpha', function () {
+    $('input[type="search"]').val('ALPHA').keyup()
+  });
+  $(document).on('click', '#buttom_filter_status_view_all', function () {
+    $('input[type="search"]').val('').keyup()
+  });
+  //End Event Click Button Filter Absen
+});

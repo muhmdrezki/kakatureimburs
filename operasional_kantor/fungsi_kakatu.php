@@ -84,8 +84,8 @@
 			updateCutiUsed($id,$stat,$tgl1,$tgl2,$errmsg);
 			//Emit Data dengan Socket IO
 			$now1 = date("Y-m-d");
-			if($tgl1>$now1){
-				cronRencanaAbsen($id,$stat,$ket,$lat,$lng,$tgl1,$tgl2,$errmsg);
+			if($tgl2>$now1){
+				cronRencanaAbsen($id,$stat,$ket,$lat,$lng,$tgl1,$tgl2,$last_inserted_id,$errmsg);
 			}
 			emitData();
 		}
@@ -98,10 +98,12 @@
 				$qry= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +1) WHERE id_anggota='$id'";
 				inUpDel($qry,$errmsg);
 				$sql3 = "SELECT cuti_used,cuti_qty FROM tb_cuti_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
-				$result3=mysqli_query($conn, $sql3);
-				$values3=mysqli_fetch_assoc($result3);
+				$conn = createConn();
+				$result3=$conn->query($sql3);
+				$values3=$result3->fetch_assoc($result3);
 				$jumlah3= $values3['cuti_qty'] - $values3['cuti_used'];
 				$_SESSION['sisacuti']=$jumlah3;
+				$conn->close();
 			}
 		}
 
@@ -162,7 +164,7 @@
 		//Fungsi tambah credit atau uang akomodasi
 	function topupCredit($last_id,$stat,&$errmsg){
 			if($stat==1 || $stat==2 || $stat==5){
-				$qry= "UPDATE tb_detail_absen a JOIN tb_credits_anggota b SET a.credit_id=b.id,a.credit_in=b.topup_credit,a.credit_stat='unpaid' WHERE a.id='$last_id'";
+				$qry= "UPDATE tb_detail_absen a JOIN tb_credits_anggota b ON a.id_anggota=b.id_anggota SET a.credit_id=b.id,a.credit_in=b.topup_credit,a.credit_stat='unpaid' WHERE a.id='$last_id'";
 				inUpDel($qry,$errmsg);
 			}
 		}
@@ -325,6 +327,7 @@
 	//End List Fungsi Submit Absensi
 	//CronJob Fungsi
 	function autoAbsen($lat,$lng,$conn,$tgl_skrg){
+		$errmsg=null;
 		$SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
 		//echo $SELECTLIBUR2;
 		$reslibur2=mysqli_query($conn, $SELECTLIBUR2);
@@ -352,7 +355,7 @@
 						printf("Error: %s\n", mysqli_error($conn));
 						exit();
 					}
-					topupCredit($row['id_anggota'],1);
+					topupCredit($row['id_anggota'],1,$errmsg);
 				}
 			}
 		} else {
@@ -372,12 +375,13 @@
 					printf("Error: %s\n", mysqli_error($conn));
 					exit();
 				}
-				topupCredit($rowRencanaAbsen['id_anggota'],$rowRencanaAbsen['status_id']);
+				topupCredit($rowRencanaAbsen['id_anggota'],$rowRencanaAbsen['status_id'],$errmsg);
 			}  
 		}
 		
 	}
 	function autoAbsenAlpha($conn,$tgl_skrg){
+		$errmsg=null;
 		$SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
 		$reslibur2=mysqli_query($conn, $SELECTLIBUR2);
 		if (!$reslibur2) {
@@ -398,7 +402,7 @@
 						printf("Error: %s\n", mysqli_error($conn));
 						exit();
 					}
-					topupCredit($row['id_anggota'],6);
+					//topupCredit($row['id_anggota'],6,$errmsg);
 				}
 			}	
 		}
@@ -424,23 +428,18 @@
 	//End Cronjob Fungsi
 
 	//Fungsi Cron Rencana Absen
-	function cronRencanaAbsen($id,$stat,$ket,$lat,$lng,$tawal,$takhir,&$errmsg){
-		$qry="SELECT foto_lokasi FROM tb_detail_absen WHERE id_anggota='$id' AND tanggal=CURRENT_DATE() ORDER BY jam_masuk DESC LIMIT 1";
-		$conn=createConn();  
-		if (!$conn->query($qry)) {
+	function cronRencanaAbsen($id,$stat,$ket,$lat,$lng,$tawal,$takhir,$last_id,&$errmsg){
+		$qry="SELECT foto_lokasi FROM tb_detail_absen WHERE id='$last_id'";
+		$conn=createConn();
+		$res=$conn->query($qry); 
+		if (!$res) {
 			$errmsg="Error: " . $qry . "<br>" . $conn->error;
 			exit();
 		}
-		/*
-		$resNamaFoto=mysqli_query($conn,$ambilNamaFoto);
-		if (!$resNamaFoto) {
-			printf("Error: %s\n", mysqli_error($conn));
-			exit();
-		}
-		*/
-		$row=$conn->query($qry)->fetch_assoc();
+		//$ambilNamaFoto=$res->fetch_assoc();
+		$rowNamaFoto=$res->fetch_assoc();
 		//$conn->close();
-		$insertRencanaAbsen = "INSERT INTO tb_cronjob_rencana_absen (id_anggota,status_id,keterangan,lat,lng,tglawal,tglakhir,foto_lokasi) VALUES ('$id','$stat','$ket','$lat','$lng',STR_TO_DATE('$tawal', '%m/%d/%Y'),STR_TO_DATE('$takhir', '%m/%d/%Y'),'$rowNamaFoto[foto_lokasi]')";
+		$insertRencanaAbsen = "INSERT INTO tb_cronjob_rencana_absen (id_anggota,status_id,keterangan,lat,lng,tglawal,tglakhir,foto_lokasi) VALUES ('$id','$stat','$ket','$lat','$lng','$tawal','$takhir','$rowNamaFoto[foto_lokasi]')";
 		//$resRencanaAbsen=mysqli_query($conn,$insertRencanaAbsen);
 		if (!$conn->query($insertRencanaAbsen)) {
 			$errmsg="Error: " . $insertRencanaAbsen . "<br>" . $conn->error;
@@ -512,8 +511,7 @@
 	}
 	//DataList Credit
 	function fetchCreditsJSON($id){
-		$id=antiInjection($_POST["id_anggota"]);
-		$qry = "SELECT id_anggota,topup_credit FROM tb_credits_anggota WHERE id_anggota = '$id'";
+		$qry = "SELECT id,id_anggota,topup_credit FROM tb_credits_anggota WHERE id = '$id'";
 		$conn=createConn();  
 		if (!$conn->query($qry)) {
 			echo "Error: " . $qry . "<br>" . $conn->error;
@@ -581,15 +579,16 @@
 		$_SESSION["id_anggota_credit"]= $id; 
 		return $output;   
 	}
-	function prosesEditCredit($id,$nominal){
+	function prosesEditCredit($id,$nominal,&$errmsg){
 		$id = antiInjection($id);
 		$nominal= antiInjection($nominal);
-		$qry = "UPDATE tb_credits_anggota SET topup_credit='$nominal' WHERE id_anggota='$id'";
-		inUpDel($qry);
+		$qry = "UPDATE tb_credits_anggota SET topup_credit='$nominal' WHERE id='$id'";
+		inUpDel($qry,$errmsg);
 	}
-	function prosesPaidCredit($id){
+	function prosesPaidCredit($id,$errmsg){
+		$errmsg=null;
 		$qry = "UPDATE tb_detail_absen SET credit_stat='paid' WHERE id_anggota='$id' AND credit_stat='unpaid' AND MONTH(tanggal)=MONTH(CURRENT_DATE()) AND YEAR(tanggal)=YEAR(CURRENT_DATE())";
-		inUpDel($qry);
+		inUpDel($qry,$errmsg);
 	}
 	//DataList Credit
 	//Enkripsi dan Dekripsi Data (Encode atau Decode) dengan open SSL encrypt decrypt metode AES-256-CBC

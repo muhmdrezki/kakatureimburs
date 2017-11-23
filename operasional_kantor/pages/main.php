@@ -3,33 +3,39 @@ if (!defined('DIDALAM_INDEX_PHP')) {
     //echo "Dilarang broh!";
     header("Location: tampil/home");
     exit();
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-fetchdata") && ($_GET["sidebar-menu"]=="chart-absensi-hari-ini")) {
-    include_once "pages/fetchdata/fetch_chart-absenhariini.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-fetchdata") && ($_GET["sidebar-menu"]=="session-jabatan")) {
-    include_once "pages/fetchdata/fetch_session_admin.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-fetchdata") && ($_GET["sidebar-menu"]=="data-libur")) {
-    include_once "pages/fetchdata/fetch_data_libur.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-fetchdata") && ($_GET["sidebar-menu"]=="detail-delete-libur")) {
-    include_once "pages/fetchdata/fetch_data_libur-fordelete.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-fetchdata") && ($_GET["sidebar-menu"]=="nama-anggota")) {
-    include_once "pages/fetchdata/fetch-nama-anggota.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-fetchdata") && ($_GET["sidebar-menu"]=="sisa-cuti")) {
-    include_once "pages/fetchdata/fetch-sisa-cuti.php";
-} //Ajax Proses
-elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-proses") && ($_GET["sidebar-menu"]=="submit-absensi")) {
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "chart-absensi-hari-ini")) {
+    include_once "pages/ajax/fetchdata/fetch_chart-absenhariini.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "session-jabatan")) {
+    include_once "pages/ajax/fetchdata/fetch_session_admin.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "data-libur")) {
+    include_once "pages/ajax/fetchdata/fetch_data_libur.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "detail-delete-libur")) {
+    include_once "pages/ajax/fetchdata/fetch_data_libur-fordelete.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "nama-anggota")) {
+    include_once "pages/ajax/fetchdata/fetch-nama-anggota.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "sisa-cuti")) {
+    include_once "pages/ajax/fetchdata/fetch-sisa-cuti.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "data-absen")) {
+    include "pages/ajax/fetchdata/fetch_data_absen.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "detail-absen")) {
+    include "pages/ajax/fetchdata/fetch_detail_absen.php";
+}
+//Ajax Proses
+elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-proses") && ($_GET["sidebar-menu"] == "submit-absensi")) {
     include_once "pages/ajax/proses/submit-absensi.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-proses") && ($_GET["sidebar-menu"]=="tambah-libur")) {
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-proses") && ($_GET["sidebar-menu"] == "tambah-libur")) {
     include_once "pages/ajax/proses/tambah-libur.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-proses") && ($_GET["sidebar-menu"]=="edit-libur")) {
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-proses") && ($_GET["sidebar-menu"] == "edit-libur")) {
     include_once "pages/ajax/proses/edit-libur.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="ajax-proses") && ($_GET["sidebar-menu"]=="delete-libur")) {
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-proses") && ($_GET["sidebar-menu"] == "delete-libur")) {
     include_once "pages/ajax/proses/delete-libur.php";
-} //End Ajax Proses
-  
-   //Proses Submit
+}
+//End Ajax Proses
+
+//Proses Submit
 //End Proses Submit
 else {
-?>
+    ?>
 
     <!--
 This is a starter template page. Use this page to start your new project from
@@ -93,7 +99,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             * {
                 /**border:1px dotted red;**/
             }
-
             @import url('https://fonts.googleapis.com/css?family=Dosis');
         </style>
 
@@ -101,6 +106,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- jQuery 3 -->
         <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.min.js"></script>
         <!-- Bootstrap 3.3.7 -->
         <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- Select2 -->
@@ -138,6 +144,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- fullCalendar -->
         <script src="bower_components/moment/moment.js"></script>
         <script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+
         <!-- Socket IO -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
         <!-- bootbox code -->
@@ -190,7 +197,7 @@ desired effect
             <header class="main-header">
 
                 <!-- Logo -->
-                <a href="home#" class="logo">
+                <a href="tampil/home" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini">
                         <b>K</b>
@@ -207,36 +214,36 @@ desired effect
                     </a>
 
                     <?php
-                    list($one, $two) = explode(",", $_SESSION['jabatan'], 2);
-                    $sql1 = "SELECT id_anggota, foto_profile FROM tb_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
-                    $result1=mysqli_query($koneksi, $sql1);
-                    $values1=mysqli_fetch_assoc($result1);
-                    $id_anggota = $values1['id_anggota'];
-        //Hitung Total AKomodasi Bulan Ini
-                    $sql2 = "SELECT SUM(credit_in) AS total_credit FROM tb_detail_absen WHERE id_anggota='$_SESSION[id_anggota]' AND MONTH(tanggal)= MONTH(CURRENT_DATE()) AND credit_stat='unpaid' GROUP BY id_anggota";
-                    $result2=mysqli_query($koneksi, $sql2);
-                    $values2=mysqli_fetch_assoc($result2);
-                    $jumlah2= $values2['total_credit'];
-                    $sql3 = "SELECT cuti_used,cuti_qty FROM tb_cuti_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
-                    $result3=mysqli_query($koneksi, $sql3);
-                    $values3=mysqli_fetch_assoc($result3);
-                    $jumlah3= $values3['cuti_qty'] - $values3['cuti_used'];
-                    $_SESSION['sisacuti']=$jumlah3;
-                    $id_anggota = $values1['id_anggota'];
-                    if ($one == 'Admin') {
-                        $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_pembayaran` WHERE `status`= '0'";
-                        $result=mysqli_query($koneksi, $sql);
-                        $values=mysqli_fetch_assoc($result);
-                        $jumlah = $values['jumlah'];
-                        $notif_string = "Ada ". $jumlah . " yang belum di reimbers";
-                    } elseif ($one != 'Admin') {
-                        $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_konfirmasi` WHERE `konfirm_admin`= '2' AND id_anggota = '$_SESSION[id_anggota]'";
-                        $result=mysqli_query($koneksi, $sql);
-                        $values=mysqli_fetch_assoc($result);
-                        $jumlah = $values['jumlah'];
-                        $notif_string = "Anda punya ". $jumlah . " konfirmasi reimbers";
-                    }
-        ?>
+//list($one, $two) = explode(",", $_SESSION['jabatan'], 2);
+    $sql1 = "SELECT id_anggota, foto_profile FROM tb_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
+    $result1 = mysqli_query($koneksi, $sql1);
+    $values1 = mysqli_fetch_assoc($result1);
+    $id_anggota = $values1['id_anggota'];
+    //Hitung Total AKomodasi Bulan Ini
+    $sql2 = "SELECT SUM(credit_in) AS total_credit FROM tb_detail_absen WHERE id_anggota='$_SESSION[id_anggota]' AND MONTH(tanggal)= MONTH(CURRENT_DATE()) AND credit_stat='unpaid' GROUP BY id_anggota";
+    $result2 = mysqli_query($koneksi, $sql2);
+    $values2 = mysqli_fetch_assoc($result2);
+    $jumlah2 = $values2['total_credit'];
+    $sql3 = "SELECT cuti_used,cuti_qty FROM tb_cuti_anggota WHERE id_anggota ='$_SESSION[id_anggota]' ";
+    $result3 = mysqli_query($koneksi, $sql3);
+    $values3 = mysqli_fetch_assoc($result3);
+    $jumlah3 = $values3['cuti_qty'] - $values3['cuti_used'];
+    $_SESSION['sisacuti'] = $jumlah3;
+    $id_anggota = $values1['id_anggota'];
+    if (strpos($_SESSION['jabatan'], 'Admin')!==false) {
+        $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_pembayaran` WHERE `status`= '0'";
+        $result = mysqli_query($koneksi, $sql);
+        $values = mysqli_fetch_assoc($result);
+        $jumlah = $values['jumlah'];
+        $notif_string = "Ada " . $jumlah . " yang belum di reimbers";
+    } elseif (strpos($_SESSION['jabatan'], 'Admin')===false) {
+        $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_konfirmasi` WHERE `konfirm_admin`= '2' AND id_anggota = '$_SESSION[id_anggota]'";
+        $result = mysqli_query($koneksi, $sql);
+        $values = mysqli_fetch_assoc($result);
+        $jumlah = $values['jumlah'];
+        $notif_string = "Anda punya " . $jumlah . " konfirmasi reimbers";
+    }
+    ?>
 
 
                         <!-- Navbar Right Menu -->
@@ -248,7 +255,7 @@ desired effect
                                         <p style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;font-size:10px;">Sisa Cuti</p>
                                         <p style="padding-top: 0px;padding-bottom: 0px;text-align: center;font-size:15px;">
                                             <span class="label label-default">
-                                                <?php echo $jumlah3?> hari</span>
+                                                <?php echo $jumlah3 ?> hari</span>
                                         </p>
                                     </a>
                                 </li>
@@ -257,7 +264,7 @@ desired effect
                                         <p style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;font-size:10px;">Total AKomodasi</p>
                                         <p style="padding-top: 0px;padding-bottom: 0px;font-size:15px;">
                                             <span class="label label-default">
-                                                <?php echo "Rp".number_format($jumlah2)?>
+                                                <?php echo "Rp" . number_format($jumlah2) ?>
                                             </span>
                                         </p>
                                     </a>
@@ -280,18 +287,18 @@ desired effect
                                                     <!-- start notification -->
                                                     <a href="tampil/list-bayar/notif">
                                                         <?php
-                                                        if ($one=='Admin') {
-                                                                                            ?>
+if (strpos($_SESSION['jabatan'], 'Admin')!==false) {
+        ?>
                                                             <i class="fa fa-book text-aqua" style="float: center;"></i>
                                                                                                 <?php echo $notif_string ?>
                                                             <?php
-                                                        } elseif ($one!='Admin') {
-                                                                                            ?>
+} elseif (strpos($_SESSION['jabatan'], 'Admin')===false) {
+        ?>
                                                                 <i class="fa fa-book text-aqua" style="float: center;"></i>
                                                                                                     <?php echo $notif_string ?>
                                                                 <?php
-                                                        }
-                    ?>
+}
+    ?>
                                                     </a>
                                                 </li>
                                                 <!-- end notification -->
@@ -305,43 +312,43 @@ desired effect
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         <!-- The user image in the navbar-->
                                         <?php
-                                        if ($values1['foto_profile']!='-') {
-                                                                ?>
-                                                                    <img alt="User Image" <?php echo "src='dist/fotoprofile/".$values1[ 'foto_profile']. "'"; ?> class="user-image img-responsive">
+if ($values1['foto_profile'] != '-') {
+        ?>
+                                                                    <img alt="User Image" <?php echo "src='dist/fotoprofile/" . $values1['foto_profile'] . "'"; ?> class="user-image img-responsive">
                                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                             <span class="hidden-xs">
-                                                <?php echo $_SESSION['nama'];?>
+                                                <?php echo $_SESSION['nama']; ?>
                                             </span>
                                             <?php
-                                        } elseif ($values1['foto_profile']=='-') {
-                                                                ?>
+} elseif ($values1['foto_profile'] == '-') {
+        ?>
                                                                         <img alt="User Image" <?php echo "src='dist/fotoprofile/no-profile.jpg'"; ?> class="user-image img-responsive">
                                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                                 <span class="hidden-xs">
-                                                    <?php echo $_SESSION['nama'];?>
+                                                    <?php echo $_SESSION['nama']; ?>
                                                 </span>
                                                 <?php
-                                        }
-                ?>
+}
+    ?>
                                     </a>
                                     <ul class="dropdown-menu fadeIn animated">
                                         <!-- The user image in the menu -->
                                         <li class="user-header" style="height: 115px;">
                                             <?php
-                                            if ($values1['foto_profile']!='-') {
-                                                ?>
-                                                <img alt="User Image" align="cen" <?php echo "src='dist/fotoprofile/".$values1[ 'foto_profile']. "'"; ?> class="img-circle img-responsive pull-left">
+if ($values1['foto_profile'] != '-') {
+        ?>
+                                                <img alt="User Image" align="cen" <?php echo "src='dist/fotoprofile/" . $values1['foto_profile'] . "'"; ?> class="img-circle img-responsive pull-left">
                                                 <?php
-                                            } elseif ($values1['foto_profile']=='-') {
-                                                ?>
+} elseif ($values1['foto_profile'] == '-') {
+        ?>
                                                     <img alt="User Image" <?php echo "src='dist/fotoprofile/no-profile.jpg'"; ?> class="img-circle img-responsive pull-left">
                                                     <?php
-                                            }
-                ?>
+}
+    ?>
                                                         <p>
-                                                            <?php echo $_SESSION['nama'];?>
+                                                            <?php echo $_SESSION['nama']; ?>
                                                             <br>
-                                                            <?php echo $_SESSION['jabatan'];?>
+                                                            <?php echo $_SESSION['jabatan']; ?>
                                                         </p>
                                         </li>
                                         <!-- Menu Footer-->
@@ -370,16 +377,16 @@ desired effect
                     <div class="user-panel">
                         <div class="pull-left image">
                             <?php
-                                if ($values1['foto_profile']!='-') {
-                                    ?>
-                                    <img alt="User Pic" <?php echo "<img src='dist/fotoprofile/".$values1[ 'foto_profile']. "'"; ?> class="img-circle img-responsive">
+if ($values1['foto_profile'] != '-') {
+        ?>
+                                    <img alt="User Pic" <?php echo "<img src='dist/fotoprofile/" . $values1['foto_profile'] . "'"; ?> class="img-circle img-responsive">
                                     <?php
-                                } elseif ($values1['foto_profile']=='-') {
-                                    ?>
+} elseif ($values1['foto_profile'] == '-') {
+        ?>
                                         <img alt="User Pic" <?php echo "<img src='dist/fotoprofile/no-profile.jpg'"; ?> class="img-circle img-responsive">
                                         <?php
-                                }
-                            ?>
+}
+    ?>
                         </div>
                         <div class="pull-left info">
                             <br>
@@ -431,7 +438,7 @@ desired effect
                             <li id="menu_master" class="treeview">
                                 <a href="#">
                                     <i class="fa fa-folder"></i>
-                                    <span>Data Master</span>
+                                    <span>Menu Admin</span>
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
@@ -479,28 +486,28 @@ desired effect
             </aside>
 
         <?php
-        if ($one != "Admin") {
-                ?>
+if (strpos($_SESSION['jabatan'], 'Admin')===false) {
+        ?>
                 <script type="text/javascript">
                     //document.getElementById('menu_absen').style.display="none";
                     document.getElementById('menu_master').style.display = "none";
                 </script>
                 <?php
-        } else {
-                ?>
+} else {
+        ?>
                     <script type="text/javascript">
                         document.getElementById('menu_master').style.visibility = "visible";
                     </script>
                     <?php
-            }
-        if ($jumlah == "0") {
+}
+    if ($jumlah == "0") {
         ?>
                         <script type="text/javascript">
                             document.getElementById('notif_label').style.display = "none";
                         </script>
         <?php
-            }
-        ?>
+}
+    ?>
 
                             <!-- Content Wrapper. Contains page content -->
                             <div class="content-wrapper">
@@ -516,48 +523,48 @@ desired effect
         | Your Page Content Here |
         -------------------------->
 <?php
-if ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="home")) {
-    include_once "pages/home.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="data-anggota")) {
-    include_once "pages/datalist/anggota.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="form-bayar")) {
-    include_once "pages/forms/form_pembayaran.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="list-bayar")) {
-    include_once "pages/datalist/Pembayaran.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="form-anggota")) {
-    include_once "pages/forms/form_add-anggota.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="detail-pembayaran")) {
-    include_once "pages/detail_pembayaran.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="profile")) {
-    include_once "pages/view_profile.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="form-edit_pembayaran")) {
-    include_once "pages/forms/form_edit-pembayaran.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="data-jabatan")) {
-    include_once "pages/datalist/jabatan.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="jenis-pembayaran")) {
-    include_once "pages/datalist/jenis_pembayaran.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="data-absensi-admin")) {
-    include_once "pages/datalist/data_absen_admin.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="data-absensi")) {
-    include_once "pages/datalist/data_absen.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="calendar-absensi")) {
-    include_once "pages/datalist/calendar-absensi.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="form-absensi")) {
-    include_once "pages/forms/form_submit-absensi.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="data-credits")) {
-    include_once "pages/datalist/credits.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="data-cuti")) {
-    include_once "pages/datalist/cuti.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="data-libur")) {
-    include_once "pages/datalist/tgllibur.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="tampil") && ($_GET["sidebar-menu"]=="data-rekap")) {
-    include_once "pages/datalist/rekap_absensi.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"]=="proses-submit") && ($_GET["sidebar-menu"]=="absensi")) {
-    include_once "pages/proses/proses_submit-absensi.php";
-} else {
-    echo '<script>window.location="tampil/home"</script>';
-}
-?>
+if ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "home")) {
+        include_once "pages/home.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-anggota")) {
+        include_once "pages/datalist/anggota.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-bayar")) {
+        include_once "pages/forms/form_pembayaran.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "list-bayar")) {
+        include_once "pages/datalist/Pembayaran.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-anggota")) {
+        include_once "pages/forms/form_add-anggota.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "detail-pembayaran")) {
+        include_once "pages/detail_pembayaran.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "profile")) {
+        include_once "pages/view_profile.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-edit_pembayaran")) {
+        include_once "pages/forms/form_edit-pembayaran.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-jabatan")) {
+        include_once "pages/datalist/jabatan.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "jenis-pembayaran")) {
+        include_once "pages/datalist/jenis_pembayaran.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-absensi-admin")) {
+        include_once "pages/datalist/data_absen_admin.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-absensi")) {
+        include_once "pages/datalist/data_absen.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "calendar-absensi")) {
+        include_once "pages/datalist/calendar-absensi.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-absensi")) {
+        include_once "pages/forms/form_submit-absensi.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-credits")) {
+        include_once "pages/datalist/credits.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-cuti")) {
+        include_once "pages/datalist/cuti.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-libur")) {
+        include_once "pages/datalist/tgllibur.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-rekap")) {
+        include_once "pages/datalist/rekap_absensi.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "proses-submit") && ($_GET["sidebar-menu"] == "absensi")) {
+        include_once "pages/proses/proses_submit-absensi.php";
+    } else {
+        echo '<script>window.location="tampil/home"</script>';
+    }
+    ?>
 
                                 </section>
                                 <!-- /.content -->

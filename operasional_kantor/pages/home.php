@@ -222,7 +222,7 @@
 				   <!-- BAR CHART -->
 			  <div class="box box-primary">
 				<div class="box-header with-border">
-				  <h3 class="box-title">Total Uang Akomodasi <?php if($_SESSION['jabatan'] != 'Admin'){echo " Anda ";}?> tahun <?php echo $year;?></h3>
+				  <h3 class="box-title">Total Uang Akomodasi <?php if(strpos($_SESSION['jabatan'], 'Admin')===false){echo " Anda ";}?> tahun <?php echo $year;?></h3>
 
 				  <div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -240,7 +240,7 @@
 					   <!-- BAR CHART -->
 				  <div class="box box-info">
 					<div class="box-header with-border">
-					  <h3 class="box-title">Statistik Absensi <?php if($_SESSION['jabatan'] != 'Admin'){echo " Anda ";}?> tahun <?php echo $year;?></h3>
+					  <h3 class="box-title">Statistik Absensi <?php if(strpos($_SESSION['jabatan'], 'Admin')===false){echo " Anda ";}?> tahun <?php echo $year;?></h3>
 
 					  <div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -270,7 +270,7 @@
 			  <div class="box box-warning">
 				<div class="box-header with-border">
 
-				  <h3 class="box-title">Total Pengeluaran dari Pembayaran Operasional <?php if ($_SESSION['jabatan'] != 'Admin'){echo "Anda";}?> tahun <?php echo $year;?></h3>
+				  <h3 class="box-title">Total Pengeluaran dari Pembayaran Operasional <?php if (strpos($_SESSION['jabatan'], 'Admin')===false){echo "Anda";}?> tahun <?php echo $year;?></h3>
 				  <div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 					<button id="removeChartTotalOperasional" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
@@ -288,7 +288,7 @@
 			  <!-- DONUT CHART -->
 			  <div class="box box-danger">
 				<div class="box-header with-border">
-				  <h4 class="box-title">Jumlah Pembayaran Operasional <?php if($_SESSION['jabatan'] != 'Admin'){echo " Anda ";}?>(per-kategori) <?php echo $month.", ".$year;?></h4>
+				  <h4 class="box-title">Jumlah Pembayaran Operasional <?php if(strpos($_SESSION['jabatan'], 'Admin')===false){echo " Anda ";}?>(per-kategori) <?php echo $month.", ".$year;?></h4>
 
 				  <div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -307,13 +307,13 @@
         <?php
           list($one, $two) = explode(",", $_SESSION['jabatan'], 2);
 
-        if ($_SESSION['jabatan'] == "Admin") {
+        if (strpos($_SESSION['jabatan'], 'Admin')!==false) {
             ?>
             <script type="text/javascript">
                 $('#shortcut-box').hide();
             </script>
             <?php
-        } elseif ($_SESSION['jabatan'] != 'Admin') {
+        } elseif (strpos($_SESSION['jabatan'], 'Admin')===false) {
             ?>
             <script type="text/javascript">
                  $('#shortcut-box').show();
@@ -341,13 +341,13 @@
   $data_email = $val_data['email'];
 ?>
 <?php
-if ($_SESSION['jabatan'] == 'Admin') {
+if (strpos($_SESSION['jabatan'], 'Admin')!==false) {
     ?>
     <script type="text/javascript">
           $('#shortcut-box').hide();
     </script>
 <?php
-	} elseif ($data_id == $data_pass && $_SESSION['jabatan'] != 'Admin' || $data_email == '-') {
+	} elseif ($data_id == $data_pass && strpos($_SESSION['jabatan'], 'Admin')===false || $data_email == '-') {
 ?>
     <script type="text/javascript">
           $('#shortcut-box').hide();

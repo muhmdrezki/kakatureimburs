@@ -4,7 +4,7 @@
      //echo "Dilarang broh!";
      header("Location: ../../tampil/home");
   }
-  if ($_SESSION['jabatan']!="Admin") {
+  if (strpos($_SESSION['jabatan'], 'Admin')===false) {
     echo '<script>alert("Maaf, Anda bukan Admin"); window.location="../../tampil/home"</script>';
  }
 ?>
