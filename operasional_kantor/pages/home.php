@@ -50,7 +50,7 @@
   /* End Sembunyikan carousel-control */
 </style>
  <!-- Content Header (Page header) -->
-<body onload="loadChartKakatu()">
+<body onload="checkAbsensi();loadChartKakatu();">
     <section class="content-header">
     <?php
       date_default_timezone_set('Asia/Jakarta');

@@ -1,4 +1,18 @@
 $(function () {
+  window.checkAbsensi = function () {
+    $.ajax({
+      type: "post",
+      url: "ajax-fetchdata/check-absen",
+      //data: "data",
+      //dataType: "json",
+      success: function (res) {
+        console.log(res);
+        if (res == 0) {
+          window.location = "tampil/form-absensi";
+        }
+      }
+    });
+  }
   window.initMap = function (lat1, lng1) {
     var waktu = $('#waktuDetailAbsen').text();
     var nama = $('#namaDetailAbsen').text();
@@ -722,18 +736,18 @@ $(function () {
   });
   //End Mode Calendar Tabel
 
-    //Mode Detail Master Credits
-    $(document).on('click', '#modeDetailAkomodasi', function () {
-      $('#modeDetailAkomodasi').attr("disabled", "disabled");
-      $('#modeMasterAkomodasi').removeAttr("disabled");
-      $('#masterAkomodasi').attr("class", "collapse");
-    });
-    $(document).on('click', '#modeMasterAkomodasi', function () {
-      $('#modeMasterAkomodasi').attr("disabled", "disabled");
-      $('#modeDetailAkomodasi').removeAttr("disabled");
-      $('#detailAkomodasi').attr("class", "collapse");
-    });
-    //End Mode Calendar Tabel
+  //Mode Detail Master Credits
+  $(document).on('click', '#modeDetailAkomodasi', function () {
+    $('#modeDetailAkomodasi').attr("disabled", "disabled");
+    $('#modeMasterAkomodasi').removeAttr("disabled");
+    $('#masterAkomodasi').attr("class", "collapse");
+  });
+  $(document).on('click', '#modeMasterAkomodasi', function () {
+    $('#modeMasterAkomodasi').attr("disabled", "disabled");
+    $('#modeDetailAkomodasi').removeAttr("disabled");
+    $('#detailAkomodasi').attr("class", "collapse");
+  });
+  //End Mode Calendar Tabel
 
   // Kalendar Tgl Libur
   /* initialize the calendar
@@ -1032,7 +1046,7 @@ $(function () {
         $('#employee').html(data);
         $('#dataModal_hapus').modal("show");
       },
-      error: function(data){
+      error: function (data) {
         console.log(data);
       }
     });
@@ -1743,10 +1757,6 @@ $(function () {
           label: 'SHARE',
           className: 'btn-success btn-sm'
 
-        },
-        cancel: {
-          label: 'NANTI',
-          className: 'btn-danger btn-sm'
         }
       },
       callback: function (result) {
@@ -1788,7 +1798,7 @@ $(function () {
     $.ajax({
       url: "pages/ajax/fetchdata/fetch_data_credit-json.php",
       method: "POST",
-      data: { id_credit: id_credit},
+      data: { id_credit: id_credit },
       dataType: "json",
       success: function (data) {
         $('#id_credit').val(data.id);
@@ -2286,7 +2296,7 @@ $(function () {
       "ajax": {
         url: "ajax-fetchdata/data-absen",
         type: "POST",
-        data: (tgl1!=='')? { tgl1: tgl1, tgl2: tgl2 }:{ tgl1: '', tgl2: '' },
+        data: (tgl1 !== '') ? { tgl1: tgl1, tgl2: tgl2 } : { tgl1: '', tgl2: '' },
         succes: function (data) {
           console.log('Success: ' + data);
         },
@@ -2372,7 +2382,7 @@ $(function () {
     $('#tglRentangFilterAbsen').val('');
     var start1 = picker.startDate.format('MM/DD/YYYY');
     var end2 = picker.endDate.format('MM/DD/YYYY');
-    $('#filterLabelAbsen').text(start1+' - '+end2);
+    $('#filterLabelAbsen').text(start1 + ' - ' + end2);
   })
   $('#tglRentangLibur').daterangepicker({ drops: 'up' })
   $('#tglRentangLibur').on('apply.daterangepicker', function (ev, picker) {

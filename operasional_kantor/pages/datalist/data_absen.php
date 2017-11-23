@@ -4,11 +4,10 @@
         header("Location: ../../tampil/home");
     }
 ?>
-
 <section id="form_data-absen-admin" style="margin: 0 auto;">
 
 <div class="container fadeIn animated">
-  
+
   <h2> DATA ABSENSI </h2>
 <hr style="  
     border: 0;

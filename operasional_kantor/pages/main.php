@@ -19,6 +19,8 @@ if (!defined('DIDALAM_INDEX_PHP')) {
     include "pages/ajax/fetchdata/fetch_data_absen.php";
 } elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "detail-absen")) {
     include "pages/ajax/fetchdata/fetch_detail_absen.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "check-absen")) {
+    include "pages/ajax/fetchdata/fetch_check_absensis_hari_ini.php";
 }
 //Ajax Proses
 elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-proses") && ($_GET["sidebar-menu"] == "submit-absensi")) {
@@ -420,7 +422,7 @@ if ($values1['foto_profile'] != '-') {
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li>
+                                <li id="form_submit_absensi">
                                     <a href="tampil/form-absensi">
                                         <i class="glyphicon glyphicon-user"></i>
                                         <span> Form Absensi</span>
