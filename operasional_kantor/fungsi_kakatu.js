@@ -1875,11 +1875,11 @@ $(function () {
                 size: "small",
                 message: "<h4>Terimakasih telah share ke WA</h4>",
                 callback: function () {
-                  window.location = "tampil/data-absensi"
+                  window.location = "tampil/data-absensi-admin"
                 }
               })
             } else {
-              window.location = "tampil/data-absensi"
+              window.location = "tampil/data-absensi-admin"
             }
           }
         }

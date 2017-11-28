@@ -35,15 +35,14 @@ elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-proses") && ($_GET
 //End Ajax Proses
 
 //Proses CronJob
+/*
 elseif ((isset($_GET["action"])) && ($_GET["action"] == "cronjob-proses") && ($_GET["sidebar-menu"] == "notif-absen")) {
     include_once "pages/cronjob/admin_absen_notif.php";
 } elseif ((isset($_GET["action"])) && ($_GET["action"] == "cronjob-proses") && ($_GET["sidebar-menu"] == "auto-absen")) {
     include_once "pages/cronjob/admin_auto_absen.php";
-} elseif ((isset($_GET["action"])) && ($_GET["action"] == "cronjob-proses") && ($_GET["sidebar-menu"] == "auto-absen")) {
-    include_once "pages/cronjob/admin_auto_absen.php";
 } elseif ((isset($_GET["action"])) && ($_GET["action"] == "cronjob-proses") && ($_GET["sidebar-menu"] == "auto-absen-alpha")) {
     include_once "pages/cronjob/admin_auto_absen_alpha.php";
-}
+}*/
 //End Proses CronJob
 else {
     ?>

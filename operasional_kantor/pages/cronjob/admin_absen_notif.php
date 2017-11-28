@@ -1,6 +1,7 @@
 <?php
-//chdir(dirname(__FILE__));
-//include "../../con_db.php";
+chdir(dirname(__FILE__));
+include "../../con_db.php";
+include "../../fungsi_kakatu.php";
 //$sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.id_jenis, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status, tb_anggota.email FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.id_pembayaran='$id_pembayaran'";
 $sql = "SELECT nama,email,jenis_kelamin FROM tb_anggota WHERE id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal=CURRENT_DATE())";
 $result = mysqli_query($koneksi, $sql);
@@ -42,7 +43,7 @@ if ($dayname != "Sat" && $dayname != "Sun") {
     }
     if (mysqli_num_rows($reslibur3) == 0) {
         //echo "Masuk";
-        require 'phpmailer/PHPMailerAutoload.php';
+        require '../../phpmailer/PHPMailerAutoload.php';
         $mail = new PHPMailer;
 
         //$mail->SMTPDebug = 3;                               // Enable verbose debug output
