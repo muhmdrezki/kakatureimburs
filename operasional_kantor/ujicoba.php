@@ -1,80 +1,44 @@
-<!DOCTYPE html>
 <?php
-	include "fungsi_kakatu.php";
+/**
+ * simple method to encrypt or decrypt a plain text string
+ * initialization vector(IV) has to be the same when encrypting and decrypting
+ * 
+ * @param string $action: can be 'encrypt' or 'decrypt'
+ * @param string $string: string to encrypt or decrypt
+ *
+ * @return string
+ */
+ /*
+function encrypt_decrypt($action, $string) {
+    $output = false;
+    $encrypt_method = "AES-256-CBC";
+    $secret_key = '"#k@KaTu_1nT3rNEt_$3H@t"';
+    $secret_iv = '"#k1N3sH_kR3at1F_iDe@tA"';
+    // hash
+    $key = hash('sha256', $secret_key);
+    
+    // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+    $iv = substr(hash('sha256', $secret_iv), 0, 16);
+    if ( $action == 'encrypt' ) {
+        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($output);
+    } else if( $action == 'decrypt' ) {
+        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+    }
+    return $output;
+}
+$plain_txt = "1";
+echo "Plain Text =" .$plain_txt."<br>";
+$encrypted_txt = encrypt_decrypt('encrypt', $plain_txt);
+echo "Encrypted Text = ".$encrypted_txt."<br>";
+$decrypted_txt = encrypt_decrypt('decrypt', $encrypted_txt);
+echo "Decrypted Text =".$decrypted_txt."<br>";
+*/
+include "fungsi_kakatu.php"; 
+$tes = "kakatu";
+echo $tes."<br>";
+$enkripsi=encodeData($tes);
+echo "Enkripsi: ".$enkripsi."<br>";
+$dekripsi = decodeData($enkripsi);
+echo "Dekripsi: ".$dekripsi."<br>";
 ?>
-<html>
-	<head>
-	  <meta charset="utf-8">
-	  <meta http-equiv="X-UA-Compatible" content="IE=edge,initial-scale=1.0, user-scalable=no">
-	  <title> Kinest Kreatif Ideata </title>
-	  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-	  <style>
-		.switch {
-		  position: relative;
-		  display: inline-block;
-		  width: 60px;
-		  height: 34px;
-		}
-
-		.switch input {display:none;}
-
-		.slider {
-		  position: absolute;
-		  cursor: pointer;
-		  top: 0;
-		  left: 0;
-		  right: 0;
-		  bottom: 0;
-		  background-color: #ccc;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
-
-		.slider:before {
-		  position: absolute;
-		  content: "";
-		  height: 26px;
-		  width: 26px;
-		  left: 4px;
-		  bottom: 4px;
-		  background-color: white;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
-
-		input:checked + .slider {
-		  background-color: #2196F3;
-		}
-
-		input:focus + .slider {
-		  box-shadow: 0 0 1px #2196F3;
-		}
-
-		input:checked + .slider:before {
-		  -webkit-transform: translateX(26px);
-		  -ms-transform: translateX(26px);
-		  transform: translateX(26px);
-		}
-
-		/* Rounded sliders */
-		.slider.round {
-		  border-radius: 34px;
-		}
-
-		.slider.round:before {
-		  border-radius: 50%;
-		}
-	  </style>
-	<head>
-	<body>
-								<ul class="list-inline">
-									<li ><span class="list-inline-item"><label class="switch"><input type="checkbox" checked="checked"><span class="slider round"></span></label></span></li>
-									<li><span class="list-inline-item">Izinkan Lokasi</span></li>
-								</ul>
-	</body>
-	<!-- jQuery 3 -->
-	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>  
-	<!-- Bootstrap 3.3.7 -->
-	<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-</html>

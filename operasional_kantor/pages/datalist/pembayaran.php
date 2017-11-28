@@ -21,16 +21,14 @@
 <div class="login-box fadeInDown animated">
   <div class="login-logo" style="color: #ffffff; margin-top:100px;">
    <b><p> Anda harus mengganti password anda </p></b>
-   <b><p> dan </p></b> 
-   <b><p >Mengisi email anda terlebih dahulu ! </p></b>
-      <a href="tampil/profil" class="btn btn-primary btn-lg" style="color: #ffffff;">Ganti Sekarang</a>
+      <a href="tampil/profile" class="btn btn-primary btn-lg" style="color: #ffffff;">Ganti Sekarang</a>
   </div>
   </div>
 </div>
 
 
 <?php
-if($data_id == $data_pass && $_SESSION['jabatan'] != 'Admin' || $data_email == '-'){
+if($data_pass=="kakatu" && $_SESSION['jabatan'] != 'Admin'){
 ?>
 <script> document.getElementById("overlay").style.display = "block"</script>
 <?php

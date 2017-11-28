@@ -1,38 +1,63 @@
 <?php
 //include "../../../fungsi_kakatu.php";
 $connect = createConn();
-$columns = array('id', 'CONCAT(d.tanggal," ",d.jam_masuk)','id_anggota', 'nama', 'status');
+$columns = array('id', 'CONCAT(d.tanggal," ",d.jam_masuk)', 'id_anggota', 'nama', 'status');
 $query = "SELECT d.id AS id,d.tanggal AS tanggal,d.jam_masuk AS jam_masuk,d.id_anggota AS id_anggota, a.nama AS nama, b.status AS status FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota";
-
+$isAdmin = strpos($_SESSION['jabatan'], 'Admin');
 if (isset($_POST["search"]["value"])) {
     $searchValue = antiInjection($_POST["search"]["value"]);
     if ($_POST["tgl1"] != '') {
-        $tgl1 = antiInjection($_POST["tgl1"]);
-        $tgl2 = antiInjection($_POST["tgl2"]);
-        $_SESSION['tglFilterDataAbsen1'] = $tgl1;
-        $_SESSION['tglFilterDataAbsen2'] = $tgl2;
-        $query .= '
-        WHERE (d.id = "' . $searchValue . '"
-        OR CONCAT(d.tanggal," ",d.jam_masuk) LIKE "%' . $searchValue . '%"
-        OR a.nama LIKE "%' . $searchValue . '%"
-        OR b.status = "' . $searchValue . '")
-        AND d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '"';
-    } else {
-        if (isset($_SESSION['tglFilterDataAbsen1'])) {
+        if ($isAdmin != 0) {
+            $tgl1 = antiInjection($_POST["tgl1"]);
+            $tgl2 = antiInjection($_POST["tgl2"]);
+            $_SESSION['tglFilterDataAbsen1'] = $tgl1;
+            $_SESSION['tglFilterDataAbsen2'] = $tgl2;
             $query .= '
             WHERE (d.id = "' . $searchValue . '"
             OR CONCAT(d.tanggal," ",d.jam_masuk) LIKE "%' . $searchValue . '%"
             OR a.nama LIKE "%' . $searchValue . '%"
             OR b.status = "' . $searchValue . '")
             AND d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '"';
-            unset($_SESSION['tglFilterDataAbsen1']);
         } else {
+            $tgl1 = antiInjection($_POST["tgl1"]);
+            $tgl2 = antiInjection($_POST["tgl2"]);
+            $_SESSION['tglFilterDataAbsen1'] = $tgl1;
+            $_SESSION['tglFilterDataAbsen2'] = $tgl2;
             $query .= '
-            WHERE d.id = "' . $searchValue . '"
+            WHERE (d.id = "' . $searchValue . '"
             OR CONCAT(d.tanggal," ",d.jam_masuk) LIKE "%' . $searchValue . '%"
             OR a.nama LIKE "%' . $searchValue . '%"
-            OR b.status = "' . $searchValue . '"
-            ';
+            OR b.status = "' . $searchValue . '")
+            AND (d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '")
+            AND (d.id_anggota= "' . $_SESSION['id_anggota'] . '")';
+        }
+    } else {
+        if (isset($_SESSION['tglFilterDataAbsen1'])) {
+            if ($isAdmin != 0) {
+                $query .= '
+                WHERE (d.id = "' . $searchValue . '"
+                OR CONCAT(d.tanggal," ",d.jam_masuk) LIKE "%' . $searchValue . '%"
+                OR a.nama LIKE "%' . $searchValue . '%"
+                OR b.status = "' . $searchValue . '")
+                AND d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '"';
+                unset($_SESSION['tglFilterDataAbsen1']);
+            } else {
+                $query .= '
+                WHERE (d.id = "' . $searchValue . '"
+                OR CONCAT(d.tanggal," ",d.jam_masuk) LIKE "%' . $searchValue . '%"
+                OR a.nama LIKE "%' . $searchValue . '%"
+                OR b.status = "' . $searchValue . '")
+                AND (d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '")
+                AND (d.id_anggota= "' . $_SESSION['id_anggota'] . '")';
+                unset($_SESSION['tglFilterDataAbsen1']);
+            }
+        } else {
+            $query .= '
+            WHERE (d.id = "' . $searchValue . '"
+            OR CONCAT(d.tanggal," ",d.jam_masuk) LIKE "%' . $searchValue . '%"
+            OR a.nama LIKE "%' . $searchValue . '%"
+            OR b.status = "' . $searchValue . '")
+            AND (d.id_anggota= "' . $_SESSION['id_anggota'] . '")';
         }
     }
 }
@@ -72,6 +97,8 @@ while ($row = $result->fetch_array()) {
         $sub_array[] = "<span class=\"label label-info\">HADIR</span>";
     } elseif ($row['status'] == "Cuti") {
         $sub_array[] = "<span class=\"label label-success\">CUTI</span>";
+    } elseif ($row['status'] == "Kerja Remote") {
+        $sub_array[] = "<span class=\"label label-default\">KERJA REMOTE</span>";
     } elseif ($row['status'] == "Alpha") {
         $sub_array[] = "<span class=\"label label-default\">ALPHA</span>";
     }
@@ -83,7 +110,7 @@ while ($row = $result->fetch_array()) {
     $blndataformat = $blndata->format('Ym');
     $disabled = "";
     //End Cek Bulan Sekarang
-    if (intval($blndataformat) < intval($blnskrgformat)) {
+    if ((intval($blndataformat) < intval($blnskrgformat)) || $isAdmin == 0) {
         $sub_array[] = '<a id="' . $row["id"] . '" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a>';
     } else {
         $sub_array[] = '<a id="' . $row["id"] . '" class="btn btn-info btn-xs detail_kehadiran"> DETAIL </a><a id="' . $row["id"] . '" class="btn btn-warning btn-xs edit_absen">EDIT</a>';

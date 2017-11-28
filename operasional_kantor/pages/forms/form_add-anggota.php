@@ -70,7 +70,7 @@
                         <?php 
                           while ($row = mysqli_fetch_array($result)){
                         ?>
-                            <option value="<?php echo $row[id_jabatan]; ?>"> <?php echo $row[jabatan]; ?> </option>
+                            <option value="<?php echo $row['id_jabatan']; ?>"> <?php echo $row['jabatan']; ?> </option>
                          <?php
                          }
                          ?>
@@ -78,7 +78,7 @@
               </div>
       <div class="form-group">
         <label for="email"> Email (Harus Aktif) </label>
-        <input type="email" class="form-control" id="email" placeholder="Masukan Email (Optional)" name="email">
+        <input type="email" class="form-control" id="email" placeholder="Masukan Email(Wajib)" name="email" data-validation="required" data-validation-error-msg="Field Email Harus Diisi !">
       </div>
       <div class="form-group">
         <label for="alamat"> Alamat </label>

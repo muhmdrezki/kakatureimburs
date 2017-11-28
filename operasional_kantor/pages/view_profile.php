@@ -175,7 +175,13 @@ if (!defined('DIDALAM_INDEX_PHP')){
                           <br />  
                           <label>Tanggal Lahir</label>  
                           <input type="text" name="tgl_lahir" id="tgl_lahir" class="form-control" />  
-                          <br />  
+                          <br />
+                          <label>Jenis Kelamin</label>  
+                          <div class="form-group">
+                            <p><input type="radio" name="jenis_kelamin" id="jenis_kelamin" class="minimal" value="L" style="margin-top: 10px;"> Laki - Laki</p>
+                            <p><input type="radio" name="jenis_kelamin" id="jenis_kelamin" class="minimal" value="P" style="margin-top: 20px;"> Perempuan</p>
+                        </div> 
+                          <br />   
                           <label>Email</label>  
                           <input type="email" name="email" id="email" class="form-control" /> 
                           <br /> 

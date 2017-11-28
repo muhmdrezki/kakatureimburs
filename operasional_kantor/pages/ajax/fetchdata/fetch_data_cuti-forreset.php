@@ -14,8 +14,8 @@
            <table class="table table-hover table-responsive">';  
       while($row = mysqli_fetch_array($result)) 
       {  
-         $cuti_used = $row[cuti_used];
-		 $cuti_qty = $row[cuti_qty];
+         $cuti_used = $row["cuti_used"];
+		 $cuti_qty = $row["cuti_qty"];
            $output .= '
                 <tbody>
                 <tr>  

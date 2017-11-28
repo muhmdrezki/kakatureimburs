@@ -16,7 +16,7 @@
 	//mengambil nilai dari form
 	$id = $_POST['id'];
 	$nama = $_POST['nama'];
-	$password = encodeData($_POST['id']);
+	$password = encodeData("kakatu");
 	
 	if($_POST['email'] != ''){
 		$email = $_POST['email'];	

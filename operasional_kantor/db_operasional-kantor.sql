@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2017 at 09:39 AM
--- Server version: 10.1.26-MariaDB
+-- Generation Time: 28 Nov 2017 pada 09.25
+-- Versi Server: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -25,7 +25,156 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_detail_absen`
+-- Struktur dari tabel `jabatan_anggota`
+--
+
+CREATE TABLE `jabatan_anggota` (
+  `id_anggota` varchar(5) NOT NULL,
+  `id_jabatan` varchar(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `jabatan_anggota`
+--
+
+INSERT INTO `jabatan_anggota` (`id_anggota`, `id_jabatan`) VALUES
+('10001', '111'),
+('90706', '557');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_absen`
+--
+
+CREATE TABLE `tb_absen` (
+  `status_id` int(11) NOT NULL,
+  `status` varchar(30) NOT NULL,
+  `warna` varchar(7) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_absen`
+--
+
+INSERT INTO `tb_absen` (`status_id`, `status`, `warna`) VALUES
+(1, 'Hadir', '#00c0ef'),
+(2, 'Hadir Diluar', '#0073b7'),
+(3, 'Sakit', '#f56954'),
+(4, 'Izin', '#f39c12'),
+(5, 'Cuti', '#00a65a'),
+(6, 'Alpha', '#c0c0c0'),
+(7, 'Kerja Remote', '#c0c0c0');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_anggota`
+--
+
+CREATE TABLE `tb_anggota` (
+  `id_anggota` varchar(15) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `alamat` varchar(200) NOT NULL,
+  `tempat_lahir` varchar(100) NOT NULL,
+  `tgl_lahir` date NOT NULL,
+  `jenis_kelamin` varchar(1) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `foto_profile` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_anggota`
+--
+
+INSERT INTO `tb_anggota` (`id_anggota`, `nama`, `email`, `alamat`, `tempat_lahir`, `tgl_lahir`, `jenis_kelamin`, `password`, `foto_profile`) VALUES
+('10001', 'Isma', 'admin@gmail.com', 'Dipati Ukur', 'Bandung', '1995-08-01', 'P', 'UDZTYUM5elFNS2M5NldMZWoxclpwZz09', 'icon.png'),
+('90706', 'Idan Freak', 'idanfreak@gmail.com', 'Jalan Dipati Ukur nomor 20', 'Dago', '1994-05-08', 'L', 'dlNsTkh0M0F3NnZ6YkFRNnV1eGR2UT09', 'isyana1.png');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_buktipembayaran`
+--
+
+CREATE TABLE `tb_buktipembayaran` (
+  `id` int(11) NOT NULL,
+  `id_pembayaran` varchar(5) NOT NULL,
+  `bukti` varchar(400) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_credits_anggota`
+--
+
+CREATE TABLE `tb_credits_anggota` (
+  `id` int(4) NOT NULL,
+  `id_anggota` varchar(15) NOT NULL,
+  `topup_credit` bigint(10) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_credits_anggota`
+--
+
+INSERT INTO `tb_credits_anggota` (`id`, `id_anggota`, `topup_credit`) VALUES
+(1, '10001', 50000),
+(47, '90706', 100000);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_cronjob_rencana_absen`
+--
+
+CREATE TABLE `tb_cronjob_rencana_absen` (
+  `id` int(11) NOT NULL,
+  `id_anggota` varchar(15) NOT NULL,
+  `status_id` int(11) NOT NULL,
+  `keterangan` varchar(255) NOT NULL,
+  `lat` double NOT NULL,
+  `lng` double NOT NULL,
+  `tglawal` date NOT NULL,
+  `tglakhir` date NOT NULL,
+  `foto_lokasi` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_cronjob_rencana_absen`
+--
+
+INSERT INTO `tb_cronjob_rencana_absen` (`id`, `id_anggota`, `status_id`, `keterangan`, `lat`, `lng`, `tglawal`, `tglakhir`, `foto_lokasi`) VALUES
+(1, '10001', 4, 'dafdfsfs', -6.2087634, 106.84559899999999, '2017-11-26', '2017-12-02', '20171128064602.jpg'),
+(4, '90706', 5, 'freferhrhehr', -6.2087634, 106.84559899999999, '2017-11-25', '2017-12-06', '20171128064602.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_cuti_anggota`
+--
+
+CREATE TABLE `tb_cuti_anggota` (
+  `id_cuti` int(11) NOT NULL,
+  `id_anggota` varchar(15) NOT NULL,
+  `cuti_used` int(4) NOT NULL DEFAULT '0',
+  `cuti_qty` int(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_cuti_anggota`
+--
+
+INSERT INTO `tb_cuti_anggota` (`id_cuti`, `id_anggota`, `cuti_used`, `cuti_qty`) VALUES
+(1, '10001', 3, 10),
+(2, '90706', 4, 12);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_detail_absen`
 --
 
 CREATE TABLE `tb_detail_absen` (
@@ -47,7 +196,7 @@ CREATE TABLE `tb_detail_absen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tb_detail_absen`
+-- Dumping data untuk tabel `tb_detail_absen`
 --
 
 INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `status_id`, `keterangan`, `latitude`, `longitude`, `tgl_awal`, `tgl_akhir`, `foto_lokasi`, `rencana_id`, `credit_id`, `credit_in`, `credit_stat`) VALUES
@@ -55,16 +204,6 @@ INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `stat
 (2, '10001', '2017-09-19', '01:46:55', 2, 'Lapar', -6.88667631149292, 107.6164022, '2017-09-19', '2017-09-21', '10824.jpg', NULL, 1, 70000, 'paid'),
 (3, '10001', '2017-09-16', '02:47:29', 4, 'Lapar', -6.886645793914795, 107.6163899, '2017-09-16', '2017-09-18', '10824.jpg', NULL, NULL, NULL, NULL),
 (5, '10001', '2017-09-25', '03:32:00', 2, '', -6.886944770812988, 107.61681139999999, '2017-09-28', '2017-09-28', NULL, NULL, 1, 70000, 'paid'),
-(6, '14048', '2017-09-26', '06:37:06', 2, 'kangen mama', -6.8868794441223145, 107.61689009999999, '2017-09-28', '2017-09-28', NULL, NULL, 3, 80000, 'paid'),
-(7, '14048', '2017-09-26', '07:35:25', 1, '', 0, 0, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
-(8, '14048', '2017-09-26', '07:56:38', 1, '', -6.8869053, 107.61686639999999, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
-(9, '14048', '2017-09-26', '07:58:52', 1, '', -6.8868799, 107.61689, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
-(10, '14048', '2017-09-26', '08:00:46', 1, '', -6.8869359, 107.6168558, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
-(11, '14048', '2017-09-26', '08:03:31', 1, '', -6.8868796, 107.61689, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
-(12, '14048', '2017-09-26', '08:09:24', 1, '', -6.8869242999999996, 107.6168615, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
-(13, '14048', '2017-09-26', '08:10:25', 1, '', -6.886879400000001, 107.61689, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
-(14, '14048', '2017-09-26', '08:10:51', 3, 'ingat mama', -6.886908699999999, 107.61686139999999, '2017-09-28', '2017-09-28', NULL, NULL, NULL, NULL, NULL),
-(15, '14048', '2017-09-26', '08:36:44', 1, '', -6.8868796, 107.61689249999999, '2017-09-26', '2017-09-26', NULL, NULL, 3, 80000, 'paid'),
 (16, '10001', '2017-09-27', '13:36:46', 1, '', -6.8869682999999995, 107.6168591, '2017-09-27', '2017-09-27', NULL, NULL, 1, 70000, 'paid'),
 (18, '10001', '2017-09-28', '04:32:51', 3, 'Demam Malaria coy', -6.8869071, 107.6168537, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
 (19, '10001', '2017-09-28', '04:45:34', 3, 'Gersang sekali', -6.8868604, 107.6168778, '2017-09-28', '2017-09-28', '10823.jpg', NULL, NULL, NULL, NULL),
@@ -141,53 +280,21 @@ INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `stat
 (90, '10001', '2017-10-04', '18:53:36', 5, 'keliling Indonesia', -6.886980599999999, 107.616878, '2017-10-12', '2017-10-13', NULL, NULL, 1, 70000, 'paid'),
 (91, '10001', '2017-10-04', '18:55:27', 5, 'keliling Jawa Barat', -6.8870099, 107.61685609999999, '2017-10-13', '2017-10-14', NULL, NULL, 1, 70000, 'paid'),
 (92, '10001', '2017-10-04', '21:04:44', 1, '', -6.8870394, 107.61685399999999, '2017-10-04', '2017-10-04', NULL, NULL, 1, 70000, 'paid'),
-(93, '62541', '2017-10-04', '23:05:59', 1, '', -6.8869825, 107.61686429999999, '2017-10-04', '2017-10-04', NULL, NULL, 4, 80000, 'paid'),
-(94, '62541', '2017-10-04', '23:07:53', 1, '', -6.8870192999999995, 107.6168781, '2017-10-04', '2017-10-04', NULL, NULL, 4, 80000, 'paid'),
-(95, '62541', '2017-10-04', '23:08:17', 2, 'Menangis untuk menang', -6.8869003, 107.61687789999999, '2017-10-04', '2017-10-04', NULL, NULL, 4, 80000, 'paid'),
 (96, '10001', '2017-10-05', '01:01:04', 3, 'demam malaria', -6.8869956, 107.61687789999999, '2017-10-05', '2017-10-07', NULL, NULL, NULL, NULL, NULL),
 (97, '10001', '2017-10-05', '15:43:41', 2, 'bebas', -6.890119299999999, 107.58022749999999, '2017-10-05', '2017-10-05', NULL, NULL, 1, 70000, 'paid'),
 (98, '10001', '2017-10-05', '15:45:01', 4, 'lapar', -6.890159499999999, 107.58021869999999, '2017-10-05', '2017-10-05', NULL, NULL, NULL, NULL, NULL),
-(99, '27225', '2017-10-05', '16:00:03', 2, 'Sosialisasi SMIT AL marjan', -6.8902135, 107.580222, '2017-10-05', '2017-10-05', NULL, NULL, 11, 90000, 'paid'),
 (100, '10001', '2017-10-05', '16:00:53', 4, 'bebaskahsaja', -6.8902188803272795, 107.58023928270545, '2017-10-05', '2017-10-05', NULL, NULL, NULL, NULL, NULL),
-(101, '27225', '2017-10-05', '16:01:20', 2, 'Sosialisasi sd almarjan', -6.8902007, 107.580242, '2017-10-05', '2017-10-05', NULL, NULL, 11, 90000, 'paid'),
-(102, '27225', '2017-10-05', '16:03:29', 3, 'Demam', -6.8902313, 107.5802305, '2017-10-05', '2017-10-05', NULL, NULL, NULL, NULL, NULL),
-(103, '27225', '2017-10-05', '16:06:50', 4, 'Keperluan keluarga', -6.8902217, 107.5802189, '2017-10-05', '2017-10-05', NULL, NULL, NULL, NULL, NULL),
-(104, '27225', '2017-10-05', '16:09:03', 5, 'Istri melahirkan', -6.8902217, 107.5802189, '2017-10-05', '2017-10-19', NULL, NULL, 11, 90000, 'paid'),
 (122, '10001', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 1, 70000, 'paid'),
-(123, '14048', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 3, 80000, 'paid'),
-(124, '27225', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 11, 90000, 'paid'),
-(125, '62541', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 4, 80000, 'paid'),
-(126, '72555', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 6, 65000, 'paid'),
-(127, '87553', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 9, 60000, 'paid'),
 (129, '90706', '2017-10-09', '23:58:17', 1, '', -6.8869112, 107.6168524, '2017-10-09', '2017-10-09', NULL, NULL, 5, 70000, 'paid'),
 (130, '10001', '2017-10-11', '00:22:03', 1, '', -6.8868488999999995, 107.6167905, '2017-10-11', '2017-10-11', NULL, NULL, 1, 70000, 'paid'),
-(132, '14048', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, '2017-10-11', '2017-10-11', NULL, NULL, 3, 80000, 'paid'),
-(134, '62541', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, '2017-10-11', '0000-00-00', NULL, NULL, 4, 80000, 'paid'),
 (138, '90706', '2017-10-11', '00:24:53', 1, '', -6.8869112, 107.6168524, '2017-10-11', '2017-10-11', NULL, NULL, 5, 70000, 'paid'),
-(140, '14048', '2017-10-11', '10:37:19', 1, '', -6.8868408, 107.6168169, '2017-10-11', '2017-10-11', NULL, NULL, 3, 80000, 'paid'),
-(141, '14048', '2017-10-11', '11:13:22', 3, 'Malaria', -6.8868477, 107.6167929, '2017-10-11', '2017-10-11', NULL, NULL, NULL, NULL, NULL),
 (151, '10001', '2017-10-12', '14:37:05', 1, '', -6.886879400000001, 107.6167605, '2017-10-12', '2017-10-12', NULL, NULL, 1, 70000, 'paid'),
 (169, '10001', '2017-10-12', '16:14:33', 3, 'malaria', -6.8901569, 107.58022179999999, '2017-10-12', '2017-10-12', NULL, NULL, NULL, NULL, NULL),
 (170, '10001', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 1, 70000, 'paid'),
-(171, '14048', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 3, 80000, 'paid'),
-(172, '27225', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 11, 90000, 'paid'),
-(173, '62541', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 4, 80000, 'paid'),
-(174, '72555', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 6, 65000, 'paid'),
-(175, '87553', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 9, 60000, 'paid'),
 (177, '90706', '2017-10-12', '16:36:46', 1, '', -6.8869112, 107.6168524, '2017-10-12', '2017-10-12', NULL, NULL, 5, 70000, 'paid'),
 (178, '10001', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 1, 70000, 'paid'),
-(179, '14048', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 3, 80000, 'paid'),
-(180, '27225', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 11, 90000, 'paid'),
-(181, '62541', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 4, 80000, 'paid'),
-(182, '72555', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 6, 65000, 'paid'),
-(183, '87553', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 9, 60000, 'paid'),
 (185, '90706', '2017-10-13', '12:14:40', 1, '', -6.8869112, 107.6168524, '2017-10-13', '2017-10-13', NULL, NULL, 5, 70000, 'paid'),
 (186, '10001', '2017-10-13', '20:06:45', 3, 'demam', -6.8869073, 107.61675489999999, '2017-10-13', '2017-10-13', NULL, NULL, NULL, NULL, NULL),
-(188, '14048', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, 3, 80000, 'paid'),
-(189, '27225', '2017-10-14', '08:39:05', 6, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, NULL, NULL, NULL),
-(190, '62541', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, 4, 80000, 'paid'),
-(191, '72555', '2017-10-14', '08:39:05', 5, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, 6, 65000, 'paid'),
-(192, '87553', '2017-10-14', '08:39:05', 1, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, 9, 60000, 'paid'),
 (194, '90706', '2017-10-14', '08:39:05', 3, '', -6.8869112, 107.6168524, '2017-10-14', '2017-10-14', NULL, NULL, NULL, NULL, 'paid'),
 (195, '10001', '2017-10-14', '08:41:28', 4, 'malaria 3', -6.886863000000001, 107.616813, '2017-10-14', '2017-10-14', NULL, NULL, NULL, NULL, NULL),
 (196, '10001', '2017-10-15', '14:06:25', 1, '', -6.8869273, 107.61675249999999, '2017-10-15', '2017-10-15', NULL, NULL, 1, 70000, 'paid'),
@@ -226,12 +333,6 @@ INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `stat
 (791, '10001', '2017-10-31', '21:50:15', 3, 'tes', -6.8868478, 107.61653419999999, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
 (792, '10001', '2017-10-31', '21:50:53', 4, 'tes', -6.8868445, 107.6165164, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
 (793, '10001', '2017-10-31', '21:51:14', 2, 'tes', -6.886859899999999, 107.6165284, '2017-10-31', '2017-10-31', NULL, NULL, 1, 70000, 'paid'),
-(794, '14048', '2017-10-31', '22:18:50', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
-(795, '27225', '2017-10-31', '22:18:50', 6, 'tes', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
-(796, '62541', '2017-10-31', '22:18:50', 3, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
-(797, '72555', '2017-10-31', '22:18:50', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
-(798, '87553', '2017-10-31', '22:18:50', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
-(799, '88863', '2017-10-31', '22:18:51', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
 (800, '90706', '2017-10-31', '22:18:51', 6, '', NULL, NULL, '2017-10-31', '2017-10-31', NULL, NULL, NULL, NULL, NULL),
 (930, '10001', '2017-11-04', '15:14:56', 2, 'tes', -6.8869221, 107.6167918, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
 (931, '10001', '2017-11-04', '15:15:10', 1, NULL, -6.8869665, 107.616751, '2017-11-04', '2017-11-04', NULL, NULL, 1, 70000, 'paid'),
@@ -386,8 +487,7 @@ INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `stat
 (1088, '10001', '2017-11-05', '18:54:33', 3, 'siap\\r\\n', -6.886820352353248, 107.61684233174762, '1970-01-01', '1970-01-01', '20171105185433.jpeg', NULL, NULL, NULL, NULL),
 (1089, '10001', '2017-11-05', '18:55:47', 1, NULL, -6.88682073529552, 107.61684322890892, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
 (1090, '10001', '2017-11-05', '18:56:48', 2, 'jgn gitu', -6.886820348541906, 107.61684232700638, '2017-11-05', '2017-11-05', '20171105185648.jpeg', NULL, 1, 70000, 'paid'),
-(1091, '10001', '2017-11-05', '19:01:01', 2, 'tes', -6.886820325588906, 107.61684227347308, '2017-11-05', '2017-11-05', '20171105190101.jpeg', NULL, 1, 70000, 'paid');
-INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `status_id`, `keterangan`, `latitude`, `longitude`, `tgl_awal`, `tgl_akhir`, `foto_lokasi`, `rencana_id`, `credit_id`, `credit_in`, `credit_stat`) VALUES
+(1091, '10001', '2017-11-05', '19:01:01', 2, 'tes', -6.886820325588906, 107.61684227347308, '2017-11-05', '2017-11-05', '20171105190101.jpeg', NULL, 1, 70000, 'paid'),
 (1092, '10001', '2017-11-05', '19:04:32', 5, 'ya gitu deh', -6.886820435970539, 107.61684253089558, '1970-01-01', '1970-01-01', '20171105190432.jpeg', NULL, 1, 70000, 'paid'),
 (1093, '10001', '2017-11-05', '19:38:35', 1, NULL, -6.88688, 107.6168553, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'paid'),
 (1094, '90706', '2017-11-05', '20:33:24', 1, NULL, -6.886820435970539, 107.61684253089558, '2017-11-05', '2017-11-05', NULL, NULL, 1, 70000, 'unpaid'),
@@ -412,11 +512,247 @@ INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `stat
 (1116, '10001', '2017-11-11', '19:49:20', 1, '', -6.8868585, 107.6168342, '1970-01-01', '1970-01-01', '20171111194920.jpg', NULL, 1, 70000, 'paid'),
 (1117, '10001', '2017-11-11', '19:50:05', 3, 'tes', -6.8868456, 107.61683500000001, '1970-01-01', '1970-01-01', '20171111195005.jpg', NULL, NULL, NULL, NULL),
 (1118, '10001', '2017-11-11', '19:55:44', 3, 'menangis', -6.8869703, 107.61673669999999, '2017-11-11', '2017-11-11', '20171111195544.png', NULL, NULL, NULL, NULL),
-(1119, '10001', '2017-11-11', '19:57:15', 4, 'tes', -6.886857099999999, 107.6168378, '2017-11-11', '2017-11-18', '20171111195715.png', NULL, NULL, NULL, NULL);
+(1119, '10001', '2017-11-11', '19:57:15', 4, 'tes', -6.886857099999999, 107.6168378, '2017-11-11', '2017-11-18', '20171111195715.png', NULL, NULL, NULL, NULL),
+(1182, '10001', '2017-11-27', '03:27:20', 2, 'tes', -6.2087634, 106.84559899999999, '2017-11-27', '2017-11-27', NULL, NULL, 1, 97000, 'paid'),
+(1183, '90706', '2017-11-27', '06:33:54', 2, NULL, -6.2087634, 106.84559899999999, NULL, NULL, NULL, NULL, 47, 87000, 'unpaid'),
+(1184, '90706', '2017-11-27', '06:34:01', 2, NULL, -6.2087634, 106.84559899999999, NULL, NULL, NULL, NULL, 47, 87000, 'unpaid'),
+(1185, '90706', '2017-11-27', '06:35:34', 2, NULL, -6.2087634, 106.84559899999999, NULL, NULL, NULL, NULL, 47, 87000, 'unpaid'),
+(1186, '10001', '2017-11-27', '06:42:15', 7, 'hujan', -6.2087634, 106.84559899999999, '2017-11-27', '2017-11-27', '20171127064215.jpg', NULL, 1, 87000, 'paid'),
+(1187, '90706', '2017-11-27', '06:43:59', 2, NULL, -6.2087634, 106.84559899999999, NULL, NULL, NULL, NULL, 47, 87000, 'unpaid'),
+(1188, '90706', '2017-11-27', '06:44:17', 2, 'tes', -6.2087634, 106.84559899999999, '2017-11-27', '2017-11-27', '20171127064417.jpg', NULL, 47, 87000, 'unpaid'),
+(1189, '90706', '2017-11-27', '06:45:48', 3, 'tes', -6.2087634, 106.84559899999999, '2017-11-27', '2017-11-27', NULL, NULL, NULL, NULL, NULL),
+(1190, '10001', '2017-11-27', '07:15:06', 7, 'tes', -6.642398699999999, 106.80537079999999, '2017-11-27', '2017-11-27', NULL, NULL, 1, 40000, 'paid'),
+(1191, '10001', '2017-11-27', '07:15:59', 2, 'tes', -6.6424021, 106.8054732, '2017-11-27', '2017-11-27', NULL, NULL, 1, 50000, 'paid'),
+(1192, '10001', '2017-11-27', '07:20:32', 7, 'tes', -6.2087634, 106.84559899999999, '2017-11-27', '2017-11-27', '20171127072032.jpeg', NULL, 1, 40000, 'paid'),
+(1193, '90706', '2017-11-27', '08:51:08', 2, 'tes123', -6.642373399999999, 106.8055151, '2017-11-27', '2017-11-27', NULL, NULL, 47, 87000, 'unpaid'),
+(1194, '90706', '2017-11-27', '08:59:45', 2, 'lapaar', -6.642400899999999, 106.80547179999999, '2017-11-27', '2017-11-27', NULL, NULL, 47, 100000, 'unpaid'),
+(1195, '90706', '2017-11-27', '09:00:10', 7, 'lapar 3', -6.6423673, 106.8055105, '2017-11-27', '2017-11-27', NULL, NULL, NULL, NULL, NULL),
+(1196, '10001', '2017-11-27', '18:02:00', 2, 'tes', -6.6423552, 106.8055668, '2017-11-27', '2017-11-27', NULL, NULL, 1, 50000, 'paid'),
+(1197, '10001', '2017-11-27', '18:07:03', 2, 'rwa', -6.6423809, 106.805567, '2017-11-27', '2017-11-27', NULL, NULL, 1, 50000, 'paid'),
+(1198, '10001', '2017-11-27', '18:08:39', 3, 'tes', -6.6423549, 106.8055667, '2017-11-27', '2017-11-27', NULL, NULL, NULL, NULL, NULL),
+(1199, '10001', '2017-11-27', '18:13:32', 2, 'fsffsdf', -6.6423549, 106.80556659999999, '2017-11-27', '2017-11-27', NULL, NULL, 1, 50000, 'paid'),
+(1200, '10001', '2017-11-27', '18:14:36', 4, 'svsdvdsdsc', -6.6423549, 106.80556659999999, '2017-11-27', '2017-11-27', '20171127181436.jpg', NULL, NULL, NULL, NULL);
+INSERT INTO `tb_detail_absen` (`id`, `id_anggota`, `tanggal`, `jam_masuk`, `status_id`, `keterangan`, `latitude`, `longitude`, `tgl_awal`, `tgl_akhir`, `foto_lokasi`, `rencana_id`, `credit_id`, `credit_in`, `credit_stat`) VALUES
+(1201, '10001', '2017-11-27', '18:16:24', 4, 'ompa', -6.642353, 106.8055679, '2017-11-27', '2017-11-27', '20171127181624.png', NULL, NULL, NULL, NULL),
+(1202, '10001', '2017-11-27', '18:17:31', 7, 'ffhfjf', -6.642354399999999, 106.8055682, '2017-11-27', '2017-11-27', NULL, NULL, 1, 40000, 'paid'),
+(1203, '10001', '2017-11-27', '19:33:43', 3, 'tes', -6.642354399999999, 106.80556969999999, '2017-11-27', '2017-12-01', NULL, NULL, NULL, NULL, NULL),
+(1204, '10001', '2017-11-27', '19:39:59', 2, 'tess', -6.6423549, 106.8055667, '2017-11-27', '2017-11-27', NULL, NULL, 1, 50000, 'paid'),
+(1205, '10001', '2017-11-27', '19:45:15', 3, 'fsdfs', -6.6423549, 106.8055662, '2017-11-27', '2017-11-27', NULL, NULL, NULL, NULL, NULL),
+(1206, '10001', '2017-11-27', '19:45:34', 3, 'sfvfdvvdf', -6.6423549, 106.80556659999999, '2017-11-27', '2017-12-02', NULL, NULL, NULL, NULL, NULL),
+(1207, '10001', '2017-11-27', '19:46:34', 3, 'fsfs', -6.6423540999999995, 106.8055695, '2017-11-27', '2017-12-07', NULL, NULL, NULL, NULL, NULL),
+(1208, '10001', '2017-11-27', '22:36:13', 4, 'wfrfd', -6.2087634, 106.84559899999999, '2017-11-27', '2017-11-27', NULL, NULL, NULL, NULL, NULL),
+(1209, '10001', '2017-11-27', '22:36:57', 4, 'sdfdsdf', -6.2087634, 106.84559899999999, '2017-11-27', '2017-11-30', NULL, NULL, NULL, NULL, NULL),
+(1210, '10001', '2017-11-27', '22:37:36', 5, 'dsfsfsd', -6.2087634, 106.84559899999999, '2017-11-27', '2017-11-30', '20171127223736.jpg', NULL, 1, 50000, 'paid'),
+(1293, '90706', '2017-11-28', '10:05:01', 7, 'dsfsfsdfs', -6.6423673, 106.8055108, '2017-11-28', '2017-11-28', '20171128100501.jpg', NULL, 47, 90000, 'unpaid'),
+(1294, '10001', '2017-11-28', '15:24:05', 2, 'sdfdsf', -6.2087634, 106.84559899999999, '2017-11-28', '2017-11-28', NULL, NULL, 1, 50000, 'unpaid');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_jabatan`
+--
+
+CREATE TABLE `tb_jabatan` (
+  `id_jabatan` varchar(3) NOT NULL,
+  `jabatan` varchar(50) NOT NULL,
+  `gaji` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_jabatan`
+--
+
+INSERT INTO `tb_jabatan` (`id_jabatan`, `jabatan`, `gaji`) VALUES
+('002', 'System Analyst', 3500000),
+('004', 'Researcher', 3900000),
+('111', 'Admin', 3900000),
+('135', 'Bendahara', 3000000),
+('468', 'Android Developer', 3500000),
+('541', 'UI/UX Designer', 3250000),
+('557', 'Web Developer', 3300000),
+('571', 'CEO ', 5000000),
+('847', 'CTO', 4850000);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_jenistransaksi`
+--
+
+CREATE TABLE `tb_jenistransaksi` (
+  `id_jenis` varchar(6) NOT NULL,
+  `jenis` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_jenistransaksi`
+--
+
+INSERT INTO `tb_jenistransaksi` (`id_jenis`, `jenis`) VALUES
+('TR-01', 'Bayar Listrik'),
+('TR-02', 'Bayar Air Minum'),
+('TR-03', 'Bayar Sampah'),
+('TR-04', 'Bayar ART'),
+('TR-05', 'Bayar Transport'),
+('TR-06', 'Bayar Konsumsi');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_konfigurasi_kakatu`
+--
+
+CREATE TABLE `tb_konfigurasi_kakatu` (
+  `id` int(11) NOT NULL,
+  `email_admin` varchar(255) NOT NULL,
+  `pass_email` varchar(255) NOT NULL,
+  `secret_key` varchar(255) NOT NULL,
+  `secret_iv` varchar(255) NOT NULL,
+  `api_key_google` varchar(255) NOT NULL,
+  `tanggal_set` date NOT NULL,
+  `jam_set` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_konfigurasi_kakatu`
+--
+
+INSERT INTO `tb_konfigurasi_kakatu` (`id`, `email_admin`, `pass_email`, `secret_key`, `secret_iv`, `api_key_google`, `tanggal_set`, `jam_set`) VALUES
+(15, 'kakatukantor123@gmail.com', 'rizki123', '#k@KaTu_1nT3rNEt_$3H@t', '#k1N3sH_kR3at1F_iDe@tA', 'AIzaSyD1FadhBxVxaMyPiKI5R9otXTH9xP4lltQ', '2017-11-28', '15:23:08');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_konfirmasi`
+--
+
+CREATE TABLE `tb_konfirmasi` (
+  `id_pembayaran` varchar(5) NOT NULL,
+  `id_anggota` varchar(5) NOT NULL,
+  `konfirm_anggota` varchar(1) NOT NULL,
+  `konfirm_admin` varchar(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_konfirmasi`
+--
+
+INSERT INTO `tb_konfirmasi` (`id_pembayaran`, `id_anggota`, `konfirm_anggota`, `konfirm_admin`) VALUES
+('40467', '90706', '0', '2'),
+('60195', '90706', '0', '2'),
+('87738', '90706', '0', '0'),
+('97130', '90706', '0', '0'),
+('15665', '90706', '0', '2'),
+('65336', '90706', '0', '2');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_pembayaran`
+--
+
+CREATE TABLE `tb_pembayaran` (
+  `id_pembayaran` varchar(5) NOT NULL,
+  `id_anggota` varchar(5) NOT NULL,
+  `tanggal` datetime NOT NULL,
+  `id_jenis` varchar(5) NOT NULL,
+  `nominal` varchar(9) NOT NULL,
+  `keterangan` varchar(1000) NOT NULL,
+  `status` varchar(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_pembayaran`
+--
+
+INSERT INTO `tb_pembayaran` (`id_pembayaran`, `id_anggota`, `tanggal`, `id_jenis`, `nominal`, `keterangan`, `status`) VALUES
+('15665', '90706', '2017-10-09 18:40:28', 'TR-01', '68000', 'hararta', '1'),
+('40467', '90706', '2017-09-16 21:41:21', 'TR-03', '300', 'Bayar cash', '1'),
+('43240', '90706', '2017-09-16 21:44:44', 'TR-05', '400', 'Bayar cash', '2'),
+('60195', '90706', '2017-09-16 22:19:05', 'TR-03', '300', 'Cash', '1'),
+('65336', '90706', '2017-10-09 19:03:46', 'TR-06', '46000', 'lapar', '1'),
+('87738', '90706', '2017-10-09 18:08:10', 'TR-03', '65000', 'Cash', '0'),
+('91916', '90706', '2017-11-28 09:13:03', 'TR-03', '40000', 'cash', '2'),
+('97130', '90706', '2017-10-09 18:18:19', 'TR-04', '52000', 'Cash langsung', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `tb_tgllibur`
+--
+
+CREATE TABLE `tb_tgllibur` (
+  `id` int(4) NOT NULL,
+  `nama_libur` varchar(50) NOT NULL,
+  `tglawal` date DEFAULT NULL,
+  `tglakhir` date DEFAULT NULL,
+  `jmlhari` mediumint(8) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_tgllibur`
+--
+
+INSERT INTO `tb_tgllibur` (`id`, `nama_libur`, `tglawal`, `tglakhir`, `jmlhari`) VALUES
+(1, 'Hari Natal', '2017-12-12', '2017-12-14', 3),
+(2, 'Tahun Baru 2018', '2018-01-01', '2018-01-04', 1),
+(8, 'Libur Kantor', '2017-11-07', '2017-11-08', 2),
+(9, 'Idul Adha', '2017-10-02', '2017-10-03', 2),
+(10, 'nyoba 1', '2017-11-01', '2017-11-02', 2),
+(11, 'nyoba 2', '2017-10-26', '2017-10-28', 3);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `jabatan_anggota`
+--
+ALTER TABLE `jabatan_anggota`
+  ADD KEY `id_anggota` (`id_anggota`),
+  ADD KEY `id_jabatan` (`id_jabatan`);
+
+--
+-- Indexes for table `tb_absen`
+--
+ALTER TABLE `tb_absen`
+  ADD PRIMARY KEY (`status_id`);
+
+--
+-- Indexes for table `tb_anggota`
+--
+ALTER TABLE `tb_anggota`
+  ADD PRIMARY KEY (`id_anggota`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `tb_buktipembayaran`
+--
+ALTER TABLE `tb_buktipembayaran`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_pembayaran` (`id_pembayaran`);
+
+--
+-- Indexes for table `tb_credits_anggota`
+--
+ALTER TABLE `tb_credits_anggota`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_anggota` (`id_anggota`);
+
+--
+-- Indexes for table `tb_cronjob_rencana_absen`
+--
+ALTER TABLE `tb_cronjob_rencana_absen`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_anggota` (`id_anggota`),
+  ADD KEY `status_id` (`status_id`);
+
+--
+-- Indexes for table `tb_cuti_anggota`
+--
+ALTER TABLE `tb_cuti_anggota`
+  ADD PRIMARY KEY (`id_cuti`),
+  ADD UNIQUE KEY `id_anggota` (`id_anggota`);
 
 --
 -- Indexes for table `tb_detail_absen`
@@ -429,27 +765,152 @@ ALTER TABLE `tb_detail_absen`
   ADD KEY `credit_id` (`credit_id`);
 
 --
+-- Indexes for table `tb_jabatan`
+--
+ALTER TABLE `tb_jabatan`
+  ADD PRIMARY KEY (`id_jabatan`);
+
+--
+-- Indexes for table `tb_jenistransaksi`
+--
+ALTER TABLE `tb_jenistransaksi`
+  ADD PRIMARY KEY (`id_jenis`);
+
+--
+-- Indexes for table `tb_konfigurasi_kakatu`
+--
+ALTER TABLE `tb_konfigurasi_kakatu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tb_konfirmasi`
+--
+ALTER TABLE `tb_konfirmasi`
+  ADD KEY `fk_idbayar` (`id_pembayaran`);
+
+--
+-- Indexes for table `tb_pembayaran`
+--
+ALTER TABLE `tb_pembayaran`
+  ADD PRIMARY KEY (`id_pembayaran`),
+  ADD KEY `id_anggota` (`id_anggota`),
+  ADD KEY `id_jenis` (`id_jenis`);
+
+--
+-- Indexes for table `tb_tgllibur`
+--
+ALTER TABLE `tb_tgllibur`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `tb_absen`
+--
+ALTER TABLE `tb_absen`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `tb_buktipembayaran`
+--
+ALTER TABLE `tb_buktipembayaran`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tb_credits_anggota`
+--
+ALTER TABLE `tb_credits_anggota`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+
+--
+-- AUTO_INCREMENT for table `tb_cronjob_rencana_absen`
+--
+ALTER TABLE `tb_cronjob_rencana_absen`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tb_cuti_anggota`
+--
+ALTER TABLE `tb_cuti_anggota`
+  MODIFY `id_cuti` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tb_detail_absen`
 --
 ALTER TABLE `tb_detail_absen`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1182;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1295;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for table `tb_konfigurasi_kakatu`
+--
+ALTER TABLE `tb_konfigurasi_kakatu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `tb_tgllibur`
+--
+ALTER TABLE `tb_tgllibur`
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `tb_detail_absen`
+-- Ketidakleluasaan untuk tabel `jabatan_anggota`
+--
+ALTER TABLE `jabatan_anggota`
+  ADD CONSTRAINT `fk_id-anggota` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_id-jabatan` FOREIGN KEY (`id_jabatan`) REFERENCES `tb_jabatan` (`id_jabatan`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_buktipembayaran`
+--
+ALTER TABLE `tb_buktipembayaran`
+  ADD CONSTRAINT `fk_idpembayaran` FOREIGN KEY (`id_pembayaran`) REFERENCES `tb_pembayaran` (`id_pembayaran`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_credits_anggota`
+--
+ALTER TABLE `tb_credits_anggota`
+  ADD CONSTRAINT `tb_credits_anggota_ibfk_1` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_cronjob_rencana_absen`
+--
+ALTER TABLE `tb_cronjob_rencana_absen`
+  ADD CONSTRAINT `tb_cronjob_rencana_absen_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `tb_absen` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tb_cronjob_rencana_absen_ibfk_2` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_cuti_anggota`
+--
+ALTER TABLE `tb_cuti_anggota`
+  ADD CONSTRAINT `tb_cuti_anggota_ibfk_1` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_detail_absen`
 --
 ALTER TABLE `tb_detail_absen`
   ADD CONSTRAINT `ibfk_idanggota3` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tb_detail_absen_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `tb_absen` (`status_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tb_detail_absen_ibfk_2` FOREIGN KEY (`rencana_id`) REFERENCES `tb_cronjob_rencana_absen` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tb_detail_absen_ibfk_3` FOREIGN KEY (`credit_id`) REFERENCES `tb_credits_anggota` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_konfirmasi`
+--
+ALTER TABLE `tb_konfirmasi`
+  ADD CONSTRAINT `ibfk_idbayar` FOREIGN KEY (`id_pembayaran`) REFERENCES `tb_pembayaran` (`id_pembayaran`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `tb_pembayaran`
+--
+ALTER TABLE `tb_pembayaran`
+  ADD CONSTRAINT `fk_idanggota` FOREIGN KEY (`id_anggota`) REFERENCES `tb_anggota` (`id_anggota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_idjenis` FOREIGN KEY (`id_jenis`) REFERENCES `tb_jenistransaksi` (`id_jenis`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

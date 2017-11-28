@@ -1,4 +1,8 @@
+
+ 
 $(function () {
+  //console.log("tai");
+ 
   window.checkAbsensi = function () {
     $.ajax({
       type: "post",
@@ -66,6 +70,7 @@ $(function () {
       },
       success: function (data) {
         $('#address_hadirdiluar').val(data);
+        $('#address_kerjaremote').val(data);
         $('#address_sakit').val(data);
         $('#address_izin').val(data);
         $('#address_cuti').val(data)
@@ -80,6 +85,7 @@ $(function () {
     $('#submit_sakit_form').removeAttr("disabled");
     $('#submit_izin_form').removeAttr("disabled");
     $('#submit_cuti_form').removeAttr("disabled");
+    $('#submit_kerjaremote_form').removeAttr("disabled");
   }
   function showError(error) {
     switch (error.code) {
@@ -202,6 +208,7 @@ $(function () {
           // .hide() Semua legend pada Donut Chart.js sebelum dimunculkan lagi
           $('#listHadir').hide();
           $('#listHadirDiluar').hide();
+          $('#listKerjaRemote').hide();
           $('#listSakit').hide();
           $('#listIzin').hide();
           $('#listCuti').hide();
@@ -232,6 +239,10 @@ $(function () {
                 case "Cuti":
                   $('#listCuti').show();
                   $('#jumcuti').text(data[index].value);
+                  break;
+                case "Kerja Remote":
+                  $('#listKerjaRemote').show();
+                  $('#jumkerjaremote').text(data[index].value);
                   break;
                 case "Alpha":
                   $('#listAlpha').show();
@@ -526,6 +537,11 @@ $(function () {
         $("#insert").attr("class", "btn btn-success");
         break;
       case 6:
+        $("#status_id_adminEdit").attr("class", "form-control btn-default");
+        $("#keterangan_absen").prop('disabled', false);
+        $("#insert").attr("class", "btn btn-default");
+        break;
+      case 7:
         $("#status_id_adminEdit").attr("class", "form-control btn-default");
         $("#keterangan_absen").prop('disabled', false);
         $("#insert").attr("class", "btn btn-default");
@@ -1384,7 +1400,7 @@ $(function () {
     if (!ket.length) {
       //$("#keterangan_hadirdiluar").focus();
       bootbox.prompt({
-        title: "Keterangan Hadir diluar wajib diisi!",
+        title: "Keterangan Tugas Kantor wajib diisi!",
         inputType: 'textarea',
         callback: function (result) {
           $('#keterangan_hadirdiluar').val(result);
@@ -1543,10 +1559,10 @@ $(function () {
         dataType: "json",
         success: function (dt) {
           //console.log(dt.errmsg);
-          ///console.log(dt);
+          //console.log("Isi: "+dt);
           //alert(dt.errmsg);
           if (dt.errmsg === null) {
-            console.log("Foto: " + dt.scsmsg);
+            //console.log("Foto: " + dt.scsmsg);
             $('#myModal_izin').modal('toggle');
             pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
           } else {
@@ -1554,9 +1570,25 @@ $(function () {
             alert(dt.errmsg);
           }
         },
-        error: function (dt) {
+        error: function (jqXHR, exception) {
           console.log("Error: \n");
-          console.log(dt);
+          var msg = '';
+          if (jqXHR.status === 0) {
+            msg = 'Not connect.\n Verify Network.';
+          } else if (jqXHR.status == 404) {
+            msg = 'Requested page not found. [404]';
+          } else if (jqXHR.status == 500) {
+            msg = 'Internal Server Error [500].';
+          } else if (exception === 'parsererror') {
+            msg = 'Requested JSON parse failed.';
+          } else if (exception === 'timeout') {
+            msg = 'Time out error.';
+          } else if (exception === 'abort') {
+            msg = 'Ajax request aborted.';
+          } else {
+            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+          }
+          console.log(msg);
         }
       });
     }
@@ -1603,7 +1635,7 @@ $(function () {
     fdata.append("keterangan_cuti", ket);
     fdata.append("tglRentangCuti", tgl);
     fdata.append("image_cuti", img);
-    console.log(fdata);
+    //console.log(fdata);
     if (!ket.length) {
       //$("#keterangan_hadirdiluar").focus();
       bootbox.prompt({
@@ -1624,10 +1656,10 @@ $(function () {
         dataType: "json",
         success: function (dt) {
           //console.log(dt.errmsg);
-          ///console.log(dt);
+          //console.log(dt);
           //alert(dt.errmsg);
           if (dt.errmsg === null) {
-            console.log("Foto: " + dt.scsmsg);
+            //console.log("Foto: " + dt.scsmsg);
             $('#myModal_izin').modal('toggle');
             pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
           } else {
@@ -1635,9 +1667,25 @@ $(function () {
             alert(dt.errmsg);
           }
         },
-        error: function (dt) {
+        error: function (jqXHR, exception) {
           console.log("Error: \n");
-          console.log(dt);
+          var msg = '';
+          if (jqXHR.status === 0) {
+            msg = 'Not connect.\n Verify Network.';
+          } else if (jqXHR.status == 404) {
+            msg = 'Requested page not found. [404]';
+          } else if (jqXHR.status == 500) {
+            msg = 'Internal Server Error [500].';
+          } else if (exception === 'parsererror') {
+            msg = 'Requested JSON parse failed.';
+          } else if (exception === 'timeout') {
+            msg = 'Time out error.';
+          } else if (exception === 'abort') {
+            msg = 'Ajax request aborted.';
+          } else {
+            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+          }
+          console.log(msg);
         }
       });
     }
@@ -1690,7 +1738,66 @@ $(function () {
       ajaxFormCuti(lat, lng, stat, ket, url, tgl, img);
     });
   });
-  //End Shown Modal Modal Cut
+  //End Shown Modal Modal Cuti
+
+  //Shown Modal Hadir Diluar
+  function ajaxFormKerjaRemote(lat, lng, stat, ket, url, img) {
+    var fdata = new FormData();
+    fdata.append("status", stat);
+    fdata.append("latitude", lat);
+    fdata.append("longitude", lng);
+    fdata.append("keterangan_kerjaremote", ket);
+    fdata.append("image_kerjaremote", img);
+    console.log(fdata);
+    if (!ket.length) {
+      //$("#keterangan_hadirdiluar").focus();
+      bootbox.prompt({
+        title: "Keterangan Kerja Remote wajib diisi!",
+        inputType: 'textarea',
+        callback: function (result) {
+          $('#keterangan_kerjaremote').val(result);
+        }
+      });
+    } else {
+      $.ajax({
+        type: "POST",
+        url: "ajax-proses/submit-absensi",
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: fdata,
+        dataType: "json",
+        success: function (dt) {
+          //console.log(dt.errmsg);
+          ///console.log(dt);
+          //alert(dt.errmsg);
+          if (dt.errmsg === null) {
+            console.log("Foto: " + dt.scsmsg);
+            $('#myModal_kerjaremote').modal('toggle');
+            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
+          } else {
+            console.log(dt.errmsg);
+            alert(dt.errmsg);
+          }
+        },
+        error: function (dt) {
+          console.log("Error: \n");
+          console.log(dt);
+        }
+      });
+    }
+  }
+  $('#submit_kerjaremote_modal').on('click', function () {
+    var stat = 7;
+    var lat = $('#latitude').val();
+    var lng = $('#longitude').val();
+    var url = "https://maps.google.com/?q=" + lat + "," + lng;
+    var ket = $('#keterangan_kerjaremote').val();
+    console.log(ket);
+    var img = $("#image_kerjaremote").get(0).files[0];
+    ajaxFormKerjaRemote(lat, lng, stat, ket, url, img);
+  });
+  //End Shown Modal Kerja Remote
 
   //End Event Show
 
@@ -1700,7 +1807,7 @@ $(function () {
   //Fungsi Pesan WA
   function pesanWA(nama, status, keterangan, tgl1, tgl2, sisacuti, url, foto) {
     //console.log("Status = "+status);
-    console.log("Foto1" + foto);
+    //console.log("Foto1" + foto);
     var tglskrg = new Date();
     var wa_msg = null;
     switch (status) {
@@ -1738,9 +1845,12 @@ $(function () {
       case "5":
         wa_msg = "CUTI" + "\n" + "Saya, " + nama + " mohon izin cuti dari tanggal " + tgl1 + " sampai " + tgl2 + " karena " + keterangan + ".Sisa cuti saya tahun " + tglskrg.getFullYear() + " ini <" + sisacuti + " hari \n" + url;
         break;
+      case "7":
+        wa_msg = "KERJA REMOTE" + "\n" + "Saya, " + nama + "  sedang kerja remote pada hari ini mulai pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes() + " karena " + keterangan + "\n" + url;
+        break;
     }
     wa_msg = window.encodeURIComponent(wa_msg);
-    console.log(wa_msg + "\n");
+    //console.log(wa_msg + "\n");
     wa_absen = "whatsapp://send?text=" + wa_msg;
     //console.log( wa_absen);
     //message: '<img alt="Tidak Ada Foto" src="dist/fotolokasi/'+dt.scsmsg+'" class="compress thumbnail img-responsive pop" style="height: 100px;width:100px;object-fit:cover;">'
@@ -1750,28 +1860,28 @@ $(function () {
     } else {
       formatPesan = "<h4>Absen Berhasil, " + nama + ".<br><br>Yuk share ke Whatsapp untuk absensi anda hari ini! </h4><br><br><h3>Share Sekarang?</h3>";
     }
-    bootbox.confirm({
+    bootbox.dialog({
       message: formatPesan,
+      closeButton: false,
       buttons: {
         confirm: {
           label: 'SHARE',
-          className: 'btn-success btn-sm'
-
-        }
-      },
-      callback: function (result) {
-        //console.log('This was logged in the callback: ' + result)
-        if (result) {
-          window.location = wa_absen
-          bootbox.alert({
-            size: "small",
-            message: "<h4>Terimakasih telah share ke WA</h4>",
-            callback: function () {
+          className: 'btn-success btn-sm',
+          callback: function (result) {
+            //console.log('This was logged in the callback: ' + result)
+            if (result) {
+              window.location = wa_absen
+              bootbox.alert({
+                size: "small",
+                message: "<h4>Terimakasih telah share ke WA</h4>",
+                callback: function () {
+                  window.location = "tampil/data-absensi"
+                }
+              })
+            } else {
               window.location = "tampil/data-absensi"
             }
-          })
-        } else {
-          window.location = "tampil/data-absensi"
+          }
         }
       }
     });
@@ -2323,15 +2433,7 @@ $(function () {
     'searching': true,
     'ordering': true,
     'info': true,
-    'autoWidth': false,
-    dom: 'Bfrtip',
-    buttons: [
-      { extend: 'copyHtml5', footer: true },
-      { extend: 'excelHtml5', footer: true },
-      { extend: 'csvHtml5', footer: true },
-      { extend: 'pdfHtml5', footer: true },
-      { extend: 'print', footer: true }
-    ]
+    'autoWidth': false
   })
 
   $('#table_jabatan').DataTable({
@@ -2547,6 +2649,9 @@ $(function () {
   });
   $(document).on('click', '#buttom_filter_status_view_all', function () {
     $('input[type="search"]').val('').keyup()
+  });
+  $(document).on('click', '#buttom_filter_status_kerja_remote', function () {
+    $('input[type="search"]').val('KERJA REMOTE').keyup()
   });
   //End Event Click Button Filter Absen
 });

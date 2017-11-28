@@ -21,7 +21,7 @@ if (!defined('DIDALAM_INDEX_PHP')) {
     include "pages/ajax/fetchdata/fetch_detail_absen.php";
 } elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "check-absen")) {
     include "pages/ajax/fetchdata/fetch_check_absensis_hari_ini.php";
-}
+} 
 //Ajax Proses
 elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-proses") && ($_GET["sidebar-menu"] == "submit-absensi")) {
     include_once "pages/ajax/proses/submit-absensi.php";
@@ -34,8 +34,17 @@ elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-proses") && ($_GET
 }
 //End Ajax Proses
 
-//Proses Submit
-//End Proses Submit
+//Proses CronJob
+elseif ((isset($_GET["action"])) && ($_GET["action"] == "cronjob-proses") && ($_GET["sidebar-menu"] == "notif-absen")) {
+    include_once "pages/cronjob/admin_absen_notif.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "cronjob-proses") && ($_GET["sidebar-menu"] == "auto-absen")) {
+    include_once "pages/cronjob/admin_auto_absen.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "cronjob-proses") && ($_GET["sidebar-menu"] == "auto-absen")) {
+    include_once "pages/cronjob/admin_auto_absen.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "cronjob-proses") && ($_GET["sidebar-menu"] == "auto-absen-alpha")) {
+    include_once "pages/cronjob/admin_auto_absen_alpha.php";
+}
+//End Proses CronJob
 else {
     ?>
 
@@ -54,6 +63,57 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="shortcut icon" href="dist/img/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="dist/img/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="dist/css/AdminLTE.css">
+        <!-- Overlay CSS -->
+        <link rel="stylesheet" href="dist/css/overlay.css">
+        <!-- Animate CSS -->
+        <link rel="stylesheet" href="dist/css/animate.css">
+        <!-- Image Prev CSS -->
+        <link rel="stylesheet" href="dist/css/img-prev.css">
+        <!-- Morris charts -->
+        <link rel="stylesheet" href="bower_components/morris.js/morris.css">
+        <!-- daterange picker -->
+        <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
+        <!-- iCheck for checkboxes and radio inputs -->
+        <link rel="stylesheet" href="plugins/iCheck/all.css">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="bower_components/select2/dist/css/select2.min.css">
+        <!-- DataTables -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.bootstrap.min.css" />
+        <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+        page. However, you can choose any other skin. Make sure you
+        apply the skin class to the body tag so the changes take effect. -->
+        <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+        <link rel="stylesheet" href="dist/css/profile.css">
+        <!-- fullCalendar -->
+        <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.min.css">
+        <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+        <!-- Google Font -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <style>
+            * {
+                /**border:1px dotted red;**/
+            }
+            @import url('https://fonts.googleapis.com/css?family=Dosis');
+        </style>
+
+       <link rel="shortcut icon" href="dist/img/favicon.ico" type="image/x-icon">
         <link rel="icon" href="dist/img/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
         <!-- Font Awesome -->
@@ -232,13 +292,13 @@ desired effect
     $jumlah3 = $values3['cuti_qty'] - $values3['cuti_used'];
     $_SESSION['sisacuti'] = $jumlah3;
     $id_anggota = $values1['id_anggota'];
-    if (strpos($_SESSION['jabatan'], 'Admin')!==false) {
+    if (strpos($_SESSION['jabatan'], 'Admin') !== false) {
         $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_pembayaran` WHERE `status`= '0'";
         $result = mysqli_query($koneksi, $sql);
         $values = mysqli_fetch_assoc($result);
         $jumlah = $values['jumlah'];
         $notif_string = "Ada " . $jumlah . " yang belum di reimbers";
-    } elseif (strpos($_SESSION['jabatan'], 'Admin')===false) {
+    } elseif (strpos($_SESSION['jabatan'], 'Admin') === false) {
         $sql = "SELECT COUNT(id_pembayaran) as jumlah FROM `tb_konfirmasi` WHERE `konfirm_admin`= '2' AND id_anggota = '$_SESSION[id_anggota]'";
         $result = mysqli_query($koneksi, $sql);
         $values = mysqli_fetch_assoc($result);
@@ -289,12 +349,12 @@ desired effect
                                                     <!-- start notification -->
                                                     <a href="tampil/list-bayar/notif">
                                                         <?php
-if (strpos($_SESSION['jabatan'], 'Admin')!==false) {
+if (strpos($_SESSION['jabatan'], 'Admin') !== false) {
         ?>
                                                             <i class="fa fa-book text-aqua" style="float: center;"></i>
                                                                                                 <?php echo $notif_string ?>
                                                             <?php
-} elseif (strpos($_SESSION['jabatan'], 'Admin')===false) {
+} elseif (strpos($_SESSION['jabatan'], 'Admin') === false) {
         ?>
                                                                 <i class="fa fa-book text-aqua" style="float: center;"></i>
                                                                                                     <?php echo $notif_string ?>
@@ -428,7 +488,7 @@ if ($values1['foto_profile'] != '-') {
                                         <span> Form Absensi</span>
                                     </a>
                                     <li>
-                                        <a href="tampil/data-absensi">
+                                        <a href="tampil/data-absensi-admin">
                                             <i class="fa fa-black-tie"></i> Data Absensi </a>
                                     </li>
                                     <li>
@@ -488,7 +548,7 @@ if ($values1['foto_profile'] != '-') {
             </aside>
 
         <?php
-if (strpos($_SESSION['jabatan'], 'Admin')===false) {
+if (strpos($_SESSION['jabatan'], 'Admin') === false) {
         ?>
                 <script type="text/javascript">
                     //document.getElementById('menu_absen').style.display="none";

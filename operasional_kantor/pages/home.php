@@ -175,7 +175,7 @@
 					  <h3 class="box-title">Statistik Absensi Hari Ini</h3>
 					  <div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						<button id="removeChartAbsensiHariIni" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+						<!--<button id="removeChartAbsensiHariIni" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>-->
 					  </div>
 					</div>
 					<div class="box-body">
@@ -188,7 +188,8 @@
 											  <li id="listSakit"><span class="list-inline-item label label-danger badge" id="jumsakit"></span>Sakit</li>
 											  <li id="listIzin"><span class="list-inline-item label label-warning badge" id="jumizin"></span>Izin</li>
 											  <li id="listCuti"><span class="list-inline-item label label-success badge" id="jumcuti"></span>Cuti</li>
-											  <li id="listAlpha"><span class="list-inline-item label label-default badge" id="jumalpha"></span>Alpha</li>
+                        <li id="listAlpha"><span class="list-inline-item label label-default badge" id="jumalpha"></span>Alpha</li>
+                        <li id="listKerjaRemote"><span class="list-inline-item label label-default badge" id="jumkerjaremote"></span>Kerja Remote</li>
 										  </ul>
 									  </div>
 									  <br>
@@ -226,7 +227,7 @@
 
 				  <div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-					<button id="removeChartJumlahOperasional" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>	
+					<!--<button id="removeChartJumlahOperasional" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>	-->
 				  </div>
 				</div>
 				<div class="box-body chart-responsive">
@@ -244,17 +245,17 @@
 
 					  <div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-            <button id="removeChartSatistikAbsensi" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+            <!--<button id="removeChartSatistikAbsensi" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>-->
 						</button>
 					  </div>
 					</div>
 					<div class="box-body">
 							  <ul class="chart-legend clearfix list-inline col-md-12 col-md-push-3">
-								<li><i class="fa fa-square text-aqua list-inline-item"></i>Hadir</li>
-								<li><i class="fa fa-square text-red list-inline-item"></i>Sakit</li>
-								<li><i class="fa fa-square text-yellow list-inline-item"></i>Izin</li>
-								<li><i class="fa fa-square text-green list-inline-item"></i>Cuti</li>
-								<li><i class="fa fa-square text-gray list-inline-item"></i>Alpha</li>
+                  <li><i class="fa fa-square text-aqua list-inline-item"></i>Hadir</li>
+                  <li><i class="fa fa-square text-red list-inline-item"></i>Sakit</li>
+                  <li><i class="fa fa-square text-yellow list-inline-item"></i>Izin</li>
+                  <li><i class="fa fa-square text-green list-inline-item"></i>Cuti</li>
+                  <li><i class="fa fa-square text-gray list-inline-item"></i>Alpha</li>
 							  </ul>
 							  <div class="chart-responsive">
 								<div class="chart" id="absen-chart" style="height: 300px;position: relative;"></div>
@@ -273,7 +274,6 @@
 				  <h3 class="box-title">Total Pengeluaran dari Pembayaran Operasional <?php if (strpos($_SESSION['jabatan'], 'Admin')===false){echo "Anda";}?> tahun <?php echo $year;?></h3>
 				  <div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-					<button id="removeChartTotalOperasional" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
 				  </div>
 				</div>
 				<div class="box-body chart-responsive">
@@ -292,7 +292,6 @@
 
 				  <div class="box-tools pull-right">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-					<button id="removeChartJumlahOperasional" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
 				  </div>
 				</div>
 				<div class="box-body chart-responsive">
@@ -305,7 +304,7 @@
 	   </div>
 </body>
         <?php
-          list($one, $two) = explode(",", $_SESSION['jabatan'], 2);
+          //list($one, $two) = explode(",", $_SESSION['jabatan'], 2);
 
         if (strpos($_SESSION['jabatan'], 'Admin')!==false) {
             ?>

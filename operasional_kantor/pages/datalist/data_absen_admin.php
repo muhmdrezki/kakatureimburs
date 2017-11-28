@@ -3,9 +3,9 @@ if (!defined('DIDALAM_INDEX_PHP')) {
     //echo "Dilarang broh!";
     header("Location: ../../home");
 }
-if (strpos($_SESSION['jabatan'], 'Admin')===false) {
-    echo '<script>alert("Maaf, Anda bukan Admin"); window.location="tampil/home"</script>';
-}
+//if (strpos($_SESSION['jabatan'], 'Admin')===false) {
+  //  echo '<script>alert("Maaf, Anda bukan Admin"); window.location="tampil/home"</script>';
+//}
 ?>
 
   <section id="form_data-absen-admin" style="margin: 0 auto;">
@@ -43,6 +43,7 @@ if (strpos($_SESSION['jabatan'], 'Admin')===false) {
               <button id="buttom_filter_status_sakit" class="btn btn-danger btn-xs" style="margin-left: 3px;">SAKIT</button>
               <button id="buttom_filter_status_izin" class="btn btn-warning btn-xs" style="margin-left: 3px;">IZIN</button>
               <button id="buttom_filter_status_cuti" class="btn btn-success btn-xs" style="margin-left: 3px;">CUTI</button>
+              <button id="buttom_filter_status_kerja_remote" class="btn btn-default btn-xs" style="margin-left: 3px;">KERJA REMOTE</button>
               <button id="buttom_filter_status_alpha" class="btn btn-default btn-xs" style="margin-left: 3px;">ALPHA</button>
             </div>
         </div>

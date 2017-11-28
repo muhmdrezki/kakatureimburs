@@ -12,7 +12,7 @@
 	$values2 = mysqli_fetch_assoc($result2);
 
 	if($values['jumlah']>0 || $values2['jumlah2']>0) {
-		echo '<script>"Anggota yang bersangkutan masih mempunyai pembayaran yang belum di konfirmasi/reimburse"); document.location.href="../../tampil/data-anggota"</script>';
+		echo '<script>alert("Anggota yang bersangkutan masih mempunyai pembayaran yang belum di konfirmasi/reimburse"); document.location.href="../../tampil/data-anggota"</script>';
 	}else if($values['jumlah']==0 && $values2['jumlah2']==0){
 		mysqli_query($koneksi, "DELETE FROM tb_anggota WHERE id_anggota='$hapusid'");
 		echo '<script> alert("Data Anggota dengan id '.$hapusid.', Berhasil Dihapus "); document.location.href="../../tampil/data-anggota" </script>';

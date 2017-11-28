@@ -81,8 +81,8 @@
 							  <tr>   
 								 <td> <?php echo $row["id_anggota"] ?> </td>
 								 <td> <?php echo $row["nama"] ?> </td>
-								 <td> <?php echo $row[cuti_used] ?> </td>
-								 <td> <?php echo $row[cuti_qty] ?> </td>
+								 <td> <?php echo $row["cuti_used"] ?> </td>
+								 <td> <?php echo $row["cuti_qty"] ?> </td>
 								 <td><a id="<?php echo $row["id_anggota"]; ?>" class="btn btn-warning btn-xs edit_quota">UPDATE</a><a id="<?php echo $row["id_anggota"]; ?>" class="btn btn-info btn-xs reset_quotaUsed">RESET</a></td>
 							  </tr>
 							<?php
