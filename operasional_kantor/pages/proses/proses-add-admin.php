@@ -12,13 +12,13 @@
 			echo "error: ".$errmsg;
 		} else {
 			$errmsg2=null;
-			$qry2="INSERT INTO tb_jabatan (id_jabatan,jabatan, gaji) VALUES('121', 'Admin2', 0)";
+			$qry2="INSERT INTO tb_jabatan (id_jabatan,jabatan, gaji) VALUES('111', 'Admin', 0)";
 			inUpDel($qry2,$errmsg2);
 			if ($errmsg2!=null) {
 				echo "error: ".$errmsg;
 			}
 			$errmsg3=null;
-			$qry3="INSERT INTO jabatan_anggota (id_anggota,id_jabatan) VALUES('$id','121')";
+			$qry3="INSERT INTO jabatan_anggota (id_anggota,id_jabatan) VALUES('$id','111')";
 			inUpDel($qry3,$errmsg3);
 			if ($errmsg3!=null) {
 				echo "error: ".$errmsg;

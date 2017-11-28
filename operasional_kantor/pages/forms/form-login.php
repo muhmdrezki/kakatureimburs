@@ -103,13 +103,13 @@
                       <form action="../setup/config" method="post" id="formconfig">
                         <div class="form-group has-feedback">
                           <input style="margin-top: 10px;"
-                                type="text" class="form-control" id="email-admin" placeholder="Enter email admin" name="email-admin"
+                                type="text" class="form-control" id="email-admin" placeholder="Masukkan Gmail Admin untuk mengirim email" name="email-admin"
                                 data-validation="length" data-validation-length="min5"
                           >
                         </div>
                         <div class="form-group has-feedback">
                           <input
-                          type="password" class="form-control" id="password-admin" placeholder="Enter password admin" name="password-admin"
+                          type="password" class="form-control" id="password-admin" placeholder="Enter password gmail" name="password-admin"
                           data-validation="length" data-validation-length="min5"
                           >
                         </div>
@@ -127,7 +127,7 @@
                           </div>
                           <div class="form-group has-feedback">
                           <input style="margin-top: 10px;"
-                                type="text" class="form-control" id="api-google" placeholder="Enter Api Google" name="api-google"
+                                type="text" class="form-control" id="api-google" placeholder="Enter Api Key Google Maps" name="api-google"
                                 data-validation="length" data-validation-length="min5"
                           >
                           </div>
