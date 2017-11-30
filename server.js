@@ -1,9 +1,9 @@
-var socket  = require('socket.io');
-var express = require('express');
-var https   = require('https');
-var http    = require('http');
-var logger  = require('winston');
-var fs      = require('fs');
+var socket  = require('operasional/socket.io');
+var express = require('operasional/express');
+var https   = require('operasional/https');
+var http    = require('operasional/http');
+var logger  = require('operasional/winston');
+var fs      = require('operasional/fs');
 
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {colorize: true, timestamp: true})
