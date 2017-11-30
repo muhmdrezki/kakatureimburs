@@ -5,7 +5,7 @@ define("DIDALAM_INDEX_PHP", true);
 date_default_timezone_set('Asia/Jakarta');
 require_once "con_db.php";
 require_once "fungsi_kakatu.php";
-$obsolutePath = 'https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/';
+$obsolutePath = 'https://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 //Proses Check Login
 if (empty($_GET)) {
     header('Location: tampil/home');
