@@ -41,7 +41,7 @@ if ($dayname != "Sat" && $dayname != "Sun") {
         printf("Error: %s\n", mysqli_error($koneksi));
         exit();
     }
-    if (mysqli_num_rows($reslibur3) == 0) {
+    if (mysqli_num_rows($reslibur3) != 0) {
         //echo "Masuk";
         require '../../phpmailer/PHPMailerAutoload.php';
         $mail = new PHPMailer;
