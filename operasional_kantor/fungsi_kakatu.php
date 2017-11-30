@@ -419,7 +419,7 @@ function autoAbsenAlpha($conn, $tgl_skrg)
         printf("Error: %s\n", mysqli_error($conn));
         exit();
     }
-    if (mysqli_num_rows($reslibur2) == 0) {
+    if (mysqli_num_rows($reslibur2) != 0) {
         $selectalpha = "SELECT id_anggota FROM tb_anggota WHERE id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal='$today1')";
         $resalpha = mysqli_query($conn, $selectalpha);
         if (!$resalpha) {
