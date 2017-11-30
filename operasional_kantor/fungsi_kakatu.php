@@ -48,7 +48,7 @@ function getAddress($latitude, $longitude)
         if ($address!==null) {
             return $address;
         } else {
-            return "Tidak ketemu";
+            return "Tidak ketemu, API Key: ".$API_KEY."Lat: ".$latitude;
         }
     } else {
         return "null";
