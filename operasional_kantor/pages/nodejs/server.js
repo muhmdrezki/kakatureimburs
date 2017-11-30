@@ -8,7 +8,7 @@ var fs      = require('fs');
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {colorize: true, timestamp: true})
 
-logger.info('SocketIO > listening on port 3000');
+logger.info('SocketIO > listening on port 9731');
 
 var app = express();
 //var http_server = http.createServer(app).listen(process.env.PORT || 3001);
