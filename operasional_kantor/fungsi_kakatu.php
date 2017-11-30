@@ -259,9 +259,9 @@ function countMaxDateFromSisaCuti($sisaCuti, $conn)
         $begin = $begin->modify('+1 day');
         $tgl = $begin->format('Y-m-d');
     }
-    if ($sisaCuti != 0) {
+    //if ($sisaCuti != 0) {
         $begin = $begin->modify('-1 day');
-    }
+    //}
     //echo $cutiUsed;
     return $begin;
 }
