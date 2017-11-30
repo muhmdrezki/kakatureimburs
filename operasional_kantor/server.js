@@ -12,11 +12,11 @@ logger.info('SocketIO > listening on port 3000');
 
 var app = express();
 //var http_server = http.createServer(app).listen(process.env.PORT || 3001);
-var http_server = http.createServer(app).listen(3001);
+var http_server = http.createServer(app).listen(9730);
 var https_server = https.createServer({
 	key: fs.readFileSync('my_key.key'),
 	cert: fs.readFileSync('my_cert.crt')
-},app).listen(3000);
+},app).listen(9731);
 
 function emitNewOrder(https_server){
   var io = socket.listen(https_server);
