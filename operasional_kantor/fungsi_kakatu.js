@@ -2383,8 +2383,8 @@ $(function () {
   })
   */
   function fetchDataAbsen(tgl1, tgl2) {
-    console.log(tgl1);
-    console.log(tgl2);
+    //console.log(tgl1);
+    //console.log(tgl2);
     $('#data_absen_admin').DataTable().destroy();
     $('#data_absen_admin').DataTable({
       "processing": true,
