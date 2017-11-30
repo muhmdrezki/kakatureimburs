@@ -1,9 +1,9 @@
-var socket  = require('operasional/socket.io');
-var express = require('operasional/express');
-var https   = require('operasional/https');
-var http    = require('operasional/http');
-var logger  = require('operasional/winston');
-var fs      = require('operasional/fs');
+var socket  = require('operasional_kantor/socket.io');
+var express = require('operasional_kantor/express');
+var https   = require('operasional_kantor/https');
+var http    = require('operasional_kantor/http');
+var logger  = require('operasional_kantor/winston');
+var fs      = require('operasional_kantor/fs');
 
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {colorize: true, timestamp: true})
