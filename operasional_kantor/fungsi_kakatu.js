@@ -2189,7 +2189,7 @@ $(function () {
     droppable: false, // this allows things to be dropped onto the calendar !!!
     eventClick: function (calEvent, jsEvent, view) {
       var id = calEvent.id;
-      console.log("id: " + id);
+      //console.log("id: " + id);
       $.ajax({
         //async: false,
         url: "ajax-fetchdata/detail-absen",
