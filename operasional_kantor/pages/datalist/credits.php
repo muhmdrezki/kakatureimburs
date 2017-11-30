@@ -9,7 +9,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 ?>
 	<div class="container bounceInUp animated">
 		<div class="content-header bounceInRight animated">
-			<h2>DATA TANGGAL LIBUR</h2>
+			<h2>DATA AKOMODASI</h2>
 			<button id="modeDetailAkomodasi" class="btn btn-primary" data-toggle="collapse" data-target="#detailAkomodasi">Detail Akomodasi</button>
 			<button id="modeMasterAkomodasi" class="btn btn-info" data-toggle="collapse" data-target="#masterAkomodasi">Master Akomodasi</button>
 		</div>
