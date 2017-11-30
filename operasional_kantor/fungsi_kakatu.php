@@ -60,7 +60,7 @@ function submitAbsensi($id, $stat, $ket, $lat, $lng, $tgl1, $tgl2, $tgtdir, $fil
 {
     //query untuk memasukan ke database
     date_default_timezone_set('Asia/Jakarta');
-    $today1=date("Y-m-d");
+    $today1 = date("Y-m-d");
     $now1 = date("H:i:s");
     $last_inserted_id = null;
     $conn = createConn();
@@ -259,7 +259,9 @@ function countMaxDateFromSisaCuti($sisaCuti, $conn)
         $begin = $begin->modify('+1 day');
         $tgl = $begin->format('Y-m-d');
     }
-    $begin = $begin->modify('-1 day');
+    if ($sisaCuti != 0) {
+        $begin = $begin->modify('-1 day');
+    }
     //echo $cutiUsed;
     return $begin;
 }
@@ -348,7 +350,7 @@ function autoAbsen($lat, $lng, $conn, $tgl_skrg)
 {
     $errmsg = null;
     date_default_timezone_set('Asia/Jakarta');
-    $today1=date("Y-m-d");
+    $today1 = date("Y-m-d");
     $now1 = date("H:i:s");
     $SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
     //echo $SELECTLIBUR2;
@@ -411,7 +413,7 @@ function autoAbsenAlpha($conn, $tgl_skrg)
 {
     $errmsg = null;
     date_default_timezone_set('Asia/Jakarta');
-    $today1=date("Y-m-d");
+    $today1 = date("Y-m-d");
     $now1 = date("H:i:s");
     $SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
     $reslibur2 = mysqli_query($conn, $SELECTLIBUR2);
@@ -564,7 +566,7 @@ function fetchCreditsJSON($id)
 function fetchCreditForPaid($id)
 {
     date_default_timezone_set('Asia/Jakarta');
-    $today1=date("Y-m-d");
+    $today1 = date("Y-m-d");
     $now1 = date("H:i:s");
     $output = '';
     $id = antiInjection($id);
@@ -634,7 +636,7 @@ function prosesPaidCredit($id, $errmsg)
 {
     $errmsg = null;
     date_default_timezone_set('Asia/Jakarta');
-    $today1=date("Y-m-d");
+    $today1 = date("Y-m-d");
     $now1 = date("H:i:s");
     $qry = "UPDATE tb_detail_absen SET credit_stat='paid' WHERE id_anggota='$id' AND credit_stat='unpaid' AND MONTH(tanggal)=MONTH('$today1') AND YEAR(tanggal)=YEAR('$today1')";
     inUpDel($qry, $errmsg);
