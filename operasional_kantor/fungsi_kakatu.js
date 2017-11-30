@@ -440,6 +440,7 @@ $(function () {
     socket.on("submit_baru", function (data) {
       //console.log(data);
       //ajaxGalleryAbsensiHariIni();
+      console.log("Masuk DashBoard");
       ajaxProgressAbsenHariIni();
       //ajaxchartConfigAbsen(false);
       ajaxchartConfigTotalAbsen();
