@@ -107,7 +107,6 @@ if($_SESSION['jabatan'] == 'Admin'){
 
           $jabatan = $_SESSION['jabatan'];
           $id = $_SESSION['id_anggota'];
-          list($one, $two) = explode(",", $_SESSION['jabatan'] , 2);
 
              if($one != 'Admin'){
               $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
@@ -210,9 +209,9 @@ if($_SESSION['jabatan'] == 'Admin'){
             ?>
             <tr>
               <td> <?php echo $tgl_new_format ?> </td>
-              <td> <?php echo $r[nama] ?> </td>
+              <td> <?php echo $r['nama'] ?> </td>
               <td> <?php echo $id ?> </td>
-              <td> <?php echo $r[jenis] ?> </td>         
+              <td> <?php echo $r['jenis'] ?> </td>         
               <?php 
                 if($r[status]=='0'){
                   ?>

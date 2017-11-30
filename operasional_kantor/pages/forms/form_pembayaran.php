@@ -169,7 +169,7 @@ session_start();
     <div class="form-group">
       <label for="nominal"> Nominal </label>
       <input 
-      class="form-control" type="text" id="numeric" name="nominal"
+      class="form-control" type="text" id="gaji" name="nominal"
       data-validation="required" data-validation-error-msg="Field Nominal Harus Diisi !"
       >
     </div>
