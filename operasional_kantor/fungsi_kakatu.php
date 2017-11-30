@@ -22,9 +22,9 @@ function antiInjection($post_get)
 function createConn()
 {
     $db_host = "localhost";
-    $db_user = "kakatuco_absensi";
+    $db_user = "kakatucoabsensi";
     $db_pass = "kinest01kakatu04";
-    $db_name = "kakatuco_absensi";
+    $db_name = "kakatuco_absensi2";
     $conn = new mysqli($db_host, $db_user, $db_pass);
     if ($conn->connect_errno) {
         echo "Failed to connect to MySQL: (" . $conn->connect_errno . ") " . $conn->connect_error;
