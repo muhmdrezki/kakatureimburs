@@ -45,6 +45,7 @@ $(function () {
   //Proses Pembuatan Map end
   var y = document.getElementById("nonsupport");
   window.getUserLocation = function () {
+    console.log("Dapat Lokasi");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(getPosition, showError);
     } else {
