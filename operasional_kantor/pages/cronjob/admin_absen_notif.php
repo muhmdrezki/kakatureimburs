@@ -66,7 +66,7 @@ if ($dayname != "Sat" && $dayname != "Sun") {
             $mail->ClearAllRecipients();
             $mail->addAddress($row['email'], $row['nama']); // Add a recipient
             $mail->Subject = "Reminder: Yuk isi absen," . $row['nama'];
-            if ($row['jenis_kelamin'] = "L") {
+            if ($row['jenis_kelamin'] == 'L') {
 				//echo "masuk2";
                 $mail->Body = "Bro, " . $row['nama'] . ". <br><br>
 						Kamu belum isi absensi hari ini sampai jam <b>" . $timenow . "</b><br><br>
