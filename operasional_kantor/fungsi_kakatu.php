@@ -36,22 +36,22 @@ function createConn()
 //fungsi ambil alamat dari lattitude
 function getAddress($latitude, $longitude)
 {
-    if (!empty($latitude) && !empty($longitude)) {
+    if ($latitude!==null && $longitude!==null) {
         //Send request and receive json data by address
         $API_KEY = getLastConfig('api_key_google');
         $geocodeFromLatLong = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?latlng=' . trim($latitude) . ',' . trim($longitude) . '&sensor=true&key=' . trim($API_KEY));
         $output = json_decode($geocodeFromLatLong);
         $status = $output->status;
         //Get address from json data
-        $address = ($status == "OK") ? $output->results[0]->formatted_address : '';
+        $address = ($status == "OK") ? $output->results[0]->formatted_address : null;
         //Return address of the given latitude and longitude
-        if (!empty($address)) {
+        if ($address!==null) {
             return $address;
         } else {
-            return false;
+            return "Tidak ketemu";
         }
     } else {
-        return false;
+        return "null";
     }
 }
 
