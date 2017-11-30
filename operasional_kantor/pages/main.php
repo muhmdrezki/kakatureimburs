@@ -591,7 +591,7 @@ if ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-bayar")) {
         include_once "pages/forms/form_pembayaran.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "list-bayar")) {
-        include_once "pages/datalist/Pembayaran.php";
+        include_once "pages/datalist/pembayaran.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-anggota")) {
         include_once "pages/forms/form_add-anggota.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "detail-pembayaran")) {

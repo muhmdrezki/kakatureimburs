@@ -109,7 +109,7 @@ if (isset($_POST['latitude']) && !empty($_POST['latitude'])) {
 //$filename = $_FILES[$filename2]["name"];
 $distance = getDistance($latitude, $longitude, $latKantor, $lngKantor);
 if ($status == '1') {
-    if ($distance < 100) {
+    if ($distance <= 200) {
         //call fungsi submit absensi
         submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
     } else {

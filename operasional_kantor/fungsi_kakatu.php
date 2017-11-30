@@ -3,6 +3,9 @@ include "vendor/autoload.php";
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version2X;
 //Fungsi Format Date Javascript to MySQL pakai PHP
+date_default_timezone_set('Asia/Jakarta');
+$today1=date("Y-m-d");
+$now1 = date("H:i:s");
 function formatDateSql($tgl)
 {
     $tgl = date('Y-m-d', strtotime($tgl));
@@ -67,7 +70,7 @@ function submitAbsensi($id, $stat, $ket, $lat, $lng, $tgl1, $tgl2, $tgtdir, $fil
     }
     //echo "<script>alert('Query: '".$qry." Error: ".$conn->error."')</script>";
     //echo "Error: " . $qry . "<br>" . $conn->error;
-    if ($stmt = $conn->prepare("INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir) VALUES (?, CURRENT_DATE(),CURRENT_TIME(),?,?,?,?,?,?)")) {
+    if ($stmt = $conn->prepare("INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir) VALUES (?, '$today1','$now1',?,?,?,?,?,?)")) {
         $stmt->bind_param("sisddss", $id, $stat, $ket, $lat, $lng, $tgl1, $tgl2);
         $stmt->execute();
         $last_inserted_id = $stmt->insert_id;
@@ -364,7 +367,7 @@ function autoAbsen($lat, $lng, $conn, $tgl_skrg)
             exit();
         } else {
             while ($row = mysqli_fetch_array($result)) {
-                $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),1,'$lat','$lng',CURRENT_DATE(),CURRENT_DATE())";
+                $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', '$today1','$now1',1,'$lat','$lng','$today1','$today1')";
                 //echo $query;
                 $insert = mysqli_query($conn, $query);
                 if (!$insert) {
@@ -377,7 +380,7 @@ function autoAbsen($lat, $lng, $conn, $tgl_skrg)
     } else {
         //echo "rencana<br>";
         //Jika hari kerja
-        $selectRencanaAbsen = "SELECT * FROM tb_cronjob_rencana_absen WHERE tglawal<=CURRENT_DATE() AND tglakhir>=CURRENT_DATE()";
+        $selectRencanaAbsen = "SELECT * FROM tb_cronjob_rencana_absen WHERE tglawal<='$today1' AND tglakhir>='$today1'";
         $resRencanaAbsen = mysqli_query($conn, $selectRencanaAbsen);
         if (!$resRencanaAbsen) {
             printf("Error: %s\n", mysqli_error($conn));
@@ -385,7 +388,7 @@ function autoAbsen($lat, $lng, $conn, $tgl_skrg)
         }
         while ($rowRencanaAbsen = mysqli_fetch_array($resRencanaAbsen)) {
             //$alamat=getAddress($rowRencanaAbsen['lat'], $rowRencanaAbsen['lng']);
-            $insertAbsen = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir,foto_lokasi,rencana_id) VALUES ('$rowRencanaAbsen[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),'$rowRencanaAbsen[status_id]','$rowRencanaAbsen[keterangan]','$rowRencanaAbsen[lat]','$rowRencanaAbsen[lng]',CURRENT_DATE(),'$rowRencanaAbsen[tglakhir]','$rowRencanaAbsen[foto_lokasi]','$rowRencanaAbsen[id]')";
+            $insertAbsen = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir,foto_lokasi,rencana_id) VALUES ('$rowRencanaAbsen[id_anggota]', '$today1','$now1','$rowRencanaAbsen[status_id]','$rowRencanaAbsen[keterangan]','$rowRencanaAbsen[lat]','$rowRencanaAbsen[lng]','$today1','$rowRencanaAbsen[tglakhir]','$rowRencanaAbsen[foto_lokasi]','$rowRencanaAbsen[id]')";
             $resInsertAbsen = mysqli_query($conn, $insertAbsen);
             if (!$resInsertAbsen) {
                 printf("Error: %s\n", mysqli_error($conn));
@@ -411,14 +414,14 @@ function autoAbsenAlpha($conn, $tgl_skrg)
         exit();
     }
     if (mysqli_num_rows($reslibur2) == 0) {
-        $selectalpha = "SELECT id_anggota FROM tb_anggota WHERE id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal=CURRENT_DATE())";
+        $selectalpha = "SELECT id_anggota FROM tb_anggota WHERE id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal='$today1')";
         $resalpha = mysqli_query($conn, $selectalpha);
         if (!$resalpha) {
             printf("Error: %s\n", mysqli_error($conn));
             exit();
         } else {
             while ($row = mysqli_fetch_array($resalpha)) {
-                $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', CURRENT_DATE(),CURRENT_TIME(),6,CURRENT_DATE(),CURRENT_DATE())";
+                $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', '$today1','$now1',6,'$today1','$today1')";
                 $insert = mysqli_query($conn, $query);
                 if (!$insert) {
                     printf("Error: %s\n", mysqli_error($conn));
@@ -556,7 +559,7 @@ function fetchCreditForPaid($id)
 {
     $output = '';
     $id = antiInjection($id);
-    $qry = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.credit_id=c.id WHERE a.id_anggota='$id' AND a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(a.tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota";
+    $qry = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.credit_id=c.id WHERE a.id_anggota='$id' AND a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH('$today1') AND YEAR(a.tanggal)=YEAR('$today1') GROUP BY a.id_anggota";
     $conn = createConn();
     $res = $conn->query($qry);
     if (!$res) {
@@ -621,7 +624,7 @@ function prosesEditCredit($id, $nominal, &$errmsg)
 function prosesPaidCredit($id, $errmsg)
 {
     $errmsg = null;
-    $qry = "UPDATE tb_detail_absen SET credit_stat='paid' WHERE id_anggota='$id' AND credit_stat='unpaid' AND MONTH(tanggal)=MONTH(CURRENT_DATE()) AND YEAR(tanggal)=YEAR(CURRENT_DATE())";
+    $qry = "UPDATE tb_detail_absen SET credit_stat='paid' WHERE id_anggota='$id' AND credit_stat='unpaid' AND MONTH(tanggal)=MONTH('$today1') AND YEAR(tanggal)=YEAR('$today1')";
     inUpDel($qry, $errmsg);
 }
 //DataList Credit
