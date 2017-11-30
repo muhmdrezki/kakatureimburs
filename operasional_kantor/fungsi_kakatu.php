@@ -3,9 +3,6 @@ include "vendor/autoload.php";
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version2X;
 //Fungsi Format Date Javascript to MySQL pakai PHP
-date_default_timezone_set('Asia/Jakarta');
-$today1=date("Y-m-d");
-$now1 = date("H:i:s");
 function formatDateSql($tgl)
 {
     $tgl = date('Y-m-d', strtotime($tgl));
@@ -62,6 +59,9 @@ function getAddress($latitude, $longitude)
 function submitAbsensi($id, $stat, $ket, $lat, $lng, $tgl1, $tgl2, $tgtdir, $filename, $size, &$errmsg, &$scsmsg)
 {
     //query untuk memasukan ke database
+    date_default_timezone_set('Asia/Jakarta');
+    $today1=date("Y-m-d");
+    $now1 = date("H:i:s");
     $last_inserted_id = null;
     $conn = createConn();
     if ($conn->connect_error) {
@@ -347,6 +347,9 @@ function emitData()
 function autoAbsen($lat, $lng, $conn, $tgl_skrg)
 {
     $errmsg = null;
+    date_default_timezone_set('Asia/Jakarta');
+    $today1=date("Y-m-d");
+    $now1 = date("H:i:s");
     $SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
     //echo $SELECTLIBUR2;
     $reslibur2 = mysqli_query($conn, $SELECTLIBUR2);
@@ -407,6 +410,9 @@ function autoAbsen($lat, $lng, $conn, $tgl_skrg)
 function autoAbsenAlpha($conn, $tgl_skrg)
 {
     $errmsg = null;
+    date_default_timezone_set('Asia/Jakarta');
+    $today1=date("Y-m-d");
+    $now1 = date("H:i:s");
     $SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
     $reslibur2 = mysqli_query($conn, $SELECTLIBUR2);
     if (!$reslibur2) {
@@ -557,6 +563,9 @@ function fetchCreditsJSON($id)
 }
 function fetchCreditForPaid($id)
 {
+    date_default_timezone_set('Asia/Jakarta');
+    $today1=date("Y-m-d");
+    $now1 = date("H:i:s");
     $output = '';
     $id = antiInjection($id);
     $qry = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.credit_id=c.id WHERE a.id_anggota='$id' AND a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH('$today1') AND YEAR(a.tanggal)=YEAR('$today1') GROUP BY a.id_anggota";
@@ -624,6 +633,9 @@ function prosesEditCredit($id, $nominal, &$errmsg)
 function prosesPaidCredit($id, $errmsg)
 {
     $errmsg = null;
+    date_default_timezone_set('Asia/Jakarta');
+    $today1=date("Y-m-d");
+    $now1 = date("H:i:s");
     $qry = "UPDATE tb_detail_absen SET credit_stat='paid' WHERE id_anggota='$id' AND credit_stat='unpaid' AND MONTH(tanggal)=MONTH('$today1') AND YEAR(tanggal)=YEAR('$today1')";
     inUpDel($qry, $errmsg);
 }
