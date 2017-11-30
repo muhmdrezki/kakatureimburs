@@ -1,7 +1,7 @@
 <?php
 
 	$db_host = "localhost";
-	$db_user = "kakatuco";
+	$db_user = "kakatuco_absensi";
 	$db_pass = "kinest01kakatu04";
 	$db_name = "kakatuco_absensi";
 
