@@ -67,6 +67,7 @@ $(function () {
         longitude: lng
       },
       success: function (data) {
+        console.log(data);
         $('#address_hadirdiluar').val(data);
         $('#address_kerjaremote').val(data);
         $('#address_sakit').val(data);

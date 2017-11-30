@@ -123,7 +123,7 @@ if ($status == '1') {
         if ($status == '5') {
             $cutiUsed = countCuti($tgl_awal, $tgl_akhir, $koneksi);
             //echo $cutiUsed;
-            if ($cutiUsed <= $_SESSION['sisacuti']) {
+            if ($cutiUsed <= $_SESSION['sisacuti'] && $_SESSION['sisacuti']>0) {
                 submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
             } else {
                 $errmsg = 'Cuti yang digunakan ' . $cutiUsed . ' hari melebihi SISA CUTI anda '.$_SESSION['sisacuti'].' hari!';
