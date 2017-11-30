@@ -332,7 +332,7 @@ function getDistance($lat1, $lon1, $lat2, $lon2)
 function emitData()
 {
     //Socket IO mulai
-    $version = new Version2X("https://localhost:3000", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
+    $version = new Version2X("https://debug.kakatu.co:3000", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
     $client = new Client($version);
     $client->initialize();
     $masuk = array("Submit");
