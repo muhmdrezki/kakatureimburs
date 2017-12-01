@@ -7,14 +7,10 @@
       echo '<script>alert("Maaf, Anda bukan Admin"); window.location="tampil/home"</script>';
    }
 ?>
-<div class="content-header bounceInRight animated">
-  
-  <h2> DATA CUTI </h2>
-
-</div>
 
 <div class="container bounceInUp animated">
 	<hr>
+	<h2> DATA CUTI </h2>
 		<div class="row">
 			<div class="col-md-4">
 				<h3> FORM TAMBAH DATA </h3>

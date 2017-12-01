@@ -41,4 +41,8 @@ $enkripsi=encodeData($tes);
 echo "Enkripsi: ".$enkripsi."<br>";
 $dekripsi = decodeData("MFM1cGdib2hJbVE2Nm55M3o1NFNyZz09");
 echo "Dekripsi: ".$dekripsi."<br>";
+session_start();
+$isAdmin = strpos($_SESSION['jabatan'], 'Admin')!==false;
+echo "<br>";
+echo "Nilai : ".$isAdmin;
 ?>

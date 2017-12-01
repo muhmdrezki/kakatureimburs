@@ -3,10 +3,13 @@
         //echo "Dilarang broh!";
         header("Location: ../../tampil/home");
     } else {
+        //if ($_SESSION["isAbsenToday"]==-2) {
+          //  echo '<script>alert("Absen ga bisa di hari Sabtu atau Minggu cuy!");window.location="tampil/home"</script>';
+        //} else
         if ($_SESSION["isAbsenToday"]==-1) {
-            echo '<script>alert("Absensi hanya bisa dimulai pukul 09:00 AM!");window.location="tampil/home"</script>';
+            echo '<script>alert("Absen cuma bisa setelah jam 04:00 AM cuy!");window.location="tampil/home"</script>';
         } elseif($_SESSION["isAbsenToday"]==1) {
-            echo '<script>alert("Anda sudah absen hari ini!");window.location="tampil/data-absensi"</script>';
+            echo '<script>alert("Kan sudah absen hari ini! Masa lupa?");window.location="tampil/data-absensi"</script>';
         } else {
             readfile('pages/views/forms/submit-absensi.html');
         }

@@ -155,7 +155,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <!-- Google Font -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
         <style>
             * {
                 /**border:1px dotted red;**/
@@ -487,7 +486,7 @@ if ($values1['foto_profile'] != '-') {
                                         <span> Form Absensi</span>
                                     </a>
                                     <li>
-                                        <a href="tampil/data-absensi-admin">
+                                        <a href="tampil/data-absensi">
                                             <i class="fa fa-black-tie"></i> Data Absensi </a>
                                     </li>
                                     <li>
@@ -519,7 +518,7 @@ if ($values1['foto_profile'] != '-') {
                                                 <i class="fa fa-cc-visa"></i> Jenis Pembayaran </a>
                                         </li>
                                         <li>
-                                            <a href="tampil/data-absensi-admin">
+                                            <a href="tampil/data-absensi">
                                                 <i class="fa fa-book"></i> Data Absensi </a>
                                         </li>
                                         <li>
@@ -606,8 +605,6 @@ if ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar
         include_once "pages/datalist/jabatan.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "jenis-pembayaran")) {
         include_once "pages/datalist/jenis_pembayaran.php";
-    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-absensi-admin")) {
-        include_once "pages/datalist/data_absen_admin.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-absensi")) {
         include_once "pages/datalist/data_absen.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "calendar-absensi")) {

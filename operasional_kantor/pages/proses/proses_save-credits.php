@@ -7,15 +7,15 @@
 	$id = $_POST['id_anggota1'];
 	$nominal1 = $_POST['topup_credit1'];
 	//$nominal2= $_POST['total_credit'];
-	$topup = str_replace(',', '', $nominal1);
+	$topup = str_replace('.', '', $nominal1);
 	//$total_credit = str_replace(',', '', $nominal2);
 	//query untuk memasukan ke database
-		$query = "INSERT INTO tb_credits_anggota (id_anggota, topup_credit) VALUES ('$id', $topup)";
+		$query = "INSERT INTO tb_credits_anggota (id_anggota, topup_credit) VALUES ('$id', '$topup')";
 		$insert = mysqli_query($koneksi, $query);
 	if (!$insert) {
         printf("Error: %s\n", mysqli_error($koneksi));
         exit();
     } 
-	echo '<script>alert("Data Credit Berhasil Disimpan");window.location="../../tampil/data-credits"</script>';
+	echo '<script>alert("Data Credit Berhasil Disimpan");window.location="../../tampil/data-akomodasi"</script>';
 }
 ?>

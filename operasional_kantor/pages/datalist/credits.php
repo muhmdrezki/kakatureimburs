@@ -79,7 +79,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 									<tr>
 										<td><?php echo $row3["id_anggota"] ?></td>
 										<td><?php echo $row3["nama"] ?> </td>
-										<td><?php echo $row3["topup_credit"] ?> </td>
+										<td>Rp.<?php echo number_format($row3["topup_credit"]) ?> </td>
 										<td><a id="<?php echo $row3["id"]; ?>" class="btn btn-warning btn-xs edit_topup_credit">EDIT</a></td>
 										<?php
 										}

@@ -58,7 +58,7 @@
                         case 'Hadir':
                               $warnaLabel = 'label-info';
                         break;
-                        case 'Hadir Diluar':
+                        case 'Tugas Kantor':
                               $warnaLabel = 'label-primary';
                         break;
                         case 'Sakit':

@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang='en'>
+
 <?php 
   if (!defined('DIDALAM_INDEX_PHP')){ 
      //echo "Dilarang broh!";
@@ -7,15 +6,6 @@
   }
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 ?>
-	<head>
-	  <!-- Tell the browser to be responsive to screen width -->
-	  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-	  <!-- Google Font -->
-	 <!-- jQuery 3 -->
-	<script src="bower_components/jquery/dist/jquery.min.js"></script>
-
-	  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-	</head>
 
 	<?php 
 		  include "../con_db.php";
@@ -45,7 +35,6 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
           $result_bukti = mysqli_query($koneksi, $sql_bukti);   
 
 	?>
-		<body>
 				<div>
 					<h2 style="float: right;"> <?php echo $day." - ".$month." - ".$year; ?> </h2>
 					<hr>
@@ -95,10 +84,6 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 									        
 									      </select>
 									    </div>
-
-										<!-- jQuery 3 -->
-									    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-									    <script src="../inputmask/jquery.number.js"></script>
 									    <script type="text/javascript">
 									      
 									      $(function(){
@@ -256,5 +241,3 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 						</div>
 
 					</section>  			 
-		</body>
-</html>

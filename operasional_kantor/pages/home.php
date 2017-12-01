@@ -50,7 +50,7 @@
   /* End Sembunyikan carousel-control */
 </style>
  <!-- Content Header (Page header) -->
-<body onload="checkAbsensi();loadChartKakatu();">
+<body onload="loadChartKakatu();checkAbsensi();">
     <section class="content-header">
     <?php
       date_default_timezone_set('Asia/Jakarta');
@@ -184,7 +184,7 @@
 									  <div class="">
 										  <ul class="chart-legend clearfix list-inline">
 											  <li id="listHadir"><span class="list-inline-item label label-info badge" id="jumhadir" ></span>Hadir</li>
-											  <li id="listHadirDiluar"><span class="list-inline-item label label-primary badge" id="jumhadirdiluar"></span>Hadir Diluar</li>
+											  <li id="listHadirDiluar"><span class="list-inline-item label label-primary badge" id="jumhadirdiluar"></span>Tugas Kantor</li>
 											  <li id="listSakit"><span class="list-inline-item label label-danger badge" id="jumsakit"></span>Sakit</li>
 											  <li id="listIzin"><span class="list-inline-item label label-warning badge" id="jumizin"></span>Izin</li>
 											  <li id="listCuti"><span class="list-inline-item label label-success badge" id="jumcuti"></span>Cuti</li>

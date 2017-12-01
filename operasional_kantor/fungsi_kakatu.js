@@ -1,6 +1,6 @@
 $(function () {
   //console.log("tai");
- 
+
   window.checkAbsensi = function () {
     $.ajax({
       type: "post",
@@ -224,7 +224,7 @@ $(function () {
                   $('#listHadir').show();
                   $('#jumhadir').text(data[index].value);
                   break;
-                case "Hadir Diluar":
+                case "Tugas Kantor":
                   $('#listHadirDiluar').show();
                   $('#jumhadirdiluar').text(data[index].value);
                   break;
@@ -474,10 +474,12 @@ $(function () {
 
 
   //MASK MONEY
-  $("#numeric").maskMoney({ prefix: 'Rp ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
-  $("#gaji").maskMoney({ prefix: 'Rp ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
-  $("#gaji1").maskMoney({ prefix: 'Rp ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
-  $('.select2').select2()
+  $("#numeric").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
+  $("#gaji").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
+  $("#gaji1").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
+  $("#topup_credit1").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
+  $("#topup_credit").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
+  $('.select2').select2();
 
   //Datemask dd/mm/yyyy
   $('#datemask').inputmask('dd-mm-YYYY', { 'placeholder': 'dd/mm/yyyy' })
@@ -1324,40 +1326,6 @@ $(function () {
 
   var statussaya = document.getElementById("statussaya");
   var ketsaya = document.getElementById("statussaya")
-  function formatPesan() {
-    var waktuAbsen = document.getElementById("waktuAbsen").innerHTML;
-    var idAbsen = document.getElementById("id_anggota_absen").value;
-    document.getElementById("idsaya").innerHTML = idAbsen;
-    var namaAbsen = document.getElementById("nama_absen").value;
-    document.getElementById("namasaya").innerHTML = namaAbsen;
-    var stat = x.options[x.selectedIndex].tex;
-    var ket1;
-    switch (stat) {
-      case "Hadir":
-        ket1 = "Hadir";
-        break;
-      case "Hadir (Diluar)":
-        ket1 = "Hadir diluar";
-        break;
-      case "Sakit":
-        ket1 = "Sakit";
-        break;
-      case "Izin":
-        ket1 = "Izin";
-        break;
-    }
-    statussaya.innerHTML = ket1;
-    var ket2 = document.getElementById("keterangan_absen").value;
-    document.getElementById("ketsaya").innerHTML = ket2;
-    var lokasi = document.getElementById("adress").value;
-    document.getElementById("lokasi").innerHTML = lokasi;
-    var waMsg1 = "Waktu Absen: " + "\n" + waktuAbsen + "\n\n" + "ID Anggota: " + "\n" + idAbsen + "\n\n" + "Nama: " + "\n" + namaAbsen + "\n\n" + "Status: " + "\n" + ket1 + "\n\n" + "Keterangan: " + "\n" + ket2 + "\n\n" + "Lokasi: " + "\n" + lokasi;
-    var waMsg1 = window.encodeURIComponent(waMsg1);
-    var waMsg2 = document.getElementById("isiPesanWA").innerText;
-    var isiPesanWA = "whatsapp://send?text=" + waMsg1;
-    //alert(isiPesanWA);
-    document.getElementById("pesanWA").setAttribute("href", isiPesanWA);
-  }
   // End Proses Ambil Latitude & Longitude
   function validasiCuti() {
     var sisacuti = $("#sisacuti").val();
@@ -1818,7 +1786,7 @@ $(function () {
         console.log(wa_msg + '\n');
         break;
       case "2":
-        wa_msg = "HADIR DILUAR" + "\n" + "Saya, " + nama + "  sedang bertugas diluar kantor pada hari ini mulai pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes() + " untuk keperluan " + keterangan + "\n" + url;
+        wa_msg = "TUGAS KANTOR" + "\n" + "Saya, " + nama + "  sedang bertugas diluar kantor pada hari ini mulai pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes() + " untuk keperluan " + keterangan + "\n" + url;
         break;
       case "3":
         //var date1 = new Date(tgl1);
@@ -1877,11 +1845,11 @@ $(function () {
                 size: "small",
                 message: "<h4>Terimakasih telah share ke WA</h4>",
                 callback: function () {
-                  window.location = "tampil/data-absensi-admin"
+                  window.location = "tampil/home"
                 }
               })
             } else {
-              window.location = "tampil/data-absensi-admin"
+              window.location = "tampil/home"
             }
           }
         }
@@ -2635,7 +2603,7 @@ $(function () {
     $('input[type="search"]').val('HADIR').keyup()
   });
   $(document).on('click', '#buttom_filter_status_hadir_diluar', function () {
-    $('input[type="search"]').val('HADIR DILUAR').keyup()
+    $('input[type="search"]').val('TUGAS KANTOR').keyup()
   });
   $(document).on('click', '#buttom_filter_status_sakit', function () {
     $('input[type="search"]').val('SAKIT').keyup()

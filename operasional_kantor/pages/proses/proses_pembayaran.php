@@ -207,10 +207,12 @@
         		bootbox.alert({ 
 			  size: "small",
 			  message: "<?php echo '<h4>' ?>Anda bisa Share lagi melalui Button Share yang tersedia di Form Detail Pembayaran <?php echo '</h4><br>' ?><?php echo '<h4>' ?>Klik Ok, Untuk kembali ke menu Pembayaran<?php echo '</h4>'?>", 
-			  callback: function(){}
+			  callback: function(){
+				  window.location="../../tampil/list-bayar/"
+				}
 			})
     	} else {
-    		//window.location="../../tampil/list-bayar/"
+    		window.location="../../tampil/list-bayar/";
     	}
     }
 });

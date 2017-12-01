@@ -1,19 +1,9 @@
-<!DOCTYPE html>
 <?php
   if (!defined('DIDALAM_INDEX_PHP')){ 
      //echo "Dilarang broh!";
      header("Location: ../../tampil/home");
   }
 ?>
-<html lang="en">
-<head>
-  <title>Form Pembayaran</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-   <link rel="stylesheet" href="css/animate.css">
-
-</head>
 <body class="hold-transition skin-blue sidebar-mini">
 
 <style>
@@ -162,10 +152,6 @@ session_start();
       </select>
     </div>
     <?php } ?>
-    <!-- jQuery 3 -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
-    <script src="../../inputmask-jquery/dist/jquery.maskMoney.js" type="text/javascript"></script>
-      
     <div class="form-group">
       <label for="nominal"> Nominal </label>
       <input 
@@ -203,8 +189,6 @@ session_start();
   </form>
 </div>
 </body>
-</html>
-
 <script type="text/javascript">
     $(document).ready(function () {
 

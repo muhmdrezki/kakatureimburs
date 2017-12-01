@@ -4,10 +4,10 @@
       //$nominal1 = str_replace(',', '', $nominal);
       //$topup = str_replace('Rp ', '', $nominal1);
       $errmsg=null;
-      prosesEditCredit($_POST["id_credit"],$_POST["topup_credit"],$errmsg);
+      prosesEditCredit($_POST["id_credit"],str_replace('.', '', $_POST["topup_credit"]),$errmsg);
       if ($errmsg!==null) {
             echo '<script>alert("Terjadi Error:'.$errmsg.'")</script>';
       } else {
-            echo '<script>alert("Data Jumlah Akomodasi dengan ID '.$id.', Berhasil Di Update"); document.location.href="../../tampil/data-credits"</script>';
+            echo '<script>alert("Data Jumlah Akomodasi dengan ID '.$id.', Berhasil Di Update"); document.location.href="../../tampil/data-akomodasi"</script>';
       }
 ?>   
