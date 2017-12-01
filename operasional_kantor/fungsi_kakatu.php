@@ -22,9 +22,9 @@ function antiInjection($post_get)
 function createConn()
 {
     $db_host = "localhost";
-    $db_user = "kakatucoabsensi";
+    $db_user = "kakatuco_absensi";
     $db_pass = "kinest01kakatu04";
-    $db_name = "kakatuco_absensi2";
+    $db_name = "kakatuco_absensi";
     $conn = new mysqli($db_host, $db_user, $db_pass);
     if ($conn->connect_errno) {
         echo "Failed to connect to MySQL: (" . $conn->connect_errno . ") " . $conn->connect_error;
@@ -48,7 +48,7 @@ function getAddress($latitude, $longitude)
         if ($address!==null) {
             return $address;
         } else {
-            return "Tidak ketemu, API Key: ".$API_KEY." Lat: ".$latitude." Lng: ".$longitude." URL: ".$geocodeFromLatLong;
+            return "API KEY Google MAP anda tidak bekerja atau tidak diizinkan atau salah";
         }
     } else {
         return "null";
@@ -337,7 +337,7 @@ function getDistance($lat1, $lon1, $lat2, $lon2)
 function emitData()
 {
     //Socket IO mulai
-    $version = new Version2X("https://debug.kakatu.co:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
+    $version = new Version2X("https://absensi.kakatu.co:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
     $client = new Client($version);
     $client->initialize();
     $masuk = array("Submit");
