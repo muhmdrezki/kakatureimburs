@@ -98,16 +98,17 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
             $query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='paid' GROUP BY bulan,a.id_anggota ORDER BY bulan DESC";
             $query_total = "SELECT SUM(a.credit_in) AS total FROM tb_detail_absen a JOIN tb_credits_anggota b ON a.credit_id=b.id WHERE a.credit_stat='paid'";
           } else {
-            $query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(a.tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota";
+			$query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='unpaid' GROUP BY a.id_anggota,bulan";
+			//$query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(a.tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota";
             $query_total = "SELECT SUM(a.credit_in) AS total FROM tb_detail_absen a JOIN tb_credits_anggota b ON a.credit_id=b.id WHERE a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(a.tanggal)=YEAR(CURRENT_DATE())";
           }
 			$result2 = mysqli_query($koneksi, $query2);
 		?>
 			<div class="form-group flipInX animated">
 				<label> FILTER STATUS </label>
-				<form method="POST" action="tampil/data-credits">
+				<form method="POST" action="tampil/data-akomodasi">
 					<div class="input-group">
-						<a href="tampil/data-credits" class="btn btn-danger btn-xs">UNPAID</a>
+						<a href="tampil/data-akomodasi" class="btn btn-danger btn-xs">UNPAID</a>
 						<input type="submit" name="status_paid" value="PAID" class="btn btn-success btn-xs" style="margin-left: 3px;">
 					</div>
 				</form>
@@ -121,7 +122,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 							<?php
 								if (!$paidStatus) {
 							?>
-								<th> Jumlah</th>
+								<th> Jumlah Akomodasi</th>
 								<?php
 									}
 								?>

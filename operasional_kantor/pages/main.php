@@ -472,7 +472,7 @@ if ($values1['foto_profile'] != '-') {
                                 <span>Pembayaran</span>
                             </a>
                         </li>
-                        <li id="menu_absen" class="treeview">
+                        <li id="menu_absensi" class="treeview">
                             <a href="#">
                                 <i class="fa fa-book"></i>
                                 <span>Absensi</span>
@@ -480,7 +480,7 @@ if ($values1['foto_profile'] != '-') {
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
-                            <ul class="treeview-menu">
+                            <ul class="treeview-menu" id="menu-absensi">
                                 <li id="form_submit_absensi">
                                     <a href="tampil/form-absensi">
                                         <i class="glyphicon glyphicon-user"></i>
@@ -523,7 +523,7 @@ if ($values1['foto_profile'] != '-') {
                                                 <i class="fa fa-book"></i> Data Absensi </a>
                                         </li>
                                         <li>
-                                            <a href="tampil/data-credits">
+                                            <a href="tampil/data-akomodasi">
                                                 <i class="fa fa-money"></i> Data Uang Akomodasi </a>
                                         </li>
                                         <li>
@@ -552,12 +552,14 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
                 <script type="text/javascript">
                     //document.getElementById('menu_absen').style.display="none";
                     document.getElementById('menu_master').style.display = "none";
+                    document.getElementById('menu_absensi').style.display = "visible";
                 </script>
                 <?php
 } else {
         ?>
                     <script type="text/javascript">
                         document.getElementById('menu_master').style.visibility = "visible";
+                        document.getElementById('menu_absensi').style.display = "none";
                     </script>
                     <?php
 }
@@ -598,7 +600,7 @@ if ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar
         include_once "pages/detail_pembayaran.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "profile")) {
         include_once "pages/view_profile.php";
-    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-edit_pembayaran")) {
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-edit-pembayaran")) {
         include_once "pages/forms/form_edit-pembayaran.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-jabatan")) {
         include_once "pages/datalist/jabatan.php";
@@ -612,7 +614,7 @@ if ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar
         include_once "pages/datalist/calendar-absensi.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "form-absensi")) {
         include_once "pages/forms/form_submit-absensi.php";
-    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-credits")) {
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-akomodasi")) {
         include_once "pages/datalist/credits.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-cuti")) {
         include_once "pages/datalist/cuti.php";

@@ -2,7 +2,7 @@
 //fetch.php
 unset($_SESSION["isAbsenToday"]);
 $today1=date("Y-m-d");
-if(time() <= strtotime("12:01 AM")){
+if(time() <= strtotime("04:00 AM") || strpos($_SESSION['jabatan'], 'Admin')!==false){
     $_SESSION["isAbsenToday"]=-1;
 } else {
     unset($_SESSION["isAbsenToday"]);

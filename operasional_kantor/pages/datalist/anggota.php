@@ -84,7 +84,7 @@
 
                 ?>
               <td>
-                  <input type="button" name="view" value="DETAIL" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-info btn-xs view_data"
+                  <input type="button" name="view" value="DETAIL" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-info btn-xs view_data_anggota"
                   />
               </td>
               <?php

@@ -2,8 +2,10 @@
 chdir(dirname(__FILE__));
 include "../../con_db.php";
 include "../../fungsi_kakatu.php";
+date_default_timezone_set('Asia/Jakarta');
+$tgl_now_absen = date("Y-m-d");
 //$sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.id_jenis, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status, tb_anggota.email FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.id_pembayaran='$id_pembayaran'";
-$sql = "SELECT nama,email,jenis_kelamin FROM tb_anggota WHERE id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal=CURRENT_DATE())";
+$sql = "SELECT a.nama AS nama,a.email AS email,a.jenis_kelamin AS jenis_kelamin FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan WHERE a.id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal='$tgl_now_absen') GROUP BY a.id_anggota HAVING GROUP_CONCAT(c.jabatan SEPARATOR ', ') NOT LIKE '%Admin%'";
 $result = mysqli_query($koneksi, $sql);
 
 if (!$result) {
@@ -11,8 +13,6 @@ if (!$result) {
     exit();
 }
 
-date_default_timezone_set('Asia/Jakarta');
-$tgl_now_absen = date("Y-m-d");
 $day = date('j', strtotime($tgl_now_absen));
 $month = date('F', strtotime($tgl_now_absen));
 $year = date('Y', strtotime($tgl_now_absen));

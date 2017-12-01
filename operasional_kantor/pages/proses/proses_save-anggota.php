@@ -66,5 +66,5 @@ if ($jabatan) {
         mysqli_query($koneksi, "INSERT INTO jabatan_anggota (id_anggota, id_jabatan) VALUES ('$id','" . mysqli_real_escape_string($koneksi, $value_jabatan) . "')");
     }
 }
-echo '<script>alert("Data Anggota Berhasil Disimpan");document.location.href="../../tampil/anggota"</script>';
+echo '<script>alert("Data Anggota Berhasil Disimpan");document.location.href="../../tampil/data-anggota"</script>';
 ?>

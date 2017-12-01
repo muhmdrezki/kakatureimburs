@@ -8,7 +8,7 @@ $(function () {
       //data: "data",
       //dataType: "json",
       success: function (res) {
-        console.log(res);
+        //console.log(res);
         if (res == 0) {
           window.location = "tampil/form-absensi";
         }
@@ -438,7 +438,8 @@ $(function () {
 
     //Jika Ada data permbaruan absensi, maka server push data update Dashboard ke client
     //Socket IO
-    var socket = io.connect("https://absensi.kakatu:9731");
+    var socket = io.connect("https://localhost:9731");
+    //var socket = io.connect("https://absensi.kakatu:9731");
     socket.on("submit_baru", function (data) {
       //console.log(data);
       //ajaxGalleryAbsensiHariIni();

@@ -337,7 +337,8 @@ function getDistance($lat1, $lon1, $lat2, $lon2)
 function emitData()
 {
     //Socket IO mulai
-    $version = new Version2X("https://absensi.kakatu.co:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
+    $version = new Version2X("https://localhost:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
+    //$version = new Version2X("https://absensi.kakatu.co:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
     $client = new Client($version);
     $client->initialize();
     $masuk = array("Submit");
@@ -346,64 +347,69 @@ function emitData()
 }
 //End List Fungsi Submit Absensi
 //CronJob Fungsi
-function autoAbsen($lat, $lng, $conn, $tgl_skrg)
+function autoAbsen($lat, $lng,$tgl_skrg,&$errmsg)
 {
-    $errmsg = null;
+    $conn=createConn();
     date_default_timezone_set('Asia/Jakarta');
     $today1 = date("Y-m-d");
     $now1 = date("H:i:s");
     $SELECTLIBUR2 = "SELECT tglawal,tglakhir FROM tb_tgllibur WHERE tglawal<='$tgl_skrg' AND tglakhir>='$tgl_skrg'";
     //echo $SELECTLIBUR2;
-    $reslibur2 = mysqli_query($conn, $SELECTLIBUR2);
+    $reslibur2 = $conn->query($SELECTLIBUR2);
     if (!$reslibur2) {
-        printf("Error: %s\n", mysqli_error($conn));
-        exit();
+        $errmsg = "Query: " .  $SELECTLIBUR2 . " Error: " . $conn->error;
+        //echo "Error: " . $qry . "<br>" . $conn->error;
+        $conn->close();
     }
     //$tes = mysqli_num_rows($reslibur2);
     //echo "tes".$tes."<br>";
     //Jika hari libur bukan dihari sabtu minggu
-    if (mysqli_num_rows($reslibur2) != 0) {
+    if ($reslibur2->num_rows!= 0) {
         //$address = getAddress($lat, $lng);
         //$address = $address?$address:'Tidak Ketemu';
-        $select = "SELECT id_anggota FROM tb_anggota";
-        $result = mysqli_query($conn, $select);
+        $select = "SELECT a.id_anggota AS id_anggota FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan GROUP BY a.id_anggota HAVING GROUP_CONCAT(c.jabatan SEPARATOR ', ') NOT LIKE '%Admin%'";
+        $result = $conn->query($select);
         if (!$result) {
-            printf("Error: %s\n", mysqli_error($conn));
-            exit();
+            $errmsg = "Query: " . $select . " Error: " . $conn->error;
+            //echo "Error: " . $qry . "<br>" . $conn->error;
+            $conn->close();
         } else {
-            while ($row = mysqli_fetch_array($result)) {
-                $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,tgl_awal,tgl_akhir) VALUES ('$row[id_anggota]', '$today1','$now1',1,'$lat','$lng','$today1','$today1')";
+            while ($row = $result->fetch_assoc()) {
+                $id_anggota= $row['id_anggota'];
+                $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,tgl_awal,tgl_akhir) VALUES ('$id_anggota', '$today1','$now1',1,'$lat','$lng','$today1','$today1')";
                 //echo $query;
-                $insert = mysqli_query($conn, $query);
+                $insert = $conn->query($query);
                 if (!$insert) {
-                    printf("Error: %s\n", mysqli_error($conn));
-                    exit();
+                    $errmsg = "Query: " . $query . " Error: " . $conn->error;
+                } else {
+                    $last_id = $conn->insert_id;
+                    topupCredit($last_id,1,$errmsg);
                 }
-                topupCredit($row['id_anggota'], 1, $errmsg);
             }
         }
     } else {
         //echo "rencana<br>";
         //Jika hari kerja
         $selectRencanaAbsen = "SELECT * FROM tb_cronjob_rencana_absen WHERE tglawal<='$today1' AND tglakhir>='$today1'";
-        $resRencanaAbsen = mysqli_query($conn, $selectRencanaAbsen);
+        $resRencanaAbsen = $conn->query($selectRencanaAbsen);;
         if (!$resRencanaAbsen) {
-            printf("Error: %s\n", mysqli_error($conn));
-            exit();
-        }
-        while ($rowRencanaAbsen = mysqli_fetch_array($resRencanaAbsen)) {
-            //$alamat=getAddress($rowRencanaAbsen['lat'], $rowRencanaAbsen['lng']);
-            $insertAbsen = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir,foto_lokasi,rencana_id) VALUES ('$rowRencanaAbsen[id_anggota]', '$today1','$now1','$rowRencanaAbsen[status_id]','$rowRencanaAbsen[keterangan]','$rowRencanaAbsen[lat]','$rowRencanaAbsen[lng]','$today1','$rowRencanaAbsen[tglakhir]','$rowRencanaAbsen[foto_lokasi]','$rowRencanaAbsen[id]')";
-            $resInsertAbsen = mysqli_query($conn, $insertAbsen);
-            if (!$resInsertAbsen) {
-                printf("Error: %s\n", mysqli_error($conn));
-                exit();
-            }
-            topupCredit($rowRencanaAbsen['id_anggota'], $rowRencanaAbsen['status_id'], $errmsg);
-            if ($rowRencanaAbsen['status_id'] == 5) {
-                //$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +DATEDIFF(STR_TO_DATE('$tgl2', '%m/%d/%Y'),STR_TO_DATE('$tgl1', '%m/%d/%Y'))+1) WHERE id_anggota='$id'";
-                $qry = "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +1) WHERE id_anggota='$rowRencanaAbsen[id_anggota]'";
-                inUpDel($qry, $errmsg);
+            $errmsg = "Query: " .  $selectRencanaAbsen . " Error: " . $conn->error;
+        } else {
+            while ($rowRencanaAbsen = $resRencanaAbsen->fetch_array()) {
+                //$alamat=getAddress($rowRencanaAbsen['lat'], $rowRencanaAbsen['lng']);
+                $insertAbsen = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir,foto_lokasi,rencana_id) VALUES ('$rowRencanaAbsen[id_anggota]', '$today1','$now1','$rowRencanaAbsen[status_id]','$rowRencanaAbsen[keterangan]','$rowRencanaAbsen[lat]','$rowRencanaAbsen[lng]','$today1','$rowRencanaAbsen[tglakhir]','$rowRencanaAbsen[foto_lokasi]','$rowRencanaAbsen[id]')";
+                $resInsertAbsen = $conn->query($insertAbsen);
+                if (!$resInsertAbsen) {
+                    $errmsg = "Query: " . $insertAbsen . " Error: " . $conn->error;
+                } else {
+                    $last_id = $conn->insert_id;
+                    topupCredit($last_id, $rowRencanaAbsen['status_id'], $errmsg);
+                    if ($rowRencanaAbsen['status_id'] == 5) {
+                        //$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +DATEDIFF(STR_TO_DATE('$tgl2', '%m/%d/%Y'),STR_TO_DATE('$tgl1', '%m/%d/%Y'))+1) WHERE id_anggota='$id'";
+                        $qry = "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +1) WHERE id_anggota='$rowRencanaAbsen[id_anggota]'";
+                        inUpDel($qry, $errmsg);
+                    }
+                }
             }
         }
     }
@@ -422,7 +428,7 @@ function autoAbsenAlpha($conn, $tgl_skrg)
         exit();
     }
     if (mysqli_num_rows($reslibur2) != 0) {
-        $selectalpha = "SELECT id_anggota FROM tb_anggota WHERE id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal='$today1')";
+        $selectalpha = "SELECT a.id_anggota FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan WHERE a.id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal='$today1') GROUP BY a.id_anggota HAVING GROUP_CONCAT(c.jabatan SEPARATOR ', ') NOT LIKE '%Admin%'";
         $resalpha = mysqli_query($conn, $selectalpha);
         if (!$resalpha) {
             printf("Error: %s\n", mysqli_error($conn));

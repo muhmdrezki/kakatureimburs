@@ -3,7 +3,7 @@
 		$email=antiInjection($_POST['email']);
 		$password=antiInjection($_POST['password']);
 		$password=encodeData($password);
-		$query = "SELECT tb_anggota.id_anggota, tb_anggota.password, tb_anggota.nama, GROUP_CONCAT(tb_jabatan.jabatan SEPARATOR ', ') as 'jabatan', tb_anggota.email FROM `tb_anggota` JOIN jabatan_anggota ON tb_anggota.id_anggota = jabatan_anggota.id_anggota JOIN tb_jabatan ON tb_jabatan.id_jabatan = jabatan_anggota.id_jabatan WHERE tb_anggota.email = '$email' AND tb_anggota.password = '$password' GROUP BY tb_anggota.id_anggota";
+		$query = "SELECT a.id_anggota, a.password, a.nama, GROUP_CONCAT(c.jabatan SEPARATOR ', ') as 'jabatan', a.email FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan WHERE a.email = '$email' AND a.password = '$password' GROUP BY a.id_anggota";
 		$result = mysqli_query($koneksi,$query);
 		$values = mysqli_fetch_assoc($result);
 		$nama = $values['nama'];

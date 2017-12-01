@@ -108,9 +108,9 @@ if($_SESSION['jabatan'] == 'Admin'){
           $jabatan = $_SESSION['jabatan'];
           $id = $_SESSION['id_anggota'];
 
-             if($one != 'Admin'){
+             if(strpos($_SESSION['jabatan'], 'Admin')===false){
               $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
-              } else if($one == 'Admin'){
+              } else{
               $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis ORDER BY tb_pembayaran.tanggal DESC";
              }
             
@@ -124,17 +124,17 @@ if($_SESSION['jabatan'] == 'Admin'){
 
             if ($kliknotif == 'notif'){
               
-              if($_SESSION['jabatan'] != 'Admin'){
+              if(strpos($_SESSION['jabatan'], 'Admin')===false){
               $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.status = '1' AND tb_pembayaran.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
                 $result = mysqli_query($koneksi,$sql);
-              } else if($_SESSION['jabatan'] == 'Admin'){
+              } else {
               $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.status = '0' ORDER BY tb_pembayaran.tanggal DESC";
                  $result = mysqli_query($koneksi,$sql);
              }
             }      
 
 
-       if($one == 'Admin'){
+       if(strpos($_SESSION['jabatan'], 'Admin')!==false){
        if(isset($_POST['submit'])){
         $startdate = $_POST['start_date'];
         $enddate = $_POST['end_date'];
@@ -161,7 +161,7 @@ if($_SESSION['jabatan'] == 'Admin'){
               } 
         }
 
-        } else if($one != 'Admin'){
+        } else {
           
            if(isset($_POST['submit'])){
         $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_jenistransaksi.jenis, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.tanggal >= '$startdate' AND tb_pembayaran.tanggal <= '$enddate' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
@@ -204,8 +204,8 @@ if($_SESSION['jabatan'] == 'Admin'){
            $no = 1;
             while($r = mysqli_fetch_array($result))
             {
-                $id = $r[id_pembayaran];
-                $tgl_new_format = date("Y-m-d" , strtotime($r[tanggal]));
+                $id = $r['id_pembayaran'];
+                $tgl_new_format = date("Y-m-d" , strtotime($r['tanggal']));
             ?>
             <tr>
               <td> <?php echo $tgl_new_format ?> </td>
@@ -213,10 +213,10 @@ if($_SESSION['jabatan'] == 'Admin'){
               <td> <?php echo $id ?> </td>
               <td> <?php echo $r['jenis'] ?> </td>         
               <?php 
-                if($r[status]=='0'){
+                if($r['status']=='0'){
                   ?>
                        <td><a href="tampil/detail-pembayaran/<?php echo $id ?>" class="btn btn-danger btn-xs"> <span> BELUM </span></a> 
-                       <?php if ($one == 'Admin'){?>
+                       <?php if (strpos($_SESSION['jabatan'], 'Admin')!==false){?>
                        <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data_pembayaran" value="HAPUS" disabled>
                        <?php } else { ?>
                        <input type="button" name="delete" id="<?php echo $r["id_pembayaran"]; ?>" class="btn btn-default btn-xs delete_data_pembayaran" value="HAPUS">
@@ -249,10 +249,9 @@ if($_SESSION['jabatan'] == 'Admin'){
   </div>
 
   <?php 
-    if($one == "Admin"){
+    if(strpos($_SESSION['jabatan'], 'Admin')!==false){
        echo '<script type="text/javascript">document.getElementById(\'btn_convert\').style.display="block"</script>';
-    } else 
-    if($one != "Admin") {
+    } else {
      echo '<script type="text/javascript">document.getElementById(\'btn_convert\').style.display="none"</script>';
     }
   ?>
