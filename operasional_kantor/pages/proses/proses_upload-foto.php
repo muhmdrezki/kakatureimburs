@@ -20,14 +20,14 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	// Check if file already exists
 	if (file_exists($target_file)) {
 		?>
-	    <script> alert("<?php echo "Sorry, file already exists."; ?>"); </script>
+	    <script> alert("<?php echo "Sorry, file already exists."; ?>");document.location.href="../../tampil/profile"</script>
 	    <?php 
 	    $uploadOk = 0;
 	}
 	// Check file size
 	if ($_FILES["image"]["size"] > 2000000) {
 	    ?>
-	    <script> alert("<?php echo "Sorry, your file is too large.";?>"); </script>
+	    <script> alert("<?php echo "Sorry, your file is too large.";?>");document.location.href="../../tampil/profile"</script>
 	    <?php
 	    $uploadOk = 0;
 	}
@@ -47,7 +47,6 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	// if everything is ok, try to upload file
 	} else {
 	    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-			emitData();
 	    	?>
 	         <script type="text/javascript"> alert(" <?php  echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded."; ?>"); </script>
 	    	<?php
@@ -63,7 +62,9 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	if (!$result) {
               printf("Error: %s\n", mysqli_error($koneksi));
               exit();
-			  } 
-	echo '<script>document.location.href="../../tampil/profile" </script> ';
+	} else {
+		emitData();
+		echo '<script>document.location.href="../../tampil/profile"</script> ';
+	}
 }
 ?>

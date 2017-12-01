@@ -304,13 +304,11 @@ desired effect
         $notif_string = "Anda punya " . $jumlah . " konfirmasi reimbers";
     }
     ?>
-
-
                         <!-- Navbar Right Menu -->
                         <div class="navbar-custom-menu">
                             <ul class="nav navbar-nav">
                                 <!-- Notifications Menu -->
-                                <li>
+                                <li id="navbar-sisacuti">
                                     <a style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;display:block;">
                                         <p style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;font-size:10px;">Sisa Cuti</p>
                                         <p style="padding-top: 0px;padding-bottom: 0px;text-align: center;font-size:15px;">
@@ -319,7 +317,7 @@ desired effect
                                         </p>
                                     </a>
                                 </li>
-                                <li>
+                                <li id="navbar-totalcredit">
                                     <a style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;display:block;">
                                         <p style="padding-top: 0px;padding-bottom: 0px;margin-top:0px;margin-bottom:0px;font-size:10px;">Total AKomodasi</p>
                                         <p style="padding-top: 0px;padding-bottom: 0px;font-size:15px;">
@@ -329,6 +327,7 @@ desired effect
                                         </p>
                                     </a>
                                 </li>
+
                                 <li class="dropdown notifications-menu">
                                     <!-- Menu toggle button -->
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -546,26 +545,10 @@ if ($values1['foto_profile'] != '-') {
             </aside>
 
         <?php
-if (strpos($_SESSION['jabatan'], 'Admin') === false) {
-        ?>
-                <script type="text/javascript">
-                    //document.getElementById('menu_absen').style.display="none";
-                    document.getElementById('menu_master').style.display = "none";
-                    document.getElementById('menu_absensi').style.display = "visible";
-                </script>
-                <?php
-} else {
-        ?>
-                    <script type="text/javascript">
-                        document.getElementById('menu_master').style.visibility = "visible";
-                        document.getElementById('menu_absensi').style.display = "none";
-                    </script>
-                    <?php
-}
     if ($jumlah == "0") {
         ?>
                         <script type="text/javascript">
-                            document.getElementById('notif_label').style.display = "none";
+                            $("#notif_label").hide();
                         </script>
         <?php
 }
@@ -641,7 +624,20 @@ if ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar
                             <!-- ./wrapper -->
 
     </body>
-
+    <script>
+        var sessionKakatu = <?php echo (strpos($_SESSION['jabatan'], 'Admin') !== false)?1:0; ?>;
+        if (sessionKakatu==1) {
+            $("#navbar-sisacuti").hide();
+            $("#navbar-totalcredit").hide();
+            $("#menu_master").show();
+            $("#menu_absensi").hide();
+        } else {
+            $("#navbar-sisacuti").show();
+            $("#navbar-totalcredit").show();
+            $("#menu_master").hide();
+            $("#menu_absensi").show();
+        }
+    </script>
     </html>
     <?php
 }

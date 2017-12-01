@@ -133,7 +133,7 @@ if (!defined('DIDALAM_INDEX_PHP')){
                           <td><?php echo $values['alamat']; ?></td>
                         </tr>
                         <tr>
-                          <td>Email</td>
+                          <td>Google Mail</td>
                           <td><a href="#"><?php echo $values['email']; ?></a></td>
                         </tr>
                              
@@ -182,11 +182,12 @@ if (!defined('DIDALAM_INDEX_PHP')){
                             <p><input type="radio" name="jenis_kelamin" id="jenis_kelamin" class="minimal" value="P" style="margin-top: 20px;"> Perempuan</p>
                         </div> 
                           <br />   
-                          <label>Email</label>  
-                          <input type="email" name="email" id="email" class="form-control" /> 
-                          <br /> 
-                          <label>Password<i style="color: #f44242;"> (Harus sama dengan password email) </i></label>  
-                          <input type="text" name="password" id="password" class="form-control" /> 
+                          <label>Gmail <i style="color: #f39c12;">(Setting Gmail mengharuskan "Allow less secure apps": ON dan "2-Step Verificaiton": Off)</i></label></label>  
+                          <input type="email" name="email" id="email" class="form-control" />
+                          <br />
+                          <label>Password<i style="color: #f39c12;"> (Harus sama dengan password akun Gmail anda) </i></label>  
+                          <input type="text" name="password" id="password" class="form-control" />
+                          <label><i style="color: #f39c12;">Password Gmail dienkripsi menggunakan teknologi OpenSSL dengan metode "AES-256-CBC". Jadi Aman!<i style="color: #f39c12;"></label> 
                           <br /> 
                       
                 </div>  

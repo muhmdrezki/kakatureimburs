@@ -1,6 +1,5 @@
 $(function () {
   //console.log("tai");
-
   window.checkAbsensi = function () {
     $.ajax({
       type: "post",
@@ -386,7 +385,7 @@ $(function () {
         method: "POST",
         dataType: "json",
         success: function (data) {
-          var sesi = sessionKakatu();
+          //var sesi = sessionKakatu();
           //alert(sesi);
           //$('#absensi_hari_ini').show();
           if (data.persen != 0) {
@@ -438,8 +437,8 @@ $(function () {
 
     //Jika Ada data permbaruan absensi, maka server push data update Dashboard ke client
     //Socket IO
-    //var socket = io.connect("https://localhost:9731");
-    var socket = io.connect("https://absensi.kakatu:9731");
+    var socket = io.connect("https://localhost:9731");
+    //var socket = io.connect("https://absensi.kakatu:9731");
     socket.on("submit_baru", function (data) {
       //console.log(data);
       //ajaxGalleryAbsensiHariIni();
@@ -2624,4 +2623,5 @@ $(function () {
     $('input[type="search"]').val('KERJA REMOTE').keyup()
   });
   //End Event Click Button Filter Absen
+
 });

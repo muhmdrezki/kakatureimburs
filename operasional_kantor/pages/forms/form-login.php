@@ -44,7 +44,7 @@
     <br>
     <br>
   <button
-         type="button" class="btn btn-primary btn-lg" style="border-radius: 24px; width: 320px; height: 60px; font-size: 30px; text-align: center;" data-toggle="modal" data-target="#modal-default">
+         id="buttonLoginKakatu" type="button" class="btn btn-primary btn-lg" style="border-radius: 24px; width: 320px; height: 60px; font-size: 30px; text-align: center;" data-toggle="modal" data-target="#modal-default">
          LOGIN
   </button>
   <button
@@ -68,14 +68,16 @@
                     <div class="modal-body">
                        <form action="../login/proses-login" method="post" id="formlogin">
                         <div class="form-group has-feedback">
+                          <label for="id">Gmail</label>
                           <input style="margin-top: 10px;"
-                                type="text" class="form-control" id="email" placeholder="Enter email" name="email"
+                                type="text" class="form-control" id="email" placeholder="Masukkan Google Mail Anda" name="email"
                                 data-validation="length" data-validation-length="min5"
                           >
                         </div>
                         <div class="form-group has-feedback">
+                          <label for="id">Password</label>
                           <input
-                          type="password" class="form-control" id="password" placeholder="Enter password" name="password"
+                          type="password" class="form-control" id="password" placeholder="Masukkan Password Anda" name="password"
                           data-validation="length" data-validation-length="min5"
                           >
                         </div>
@@ -203,33 +205,38 @@ echo $id;?>"
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
 
 <script>
-  $.validate({
-  });
-  function checkDbConfig() {
-  $.ajax({
-    //async:false,
-    type: "post",
-    url: "../pages/ajax/fetchdata/fetch_check_db_config.php",
-    //data: "data",
-    //dataType: "json",
-    success: function (res) {
-      console.log("Sukses: \n");
+      $.validate({
+      });
+      var res=<?php
+        $conn = createConn();
+        $query = "SELECT * FROM tb_konfigurasi_kakatu";
+        $res = $conn->query($query);
+        $row = $res->num_rows;
+        if ($row==0) {
+           echo 0;
+        } else {
+            $conn = createConn();
+            $query2 = "SELECT * FROM tb_anggota";
+            $res2 = $conn->query($query2);
+            $row2 = $res2->num_rows;
+            if ($row2==0) {
+                echo 1;
+            } else {
+                echo 2;
+            }
+        }
+      ?>;
       if (res == 0) {
         $("#buttonKonfigurasi").show();
         $("#buttonAddAdmin").hide();
+        $("#buttonLoginKakatu").hide();
       } else if (res == 1){
         $("#buttonAddAdmin").show();
         $("#buttonKonfigurasi").hide();
+        $("#buttonLoginKakatu").hide();
       } else if (res == 2){
         $("#buttonAddAdmin").hide();
         $("#buttonKonfigurasi").hide();
+        $("#buttonLoginKakatu").show();
       }
-    },
-    error: function (res) {
-      console.log("Error: \n");
-      console.log(res);
-    }
-  });
-}
-checkDbConfig();
 </script>

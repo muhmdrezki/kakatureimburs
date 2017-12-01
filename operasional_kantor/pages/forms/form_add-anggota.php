@@ -48,6 +48,11 @@
         <input type="text" class="form-control" id="id" placeholder="Id Anggota" name="id" value="<?php echo $id; ?>" readonly>
       </div>
       <div class="form-group">
+        <label for="email"> Google Mail (Wajib) </label>
+        <input type="email" class="form-control" id="email" placeholder="Isi Gmail" name="email" data-validation="required" data-validation-error-msg="Field Email Harus Diisi !">
+        <span class="label label-warning">*Setting Gmail Harus: 'Allow less secure apps': ON dan '2-Step Verificaiton': Off</span>
+      </div>
+      <div class="form-group">
         <label for="nama"> Nama </label>
         <input 
         type="text" class="form-control" id="nama" placeholder="Masukan Nama" name="nama"
@@ -76,10 +81,6 @@
                          ?>
                 </select>
               </div>
-      <div class="form-group">
-        <label for="email"> Email (Harus Aktif) </label>
-        <input type="email" class="form-control" id="email" placeholder="Masukan Email(Wajib)" name="email" data-validation="required" data-validation-error-msg="Field Email Harus Diisi !">
-      </div>
       <div class="form-group">
         <label for="alamat"> Alamat </label>
         <textarea  class="form-control" rows="5" id="alamat" name="alamat" placeholder="Alamat Anggota (Optional)"></textarea>  

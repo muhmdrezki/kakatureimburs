@@ -3,9 +3,11 @@
 unset($_SESSION["isAbsenToday"]);
 $today1 = date("Y-m-d");
 $namahari = date('D', strtotime($today1));
-if($namahari == "Sat" || $namahari == "Sun" || strpos($_SESSION['jabatan'], 'Admin') !== false){
+if(strpos($_SESSION['jabatan'], 'Admin') !== false){
+    $_SESSION["isAbsenToday"] = -3;
+} elseif($namahari == "Sat" || $namahari == "Sun") {
     $_SESSION["isAbsenToday"] = -2;
-} else if (time() <= strtotime("04:00 AM")) {
+} elseif (time() <= strtotime("04:00 AM")) {
     $_SESSION["isAbsenToday"] = -1;
 } else {
     unset($_SESSION["isAbsenToday"]);
