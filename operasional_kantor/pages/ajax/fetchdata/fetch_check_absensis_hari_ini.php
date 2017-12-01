@@ -5,7 +5,7 @@ $today1 = date("Y-m-d");
 $namahari = date('D', strtotime($today1));
 if($namahari == "Sat" || $namahari == "Sun" || strpos($_SESSION['jabatan'], 'Admin') !== false){
     $_SESSION["isAbsenToday"] = -2;
-} else if (time() <= strtotime("01:00 AM")) {
+} else if (time() <= strtotime("04:00 AM")) {
     $_SESSION["isAbsenToday"] = -1;
 } else {
     unset($_SESSION["isAbsenToday"]);
