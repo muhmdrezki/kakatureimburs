@@ -45,4 +45,7 @@ session_start();
 $isAdmin = strpos($_SESSION['jabatan'], 'Admin')!==false;
 echo "<br>";
 echo "Nilai : ".$isAdmin;
+echo "<br>";
+$ukuran = intval(getLastConfig("batas_ukuran_upload"));
+var_dump($ukuran);
 ?>

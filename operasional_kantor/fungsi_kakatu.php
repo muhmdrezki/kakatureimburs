@@ -36,7 +36,7 @@ function createConn()
 //fungsi ambil alamat dari lattitude
 function getAddress($latitude, $longitude)
 {
-    if ($latitude!==null && $longitude!==null) {
+    if ($latitude !== null && $longitude !== null) {
         //Send request and receive json data by address
         $API_KEY = getLastConfig('api_key_google');
         $geocodeFromLatLong = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?latlng=' . trim($latitude) . ',' . trim($longitude) . '&sensor=true&key=' . trim($API_KEY));
@@ -45,7 +45,7 @@ function getAddress($latitude, $longitude)
         //Get address from json data
         $address = ($status == "OK") ? $output->results[0]->formatted_address : null;
         //Return address of the given latitude and longitude
-        if ($address!==null) {
+        if ($address !== null) {
             return $address;
         } else {
             return "API KEY Google MAP anda tidak bekerja atau tidak diizinkan atau salah";
@@ -67,36 +67,44 @@ function submitAbsensi($id, $stat, $ket, $lat, $lng, $tgl1, $tgl2, $tgtdir, $fil
     if ($conn->connect_error) {
         $errmsg = "Error: " . $conn->connect_error;
         die("Connection failed: " . $conn->connect_error);
-    }
-    //echo "<script>alert('Query: '".$qry." Error: ".$conn->error."')</script>";
-    //echo "Error: " . $qry . "<br>" . $conn->error;
-    if ($stmt = $conn->prepare("INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir) VALUES (?, '$today1','$now1',?,?,?,?,?,?)")) {
-        $stmt->bind_param("sisddss", $id, $stat, $ket, $lat, $lng, $tgl1, $tgl2);
-        $stmt->execute();
-        $last_inserted_id = $stmt->insert_id;
-        $stmt->close();
-        $conn->close();
     } else {
-        $errmsg = "Query: " . $qry . " Error: " . $conn->error;
-    }
-    //inUpDel($qry);
-    if ($stat != 1) {
-        $foto = basename($_FILES[$filename]["name"]);
-        if (!empty($foto)) {
-            uploadSingleGambar($last_inserted_id, $tgtdir, $filename, $size, $errmsg, $scsmsg);
+        //echo "<script>alert('Query: '".$qry." Error: ".$conn->error."')</script>";
+        //echo "Error: " . $qry . "<br>" . $conn->error;
+        if ($stmt = $conn->prepare("INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,keterangan,latitude,longitude,tgl_awal,tgl_akhir) VALUES (?, '$today1','$now1',?,?,?,?,?,?)")) {
+            $stmt->bind_param("sisddss", $id, $stat, $ket, $lat, $lng, $tgl1, $tgl2);
+            $stmt->execute();
+            $last_inserted_id = $stmt->insert_id;
+            $stmt->close();
+            $conn->close();
+        } else {
+            $errmsg = "Query: " . $qry . " Error: " . $conn->error;
+        }
+        //inUpDel($qry);
+        if ($errmsg === null) {
+            if ($stat != 1) {
+                $foto = basename($_FILES[$filename]["name"]);
+                if (!empty($foto)) {
+                    uploadSingleGambar($last_inserted_id, $tgtdir, $filename, $size, $errmsg, $scsmsg);
+                }
+            }
+            if ($errmsg === null) {
+                //Tambah Credit
+                topupCredit($last_inserted_id, $stat, $errmsg);
+                if ($errmsg === null) {
+                    //Update Cuti jika satus = 5
+                    updateCutiUsed($id, $stat, $tgl1, $tgl2, $errmsg);
+                    //$now1 = date("Y-m-d");
+                    if ($errmsg === null) {
+                        if ($tgl2 != $tgl1) {
+                            cronRencanaAbsen($id, $stat, $ket, $lat, $lng, $tgl1, $tgl2, $last_inserted_id, $errmsg);
+                        }
+                        //Emit Data dengan Socket IO
+                        emitData();
+                    }
+                }
+            }
         }
     }
-    //panggil fungsi tambah credit
-    topupCredit($last_inserted_id, $stat, $errmsg);
-    //Update Cuti jika satus = 5
-    updateCutiUsed($id, $stat, $tgl1, $tgl2, $errmsg);
-
-    //$now1 = date("Y-m-d");
-    if ($tgl2 != $tgl1) {
-        cronRencanaAbsen($id, $stat, $ket, $lat, $lng, $tgl1, $tgl2, $last_inserted_id, $errmsg);
-    }
-    //Emit Data dengan Socket IO
-    emitData();
 }
 
 //Fungsi update cuti
@@ -106,6 +114,10 @@ function updateCutiUsed($id, $stat, $tgl1, $tgl2, &$errmsg)
         //$queryCuti= "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +DATEDIFF(STR_TO_DATE('$tgl2', '%m/%d/%Y'),STR_TO_DATE('$tgl1', '%m/%d/%Y'))+1) WHERE id_anggota='$id'";
         $qry = "UPDATE tb_cuti_anggota SET cuti_used=(cuti_used +1) WHERE id_anggota='$id'";
         inUpDel($qry, $errmsg);
+        if ($errmsg !== null) {
+            $qry = "DELETE FROM tb_detail_absen WHERE id='$id'";
+            inUpDel($qry, $errmsg);
+        }
         $sql3 = "SELECT cuti_used,cuti_qty FROM tb_cuti_anggota WHERE id_anggota ='$_SESSION[id_anggota]'";
         $conn = createConn();
         $result3 = $conn->query($sql3);
@@ -151,10 +163,8 @@ function uploadSingleGambar($id, $targetdir, $filename, $ukuran, &$errmsg, &$scs
             $uploadOk = 0;
         }
         // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
-            $errmsg = "Maaf, file anda tidak terupload!";
+        if ($uploadOk != 0) {
             // if everything is ok, try to upload file
-        } else {
             $namatgl = new DateTime();
             $namatgl->setTimezone(new DateTimeZone('Asia/Jakarta'));
             $namabaru = $namatgl->format('YmdHis');
@@ -167,6 +177,11 @@ function uploadSingleGambar($id, $targetdir, $filename, $ukuran, &$errmsg, &$scs
             }
             $qry = "UPDATE tb_detail_absen SET foto_lokasi = '$newfilename' WHERE id='$id'";
             inUpDel($qry, $errmsg);
+        } else {
+            $errmsg .= " File anda tidak terupload!";
+            //Jika upload gagal, hapus data absensi yang masuk
+            $qry = "DELETE FROM tb_detail_absen WHERE id='$id'";
+            inUpDel($qry, $errmsg);
         }
     }
 }
@@ -177,9 +192,17 @@ function topupCredit($last_id, $stat, &$errmsg)
     if ($stat == 1 || $stat == 2 || $stat == 5) {
         $qry = "UPDATE tb_detail_absen a JOIN tb_credits_anggota b ON a.id_anggota=b.id_anggota SET a.credit_id=b.id,a.credit_in=b.topup_credit,a.credit_stat='unpaid' WHERE a.id='$last_id'";
         inUpDel($qry, $errmsg);
+        if ($errmsg !== null) {
+            $qry = "DELETE FROM tb_detail_absen WHERE id='$last_id'";
+            inUpDel($qry, $errmsg);
+        }
     } else if ($stat == 7) {
         $qry = "UPDATE tb_detail_absen a JOIN tb_credits_anggota b ON a.id_anggota=b.id_anggota SET a.credit_id=b.id,a.credit_in=(b.topup_credit-10000),a.credit_stat='unpaid' WHERE a.id='$last_id'";
         inUpDel($qry, $errmsg);
+        if ($errmsg !== null) {
+            $qry = "DELETE FROM tb_detail_absen WHERE id='$last_id'";
+            inUpDel($qry, $errmsg);
+        }
     }
 }
 //Fungsi validasi Hitungan Cuti dari range tanggal
@@ -260,7 +283,7 @@ function countMaxDateFromSisaCuti($sisaCuti, $conn)
         $tgl = $begin->format('Y-m-d');
     }
     //if ($sisaCuti != 0) {
-        $begin = $begin->modify('-1 day');
+    $begin = $begin->modify('-1 day');
     //}
     //echo $cutiUsed;
     return $begin;
@@ -337,8 +360,8 @@ function getDistance($lat1, $lon1, $lat2, $lon2)
 function emitData()
 {
     //Socket IO mulai
-    //$version = new Version2X("https://localhost:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
-    $version = new Version2X("https://absensi.kakatu.co:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
+    $version = new Version2X("https://localhost:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
+    //$version = new Version2X("https://absensi.kakatu.co:9731", ['context' => ['ssl' => ['verify_peer_name' => false, 'verify_peer' => false]]]);
     $client = new Client($version);
     $client->initialize();
     $masuk = array("Submit");
@@ -347,9 +370,9 @@ function emitData()
 }
 //End List Fungsi Submit Absensi
 //CronJob Fungsi
-function autoAbsen($lat, $lng,$tgl_skrg,&$errmsg)
+function autoAbsen($lat, $lng, $tgl_skrg, &$errmsg)
 {
-    $conn=createConn();
+    $conn = createConn();
     date_default_timezone_set('Asia/Jakarta');
     $today1 = date("Y-m-d");
     $now1 = date("H:i:s");
@@ -357,14 +380,14 @@ function autoAbsen($lat, $lng,$tgl_skrg,&$errmsg)
     //echo $SELECTLIBUR2;
     $reslibur2 = $conn->query($SELECTLIBUR2);
     if (!$reslibur2) {
-        $errmsg = "Query: " .  $SELECTLIBUR2 . " Error: " . $conn->error;
+        $errmsg = "Query: " . $SELECTLIBUR2 . " Error: " . $conn->error;
         //echo "Error: " . $qry . "<br>" . $conn->error;
         $conn->close();
     }
     //$tes = mysqli_num_rows($reslibur2);
     //echo "tes".$tes."<br>";
     //Jika hari libur bukan dihari sabtu minggu
-    if ($reslibur2->num_rows!= 0) {
+    if ($reslibur2->num_rows != 0) {
         //$address = getAddress($lat, $lng);
         //$address = $address?$address:'Tidak Ketemu';
         $select = "SELECT a.id_anggota AS id_anggota FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan GROUP BY a.id_anggota HAVING GROUP_CONCAT(c.jabatan SEPARATOR ', ') NOT LIKE '%Admin%'";
@@ -375,7 +398,7 @@ function autoAbsen($lat, $lng,$tgl_skrg,&$errmsg)
             $conn->close();
         } else {
             while ($row = $result->fetch_assoc()) {
-                $id_anggota= $row['id_anggota'];
+                $id_anggota = $row['id_anggota'];
                 $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,tgl_awal,tgl_akhir) VALUES ('$id_anggota', '$today1','$now1',1,'$lat','$lng','$today1','$today1')";
                 //echo $query;
                 $insert = $conn->query($query);
@@ -383,7 +406,7 @@ function autoAbsen($lat, $lng,$tgl_skrg,&$errmsg)
                     $errmsg = "Query: " . $query . " Error: " . $conn->error;
                 } else {
                     $last_id = $conn->insert_id;
-                    topupCredit($last_id,1,$errmsg);
+                    topupCredit($last_id, 1, $errmsg);
                 }
             }
         }
@@ -391,9 +414,9 @@ function autoAbsen($lat, $lng,$tgl_skrg,&$errmsg)
         //echo "rencana<br>";
         //Jika hari kerja
         $selectRencanaAbsen = "SELECT * FROM tb_cronjob_rencana_absen WHERE tglawal<='$today1' AND tglakhir>='$today1'";
-        $resRencanaAbsen = $conn->query($selectRencanaAbsen);;
+        $resRencanaAbsen = $conn->query($selectRencanaAbsen);
         if (!$resRencanaAbsen) {
-            $errmsg = "Query: " .  $selectRencanaAbsen . " Error: " . $conn->error;
+            $errmsg = "Query: " . $selectRencanaAbsen . " Error: " . $conn->error;
         } else {
             while ($rowRencanaAbsen = $resRencanaAbsen->fetch_array()) {
                 //$alamat=getAddress($rowRencanaAbsen['lat'], $rowRencanaAbsen['lng']);
@@ -475,24 +498,30 @@ function cronRencanaAbsen($id, $stat, $ket, $lat, $lng, $tawal, $takhir, $last_i
     $res = $conn->query($qry);
     if (!$res) {
         $errmsg = "Error: " . $qry . "<br>" . $conn->error;
-        //exit();
+        $qry = "DELETE FROM tb_detail_absen WHERE id='$last_id'";
+        inUpDel($qry, $errmsg);
+    } else {
+        //$ambilNamaFoto=$res->fetch_assoc();
+        $rowNamaFoto = $res->fetch_assoc();
+        //$conn->close();
+        $insertRencanaAbsen = "INSERT INTO tb_cronjob_rencana_absen (id_anggota,status_id,keterangan,lat,lng,tglawal,tglakhir,foto_lokasi) VALUES ('$id','$stat','$ket','$lat','$lng','$tawal','$takhir','$rowNamaFoto[foto_lokasi]')";
+        //$resRencanaAbsen=mysqli_query($conn,$insertRencanaAbsen);
+        if (!$conn->query($insertRencanaAbsen)) {
+            $errmsg = "Error: " . $insertRencanaAbsen . "<br>" . $conn->error;
+            //exit();
+            $qry = "DELETE FROM tb_detail_absen WHERE id='$last_id'";
+            inUpDel($qry, $errmsg);
+        } else {
+            $last_id2 = $conn->insert_id;
+            $updateRencanaID = "UPDATE tb_detail_absen SET rencana_id='$last_id2' WHERE id='$last_id'";
+            if (!$conn->query($updateRencanaID)) {
+                $errmsg = "Error: " . $updateRencanaID . "<br>" . $conn->error;
+                $qry = "DELETE FROM tb_detail_absen WHERE id='$last_id'";
+                inUpDel($qry, $errmsg);
+            }
+            $conn->close();
+        }
     }
-    //$ambilNamaFoto=$res->fetch_assoc();
-    $rowNamaFoto = $res->fetch_assoc();
-    //$conn->close();
-    $insertRencanaAbsen = "INSERT INTO tb_cronjob_rencana_absen (id_anggota,status_id,keterangan,lat,lng,tglawal,tglakhir,foto_lokasi) VALUES ('$id','$stat','$ket','$lat','$lng','$tawal','$takhir','$rowNamaFoto[foto_lokasi]')";
-    //$resRencanaAbsen=mysqli_query($conn,$insertRencanaAbsen);
-    if (!$conn->query($insertRencanaAbsen)) {
-        $errmsg = "Error: " . $insertRencanaAbsen . "<br>" . $conn->error;
-        //exit();
-    }
-    $last_id2 = $conn->insert_id;
-    $updateRencanaID = "UPDATE tb_detail_absen SET rencana_id='$last_id2' WHERE id='$last_id'";
-    if (!$conn->query($updateRencanaID)) {
-        $errmsg = "Error: " . $updateRencanaID . "<br>" . $conn->error;
-        //exit();
-    }
-    $conn->close();
 }
 //End Fungsi Cron Rencana Absen
 
@@ -552,9 +581,15 @@ function inUpDel($qry, &$errmsg)
         //$res->free();
         $conn->close();
     } else {
-        $errmsg = "Query: " . $qry . " Error: " . $conn->error;
-        //echo "Error: " . $qry . "<br>" . $conn->error;
-        $conn->close();
+        if ($errmsg !== null) {
+            $errmsg .= ". Query: " . $qry . " Error: " . $conn->error;
+            //echo "Error: " . $qry . "<br>" . $conn->error;
+            $conn->close();
+        } else {
+            $errmsg = "Query: " . $qry . " Error: " . $conn->error;
+            //echo "Error: " . $qry . "<br>" . $conn->error;
+            $conn->close();
+        }
     }
 }
 //DataList Credit

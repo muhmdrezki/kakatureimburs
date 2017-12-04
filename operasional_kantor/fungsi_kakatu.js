@@ -437,8 +437,8 @@ $(function () {
 
     //Jika Ada data permbaruan absensi, maka server push data update Dashboard ke client
     //Socket IO
-    //var socket = io.connect("https://localhost:9731");
-    var socket = io.connect("https://absensi.kakatu:9731");
+    var socket = io.connect("https://localhost:9731");
+    //var socket = io.connect("https://absensi.kakatu:9731");
     socket.on("submit_baru", function (data) {
       //console.log(data);
       //ajaxGalleryAbsensiHariIni();
@@ -1346,7 +1346,7 @@ $(function () {
         if (dt.errmsg === null) {
           pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, dt.errmsg, dt.scsmsg);
         } else {
-          console.log(dt.errmsg);
+          //console.log(dt.errmsg);
           alert(dt.errmsg);
         }
       },
@@ -1393,6 +1393,7 @@ $(function () {
             $('#myModal_hadirdiluar').modal('toggle');
             pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
           } else {
+            console.log("Bangsat");
             console.log(dt.errmsg);
             alert(dt.errmsg);
           }

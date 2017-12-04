@@ -9,8 +9,8 @@ $id = $_SESSION["id_anggota"];
 $target_dir = "dist/fotolokasi/";
 $ukuran = 2000000;
 //mengambil nilai dari form
-$latKantor = -6.8869112;
-$lngKantor = 107.6168524;
+$latKantor = getLastConfig("latKantor");
+$lngKantor = getLastConfig("lngKantor");
 $status = null;
 $keterangan = null;
 $tgl_awal = null;
@@ -21,118 +21,137 @@ $errmsg = null;
 $scsmsg = null;
 $latitude = null;
 $longitude = null;
-if (isset($_POST['latitude']) && !empty($_POST['latitude'])) {
-    $latitude = antiInjection($_POST['latitude']);
-    $longitude = antiInjection($_POST['longitude']);
-    $url_location = "https://maps.google.com/?q=" . trim($latitude) . "," . trim($longitude);
-    if (isset($_POST["status"])) {
-        $status = $_POST["status"];
-        switch ($status) {
-            case '1':
-                date_default_timezone_set('Asia/Jakarta');
-                $tgl_awal = date("Y-m-d");
-                $tgl_akhir = date("Y-m-d");
-                break;
-            case '2':
-                if (isset($_POST['keterangan_hadirdiluar']) && !empty($_POST['keterangan_hadirdiluar'])) {
+$hariini1 = date("Y-m-d");
+
+//Validasi Absen Hari ini
+$isAbsen = "SELECT id_anggota FROM tb_detail_absen WHERE id_anggota='$id' AND tanggal='$hariini1'";
+$conn = createConn();
+$res = $conn->query($isAbsen);
+if (!$res) {
+    $errmsg = "Query: " . $qry . " Error: " . $conn->error;
+    //echo "Error: " . $qry . "<br>" . $conn->error;
+    $conn->close();
+} elseif ($res->num_rows > 0) {
+    //Jika sudah Absen
+    $errmsg = "Anda sudah mengisi absen hari ini!";
+} else {
+    //Jika Belum Absen
+    if (isset($_POST['latitude']) && !empty($_POST['latitude'])) {
+        $latitude = antiInjection($_POST['latitude']);
+        $longitude = antiInjection($_POST['longitude']);
+        $url_location = "https://maps.google.com/?q=" . trim($latitude) . "," . trim($longitude);
+        if (isset($_POST["status"])) {
+            $status = $_POST["status"];
+            switch ($status) {
+                case '1':
                     date_default_timezone_set('Asia/Jakarta');
                     $tgl_awal = date("Y-m-d");
                     $tgl_akhir = date("Y-m-d");
-                    $keterangan = antiInjection($_POST['keterangan_hadirdiluar']);
-                    $filename = "image_hadirdiluar";
-                } else {
-                    $errmsg = "Keterangan Tugas Kantor tidak boleh kosong!";
-                }
-                break;
-            case '3':
-                if (isset($_POST['keterangan_sakit']) && !empty($_POST['keterangan_sakit'])) {
-                    if (isset($_POST['tglRentangSakit']) && !empty($_POST['tglRentangSakit'])) {
-                        $keterangan = antiInjection($_POST['keterangan_sakit']);
-                        $tgl = antiInjection($_POST['tglRentangSakit']);
-                        $tgl_awal = formatDateSql(substr($tgl, 0, 11));
-                        $tgl_akhir = formatDateSql(substr($tgl, 13, 25));
-                        $filename = "image_sakit";
+                    break;
+                case '2':
+                    if (isset($_POST['keterangan_hadirdiluar']) && !empty($_POST['keterangan_hadirdiluar'])) {
+                        date_default_timezone_set('Asia/Jakarta');
+                        $tgl_awal = date("Y-m-d");
+                        $tgl_akhir = date("Y-m-d");
+                        $keterangan = antiInjection($_POST['keterangan_hadirdiluar']);
+                        $filename = "image_hadirdiluar";
                     } else {
-                        $errmsg = "Tanggal Sakit tidak boleh kosong!";
+                        $errmsg = "Keterangan Tugas Kantor tidak boleh kosong!";
                     }
-                } else {
-                    $errmsg = "Keterangan Sakit tidak boleh kosong";
-                }
-                break;
-            case '4':
-                if (isset($_POST['keterangan_izin']) && !empty($_POST['keterangan_izin'])) {
-                    if (isset($_POST['tglRentangIzin']) && !empty($_POST['tglRentangIzin'])) {
-                        $keterangan = antiInjection($_POST['keterangan_izin']);
-                        $tgl = antiInjection($_POST['tglRentangIzin']);
-                        $tgl_awal = formatDateSql(substr($tgl, 0, 11));
-                        $tgl_akhir = formatDateSql(substr($tgl, 13, 25));
-                        $filename = "image_izin";
+                    break;
+                case '3':
+                    if (isset($_POST['keterangan_sakit']) && !empty($_POST['keterangan_sakit'])) {
+                        if (isset($_POST['tglRentangSakit']) && !empty($_POST['tglRentangSakit'])) {
+                            $keterangan = antiInjection($_POST['keterangan_sakit']);
+                            $tgl = antiInjection($_POST['tglRentangSakit']);
+                            $tgl_awal = formatDateSql(substr($tgl, 0, 11));
+                            $tgl_akhir = formatDateSql(substr($tgl, 13, 25));
+                            $filename = "image_sakit";
+                        } else {
+                            $errmsg = "Tanggal Sakit tidak boleh kosong!";
+                        }
                     } else {
-                        $errmsg = "Tanggal Izin tidak boleh kosong!";
+                        $errmsg = "Keterangan Sakit tidak boleh kosong";
                     }
-                } else {
-                    $errmsg = "Keterangan Izin tidak boleh kosong";
-                }
-                break;
-            case '5':
-                if (isset($_POST['keterangan_cuti']) && !empty($_POST['keterangan_cuti'])) {
-                    if (isset($_POST['tglRentangCuti']) && !empty($_POST['tglRentangCuti'])) {
-                        $keterangan = antiInjection($_POST['keterangan_cuti']);
-                        $tgl = antiInjection($_POST['tglRentangCuti']);
-                        $tgl_awal = formatDateSql(substr($tgl, 0, 11));
-                        $tgl_akhir = formatDateSql(substr($tgl, 13, 25));
-                        $filename = "image_cuti";
+                    break;
+                case '4':
+                    if (isset($_POST['keterangan_izin']) && !empty($_POST['keterangan_izin'])) {
+                        if (isset($_POST['tglRentangIzin']) && !empty($_POST['tglRentangIzin'])) {
+                            $keterangan = antiInjection($_POST['keterangan_izin']);
+                            $tgl = antiInjection($_POST['tglRentangIzin']);
+                            $tgl_awal = formatDateSql(substr($tgl, 0, 11));
+                            $tgl_akhir = formatDateSql(substr($tgl, 13, 25));
+                            $filename = "image_izin";
+                        } else {
+                            $errmsg = "Tanggal Izin tidak boleh kosong!";
+                        }
                     } else {
-                        $errmsg = "Tanggal Cuti tidak boleh kosong!";
+                        $errmsg = "Keterangan Izin tidak boleh kosong";
                     }
-                } else {
-                    $errmsg = "Keterangan Cuti tidak boleh kosong";
-                }
-                break;
-            case '7':
-                if (isset($_POST['keterangan_kerjaremote']) && !empty($_POST['keterangan_kerjaremote'])) {
-                    date_default_timezone_set('Asia/Jakarta');
-                    $tgl_awal = date("Y-m-d");
-                    $tgl_akhir = date("Y-m-d");
-                    $keterangan = antiInjection($_POST['keterangan_kerjaremote']);
-                    $filename = "image_kerjaremote";
-                } else {
-                    $errmsg = "Keterangan Kerja Remote tidak boleh kosong!";
-                }
-                break;
+                    break;
+                case '5':
+                    if (isset($_POST['keterangan_cuti']) && !empty($_POST['keterangan_cuti'])) {
+                        if (isset($_POST['tglRentangCuti']) && !empty($_POST['tglRentangCuti'])) {
+                            $keterangan = antiInjection($_POST['keterangan_cuti']);
+                            $tgl = antiInjection($_POST['tglRentangCuti']);
+                            $tgl_awal = formatDateSql(substr($tgl, 0, 11));
+                            $tgl_akhir = formatDateSql(substr($tgl, 13, 25));
+                            $filename = "image_cuti";
+                        } else {
+                            $errmsg = "Tanggal Cuti tidak boleh kosong!";
+                        }
+                    } else {
+                        $errmsg = "Keterangan Cuti tidak boleh kosong";
+                    }
+                    break;
+                case '7':
+                    if (isset($_POST['keterangan_kerjaremote']) && !empty($_POST['keterangan_kerjaremote'])) {
+                        date_default_timezone_set('Asia/Jakarta');
+                        $tgl_awal = date("Y-m-d");
+                        $tgl_akhir = date("Y-m-d");
+                        $keterangan = antiInjection($_POST['keterangan_kerjaremote']);
+                        $filename = "image_kerjaremote";
+                    } else {
+                        $errmsg = "Keterangan Kerja Remote tidak boleh kosong!";
+                    }
+                    break;
+            }
         }
-    }
-} else {
-    $errmsg = "Anda harus mengizinkan Permintaan Lokasi untuk bisa absen";
-}
-//Ambil Jarak
-//$filename = $_FILES[$filename2]["name"];
-$distance = getDistance($latitude, $longitude, $latKantor, $lngKantor);
-if ($status == '1') {
-    if ($distance <= 200) {
-        //call fungsi submit absensi
-        submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
     } else {
-        $errmsg = 'Absen Hadir Gagal karena Anda berada ' . round($distance / 1000, 3) . 'km dari kantor';
+        $errmsg = "Anda harus mengizinkan Permintaan Lokasi untuk bisa absen";
     }
-} else {
-    if ($tgl_awal == $tgl_akhir) {
-        //call fungsi submit absensi
-        submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
-    } else {
-        if ($status == '5') {
-            $cutiUsed = countCuti($tgl_awal, $tgl_akhir, $koneksi);
-            //echo $cutiUsed;
-            if ($cutiUsed <= $_SESSION['sisacuti'] && $_SESSION['sisacuti']>0) {
+    //Ambil Jarak
+    //$filename = $_FILES[$filename2]["name"];
+    if ($errmsg === null) {
+        $distance = getDistance($latitude, $longitude, $latKantor, $lngKantor);
+        if ($status == '1') {
+            if ($distance <= 200) {
+                //call fungsi submit absensi
                 submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
             } else {
-                $errmsg = 'Cuti yang digunakan ' . $cutiUsed . ' hari melebihi SISA CUTI anda '.$_SESSION['sisacuti'].' hari!';
+                $errmsg = 'Absen Hadir Gagal karena Anda berada ' . round($distance / 1000, 3) . 'km dari kantor';
             }
         } else {
-            submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
+            if ($tgl_awal == $tgl_akhir) {
+                //call fungsi submit absensi
+                submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
+            } else {
+                if ($status == '5') {
+                    $cutiUsed = countCuti($tgl_awal, $tgl_akhir, $koneksi);
+                    //echo $cutiUsed;
+                    if ($cutiUsed <= $_SESSION['sisacuti'] && $_SESSION['sisacuti'] > 0) {
+                        submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
+                    } else {
+                        $errmsg = 'Cuti yang digunakan ' . $cutiUsed . ' hari melebihi SISA CUTI anda ' . $_SESSION['sisacuti'] . ' hari!';
+                    }
+                } else {
+                    submitAbsensi($id, $status, $keterangan, $latitude, $longitude, $tgl_awal, $tgl_akhir, $target_dir, $filename, $ukuran, $errmsg, $scsmsg);
+                }
+            }
         }
-    }
+    } 
 }
+
 //Pesan WA
 $pesan = array(
     'errmsg' => $errmsg,
