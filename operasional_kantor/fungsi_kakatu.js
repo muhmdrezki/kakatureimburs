@@ -1053,7 +1053,35 @@ $(function () {
       }
     });
   });
+  $(document).on('click', '.edit_data_anggota', function () {
+    var id_anggota = $(this).attr("id");
+    $.ajax({
+      url: "pages/ajax/fetchdata/fetch_data_anggota_admin-json.php",
+      method: "POST",
+      data: { id_anggota: id_anggota },
+      dataType: "json",
+      success: function (data) {
+        console.log(data);
+        $('#id_anggota').val(data.id_anggota);
+        $('#nama').val(data.nama);
+        $('#email').val(data.email);
+        $('#alamat').val(data.alamat);
+        $('#tempat_lahir').val(data.tempat_lahir);
+        $('#tgl_lahir').val(data.tgl_lahir);
+        $('#insert').val("Update");
+        $('#edit_data_anggota').modal('show');
+        $('#edit_data_anggota').on('shown.bs.modal', function () {
+          if (data.jenis_kelamin == "L") {
+            $('#jenis_kelamin_pria').prop('checked',true).click()
+          } else {
+            $('#jenis_kelamin_wanita').prop('checked',true).click()
+          }
+          $(".select2").val(data.jabatan).trigger('change');
+        })
 
+      }
+    });
+  });
   $(document).on('click', '.delete_data_anggota', function () {
     var id_anggota = $(this).attr("id");
     $.ajax({

@@ -92,6 +92,8 @@
                   ?>
                 <td>
                     <input type="button" name="view" value="DETAIL" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-info btn-xs view_data_anggota"/>
+                    <input type="button" name="edit" value="EDIT" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-success btn-xs edit_data_anggota"/>
+                    <input type="button" name="reset" value="RESET PASS" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-warning btn-xs reset_pass_anggota"/>
                     <input type="button" name="delete" id="<?php echo $r["id_anggota"]; ?>" class="btn btn-danger btn-xs delete_data_anggota" value="HAPUS"/>
                 </td>
                 <?php
@@ -163,5 +165,65 @@
           </div>
         </div>
       </div>
+      <div id="edit_data_anggota" class="modal fade">  
+      <div class="modal-dialog">  
+           <div class="modal-content">  
+                <div class="modal-header">  
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>  
+                     <h4 class="modal-title">EDIT DATA ANGGOTA</h4>  
+                </div>  
+                <div class="modal-body">  
+                     <form method="post" action="pages/proses/proses_edit-anggota.php">  
+                          <label>ID Anggota</label>
+                          <input type="text" name="id_anggota" id="id_anggota" class="form-control" readonly />   
+                          <br />
+                          <label>Nama</label>  
+                          <input type="text" name="nama" id="nama" class="form-control" />  
+                          <br />
+                          <label>Gmail </label></label>  
+                          <input type="email" name="email" id="email" class="form-control" />
+                          <br />
+                          <label>Alamat</label>  
+                          <textarea name="alamat" id="alamat" class="form-control"></textarea>  
+                          <br />  
+                          <label>Tempat Lahir</label>  
+                          <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" />  
+                          <br />  
+                          <label>Tanggal Lahir</label>  
+                          <input type="text" name="tgl_lahir" id="tgl_lahir" class="form-control" />  
+                          <br />
+                          <label>Jenis Kelamin</label>  
+                            <p><input type="radio" name="jenis_kelamin" id="jenis_kelamin_pria" class="minimal" value="L" style="margin-top: 10px;"> Laki - Laki</p>
+                            <p><input type="radio" name="jenis_kelamin" id="jenis_kelamin_wanita" class="minimal" value="P" style="margin-top: 20px;"> Perempuan</p>
+                          <br />
+                          <div class="form-group">
+                          <?php 
+                            $sql_query = "SELECT * FROM tb_jabatan";
+                            $result = mysqli_query($koneksi,$sql_query);
+                          ?>   
+                          <label>Jabatan</label>
+                          <select class="form-control select2 btn-primary" multiple="multiple" data-placeholder="Pilih Jabatan" name="jabatan"
+                                  style="width: 100%; color: #212121;"
+                                  data-validation="length" data-validation-length="min1" data-validation-error-msg="Pilih Setidaknya 1 Jabatan"
+                                  >
+                                  <?php 
+                                    while ($row = mysqli_fetch_array($result)){
+                                  ?>
+                                      <option value="<?php echo $row['id_jabatan']; ?>"> <?php echo $row['jabatan']; ?> </option>
+                                  <?php
+                                  }
+                                  ?>
+                          </select>
+                        </div>   
+                </div>  
+                <div class="modal-footer"> 
+                     <input type="submit" name="submit" id="insert" value="Update" class="btn btn-success" /> 
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>  
+                </form>      
+                </div>  
+           </div>  
+      </div>  
+ </div>  
+
 
   </html>
