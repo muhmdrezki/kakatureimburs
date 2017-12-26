@@ -48,7 +48,7 @@
     border-radius: 50%;
     width: 20px;
     height: 20px;
-    padding: 5px;
+    padding: 3px;
     background: #fff;
     border: 5px solid orange;
     color: #666;
