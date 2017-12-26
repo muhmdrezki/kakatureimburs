@@ -1157,6 +1157,22 @@ $(function () {
       }
     });
   });
+  $(document).on('click', '.reset_pass_anggota', function () {
+    var id_anggota = $(this).attr("id");
+    $.ajax({
+      url: "pages/ajax/fetchdata/fetch_data_anggota-forresetpass.php",
+      method: "post",
+      data: { id_anggota: id_anggota },
+      success: function (data) {
+        console.log(data);
+        $('#employee_pass').html(data);
+        $('#dataModal_resetPass').modal("show");
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
   //End datalist anggota JS
 
   //Ajax JS Datalist Cuti

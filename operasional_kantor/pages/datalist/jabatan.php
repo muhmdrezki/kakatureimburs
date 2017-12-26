@@ -70,8 +70,8 @@
                       while($row = mysqli_fetch_array($result)) {  
                ?>
                     <tr>   
-                         <td> <?php echo $row[jabatan] ?> </td>  
-                         <td> Rp. <?php echo number_format($row[gaji]) ?> </td>
+                         <td> <?php echo $row['jabatan'] ?> </td>  
+                         <td> Rp. <?php echo number_format($row['gaji']) ?> </td>
                          <td> <a id="<?php echo $row["id_jabatan"]; ?>" class="btn btn-danger btn-xs delete_data_jabatan"> HAPUS </a><a id="<?php echo $row["id_jabatan"]; ?>" class="btn btn-warning btn-xs edit_jabatan">EDIT</a> </td>
                     </tr>
               <?php 

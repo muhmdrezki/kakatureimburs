@@ -1,4 +1,4 @@
-   <?php  
+<?php  
      error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
      $id=$_POST["id_anggota"];
      if(isset($_POST['id_anggota'])){

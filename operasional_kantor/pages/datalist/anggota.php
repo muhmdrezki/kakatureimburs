@@ -165,6 +165,22 @@
           </div>
         </div>
       </div>
+      <div id="dataModal_resetPass" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Detail Anggota</h4>
+            </div>
+            <div class="modal-body" id="employee_pass">
+            </div>
+            <div class="modal-footer">
+              <a href="pages/proses/proses_reset-pass-anggota.php" class="btn btn-warning">RESET PASSWORD</a>
+              <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="edit_data_anggota" class="modal fade">  
       <div class="modal-dialog">  
            <div class="modal-content">  
