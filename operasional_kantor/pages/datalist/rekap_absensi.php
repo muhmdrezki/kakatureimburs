@@ -19,8 +19,8 @@
     } else {
       $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,SUM(a.credit_in) AS totalcredits  FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota WITH ROLLUP";
       $tglawal = date('m/01/Y');
-      $tglhariini = date('m/d/Y');
-      echo '<h2 class="bounceInLeft animated">REKAP ABSENSI TANGGAL '.$tglawal.' - '.$tglhariini.'</h2>';
+      $tglkaliini = date('m/d/Y');
+      echo '<h2 class="bounceInLeft animated">REKAP ABSENSI TANGGAL '.$tglawal.' - '.$tglkaliini.'</h2>';
     }
   ?>
 
@@ -101,11 +101,11 @@
               <form action="tampil/data-absensi-admin">
               <td><a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["id_ang"] ?></a></td>
               <td> <a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["nama"] ?></a></a></td>
-              <td> <button type="submit" class="btn btn-info btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',HADIR' ?>"><?php echo $r["jumhadir"] ?> hari</button></td>
-              <td><button type="submit" class="btn btn-danger btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',SAKIT' ?>"><?php echo $r["jumsakit"] ?> hari</button></td>
-              <td><button type="submit" class="btn btn-warning btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',IZIN' ?>"><?php echo $r["jumizin"] ?> hari</button></td>
-              <td><button type="submit" class="btn btn-success btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',CUTI' ?>"><?php echo $r["jumcuti"] ?> hari</button></td>
-              <td><button type="submit" class="btn btn-default btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',ALPHA' ?>"><?php echo $r["jumalpha"] ?> hari</button></td>
+              <td> <button type="submit" class="btn btn-info btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',HADIR' ?>"><?php echo $r["jumhadir"] ?> kali</button></td>
+              <td><button type="submit" class="btn btn-danger btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',SAKIT' ?>"><?php echo $r["jumsakit"] ?> kali</button></td>
+              <td><button type="submit" class="btn btn-warning btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',IZIN' ?>"><?php echo $r["jumizin"] ?> kali</button></td>
+              <td><button type="submit" class="btn btn-success btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',CUTI' ?>"><?php echo $r["jumcuti"] ?> kali</button></td>
+              <td><button type="submit" class="btn btn-default btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',ALPHA' ?>"><?php echo $r["jumalpha"] ?> kali</button></td>
               <td><a type="button" class="btn btn-default btn-block btn-sm active disabled" > Rp<?php echo number_format($r["totalcredits"]) ?></a></td>
               </form>
             </tr>
@@ -118,12 +118,12 @@
     <tfoot>
 								<tr>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled">Total</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled"><?php echo $no?> orang</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-info btn-block btn-md "><?php echo $totalhadir?> hari</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-danger btn-block btn-md "><?php echo $totalsakit?> hari</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-warning btn-block btn-md "><?php echo $totalizin?> hari</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-success btn-block btn-md "><?php echo $totalcuti?> hari</a></th>
-									<th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md"><?php echo $totalalpha?> hari</a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled"><?php echo $no?> pegawai</a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-info btn-block btn-md "><?php echo $totalhadir?> kali</a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-danger btn-block btn-md "><?php echo $totalsakit?> kali</a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-warning btn-block btn-md "><?php echo $totalizin?> kali</a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-success btn-block btn-md "><?php echo $totalcuti?> kali</a></th>
+									<th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md"><?php echo $totalalpha?> kali</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled">Rp<?php echo number_format($totalakomodasi) ?></a></th>
                 </tr>  
     </tfoot>              

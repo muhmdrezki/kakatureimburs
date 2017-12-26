@@ -332,7 +332,7 @@ $(function () {
         data: dataTotalAbsen,
         xkey: 'Bulan',
         ykeys: ['hadir', 'sakit', 'izin', 'cuti', 'alpha'],
-        yLabelFormat: function (y) { return y.toString() + ' hari'; },
+        yLabelFormat: function (y) { return y.toString() + ' kali'; },
         labels: ['Hadir', 'Sakit', 'Izin', 'Cuti', 'Alpha'],
         barColors: ['#00c0ef', '#f56954', '#f39c12', '#00a65a', '#c0c0c0']
       });
