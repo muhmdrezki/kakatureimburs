@@ -399,7 +399,7 @@ function autoAbsen($lat, $lng, $tgl_skrg, &$errmsg)
         } else {
             while ($row = $result->fetch_assoc()) {
                 $id_anggota = $row['id_anggota'];
-                $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,status_id,latitude,longitude,tgl_awal,tgl_akhir) VALUES ('$id_anggota', '$today1','$now1',1,'$lat','$lng','$today1','$today1')";
+                $query = "INSERT INTO tb_detail_absen (id_anggota, tanggal, jam_masuk,jam_keluar,status_id,latitude,longitude,tgl_awal,tgl_akhir) VALUES ('$id_anggota', '$today1','$now1','11:45:01',1,'$lat','$lng','$today1','$today1')";
                 //echo $query;
                 $insert = $conn->query($query);
                 if (!$insert) {

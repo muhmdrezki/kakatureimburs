@@ -28,13 +28,21 @@
 	$mail->Username = $email;    					 // SMTP username
 	$mail->Password = $pass;                         // SMTP password
 	$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->SMTPOptions = array(
+		'ssl' => array(
+			'verify_peer' => false,
+			'verify_peer_name' => false,
+			'allow_self_signed' => true
+		)
+	);
+	
 	$mail->Port = 465;                                    // TCP port to connect to
 
 	$mail->setFrom($email,$nama);
 
 
 
-	$mail->addAddress('kakatukantor123@gmail.com');     // Add a recipient
+	$mail->addAddress(getLastConfig("email_admin"));     // Add a recipient
 	
 	//$mail->addReplyTo('info@example.com', 'Information');
 
@@ -82,10 +90,6 @@
 		if(!$mail->send()) {
 			 echo "Mailer Error: " . $mail->ErrorInfo;
 		} else {
-			?>
-			<script type="text/javascript">
-		    alert('Email Konfirmasi Terkirim');
-			</script>
-			<?php
+			echo "Email berhasil terkirim";
 		}
 ?>

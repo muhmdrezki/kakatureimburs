@@ -29,13 +29,20 @@
 	$mail->Username = $email;    // SMTP username
 	$mail->Password = $pass;                         // SMTP password
 	$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->SMTPOptions = array(
+		'ssl' => array(
+			'verify_peer' => false,
+			'verify_peer_name' => false,
+			'allow_self_signed' => true
+		)
+	);
 	$mail->Port = 465;                                    // TCP port to connect to
 
 	$mail->setFrom($email,$nama);
 
 
 
-	$mail->addAddress('kakatukantor123@gmail.com');     // Add a recipient
+	$mail->addAddress(getLastConfig("email_admin"));     // Add a recipient
 	
 	//$mail->addReplyTo('info@example.com', 'Information');
 
@@ -47,13 +54,13 @@
 
 	$mail->isHTML(true);                                  // Set email format to HTML
 
-	$jml_uang = number_format($value[nominal]);
+	$jml_uang = number_format($value['nominal']);
 
-	  $date = date('d-m-Y', strtotime($value[tanggal]));
-      $dayname = date('l', strtotime($value[tanggal]));
-      $day = date('j', strtotime($value[tanggal]));
-      $month = date('F', strtotime($value[tanggal]));
-      $year = date('Y', strtotime($value[tanggal]));
+	  $date = date('d-m-Y', strtotime($value['tanggal']));
+      $dayname = date('l', strtotime($value['tanggal']));
+      $day = date('j', strtotime($value['tanggal']));
+      $month = date('F', strtotime($value['tanggal']));
+      $year = date('Y', strtotime($value['tanggal']));
 
        if($dayname =="Monday"){
       	$hari = "Senin";

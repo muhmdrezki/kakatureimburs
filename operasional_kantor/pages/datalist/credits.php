@@ -223,7 +223,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 												if (!$paidStatus) {
 											?>
 												<th>
-													<a class="btn btn-success btn-xs paid_all_total_credit">BAYAR SEMUA BULAN KEMAREN</a>
+													<a class="btn btn-success btn-xs paid_all_total_credit">BAYAR SEMUA BULAN INI</a>
 												</th>
 												<?php
 											}

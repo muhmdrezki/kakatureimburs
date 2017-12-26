@@ -41,24 +41,36 @@ if ($dayname != "Sat" && $dayname != "Sun") {
         printf("Error: %s\n", mysqli_error($koneksi));
         exit();
     }
-    if (mysqli_num_rows($reslibur3) != 0) {
+    if (mysqli_num_rows($reslibur3) === 0) {
         //echo "Masuk";
         require '../../phpmailer/PHPMailerAutoload.php';
         $mail = new PHPMailer;
 
         //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+        
+        //Konfig
+        $mailAdmin = getLastConfig("email_admin");
+        $passAadmin = getLastConfig("pass_email");
+        //End Konfig
 
         $mail->isSMTP(); // Set mailer to use SMTP
         $mail->Host = 'smtp.gmail.com'; // Specify main and backup SMTP servers
         $mail->SMTPAuth = true; // Enable SMTP authentication
         //$mail->Username = 'operasionalkantorkp@gmail.com';    // SMTP username
         //$mail->Password = 'kiwikiwi12';
-        $mail->Username = getLastConfig("email_admin"); // SMTP username
-        $mail->Password = getLastConfig("pass_email"); // SMTP password
+        $mail->Username = $mailAdmin; // SMTP username
+        $mail->Password = $passAadmin; // SMTP password
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
         $mail->SMTPSecure = 'ssl'; // Enable TLS encryption, `ssl` also accepted
         $mail->Port = 465; // TCP port to connect to
 
-        $mail->setFrom('kakatukantor123@gmail.com', 'Admin');
+        $mail->setFrom($mailAdmin, 'Admin');
 		//echo "masuk";
         $mail->isHTML(true);
         while ($row = mysqli_fetch_array($result)) {
@@ -83,7 +95,7 @@ if ($dayname != "Sat" && $dayname != "Sun") {
             }
 
             if (!$mail->send()) {
-				echo 'Gagal Mengirim Email Konfirmasi.'. $mail->ErrorInfo;
+				echo $mail->ErrorInfo;
             }
         }
     }
