@@ -7,7 +7,7 @@ $(function () {
       //data: "data",
       //dataType: "json",
       success: function (res) {
-        console.log(res);
+        //console.log(res);
         if (res == 0 || res == 2) {
           window.location = "tampil/form-absensi";
         }
@@ -287,11 +287,6 @@ $(function () {
         method: "POST",
         dataType: "json",
         success: function (data) {
-          console.log(data);
-          console.log(data[0].label);
-          console.log(data[0].value);
-          console.log(data[1].label);
-          console.log(data[1].value);
           $('#listLate').hide();
           $('#listOntime').hide();
           var status;
@@ -302,12 +297,10 @@ $(function () {
               status = data[index].label;
               switch (status) {
                 case "Late":
-                  console.log("masuk1");
                   $('#listLate').show();
                   $('#jumLate').text(data[index].value);
                   break;
                 case "Ontime":
-                  console.log("masuk2");
                   $('#listOntime').show();
                   $('#jumOntime').text(data[index].value);
                   break;
@@ -506,7 +499,7 @@ $(function () {
     socket.on("submit_baru", function (data) {
       //console.log(data);
       //ajaxGalleryAbsensiHariIni();
-      console.log("Masuk DashBoard");
+      //console.log("Masuk DashBoard");
       ajaxProgressAbsenHariIni();
       //ajaxchartConfigAbsen(false);
       ajaxchartConfigTotalAbsen();
@@ -654,7 +647,7 @@ $(function () {
   var id_libur = null;
   $(document).on('click', '.delete_libur', function () {
     id_libur = $(this).attr("id");
-    console.log(id_libur);
+    //console.log(id_libur);
     $.ajax({
       url: "ajax-fetchdata/detail-delete-libur",
       method: "POST",
@@ -673,7 +666,7 @@ $(function () {
       method: "POST",
       data: { id: idLibur },
       success: function (data) {
-        console.log(data);
+        //console.log(data);
         if (data != '') {
           alert(data);
         } else {
@@ -700,7 +693,7 @@ $(function () {
           method: "POST",
           data: { nama: namaLibur, tgl: tglLibur },
           success: function (data) {
-            console.log(data);
+            //console.log(data);
             if (data != '') {
               alert(data);
             } else {
@@ -735,7 +728,7 @@ $(function () {
           method: "POST",
           data: { nama: namaLibur, tgl: tglLibur },
           success: function (data) {
-            console.log(data);
+            //console.log(data);
             if (data != '') {
               alert(data);
             } else {

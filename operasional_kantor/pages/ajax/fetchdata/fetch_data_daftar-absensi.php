@@ -1,7 +1,9 @@
    <?php  
       error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
       include "../../../con_db.php";
-      $query = "SELECT a.jam_masuk AS jam_masuk,a.jam_keluar AS jam_keluar,b.nama AS nama,c.status AS status,b.foto_profile AS foto FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_absen c ON a.status_id = c.status_id WHERE a.tanggal=CURRENT_DATE() ORDER BY a.jam_masuk";  
+      date_default_timezone_set('Asia/Jakarta');
+      $today1 = date("Y-m-d");
+      $query = "SELECT a.jam_masuk AS jam_masuk,a.jam_keluar AS jam_keluar,b.nama AS nama,c.status AS status,b.foto_profile AS foto FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_absen c ON a.status_id = c.status_id WHERE a.tanggal='$today1' ORDER BY a.jam_masuk";  
       $result = mysqli_query($koneksi, $query);
       $jumbaris = mysqli_num_rows($result);
       //echo $jumbaris."<br>";

@@ -1,7 +1,9 @@
 <?php  
  //fetch.php  
     include "../../../con_db.php";
-    $selectAbsen="SELECT COUNT(id_anggota) AS jumabsen,(SELECT COUNT(id_anggota) FROM (SELECT a.id_anggota,a.nama FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan GROUP BY a.id_anggota HAVING GROUP_CONCAT(c.jabatan SEPARATOR ', ') NOT LIKE '%Admin%') AS Anggota) AS jumanggota FROM tb_detail_absen WHERE DATE(tanggal)=CURRENT_DATE()";
+    date_default_timezone_set('Asia/Jakarta');
+    $today1 = date("Y-m-d");
+    $selectAbsen="SELECT COUNT(id_anggota) AS jumabsen,(SELECT COUNT(id_anggota) FROM (SELECT a.id_anggota,a.nama FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan GROUP BY a.id_anggota HAVING GROUP_CONCAT(c.jabatan SEPARATOR ', ') NOT LIKE '%Admin%') AS Anggota) AS jumanggota FROM tb_detail_absen WHERE DATE(tanggal)='$today1'";
     $resAbsen = mysqli_query($koneksi, $selectAbsen);
     $rowAbsen= mysqli_fetch_assoc($resAbsen);
     $persen= ($rowAbsen['jumabsen']/$rowAbsen['jumanggota'])*100;

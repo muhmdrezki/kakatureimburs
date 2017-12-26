@@ -103,10 +103,10 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 		<?php
 		$paidStatus=isset($_POST['status_paid']);
           if ($paidStatus) {
-            $query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='paid' GROUP BY bulan,a.id_anggota ORDER BY bulan DESC";
+            $query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,(c.topup_credit+c.uang_makan) AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='paid' GROUP BY bulan,a.id_anggota ORDER BY bulan DESC";
             $query_total = "SELECT SUM(a.credit_in) AS total FROM tb_detail_absen a JOIN tb_credits_anggota b ON a.credit_id=b.id WHERE a.credit_stat='paid'";
           } else {
-			$query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='unpaid' GROUP BY a.id_anggota,bulan";
+			$query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,(c.topup_credit+c.uang_makan) AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='unpaid' GROUP BY a.id_anggota,bulan";
 			//$query2 = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.id_anggota=c.id_anggota WHERE a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(a.tanggal)=YEAR(CURRENT_DATE()) GROUP BY a.id_anggota";
             $query_total = "SELECT SUM(a.credit_in) AS total FROM tb_detail_absen a JOIN tb_credits_anggota b ON a.credit_id=b.id WHERE a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH(CURRENT_DATE()) AND YEAR(a.tanggal)=YEAR(CURRENT_DATE())";
           }
@@ -130,7 +130,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 							<?php
 								if (!$paidStatus) {
 							?>
-								<th> Jumlah Akomodasi</th>
+								<th> Uang Makan + Transportasi</th>
 								<?php
 									}
 								?>
