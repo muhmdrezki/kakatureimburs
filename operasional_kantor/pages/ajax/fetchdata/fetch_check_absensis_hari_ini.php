@@ -29,7 +29,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') !== false) {
             $row2 = $res2->fetch_assoc();
             if ($row2['jam_keluar'] === null && ($row2['status_id'] == 1 || $row2['status_id'] == 2 || $row2['status_id'] == 7)) {
                 date_default_timezone_set('Asia/Jakarta');
-                $current_time=time();
+                $current_time=date("H:i:s");
                 $jam_keluar=date('h:i:s', strtotime($row2['jam_masuk'] . ' + 8hours'));
                 if ($current_time >= strtotime($jam_keluar)) {
                     $_SESSION["isAbsenToday"] = 2;
