@@ -5,6 +5,8 @@ if (!defined('DIDALAM_INDEX_PHP')) {
     exit();
 } elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "chart-absensi-hari-ini")) {
     include_once "pages/ajax/fetchdata/fetch_chart-absenhariini.php";
+} elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "legenda-terlambat")) {
+    include_once "pages/ajax/fetchdata/fetch_legend_terlambat.php";
 } elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "session-jabatan")) {
     include_once "pages/ajax/fetchdata/fetch_session_admin.php";
 } elseif ((isset($_GET["action"])) && ($_GET["action"] == "ajax-fetchdata") && ($_GET["sidebar-menu"] == "data-libur")) {

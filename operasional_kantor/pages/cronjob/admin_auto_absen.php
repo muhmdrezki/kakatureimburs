@@ -20,7 +20,7 @@ $latKantor = -6.8869112;
 $lngKantor = 107.6168524;
 $errmsg = null;
 //Cek jika bukan hari sabtu dan minggu
-if ($dayname != "Sun") {
+if ($dayname != "Sun" && $dayname != "Sat") {
     autoAbsen($latKantor, $lngKantor, $tgl_now, $errmsg);
     echo $errmsg;
     //Emit Data dengan Socket IO

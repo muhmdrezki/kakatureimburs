@@ -1,7 +1,7 @@
    <?php  
       error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
       include "../../../con_db.php";
-      $query = "SELECT b.nama AS nama,c.status AS status,b.foto_profile AS foto FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_absen c ON a.status_id = c.status_id WHERE a.tanggal=CURRENT_DATE() ORDER BY a.jam_masuk";  
+      $query = "SELECT a.jam_masuk AS jam_masuk,a.jam_keluar AS jam_keluar,b.nama AS nama,c.status AS status,b.foto_profile AS foto FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_absen c ON a.status_id = c.status_id WHERE a.tanggal=CURRENT_DATE() ORDER BY a.jam_masuk";  
       $result = mysqli_query($koneksi, $query);
       $jumbaris = mysqli_num_rows($result);
       //echo $jumbaris."<br>";
@@ -74,13 +74,41 @@
                               $warnaLabel = 'label-default';
                         break;
                   }
-                  $output.='
-                  <li>
-                        <a class="users-list-name" href="#">'.$row["nama"].'</a>
-                        <img class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
-                        <span class="label '.$warnaLabel.' users-list-date">'.$statusFoto.'</span>
-                  </li>
-                  ';
+                  if (strtotime($row['jam_masuk']) >= strtotime('10:00:00')) {
+                        $output.='
+                        <li>
+                              <a class="users-list-name" href="#">'.$row["nama"].'</a>
+                              <img style="
+                                    width:256px;
+                                    margin: 10px;
+                                    border:3px solid orange;
+                                    border-radius: 500px;
+                                    -webkit-border-radius: 500px;
+                                    -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
+                              <span class="label '.$warnaLabel.' users-list-date">'.$statusFoto.'</span>
+                        ';
+                  } else {
+                        $output.='
+                        <li>
+                              <a class="users-list-name" href="#">'.$row["nama"].'</a>
+                              <img style="
+                                    width:256px;
+                                    margin: 10px;
+                                    border:3px solid Aqua;
+                                    border-radius: 500px;
+                                    -webkit-border-radius: 500px;
+                                    -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
+                              <span class="label '.$warnaLabel.' users-list-date">'.$statusFoto.'</span>
+                        ';
+                  }
+                  if ($row['jam_keluar']!==null) {
+                        $output.='<a class="users-list-name" href="#">'.$row["jam_masuk"].' - '.$row["jam_keluar"].'</a>
+                        </li>';
+                  } else {
+                        $output.='<a class="users-list-name" href="#">'.$row["jam_masuk"].'</a>
+                        </li>';
+                  }
+                  
                   $inc2++; 
             }
             $output .='</ul></div>';

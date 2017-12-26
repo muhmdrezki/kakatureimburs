@@ -267,6 +267,50 @@ $(function () {
                   $('#listAlpha').show();
                   $('#jumalpha').text(data[index].value);
                   break;
+                case "Late":
+                  $('#listLate').show();
+                  $('#jumlate').text(data[index].value);
+                  break;
+                case "Alpha":
+                  $('#listPntime').show();
+                  $('#jumOntime').text(data[index].value);
+                  break;
+              }
+            }
+            index++;
+          }
+          //setTimeout(function(){ajaxchartConfigAbsen(false);}, 10000);
+        }
+      });
+      $.ajax({
+        url: "ajax-fetchdata/legenda-terlambat",
+        method: "POST",
+        dataType: "json",
+        success: function (data) {
+          console.log(data);
+          console.log(data[0].label);
+          console.log(data[0].value);
+          console.log(data[1].label);
+          console.log(data[1].value);
+          $('#listLate').hide();
+          $('#listOntime').hide();
+          var status;
+          var index = 0;
+          //Proses penghitungan data absen di legend donut chart dan .show() legend
+          while (index <= (data.length - 1)) {
+            if (typeof (data[index]) !== "undefined") {
+              status = data[index].label;
+              switch (status) {
+                case "Late":
+                  console.log("masuk1");
+                  $('#listLate').show();
+                  $('#jumLate').text(data[index].value);
+                  break;
+                case "Ontime":
+                  console.log("masuk2");
+                  $('#listOntime').show();
+                  $('#jumOntime').text(data[index].value);
+                  break;
               }
             }
             index++;

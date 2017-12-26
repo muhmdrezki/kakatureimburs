@@ -44,6 +44,30 @@
 	.chartjs-hidden-iframe {
 		height: 100% !important;
 	}
+  .numberCircleOrange {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    background: #fff;
+    border: 5px solid orange;
+    color: #666;
+    text-align: center;
+    
+    font: 13px Arial, sans-serif;
+  }
+  .numberCircleAqua {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    background: #fff;
+    border: 5px solid aqua;
+    color: #666;
+    text-align: center;
+    
+    font: 13px Arial, sans-serif;
+  }
   /* Sembunyikan carousel-control */
   .carousel .carousel-control { visibility: hidden; }
   .carousel:hover .carousel-control { visibility: visible; }
@@ -181,7 +205,6 @@
 					<div class="box-body">
 							  <div class="col-md-4">
 								  <div class="row">
-									  <div class="">
 										  <ul class="chart-legend clearfix list-inline">
 											  <li id="listHadir"><span class="list-inline-item label label-info badge" id="jumhadir" ></span>Hadir</li>
 											  <li id="listHadirDiluar"><span class="list-inline-item label label-primary badge" id="jumhadirdiluar"></span>Tugas Kantor</li>
@@ -191,16 +214,20 @@
                         <li id="listAlpha"><span class="list-inline-item label label-default badge" id="jumalpha"></span>Alpha</li>
                         <li id="listKerjaRemote"><span class="list-inline-item label label-default badge" id="jumkerjaremote"></span>Kerja Remote</li>
 										  </ul>
-									  </div>
 									  <br>
 									  <div class="chart-responsive col-md-12 col-md-pull-2">
-										<canvas id="chart_absensi-hari-ini"></canvas>
-									  </div>
+										  <canvas id="chart_absensi-hari-ini"></canvas>
+                    </div>
 								  </div>
 							  </div>
 							  <div class="col-md-8">
 									<div id="galleryFotoAbsensi"></div>
-							  </div>
+                </div>
+                <ul class="chart-legend clearfix list-inline">
+                      <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span>On Time</li>
+                      <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span>Terlambat</li>
+                </ul>
+                <br>
 							  <!-- ./chart-responsive -->
 							<!-- /.col -->
 
