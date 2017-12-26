@@ -171,6 +171,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.min.js"></script>
         <!-- Bootstrap 3.3.7 -->
         <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- Bootstrap show password 1.1.2 -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.1.2/bootstrap-show-password.js"></script>
         <!-- Select2 -->
         <script type="text/javascript" src="bower_components/select2/dist/js/select2.full.min.js"></script>
         <!-- ChartJS -->
@@ -538,6 +540,10 @@ if ($values1['foto_profile'] != '-') {
                                             <a href="tampil/data-rekap">
                                                 <i class="fa fa-table"></i> Data Rekap Absen </a>
                                         </li>
+                                        <li>
+                                            <a href="tampil/konfigurasi-kakatu">
+                                                <i class="fa fa-key"></i> Konfigurasi Kakatu </a>
+                                        </li>
                                 </ul>
                                 </li>
                     </ul>
@@ -604,7 +610,7 @@ if ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar
         include_once "pages/datalist/tgllibur.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-rekap")) {
         include_once "pages/datalist/rekap_absensi.php";
-    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "menu-konfigurasi")) {
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "konfigurasi-kakatu")) {
         include_once "pages/forms/form_konfigurasi.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "proses-submit") && ($_GET["sidebar-menu"] == "absensi")) {
         include_once "pages/proses/proses_submit-absensi.php";

@@ -78,7 +78,7 @@
                           <label for="id">Password</label>
                           <input
                           type="password" class="form-control" id="password" placeholder="Masukkan Password Anda" name="password"
-                          data-validation="length" data-validation-length="min5"
+                          data-validation="length" data-validation-length="min5" data-toggle="password"
                           >
                         </div>
                       </form>
@@ -200,6 +200,8 @@ echo $id;?>"
 <!-- Bootstrap 3.3.7 -->
 <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- iCheck -->
+ <!-- Bootstrap show password 1.1.2 -->
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.1.2/bootstrap-show-password.js"></script>
 <script src="../plugins/iCheck/icheck.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>

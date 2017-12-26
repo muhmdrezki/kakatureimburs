@@ -186,8 +186,8 @@ if (!defined('DIDALAM_INDEX_PHP')){
                           <input type="email" name="email" id="email" class="form-control" />
                           <br />
                           <label>Password<i style="color: #f39c12;"> (Harus sama dengan password akun Gmail anda) </i></label>  
-                          <input type="text" name="password" id="password" class="form-control" />
-                          <label><i style="color: #f39c12;">Password Gmail dienkripsi menggunakan teknologi OpenSSL dengan metode "AES-256-CBC". Jadi Aman!<i style="color: #f39c12;"></label> 
+                          <input type="password" name="password" id="password" class="form-control" data-toggle="password"/>
+                          <label><i style="color: #f39c12;">Password Gmail dienkripsi menggunakan teknologi OpenSSL dengan metode "AES-256-CBC". Jadi Aman!</i></label> 
                           <br /> 
                       
                 </div>  

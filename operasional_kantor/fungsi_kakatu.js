@@ -2772,4 +2772,20 @@ $(function () {
   });
   //End Event Click Button Filter Absen
 
+  //Event Show/Hide Password Konfigurasi Kakatu
+  $('#secretKey').prop("readonly",true);
+  $('#secretIV').prop("readonly",true);
+  $('#secretKey').on('show.bs.password', function (e) {
+    $('#secretKey').prop("readonly",false);
+  });
+  $('#secretKey').on('hide.bs.password', function (e) {
+    $('#secretKey').prop("readonly",true);
+  });
+  $('#secretIV').on('show.bs.password', function (e) {
+    $('#secretIV').prop("readonly",false);
+  });
+  $('#secretIV').on('hide.bs.password', function (e) {
+    $('#secretIV').prop("readonly",true);
+  });
+  //End Event Show/Hide Password Konfigurasi Kakatu
 });
