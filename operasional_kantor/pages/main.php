@@ -602,6 +602,8 @@ if ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar
         include_once "pages/datalist/tgllibur.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "data-rekap")) {
         include_once "pages/datalist/rekap_absensi.php";
+    } elseif ((isset($_GET["action"])) && ($_GET["action"] == "tampil") && ($_GET["sidebar-menu"] == "menu-konfigurasi")) {
+        include_once "pages/forms/form_konfigurasi.php";
     } elseif ((isset($_GET["action"])) && ($_GET["action"] == "proses-submit") && ($_GET["sidebar-menu"] == "absensi")) {
         include_once "pages/proses/proses_submit-absensi.php";
     } else {

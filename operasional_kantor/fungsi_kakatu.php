@@ -450,7 +450,7 @@ function autoAbsenAlpha($conn, $tgl_skrg)
         printf("Error: %s\n", mysqli_error($conn));
         exit();
     }
-    if (mysqli_num_rows($reslibur2) != 0) {
+    if (mysqli_num_rows($reslibur2) === 0) {
         $selectalpha = "SELECT a.id_anggota FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan WHERE a.id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal='$today1') GROUP BY a.id_anggota HAVING GROUP_CONCAT(c.jabatan SEPARATOR ', ') NOT LIKE '%Admin%'";
         $resalpha = mysqli_query($conn, $selectalpha);
         if (!$resalpha) {
