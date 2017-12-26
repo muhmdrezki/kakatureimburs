@@ -39,9 +39,14 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 										</select>
 									</div>
 									<div class="form-group">
-										<label for="Credit">Jumlah Akomodasi</label>
-										<input type="text" class="form-control" id="topup_credit1" name="topup_credit1" placeholder="Isi Jumlah Akomodasi per absen"
-										 data-validation="required" data-validation-error-msg="Field Jumlah Akomodasi Tidak Boleh Kosong !">
+										<label for="Credit">Uang Transportasi</label>
+										<input type="text" class="form-control" id="topup_credit1" name="topup_credit1" placeholder="Isi Jumlah Uang Transportasi"
+										 data-validation="required" data-validation-error-msg="Field Jumlah Uang Transportasi Tidak Boleh Kosong !">
+									</div>
+									<div class="form-group">
+										<label for="Credit">Uang Makan</label>
+										<input type="text" class="form-control" id="topup_credit2" name="topup_credit2" placeholder="Isi Jumlah Uang Makan"
+										 data-validation="required" data-validation-error-msg="Field Jumlah Uang Transportasi Tidak Boleh Kosong !">
 									</div>
 									<!--
 							<div class="form-group">
@@ -58,7 +63,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 
 					<!-- left column -->
 					<?php
-						$query3 = "SELECT a.id,a.id_anggota,b.nama,a.topup_credit FROM tb_credits_anggota a JOIN tb_anggota b ON a.id_anggota=b.id_anggota";
+						$query3 = "SELECT a.id,a.id_anggota,b.nama,a.topup_credit,a.uang_makan FROM tb_credits_anggota a JOIN tb_anggota b ON a.id_anggota=b.id_anggota";
 						$res3=mysqli_query($koneksi, $query3);
 					?>
 					<div class="col-md-8">
@@ -68,7 +73,8 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 										<tr>
 											<th>ID Anggota</th>
 											<th>Nama</th>
-											<th>Jumlah Akomodasi</th>
+											<th>Uang Transportasi</th>
+											<th>Uang Makan</th>
 											<th>Action</th>
 										</tr>
 									</thead>
@@ -80,6 +86,8 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 										<td><?php echo $row3["id_anggota"] ?></td>
 										<td><?php echo $row3["nama"] ?> </td>
 										<td>Rp.<?php echo number_format($row3["topup_credit"]) ?> </td>
+										<td>Rp.<?php echo number_format($row3["uang_makan"]) ?> 
+										</td>
 										<td><a id="<?php echo $row3["id"]; ?>" class="btn btn-warning btn-xs edit_topup_credit">EDIT</a></td>
 										<?php
 										}
@@ -255,11 +263,13 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 							<label>ID</label>
 							<input type="text" name="id_credit" id="id_credit" class="form-control" readonly />
 							<br>
-							<label>ID</label>
+							<label>ID Anggota</label>
 							<input type="text" name="id_anggota_credit" id="id_anggota_credit" class="form-control" readonly />
 							<br>
-							<label>Jumlah</label>
+							<label>Uang Transportasi</label>
 							<input type="text" name="topup_credit" id="topup_credit" class="form-control" />
+							<label>Uang Makan</label>
+							<input type="text" name="uang_makan" id="uang_makan" class="form-control" />
 					</div>
 					<div class="modal-footer">
 						<input type="submit" name="submit" id="insert" value="Update" class="btn btn-success" />

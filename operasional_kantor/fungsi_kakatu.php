@@ -190,14 +190,14 @@ function uploadSingleGambar($id, $targetdir, $filename, $ukuran, &$errmsg, &$scs
 function topupCredit($last_id, $stat, &$errmsg)
 {
     if ($stat == 1 || $stat == 2 || $stat == 5) {
-        $qry = "UPDATE tb_detail_absen a JOIN tb_credits_anggota b ON a.id_anggota=b.id_anggota SET a.credit_id=b.id,a.credit_in=b.topup_credit,a.credit_stat='unpaid' WHERE a.id='$last_id'";
+        $qry = "UPDATE tb_detail_absen a JOIN tb_credits_anggota b ON a.id_anggota=b.id_anggota SET a.credit_id=b.id,a.credit_in=(b.topup_credit+b.uang_makan),a.credit_stat='unpaid' WHERE a.id='$last_id'";
         inUpDel($qry, $errmsg);
         if ($errmsg !== null) {
             $qry = "DELETE FROM tb_detail_absen WHERE id='$last_id'";
             inUpDel($qry, $errmsg);
         }
     } else if ($stat == 7) {
-        $qry = "UPDATE tb_detail_absen a JOIN tb_credits_anggota b ON a.id_anggota=b.id_anggota SET a.credit_id=b.id,a.credit_in=(b.topup_credit-10000),a.credit_stat='unpaid' WHERE a.id='$last_id'";
+        $qry = "UPDATE tb_detail_absen a JOIN tb_credits_anggota b ON a.id_anggota=b.id_anggota SET a.credit_id=b.id,a.credit_in=b.uang_makan,a.credit_stat='unpaid' WHERE a.id='$last_id'";
         inUpDel($qry, $errmsg);
         if ($errmsg !== null) {
             $qry = "DELETE FROM tb_detail_absen WHERE id='$last_id'";
@@ -595,7 +595,7 @@ function inUpDel($qry, &$errmsg)
 //DataList Credit
 function fetchCreditsJSON($id)
 {
-    $qry = "SELECT id,id_anggota,topup_credit FROM tb_credits_anggota WHERE id = '$id'";
+    $qry = "SELECT id,id_anggota,topup_credit,uang_makan FROM tb_credits_anggota WHERE id = '$id'";
     $conn = createConn();
     if (!$conn->query($qry)) {
         echo "Error: " . $qry . "<br>" . $conn->error;
@@ -666,11 +666,12 @@ function fetchCreditForPaid($id)
     $_SESSION["id_anggota_credit"] = $id;
     return $output;
 }
-function prosesEditCredit($id, $nominal, &$errmsg)
+function prosesEditCredit($id, $nominal,$nominal2, &$errmsg)
 {
     $id = antiInjection($id);
     $nominal = antiInjection($nominal);
-    $qry = "UPDATE tb_credits_anggota SET topup_credit='$nominal' WHERE id='$id'";
+    $nominal2 = antiInjection($nominal2);
+    $qry = "UPDATE tb_credits_anggota SET topup_credit='$nominal',uang_makan='$nominal2' WHERE id='$id'";
     inUpDel($qry, $errmsg);
 }
 function prosesPaidCredit($id, $errmsg)

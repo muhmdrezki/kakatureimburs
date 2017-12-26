@@ -7,8 +7,8 @@ $(function () {
       //data: "data",
       //dataType: "json",
       success: function (res) {
-        //console.log(res);
-        if (res == 0) {
+        console.log(res);
+        if (res == 0 || res == 2) {
           window.location = "tampil/form-absensi";
         }
       }
@@ -78,13 +78,33 @@ $(function () {
         console.log(data);
       }
     });
-    $('#toggleIzinkanLokasi').attr("disabled", "disabled");
-    $('#submit_hadir_form').removeAttr("disabled");
-    $('#submit_hadirdiluar_form').removeAttr("disabled");
-    $('#submit_sakit_form').removeAttr("disabled");
-    $('#submit_izin_form').removeAttr("disabled");
-    $('#submit_cuti_form').removeAttr("disabled");
-    $('#submit_kerjaremote_form').removeAttr("disabled");
+    $.ajax({
+      type: "post",
+      url: "ajax-fetchdata/check-absen",
+      //data: "data",
+      //dataType: "json",
+      success: function (res) {
+        //console.log(res);
+        $('#toggleIzinkanLokasi').attr("disabled", "disabled");
+        if (res == 2) {
+          $('#submit_keluar').show();
+        } else {
+          $('#submit_hadir_form').show();
+          $('#submit_hadirdiluar_form').show();
+          $('#submit_sakit_form').show();
+          $('#submit_izin_form').show();
+          $('#submit_cuti_form').show();
+          $('#submit_kerjaremote_form').show();
+        }
+      }
+    });
+    //$('#toggleIzinkanLokasi').attr("disabled", "disabled");
+    //$('#submit_hadir_form').removeAttr("disabled");
+    //$('#submit_hadirdiluar_form').removeAttr("disabled");
+    //$('#submit_sakit_form').removeAttr("disabled");
+    //$('#submit_izin_form').removeAttr("disabled");
+    //$('#submit_cuti_form').removeAttr("disabled");
+    //$('#submit_kerjaremote_form').removeAttr("disabled");    
   }
   function showError(error) {
     switch (error.code) {
@@ -477,7 +497,9 @@ $(function () {
   $("#gaji").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
   $("#gaji1").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
   $("#topup_credit1").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
+  $("#topup_credit2").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
   $("#topup_credit").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
+  $("#uang_makan").maskMoney({ prefix: 'Rp ', allowNegative: false, thousands: '.', decimal: ',', affixesStay: false, precision: 0 });
   $('.select2').select2();
 
   //Datemask dd/mm/yyyy
@@ -1072,9 +1094,9 @@ $(function () {
         $('#edit_data_anggota').modal('show');
         $('#edit_data_anggota').on('shown.bs.modal', function () {
           if (data.jenis_kelamin == "L") {
-            $('#jenis_kelamin_pria').prop('checked',true).click()
+            $('#jenis_kelamin_pria').prop('checked', true).click()
           } else {
-            $('#jenis_kelamin_wanita').prop('checked',true).click()
+            $('#jenis_kelamin_wanita').prop('checked', true).click()
           }
           $(".select2").val(data.jabatan).trigger('change');
         })
@@ -1360,6 +1382,30 @@ $(function () {
   }
 
   //Event Click dan Show Modal Form Submit Absensi
+  //Event Click dan Show Modal Form Submit Absensi
+  $('#submit_keluar').on('click', function () {
+    var lat = $('#latitude').val();
+    var lng = $('#longitude').val();
+    $.ajax({
+      type: "POST",
+      url: "ajax-proses/submit-absensi",
+      data: { latitude: lat, longitude: lng },
+      dataType: "json",
+      success: function (dt) {
+        console.log(dt);
+        if (dt.errmsg === null) {
+          pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, dt.errmsg, dt.scsmsg, dt.jenis);
+        } else {
+          //console.log(dt.errmsg);
+          alert(dt.errmsg);
+        }
+      },
+      error: function (dt) {
+        console.log("Error: \n");
+        console.log(dt);
+      }
+    });
+  });
   $('#submit_hadir_form').on('click', function () {
     var stat = 1;
     var lat = $('#latitude').val();
@@ -1372,7 +1418,7 @@ $(function () {
       success: function (dt) {
         console.log(dt);
         if (dt.errmsg === null) {
-          pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, dt.errmsg, dt.scsmsg);
+          pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, dt.errmsg, dt.scsmsg, dt.jenis);
         } else {
           //console.log(dt.errmsg);
           alert(dt.errmsg);
@@ -1419,7 +1465,7 @@ $(function () {
           if (dt.errmsg === null) {
             console.log("Foto: " + dt.scsmsg);
             $('#myModal_hadirdiluar').modal('toggle');
-            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
+            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg, dt.jenis);
           } else {
             console.log("Bangsat");
             console.log(dt.errmsg);
@@ -1480,7 +1526,7 @@ $(function () {
           if (dt.errmsg === null) {
             console.log("Foto: " + dt.scsmsg);
             $('#myModal_sakit').modal('toggle');
-            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
+            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg, dt.jenis);
           } else {
             console.log(dt.errmsg);
             alert(dt.errmsg);
@@ -1562,7 +1608,7 @@ $(function () {
           if (dt.errmsg === null) {
             //console.log("Foto: " + dt.scsmsg);
             $('#myModal_izin').modal('toggle');
-            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
+            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg, dt.jenis);
           } else {
             console.log(dt.errmsg);
             alert(dt.errmsg);
@@ -1659,7 +1705,7 @@ $(function () {
           if (dt.errmsg === null) {
             //console.log("Foto: " + dt.scsmsg);
             $('#myModal_izin').modal('toggle');
-            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
+            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg, dt.jenis);
           } else {
             console.log(dt.errmsg);
             alert(dt.errmsg);
@@ -1772,7 +1818,7 @@ $(function () {
           if (dt.errmsg === null) {
             console.log("Foto: " + dt.scsmsg);
             $('#myModal_kerjaremote').modal('toggle');
-            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg);
+            pesanWA(dt.nama, dt.status, dt.keterangan, dt.tgl1, dt.tgl2, dt.sisacuti, url, dt.scsmsg, dt.jenis);
           } else {
             console.log(dt.errmsg);
             alert(dt.errmsg);
@@ -1803,60 +1849,79 @@ $(function () {
 
   //END Event Click Submit Absen
   //Fungsi Pesan WA
-  function pesanWA(nama, status, keterangan, tgl1, tgl2, sisacuti, url, foto) {
+  function pesanWA(nama, status, keterangan, tgl1, tgl2, sisacuti, url, foto, jenis) {
     //console.log("Status = "+status);
     //console.log("Foto1" + foto);
     var tglskrg = new Date();
     var wa_msg = null;
-    switch (status) {
-      case "1":
-        wa_msg = "HADIR" + "\n" + "---" + "\n" + "Saya, " + nama + " sudah hadir dikantor pada hari ini pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes();
-        console.log(wa_msg + '\n');
-        break;
-      case "2":
-        wa_msg = "TUGAS KANTOR" + "\n" + "Saya, " + nama + "  sedang bertugas diluar kantor pada hari ini mulai pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes() + " untuk keperluan " + keterangan + "\n" + url;
-        break;
-      case "3":
-        //var date1 = new Date(tgl1);
-        //var date2 = new Date(tgl2);
-        //var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-        //var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        if (tgl1 === tgl2) {
-          wa_msg = "SAKIT" + "\n" + "Saya, " + nama + " mohon izin sakit pada hari ini tidak bisa masuk kerja karena " + keterangan + ". Mohon doanya ya agar saya lekas sembuh. Amin\n" + url;
-        } else {
-          wa_msg = "SAKIT" + "\n" + "Saya, " + nama + " mohon izin sakit pada hari ini sampai " + tgl2 + " tidak bisa masuk kerja karena " + keterangan + ". Mohon doanya ya agar saya lekas sembuh. Amin\n" + url;
-        }
-        break;
-      case "4":
-        //var tglcoba="<?php echo $tgl_awal?>";
-        //console.log(tglcoba);
-        //var date1 = new Date(tgl1);
-        //var date2 = new Date(tgl2);
-        //var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-        //var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        if (tgl1 === tgl2) {
-          wa_msg = "IZIN" + "\n" + "Saya, " + nama + " mohon izin pada hari ini tidak bisa masuk kerja karena " + keterangan + ".\n" + url;
-        } else {
-          wa_msg = "IZIN" + "\n" + "Saya, " + nama + " mohon izin pada hari ini sampai " + tgl2 + " tidak bisa masuk kerja karena " + keterangan + ".\n" + url;
-        }
-        break;
-      case "5":
-        wa_msg = "CUTI" + "\n" + "Saya, " + nama + " mohon izin cuti dari tanggal " + tgl1 + " sampai " + tgl2 + " karena " + keterangan + ".Sisa cuti saya tahun " + tglskrg.getFullYear() + " ini <" + sisacuti + " hari \n" + url;
-        break;
-      case "7":
-        wa_msg = "KERJA REMOTE" + "\n" + "Saya, " + nama + "  sedang kerja remote pada hari ini mulai pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes() + " karena " + keterangan + "\n" + url;
-        break;
-    }
-    wa_msg = window.encodeURIComponent(wa_msg);
-    //console.log(wa_msg + "\n");
-    wa_absen = "whatsapp://send?text=" + wa_msg;
-    //console.log( wa_absen);
-    //message: '<img alt="Tidak Ada Foto" src="dist/fotolokasi/'+dt.scsmsg+'" class="compress thumbnail img-responsive pop" style="height: 100px;width:100px;object-fit:cover;">'
-    var formatPesan = null;
-    if (foto !== null) {
-      formatPesan = "<h4>Absen Berhasil, " + nama + ".<br><br>Yuk share ke Whatsapp untuk absensi anda hari ini! </h4><br><img src='dist/fotolokasi/" + foto + "' class='compress thumbnail img-responsive pop' style='height: 180px;width:180px;object-fit:cover;'><br><h3>Share Sekarang?</h3>";
+    if (jenis == "masuk") {
+      switch (status) {
+        case "1":
+          wa_msg = "HADIR" + "\n" + "---" + "\n" + "Saya, " + nama + " sudah hadir dikantor pada hari ini pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes();
+          console.log(wa_msg + '\n');
+          break;
+        case "2":
+          wa_msg = "TUGAS KANTOR" + "\n" + "Saya, " + nama + "  sedang bertugas diluar kantor pada hari ini mulai pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes() + " untuk keperluan " + keterangan + "\n" + url;
+          break;
+        case "3":
+          //var date1 = new Date(tgl1);
+          //var date2 = new Date(tgl2);
+          //var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+          //var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+          if (tgl1 === tgl2) {
+            wa_msg = "SAKIT" + "\n" + "Saya, " + nama + " mohon izin sakit pada hari ini tidak bisa masuk kerja karena " + keterangan + ". Mohon doanya ya agar saya lekas sembuh. Amin\n" + url;
+          } else {
+            wa_msg = "SAKIT" + "\n" + "Saya, " + nama + " mohon izin sakit pada hari ini sampai " + tgl2 + " tidak bisa masuk kerja karena " + keterangan + ". Mohon doanya ya agar saya lekas sembuh. Amin\n" + url;
+          }
+          break;
+        case "4":
+          //var tglcoba="<?php echo $tgl_awal?>";
+          //console.log(tglcoba);
+          //var date1 = new Date(tgl1);
+          //var date2 = new Date(tgl2);
+          //var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+          //var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+          if (tgl1 === tgl2) {
+            wa_msg = "IZIN" + "\n" + "Saya, " + nama + " mohon izin pada hari ini tidak bisa masuk kerja karena " + keterangan + ".\n" + url;
+          } else {
+            wa_msg = "IZIN" + "\n" + "Saya, " + nama + " mohon izin pada hari ini sampai " + tgl2 + " tidak bisa masuk kerja karena " + keterangan + ".\n" + url;
+          }
+          break;
+        case "5":
+          wa_msg = "CUTI" + "\n" + "Saya, " + nama + " mohon izin cuti dari tanggal " + tgl1 + " sampai " + tgl2 + " karena " + keterangan + ".Sisa cuti saya tahun " + tglskrg.getFullYear() + " ini <" + sisacuti + " hari \n" + url;
+          break;
+        case "7":
+          wa_msg = "KERJA REMOTE" + "\n" + "Saya, " + nama + "  sedang kerja remote pada hari ini mulai pukul " + tglskrg.getHours() + ":" + tglskrg.getMinutes() + " karena " + keterangan + "\n" + url;
+          break;
+      }
+      wa_msg = window.encodeURIComponent(wa_msg);
+      //console.log(wa_msg + "\n");
+      wa_absen = "whatsapp://send?text=" + wa_msg;
+      //console.log( wa_absen);
+      //message: '<img alt="Tidak Ada Foto" src="dist/fotolokasi/'+dt.scsmsg+'" class="compress thumbnail img-responsive pop" style="height: 100px;width:100px;object-fit:cover;">'
+      var formatPesan = null;
+      if (foto !== null) {
+        formatPesan = "<h4>Absen Berhasil, " + nama + ".<br><br>Yuk share ke Whatsapp untuk absensi masuk anda hari ini! </h4><br><img src='dist/fotolokasi/" + foto + "' class='compress thumbnail img-responsive pop' style='height: 180px;width:180px;object-fit:cover;'><br><h3>Share Sekarang?</h3>";
+      } else {
+        formatPesan = "<h4>Absen Berhasil, " + nama + ".<br><br>Yuk share ke Whatsapp untuk absensi masuk anda hari ini! </h4><br><br><h3>Share Sekarang?</h3>";
+      }
     } else {
-      formatPesan = "<h4>Absen Berhasil, " + nama + ".<br><br>Yuk share ke Whatsapp untuk absensi anda hari ini! </h4><br><br><h3>Share Sekarang?</h3>";
+      switch (status) {
+        case "1":
+          wa_msg = "ABSEN KELUAR HADIR" + "\n" + "---" + "\n" + "Saya, " + nama + " telah hadir kerja dikantor pada hari ini dari pukuk " + tgl1 + " sampai " + tgl2;
+          console.log(wa_msg + '\n');
+          break;
+        case "2":
+          wa_msg = "ABSEN KELUAR TUGAS KANTOR" + "\n" + "Saya, " + nama + "  telah bertugas diluar kantor pada hari ini dari pukul " + tgl1 + " sampai " + tgl2;
+          break;
+        case "7":
+          wa_msg = "ABSEN KELUAR KERJA REMOTE" + "\n" + "Saya, " + nama + "  telah kerja remote pada hari ini dari pukul " + tgl1 + " sampai " + tgl2;
+          break;
+      }
+      wa_msg = window.encodeURIComponent(wa_msg);
+      //console.log(wa_msg + "\n");
+      wa_absen = "whatsapp://send?text=" + wa_msg;
+      formatPesan = "<h4>Absen Berhasil, " + nama + ".<br><br>Yuk share ke Whatsapp untuk absensi keluar anda hari ini! </h4><br><br><h3>Share Sekarang?</h3>";
     }
     bootbox.dialog({
       message: formatPesan,
@@ -1912,6 +1977,7 @@ $(function () {
         $('#id_credit').val(data.id);
         $('#id_anggota_credit').val(data.id_anggota);
         $('#topup_credit').val(data.topup_credit);
+        $('#uang_makan').val(data.uang_makan);
         $('#insert').val("Update");
         $('#editCreditModal').modal('show');
       }
@@ -2588,7 +2654,7 @@ $(function () {
     // source can be HTML-formatted string, or a reference
     // to an actual DOM element from which the text will be scraped.
     source = $('#generatePDF')[0];
-  
+   
     // we support special element handlers. Register them with jQuery-style 
     // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
     // There is no support for any other type of selectors 
@@ -2615,7 +2681,7 @@ $(function () {
         'width': margins.width, // max width of content on PDF
         'elementHandlers': specialElementHandlers
     },
-  
+   
     function (dispose) {
         // dispose: object with X, Y of the last line add to the PDF 
         //          this allow the insertion of new lines after html

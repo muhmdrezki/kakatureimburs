@@ -4,7 +4,7 @@
       //$nominal1 = str_replace(',', '', $nominal);
       //$topup = str_replace('Rp ', '', $nominal1);
       $errmsg=null;
-      prosesEditCredit($_POST["id_credit"],str_replace('.', '', $_POST["topup_credit"]),$errmsg);
+      prosesEditCredit($_POST["id_credit"],str_replace('.', '', $_POST["topup_credit"]),str_replace('.', '', $_POST["uang_makan"]),$errmsg);
       if ($errmsg!==null) {
             echo '<script>alert("Terjadi Error:'.$errmsg.'")</script>';
       } else {

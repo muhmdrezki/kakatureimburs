@@ -52,7 +52,9 @@ if (!defined('DIDALAM_INDEX_PHP')) {
               <thead>
                 <tr>
                   <th> ID </th>
-                  <th> Waktu Submit </th>
+                  <th> Tanggal</th>
+                  <th> Jam Masuk</th>
+                  <th> Jam Keluar</th>
                   <th> ID Anggota </th>
                   <th> Nama </th>
                   <th> Status</th>

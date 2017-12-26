@@ -10,12 +10,15 @@
 	$topup = str_replace('.', '', $nominal1);
 	//$total_credit = str_replace(',', '', $nominal2);
 	//query untuk memasukan ke database
-		$query = "INSERT INTO tb_credits_anggota (id_anggota, topup_credit) VALUES ('$id', '$topup')";
+	$nominal2 = $_POST['topup_credit2'];
+	//$nominal2= $_POST['total_credit'];
+	$topup2 = str_replace('.', '', $nominal2);
+		$query = "INSERT INTO tb_credits_anggota (id_anggota, topup_credit,uang_makan) VALUES ('$id', '$topup','$topup2')";
 		$insert = mysqli_query($koneksi, $query);
 	if (!$insert) {
         printf("Error: %s\n", mysqli_error($koneksi));
         exit();
     } 
-	echo '<script>alert("Data Credit Berhasil Disimpan");window.location="../../tampil/data-akomodasi"</script>';
+	echo '<script>alert("Data Akomodasi Berhasil Disimpan");window.location="../../tampil/data-akomodasi"</script>';
 }
 ?>

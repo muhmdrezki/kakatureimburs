@@ -3,9 +3,9 @@
 unset($_SESSION["isAbsenToday"]);
 $today1 = date("Y-m-d");
 $namahari = date('D', strtotime($today1));
-if(strpos($_SESSION['jabatan'], 'Admin') !== false){
+if (strpos($_SESSION['jabatan'], 'Admin') !== false) {
     $_SESSION["isAbsenToday"] = -3;
-} elseif($namahari == "Sat" || $namahari == "Sun") {
+} elseif ($namahari == "Sat" || $namahari == "Sun") {
     $_SESSION["isAbsenToday"] = -2;
 } elseif (time() <= strtotime("04:00 AM")) {
     $_SESSION["isAbsenToday"] = -1;
@@ -17,7 +17,27 @@ if(strpos($_SESSION['jabatan'], 'Admin') !== false){
     $res = $conn->query($query);
     $row = $res->num_rows;
     if ($row > 0) {
-        $_SESSION["isAbsenToday"] = 1;
+        $query2 = "SELECT status_id,jam_masuk,jam_keluar FROM tb_detail_absen WHERE id_anggota='$id_anggota' AND tanggal='$today1'";
+        $res2 = $conn->query($query2);
+        if (!$res2) {
+            $errmsg = "Query: " . $query2 . " Error: " . $conn->error;
+            //echo "Error: " . $qry . "<br>" . $conn->error;
+            $conn->close();
+            echo $errmsg;
+        } else {
+            $row2 = $res2->fetch_assoc();
+            if ($row2['jam_keluar'] === null && ($row2['status_id'] == 1 || $row2['status_id'] == 2 || $row2['status_id'] == 7)) {
+                $current_time=time();
+                $jam_keluar=date('h:i:s', strtotime($row2['jam_masuk'] . ' + 1hours'));
+                if ($current_time >= strtotime($jam_keluar)) {
+                    $_SESSION["isAbsenToday"] = 2;
+                } else {
+                    $_SESSION["isAbsenToday"] = 1;
+                }
+            } else {
+                $_SESSION["isAbsenToday"] = 3;
+            }
+        }
     } else {
         $_SESSION["isAbsenToday"] = 0;
     }

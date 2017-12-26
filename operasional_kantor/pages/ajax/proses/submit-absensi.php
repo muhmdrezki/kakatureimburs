@@ -22,9 +22,11 @@ $scsmsg = null;
 $latitude = null;
 $longitude = null;
 $hariini1 = date("Y-m-d");
-
+//jenis asen masuk atau keluar
+$jenis = "masuk";
 //Validasi Absen Hari ini
-$isAbsen = "SELECT id_anggota FROM tb_detail_absen WHERE id_anggota='$id' AND tanggal='$hariini1'";
+
+$isAbsen = "SELECT id_anggota,jam_masuk,jam_keluar,status_id,latitude,longitude FROM tb_detail_absen WHERE id_anggota='$id' AND tanggal='$hariini1'";
 $conn = createConn();
 $res = $conn->query($isAbsen);
 if (!$res) {
@@ -32,8 +34,32 @@ if (!$res) {
     //echo "Error: " . $qry . "<br>" . $conn->error;
     $conn->close();
 } elseif ($res->num_rows > 0) {
-    //Jika sudah Absen
-    $errmsg = "Anda sudah mengisi absen hari ini!";
+    //Jika sudah Absen masuk
+    if (isset($_POST['latitude']) && !empty($_POST['latitude'])) {
+        //Check Absen keluar
+        $row=$res->fetch_assoc();
+        $latMasuk=$row['latitude'];
+        $lngMasuk=$row['longitude'];
+        if ($row['jam_keluar']===null) {
+            $distance2 = getDistance($latitude, $longitude, $latMasuk, $lngMasuk);
+            if ($distance<=300) {
+                $now = date("H:i:s");
+                $queryKeluar = "UPDATE tb_detail_absen SET jam_keluar='$now' WHERE id_anggota='$id' AND tanggal='$hariini1'";
+                inUpDel($queryKeluar,$errmsg);
+                $status=$row['status_id'];
+                emitData();
+                $tgl_awal = $row['jam_masuk'];
+                $tgl_akhir = $now;
+                $jenis = "keluar";              
+            } else {
+                $errmsg = "Absen Keluar Gagal karena Anda berada " . round($distance2 / 1000, 3) . "km dari lokasi anda absen masuk";
+            }
+            
+        } else {
+            $errmsg = "Anda sudah mengisi absen hari ini!";
+        }
+        
+    }
 } else {
     //Jika Belum Absen
     if (isset($_POST['latitude']) && !empty($_POST['latitude'])) {
@@ -162,6 +188,7 @@ $pesan = array(
     'tgl1' => $tgl_awal,
     'tgl2' => $tgl_akhir,
     'sisacuti' => $_SESSION['sisacuti'],
+    'jenis' => $jenis
 );
 echo json_encode($pesan);
 ?>

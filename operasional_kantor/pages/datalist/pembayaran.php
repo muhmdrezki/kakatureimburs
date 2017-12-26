@@ -223,11 +223,11 @@ if($_SESSION['jabatan'] == 'Admin'){
                        <?php } ?>
                        </td>
                   <?php 
-                } else if($r[status]=='2'){
+                } else if($r['status']=='2'){
                   ?>
                        <td><a href="tampil/detail-pembayaran/<?php echo $id ?>" class="btn btn-success btn-xs"> <span> SUDAH </span></a></td>
                   <?php 
-                } else if($r[status]=='1'){
+                } else if($r['status']=='1'){
                   ?>
                        <td><a href="tampil/detail-pembayaran/<?php echo $id ?>" class="btn btn-warning btn-xs"> MENUNGGU </a></td> 
                 <?php
