@@ -1,7 +1,7 @@
 <?php
 //include "../../../fungsi_kakatu.php";
 $connect = createConn();
-$columns = array('id', 'CONCAT(d.tanggal," ",d.jam_masuk)', 'id_anggota', 'nama', 'status');
+$columns = array('id', 'd.tanggal', 'd.jam_masuk', 'd.jam_keluar', 'id_anggota', 'nama', 'status');
 $query = "SELECT d.id AS id,d.tanggal AS tanggal,d.jam_masuk AS jam_masuk,d.jam_keluar AS jam_keluar,d.id_anggota AS id_anggota, a.nama AS nama, b.status AS status FROM tb_detail_absen d JOIN tb_absen b ON d.status_id=b.status_id JOIN tb_anggota a ON d.id_anggota = a.id_anggota";
 $isAdmin = strpos($_SESSION['jabatan'], 'Admin') !== false;
 if (isset($_POST["search"]["value"])) {
@@ -17,6 +17,7 @@ if (isset($_POST["search"]["value"])) {
             OR d.tanggal LIKE "%' . $searchValue . '%"
             OR d.jam_masuk LIKE "%' . $searchValue . '%"
             OR d.jam_keluar LIKE "%' . $searchValue . '%"
+            OR d.id_anggota LIKE "%' . $searchValue . '%"
             OR a.nama LIKE "%' . $searchValue . '%"
             OR b.status = "' . $searchValue . '")
             AND d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '"';
@@ -29,7 +30,8 @@ if (isset($_POST["search"]["value"])) {
             WHERE (d.id = "' . $searchValue . '"
             OR d.tanggal LIKE "%' . $searchValue . '%"
             OR d.jam_masuk LIKE "%' . $searchValue . '%"
-            OR d.jam_keluar LIKE "%' . $searchValue . '%"s
+            OR d.jam_keluar LIKE "%' . $searchValue . '%"
+            OR d.id_anggota LIKE "%' . $searchValue . '%"
             OR a.nama LIKE "%' . $searchValue . '%"
             OR b.status = "' . $searchValue . '")
             AND (d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '")
@@ -43,6 +45,7 @@ if (isset($_POST["search"]["value"])) {
                 OR d.tanggal LIKE "%' . $searchValue . '%"
                 OR d.jam_masuk LIKE "%' . $searchValue . '%"
                 OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                OR d.id_anggota LIKE "%' . $searchValue . '%"
                 OR a.nama LIKE "%' . $searchValue . '%"
                 OR b.status = "' . $searchValue . '")
                 AND d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '"';
@@ -53,6 +56,7 @@ if (isset($_POST["search"]["value"])) {
                 OR d.tanggal LIKE "%' . $searchValue . '%"
                 OR d.jam_masuk LIKE "%' . $searchValue . '%"
                 OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                OR d.id_anggota LIKE "%' . $searchValue . '%"
                 OR a.nama LIKE "%' . $searchValue . '%"
                 OR b.status = "' . $searchValue . '")
                 AND (d.tanggal BETWEEN "' . $_SESSION['tglFilterDataAbsen1'] . '" AND "' . $_SESSION['tglFilterDataAbsen2'] = $tgl2 . '")
@@ -61,19 +65,100 @@ if (isset($_POST["search"]["value"])) {
             }
         } else {
             if ($isAdmin == 1) {
-                $query .= '
-                WHERE d.id = "' . $searchValue . '"
-                OR d.tanggal LIKE "%' . $searchValue . '%"
-                OR d.jam_masuk LIKE "%' . $searchValue . '%"
-                OR d.jam_keluar LIKE "%' . $searchValue . '%"
-                OR a.nama LIKE "%' . $searchValue . '%"
-                OR b.status = "' . $searchValue . '"';
+                if (isset($_SESSION['id-anggota-rekap']) && isset($_SESSION['status-rekap']) && isset( $_SESSION["tglfilterrekapabsen1"])) {
+                    $id_rekap = antiInjection($_SESSION['id-anggota-rekap']);
+                    $status_rekap = antiInjection($_SESSION['status-rekap']);
+                    $tgl_filter_rekap1 = formatDateSql($_SESSION["tglfilterrekapabsen1"]);
+                    $tgl_filter_rekap2 = formatDateSql($_SESSION["tglfilterrekapabsen2"]);
+                    switch ($status_rekap) {
+                        case 'hadir':
+                            $query .= '
+                                    WHERE (d.id = "' . $searchValue . '"
+                                    OR d.tanggal LIKE "%' . $searchValue . '%"
+                                    OR d.jam_masuk LIKE "%' . $searchValue . '%"
+                                    OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                                    OR d.id_anggota LIKE "%' . $searchValue . '%"
+                                    OR a.nama LIKE "%' . $searchValue . '%"
+                                    OR b.status = "' . $searchValue . '")
+                                    AND (d.id_anggota= "' . $id_rekap . '")
+                                    AND (d.status_id IN (1,2,7))
+                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    ';
+                            break;
+                        case 'sakit':
+                            $query .= '
+                                    WHERE (d.id = "' . $searchValue . '"
+                                    OR d.tanggal LIKE "%' . $searchValue . '%"
+                                    OR d.jam_masuk LIKE "%' . $searchValue . '%"
+                                    OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                                    OR d.id_anggota LIKE "%' . $searchValue . '%"
+                                    OR a.nama LIKE "%' . $searchValue . '%"
+                                    OR b.status = "' . $searchValue . '")
+                                    AND (d.id_anggota= "' . $id_rekap . '")
+                                    AND (d.status_id=3)
+                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    ';
+                            break;
+                        case 'izin':
+                            $query .= '
+                                    WHERE (d.id = "' . $searchValue . '"
+                                    OR d.tanggal LIKE "%' . $searchValue . '%"
+                                    OR d.jam_masuk LIKE "%' . $searchValue . '%"
+                                    OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                                    OR d.id_anggota LIKE "%' . $searchValue . '%"
+                                    OR a.nama LIKE "%' . $searchValue . '%"
+                                    OR b.status = "' . $searchValue . '")
+                                    AND (d.id_anggota= "' . $id_rekap . '")
+                                    AND (d.status_id=4)
+                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    ';
+                            break;
+                        case 'cuti':
+                            $query .= '
+                                    WHERE (d.id = "' . $searchValue . '"
+                                    OR d.tanggal LIKE "%' . $searchValue . '%"
+                                    OR d.jam_masuk LIKE "%' . $searchValue . '%"
+                                    OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                                    OR d.id_anggota LIKE "%' . $searchValue . '%"
+                                    OR a.nama LIKE "%' . $searchValue . '%"
+                                    OR b.status = "' . $searchValue . '")
+                                    AND (d.id_anggota= "' . $id_rekap . '")
+                                    AND (d.status_id=5)
+                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    ';
+                            break;
+                        case 'alpha':
+                            $query .= '
+                                    WHERE (d.id = "' . $searchValue . '"
+                                    OR d.tanggal LIKE "%' . $searchValue . '%"
+                                    OR d.jam_masuk LIKE "%' . $searchValue . '%"
+                                    OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                                    OR d.id_anggota LIKE "%' . $searchValue . '%"
+                                    OR a.nama LIKE "%' . $searchValue . '%"
+                                    OR b.status = "' . $searchValue . '")
+                                    AND (d.id_anggota= "' . $id_rekap . '")
+                                    AND (d.status_id=6)
+                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    ';
+                            break;
+                    }
+                } else {
+                    $query .= '
+                    WHERE d.id = "' . $searchValue . '"
+                    OR d.tanggal LIKE "%' . $searchValue . '%"
+                    OR d.jam_masuk LIKE "%' . $searchValue . '%"
+                    OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                    OR d.id_anggota LIKE "%' . $searchValue . '%"
+                    OR a.nama LIKE "%' . $searchValue . '%"
+                    OR b.status = "' . $searchValue . '"';
+                }
             } else {
                 $query .= '
                 WHERE (d.id = "' . $searchValue . '"
                 OR d.tanggal LIKE "%' . $searchValue . '%"
                 OR d.jam_masuk LIKE "%' . $searchValue . '%"
                 OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                OR d.id_anggota LIKE "%' . $searchValue . '%"
                 OR a.nama LIKE "%' . $searchValue . '%"
                 OR b.status = "' . $searchValue . '")
                 AND (d.id_anggota= "' . $_SESSION['id_anggota'] . '")';
@@ -98,7 +183,7 @@ $resRow = $connect->query($query);
 $number_filter_row = $resRow->num_rows;
 
 $result = $connect->query($query . " " . $query1);
-
+//echo $query;
 $data = array();
 
 while ($row = $result->fetch_array()) {
@@ -106,12 +191,12 @@ while ($row = $result->fetch_array()) {
     $sub_array[] = $row["id"];
     $sub_array[] = $row["tanggal"];
     $sub_array[] = $row["jam_masuk"];
-    if ($row["jam_keluar"]===null) {
+    if ($row["jam_keluar"] === null) {
         $sub_array[] = " -";
     } else {
         $sub_array[] = $row["jam_keluar"];
     }
-    $sub_array[] = $row["id_anggota"];
+    $sub_array[] = '<a id="' . $row['id_anggota'] . '" class="btn btn-default btn-xs view_data_anggota">' . $row['id_anggota'] . '</a></td>';
     $sub_array[] = $row["nama"];
     if ($row['status'] == "Sakit") {
         $sub_array[] = "<span class=\"label label-danger\">SAKIT</span>";

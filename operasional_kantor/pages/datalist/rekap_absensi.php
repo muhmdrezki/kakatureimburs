@@ -96,18 +96,15 @@
                 $totalakomodasi=$r["totalcredits"];
               } else {
             ?>
-            
             <tr>
-              <form action="tampil/data-absensi-admin">
-              <td><a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["id_ang"] ?></a></td>
-              <td> <a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["nama"] ?></a></a></td>
-              <td> <button type="submit" class="btn btn-info btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',HADIR' ?>"><?php echo $r["jumhadir"] ?> kali</button></td>
-              <td><button type="submit" class="btn btn-danger btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',SAKIT' ?>"><?php echo $r["jumsakit"] ?> kali</button></td>
-              <td><button type="submit" class="btn btn-warning btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',IZIN' ?>"><?php echo $r["jumizin"] ?> kali</button></td>
-              <td><button type="submit" class="btn btn-success btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',CUTI' ?>"><?php echo $r["jumcuti"] ?> kali</button></td>
-              <td><button type="submit" class="btn btn-default btn-block btn-sm" name="id_anggota_rekap" value="<?php echo $r["id_ang"].',ALPHA' ?>"><?php echo $r["jumalpha"] ?> kali</button></td>
+              <td><a id="<?php echo $r["id_ang"] ?>" type="button" class="btn btn-default btn-block btn-sm active view_data_anggota"><?php echo $r["id_ang"] ?></a></td>
+              <td><a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["nama"] ?></a></a></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/hadir" class="btn btn-info btn-block btn-sm" name="id_anggota_rekap" ><?php echo $r["jumhadir"] ?> kali</button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/sakit" class="btn btn-danger btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumsakit"] ?> kali</button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/izin" class="btn btn-warning btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumizin"] ?> kali</button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/cuti" class="btn btn-success btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumcuti"] ?> kali</button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/alpha" class="btn btn-default btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumalpha"] ?> kali</button></td>
               <td><a type="button" class="btn btn-default btn-block btn-sm active disabled" > Rp<?php echo number_format($r["totalcredits"]) ?></a></td>
-              </form>
             </tr>
               <?php
                 $no++;
@@ -135,3 +132,18 @@
       <input type="submit" id="btn_convert" class="btn btn-primary pull-right" value="Konvert ke CSV" name="submit_csv-rekapabsen">  
   </form>
   -->
+  <div id="dataModalAnggota" class="modal fade">
+			<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Detail Anggota</h4>
+				</div>
+				<div class="modal-body" id="employee_detail">
+				</div>
+				<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
+			</div>
+		</div>  

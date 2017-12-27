@@ -62,7 +62,7 @@
 					   <table class="table" id="data_cuti">
 						   <thead>
 							  <tr>  
-									 <th> ID</th>
+									 <th> ID Anggota</th>
 									 <th> Nama </th>  
 									 <th> Cuti Terpakai </th>
 									 <th> Quota Cuti </th>                         
@@ -75,7 +75,7 @@
 								while ($row = mysqli_fetch_array($result)) {
 							?>
 							  <tr>   
-								 <td> <?php echo $row["id_anggota"] ?> </td>
+								 <td><a id="<?php echo $row["id_anggota"] ?> " class="btn btn-default btn-xs view_data_anggota"><?php echo $row["id_anggota"] ?> </a></td>
 								 <td> <?php echo $row["nama"] ?> </td>
 								 <td> <?php echo $row["cuti_used"] ?> </td>
 								 <td> <?php echo $row["cuti_qty"] ?> </td>
@@ -162,4 +162,19 @@
                 </div>  
            </div>  
       </div>  
- </div>  
+ </div>
+ <div id="dataModalAnggota" class="modal fade">
+			<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Detail Anggota</h4>
+				</div>
+				<div class="modal-body" id="employee_detail">
+				</div>
+				<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
+			</div>
+		</div>  

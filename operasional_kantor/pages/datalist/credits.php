@@ -83,7 +83,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 										while ($row3 = mysqli_fetch_array($res3)) {
 									?>
 									<tr>
-										<td><?php echo $row3["id_anggota"] ?></td>
+										<td><a id="<?php echo $row3["id_anggota"] ?> " class="btn btn-default btn-xs view_data_anggota"><?php echo $row3["id_anggota"] ?></a></td>
 										<td><?php echo $row3["nama"] ?> </td>
 										<td>Rp.<?php echo number_format($row3["topup_credit"]) ?> </td>
 										<td>Rp.<?php echo number_format($row3["uang_makan"]) ?> 
@@ -125,7 +125,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 				<table class="table" id="detail_credits">
 					<thead>
 						<tr>
-							<th> ID</th>
+							<th> ID Anggota</th>
 							<th> Nama </th>
 							<?php
 								if (!$paidStatus) {
@@ -153,7 +153,7 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 						?>
 							<tr>
 								<td>
-									<?php echo $row2["id_anggota"] ?> </td>
+								<a id="<?php echo $row2["id_anggota"] ?> " class="btn btn-default btn-xs view_data_anggota"><?php echo $row2["id_anggota"] ?>  </a></td>
 								<td>
 									<?php echo $row2["nama"] ?> </td>
 								<?php
@@ -311,5 +311,20 @@ if (strpos($_SESSION['jabatan'], 'Admin') === false) {
 						<button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div id="dataModalAnggota" class="modal fade">
+			<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Detail Anggota</h4>
+				</div>
+				<div class="modal-body" id="employee_detail">
+				</div>
+				<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
 			</div>
 		</div>

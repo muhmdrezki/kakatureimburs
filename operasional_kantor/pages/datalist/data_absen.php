@@ -6,6 +6,16 @@ if (!defined('DIDALAM_INDEX_PHP')) {
 //if (strpos($_SESSION['jabatan'], 'Admin')===false) {
   //  echo '<script>alert("Maaf, Anda bukan Admin"); window.location="tampil/home"</script>';
 //}
+
+//Untuk link filter dari menu tabel rekap
+unset($_SESSION['id-anggota-rekap']);
+unset($_SESSION['id-anggota-rekap']);
+if (isset($_GET["id-anggota-rekap"])) {
+  //echo '<script>console.log("tai")</script>';
+  $_SESSION['id-anggota-rekap'] = antiInjection($_GET["id-anggota-rekap"]);
+  $_SESSION['status-rekap'] = antiInjection($_GET["status-rekap"]);
+}
+//End Untuk link filter dari menu tabel rekap
 ?>
 
   <section id="form_data-absen-admin" style="margin: 0 auto;">
@@ -14,10 +24,10 @@ if (!defined('DIDALAM_INDEX_PHP')) {
 
       <h2> DATA ABSENSI <span id="filterLabelAbsen"></span></h2>
       <hr style="
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);">
+        border: 0;
+        height: 1px;
+        background: #333;
+        background-image: linear-gradient(to right, #ccc, #333, #ccc);">
     </div>
     <div class="container bounceInLeft animated">
       <div class="row">
@@ -112,16 +122,16 @@ if (!defined('DIDALAM_INDEX_PHP')) {
             <br />
             <select class="form-control" id="status_id_adminEdit" name="status_id">
               <?php
-$sql = "SELECT * FROM tb_absen";
-$result = mysqli_query($koneksi, $sql);
-while ($row_status_absen = mysqli_fetch_array($result)) {
-    ?>
-              <option style="background-color:<?php echo $row_status_absen['warna'] ?>;color:white;font-weight:bold" value="<?php echo $row_status_absen['status_id'] ?>">
-                <?php echo $row_status_absen['status'] ?>
-              </option>
+                $sql = "SELECT * FROM tb_absen";
+                $result = mysqli_query($koneksi, $sql);
+                while ($row_status_absen = mysqli_fetch_array($result)) {
+              ?>
+                <option style="background-color:<?php echo $row_status_absen['warna'] ?>;color:white;font-weight:bold" value="<?php echo $row_status_absen['status_id'] ?>">
+                  <?php echo $row_status_absen['status'] ?>
+                </option>
               <?php
-}
-?>
+                }
+              ?>
             </select>
             <label>Alasan/Keterangan</label>
             <textarea class="form-control" rows="3" id="keterangan_absen" name="keterangan_absen" placeholder="Isi Keterangan"></textarea>
@@ -143,6 +153,21 @@ while ($row_status_absen = mysqli_fetch_array($result)) {
           <input type="submit" name="submit" id="insert" value="Update" class="btn btn-success" />
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="dataModalAnggota" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Detail Anggota</h4>
+        </div>
+        <div class="modal-body" id="employee_detail">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
         </div>
       </div>
     </div>

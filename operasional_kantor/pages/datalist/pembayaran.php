@@ -96,6 +96,7 @@ if($_SESSION['jabatan'] == 'Admin'){
     <thead>
       <tr>
         <th style="width: 4%;  font-size: 12px;"> Tanggal </th>
+        <th style="width: 10%; font-size: 12px;">ID Anggota</th>
         <th style="width: 10%; font-size: 12px;">Nama</th>
         <th style="width: 3%; font-size: 12px;"> ID </th>
         <th style="width: 14%; font-size: 12px;">Jenis</th>
@@ -109,9 +110,9 @@ if($_SESSION['jabatan'] == 'Admin'){
           $id = $_SESSION['id_anggota'];
 
              if(strpos($_SESSION['jabatan'], 'Admin')===false){
-              $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
+              $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
               } else{
-              $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis ORDER BY tb_pembayaran.tanggal DESC";
+              $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis ORDER BY tb_pembayaran.tanggal DESC";
              }
             
             $result = mysqli_query($koneksi,$sql);
@@ -125,10 +126,10 @@ if($_SESSION['jabatan'] == 'Admin'){
             if ($kliknotif == 'notif'){
               
               if(strpos($_SESSION['jabatan'], 'Admin')===false){
-              $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.status = '1' AND tb_pembayaran.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
+              $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.status = '1' AND tb_pembayaran.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
                 $result = mysqli_query($koneksi,$sql);
               } else {
-              $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.status = '0' ORDER BY tb_pembayaran.tanggal DESC";
+              $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis  WHERE tb_pembayaran.status = '0' ORDER BY tb_pembayaran.tanggal DESC";
                  $result = mysqli_query($koneksi,$sql);
              }
             }      
@@ -138,21 +139,21 @@ if($_SESSION['jabatan'] == 'Admin'){
        if(isset($_POST['submit'])){
         $startdate = $_POST['start_date'];
         $enddate = $_POST['end_date'];
-        $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota WHERE DATE(tb_pembayaran.tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y')";
+        $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota,tb_anggota.nama, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota WHERE DATE(tb_pembayaran.tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y')";
 
           $result = mysqli_query($koneksi,$sql);
 
         } else if(isset($_POST['status_sudah'])){
-            $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='2' ORDER BY tb_pembayaran.tanggal DESC";
+            $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='2' ORDER BY tb_pembayaran.tanggal DESC";
 
           $result = mysqli_query($koneksi,$sql);
 
         } else if(isset($_POST['status_belum'])){
-          $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='0' ORDER BY tb_pembayaran.tanggal DESC";
+          $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.id_anggota,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='0' ORDER BY tb_pembayaran.tanggal DESC";
 
           $result = mysqli_query($koneksi,$sql);
         } else if(isset($_POST['status_menunggu'])) {
-            $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='1' ORDER BY tb_pembayaran.tanggal DESC";
+            $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='1' ORDER BY tb_pembayaran.tanggal DESC";
 
           $result = mysqli_query($koneksi,$sql);
             if (!$result) {
@@ -164,7 +165,7 @@ if($_SESSION['jabatan'] == 'Admin'){
         } else {
           
            if(isset($_POST['submit'])){
-        $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_jenistransaksi.jenis, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.tanggal >= '$startdate' AND tb_pembayaran.tanggal <= '$enddate' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
+        $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota, tb_anggota.nama, tb_jenistransaksi.jenis, tb_pembayaran.id_anggota, tb_pembayaran.tanggal, tb_pembayaran.nominal, tb_pembayaran.keterangan, tb_pembayaran.status FROM tb_pembayaran JOIN tb_anggota ON tb_pembayaran.id_anggota=tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.tanggal >= '$startdate' AND tb_pembayaran.tanggal <= '$enddate' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
 
           $result = mysqli_query($koneksi,$sql);
             if (!$result) {
@@ -173,7 +174,7 @@ if($_SESSION['jabatan'] == 'Admin'){
               } 
 
         } else if(isset($_POST['status_sudah'])){
-            $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='2' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
+            $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='2' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
 
           $result = mysqli_query($koneksi,$sql);
             if (!$result) {
@@ -182,7 +183,7 @@ if($_SESSION['jabatan'] == 'Admin'){
               } 
 
         } else if(isset($_POST['status_belum'])){
-          $sql = "SELECT tb_pembayaran.id_pembayaran, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='0' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
+          $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota, tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='0' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
 
           $result = mysqli_query($koneksi,$sql);
             if (!$result) {
@@ -191,7 +192,7 @@ if($_SESSION['jabatan'] == 'Admin'){
               } 
 
         } else if(isset($_POST['status_menunggu'])) {
-            $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='1' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
+            $sql = "SELECT tb_pembayaran.id_pembayaran,tb_anggota.id_anggota,tb_anggota.nama, tb_pembayaran.tanggal, tb_jenistransaksi.jenis, tb_pembayaran.nominal, tb_pembayaran.status FROM `tb_pembayaran`JOIN `tb_anggota` ON tb_pembayaran.id_anggota = tb_anggota.id_anggota JOIN tb_jenistransaksi ON tb_pembayaran.id_jenis = tb_jenistransaksi.id_jenis WHERE tb_pembayaran.status='1' AND tb_anggota.id_anggota='$id' ORDER BY tb_pembayaran.tanggal DESC";
 
           $result = mysqli_query($koneksi,$sql);
             if (!$result) {
@@ -209,6 +210,7 @@ if($_SESSION['jabatan'] == 'Admin'){
             ?>
             <tr>
               <td> <?php echo $tgl_new_format ?> </td>
+              <td> <a id="<?php echo $r['id_anggota'] ?>" class="btn btn-info btn-xs view_data_anggota"><?php echo $r['id_anggota'] ?> </a></td>
               <td> <?php echo $r['nama'] ?> </td>
               <td> <?php echo $id ?> </td>
               <td> <?php echo $r['jenis'] ?> </td>         
@@ -271,3 +273,18 @@ if($_SESSION['jabatan'] == 'Admin'){
            </div>  
       </div>  
  </div>
+ <div id="dataModalAnggota" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Detail Anggota</h4>
+        </div>
+        <div class="modal-body" id="employee_detail">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </div>

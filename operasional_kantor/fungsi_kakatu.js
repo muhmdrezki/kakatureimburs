@@ -1961,14 +1961,14 @@ $(function () {
     } else {
       switch (status) {
         case "1":
-          wa_msg = "ABSEN KELUAR HADIR" + "\n" + "---" + "\n" + "Saya, " + nama + " telah hadir kerja dikantor pada hari ini dari pukuk " + tgl1 + " sampai " + tgl2;
+          wa_msg = "ABSEN PULANG HADIR" + "\n" + "---" + "\n" + "Saya, " + nama + " telah hadir kerja dikantor pada hari ini dari pukuk " + tgl1 + " sampai " + tgl2;
           console.log(wa_msg + '\n');
           break;
         case "2":
-          wa_msg = "ABSEN KELUAR TUGAS KANTOR" + "\n" + "Saya, " + nama + "  telah bertugas diluar kantor pada hari ini dari pukul " + tgl1 + " sampai " + tgl2;
+          wa_msg = "ABSEN SELESAI TUGAS KANTOR" + "\n" + "Saya, " + nama + "  telah bertugas diluar kantor pada hari ini dari pukul " + tgl1 + " sampai " + tgl2;
           break;
         case "7":
-          wa_msg = "ABSEN KELUAR KERJA REMOTE" + "\n" + "Saya, " + nama + "  telah kerja remote pada hari ini dari pukul " + tgl1 + " sampai " + tgl2;
+          wa_msg = "ABSEN SELESAI KERJA REMOTE" + "\n" + "Saya, " + nama + "  telah kerja remote pada hari ini dari pukul " + tgl1 + " sampai " + tgl2;
           break;
       }
       wa_msg = window.encodeURIComponent(wa_msg);
