@@ -328,7 +328,37 @@
 			  </div>
 			  <!-- /.box -->
 			</div>
-	   </div>
+     </div>
+     <div id="dataModalAnggota" class="modal fade">
+			<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Detail Anggota</h4>
+				</div>
+				<div class="modal-body" id="employee_detail">
+				</div>
+				<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+				</div>
+			</div>
+			</div>
+    </div>
+    <div id="dataModal" class="modal fade" style="overflow: auto !important;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Detail Kehadiran</h4>
+        </div>
+        <div class="modal-body" id="detail_kehadiran">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
         <?php
           //list($one, $two) = explode(",", $_SESSION['jabatan'], 2);

@@ -3,7 +3,7 @@
       include "../../../con_db.php";
       date_default_timezone_set('Asia/Jakarta');
       $today1 = date("Y-m-d");
-      $query = "SELECT a.jam_masuk AS jam_masuk,a.jam_keluar AS jam_keluar,b.nama AS nama,c.status AS status,b.foto_profile AS foto FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_absen c ON a.status_id = c.status_id WHERE a.tanggal='$today1' ORDER BY a.jam_masuk";  
+      $query = "SELECT a.id AS id_absen,a.id_anggota AS id_anggota,a.jam_masuk AS jam_masuk,a.jam_keluar AS jam_keluar,b.nama AS nama,c.status AS status,b.foto_profile AS foto FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_absen c ON a.status_id = c.status_id WHERE a.tanggal='$today1' ORDER BY a.jam_masuk";  
       $result = mysqli_query($koneksi, $query);
       $jumbaris = mysqli_num_rows($result);
       //echo $jumbaris."<br>";
@@ -79,7 +79,7 @@
                   if (strtotime($row['jam_masuk']) >= strtotime('10:00:00')) {
                         $output.='
                         <li>
-                              <a class="users-list-name" href="#">'.$row["nama"].'</a>
+                              <a id="'.$row["id_anggota"].'" class="users-list-name btn view_data_anggota">'.$row["nama"].'</a>
                               <img style="
                                     width:256px;
                                     margin: 10px;
@@ -87,12 +87,12 @@
                                     border-radius: 500px;
                                     -webkit-border-radius: 500px;
                                     -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
-                              <span class="label '.$warnaLabel.' users-list-date">'.$statusFoto.'</span>
+                              <a id="'.$row["id_absen"].'" class="label '.$warnaLabel.' users-list-date detail_kehadiran">'.$statusFoto.'</a>
                         ';
                   } else {
                         $output.='
                         <li>
-                              <a class="users-list-name" href="#">'.$row["nama"].'</a>
+                              <a id="'.$row["id_anggota"].'" class="users-list-name btn  view_data_anggota">'.$row["nama"].'</a>
                               <img style="
                                     width:256px;
                                     margin: 10px;
@@ -100,14 +100,14 @@
                                     border-radius: 500px;
                                     -webkit-border-radius: 500px;
                                     -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
-                              <span class="label '.$warnaLabel.' users-list-date">'.$statusFoto.'</span>
+                              <a id="'.$row["id_absen"].'" class="label '.$warnaLabel.' users-list-date detail_kehadiran">'.$statusFoto.'</a>
                         ';
                   }
                   if ($row['jam_keluar']!==null) {
-                        $output.='<a class="users-list-name" href="#">'.$row["jam_masuk"].' - '.$row["jam_keluar"].'</a>
+                        $output.='<a id="'.$row["id_anggota"].'" class="users-list-name">'.$row["jam_masuk"].' - '.$row["jam_keluar"].'</a>
                         </li>';
                   } else {
-                        $output.='<a class="users-list-name" href="#">'.$row["jam_masuk"].'</a>
+                        $output.='<a id="'.$row["id_anggota"].'" class="users-list-name">'.$row["jam_masuk"].'</a>
                         </li>';
                   }
                   
