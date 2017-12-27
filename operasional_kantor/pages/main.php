@@ -210,7 +210,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
 
         <!-- Socket IO -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
         <!-- bootbox code -->
         <script type="text/javascript" src="bower_components/bootbox/bootbox.min.js"></script>
         <!-- Page specific script -->
