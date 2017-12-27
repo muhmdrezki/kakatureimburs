@@ -65,11 +65,20 @@ if (isset($_POST["search"]["value"])) {
             }
         } else {
             if ($isAdmin == 1) {
-                if (isset($_SESSION['id-anggota-rekap']) && isset($_SESSION['status-rekap']) && isset( $_SESSION["tglfilterrekapabsen1"])) {
+                if (isset($_SESSION['id-anggota-rekap']) && isset($_SESSION['status-rekap'])) {
                     $id_rekap = antiInjection($_SESSION['id-anggota-rekap']);
                     $status_rekap = antiInjection($_SESSION['status-rekap']);
-                    $tgl_filter_rekap1 = formatDateSql($_SESSION["tglfilterrekapabsen1"]);
-                    $tgl_filter_rekap2 = formatDateSql($_SESSION["tglfilterrekapabsen2"]);
+                    $tgl_filter_rekap1 = null;
+                    $tgl_filter_rekap2 = null;
+                    if (isset( $_SESSION["tglfilterrekapabsen1"])) {
+                        $tgl_filter_rekap1 = formatDateSql($_SESSION["tglfilterrekapabsen1"]);
+                        $tgl_filter_rekap2 = formatDateSql($_SESSION["tglfilterrekapabsen2"]);
+                    } else {
+                        date_default_timezone_set('Asia/Jakarta');
+                        $tgl_filter_rekap1 = date("Y-m-01");
+                        $tgl_filter_rekap2 = date("Y-m-d");
+                    }
+                    
                     switch ($status_rekap) {
                         case 'hadir':
                             $query .= '
