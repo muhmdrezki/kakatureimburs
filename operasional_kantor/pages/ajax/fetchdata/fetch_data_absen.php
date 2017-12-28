@@ -70,7 +70,7 @@ if (isset($_POST["search"]["value"])) {
                     $status_rekap = antiInjection($_SESSION['status-rekap']);
                     $tgl_filter_rekap1 = null;
                     $tgl_filter_rekap2 = null;
-                    if (isset( $_SESSION["tglfilterrekapabsen1"])) {
+                    if (isset($_SESSION["tglfilterrekapabsen1"])) {
                         $tgl_filter_rekap1 = formatDateSql($_SESSION["tglfilterrekapabsen1"]);
                         $tgl_filter_rekap2 = formatDateSql($_SESSION["tglfilterrekapabsen2"]);
                     } else {
@@ -78,7 +78,7 @@ if (isset($_POST["search"]["value"])) {
                         $tgl_filter_rekap1 = date("Y-m-01");
                         $tgl_filter_rekap2 = date("Y-m-d");
                     }
-                    
+
                     switch ($status_rekap) {
                         case 'hadir':
                             $query .= '
@@ -91,7 +91,22 @@ if (isset($_POST["search"]["value"])) {
                                     OR b.status = "' . $searchValue . '")
                                     AND (d.id_anggota= "' . $id_rekap . '")
                                     AND (d.status_id IN (1,2,7))
-                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    AND (d.tanggal BETWEEN "' . $tgl_filter_rekap1 . '" AND "' . $tgl_filter_rekap2 . '")
+                                    ';
+                            break;
+                        case 'telat':
+                            $query .= '
+                                    WHERE (d.id = "' . $searchValue . '"
+                                    OR d.tanggal LIKE "%' . $searchValue . '%"
+                                    OR d.jam_masuk LIKE "%' . $searchValue . '%"
+                                    OR d.jam_keluar LIKE "%' . $searchValue . '%"
+                                    OR d.id_anggota LIKE "%' . $searchValue . '%"
+                                    OR a.nama LIKE "%' . $searchValue . '%"
+                                    OR b.status = "' . $searchValue . '")
+                                    AND (d.id_anggota= "' . $id_rekap . '")
+                                    AND (d.status_id IN (1,2,7))
+                                    AND (TIME(d.jam_masuk)>"10:00:00")
+                                    AND (d.tanggal BETWEEN "' . $tgl_filter_rekap1 . '" AND "' . $tgl_filter_rekap2 . '")
                                     ';
                             break;
                         case 'sakit':
@@ -105,7 +120,7 @@ if (isset($_POST["search"]["value"])) {
                                     OR b.status = "' . $searchValue . '")
                                     AND (d.id_anggota= "' . $id_rekap . '")
                                     AND (d.status_id=3)
-                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    AND (d.tanggal BETWEEN "' . $tgl_filter_rekap1 . '" AND "' . $tgl_filter_rekap2 . '")
                                     ';
                             break;
                         case 'izin':
@@ -119,7 +134,7 @@ if (isset($_POST["search"]["value"])) {
                                     OR b.status = "' . $searchValue . '")
                                     AND (d.id_anggota= "' . $id_rekap . '")
                                     AND (d.status_id=4)
-                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    AND (d.tanggal BETWEEN "' . $tgl_filter_rekap1 . '" AND "' . $tgl_filter_rekap2 . '")
                                     ';
                             break;
                         case 'cuti':
@@ -133,7 +148,7 @@ if (isset($_POST["search"]["value"])) {
                                     OR b.status = "' . $searchValue . '")
                                     AND (d.id_anggota= "' . $id_rekap . '")
                                     AND (d.status_id=5)
-                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    AND (d.tanggal BETWEEN "' . $tgl_filter_rekap1 . '" AND "' . $tgl_filter_rekap2 . '")
                                     ';
                             break;
                         case 'alpha':
@@ -147,7 +162,7 @@ if (isset($_POST["search"]["value"])) {
                                     OR b.status = "' . $searchValue . '")
                                     AND (d.id_anggota= "' . $id_rekap . '")
                                     AND (d.status_id=6)
-                                    AND (d.tanggal BETWEEN "'.$tgl_filter_rekap1.'" AND "'.$tgl_filter_rekap2.'")
+                                    AND (d.tanggal BETWEEN "' . $tgl_filter_rekap1 . '" AND "' . $tgl_filter_rekap2 . '")
                                     ';
                             break;
                     }
