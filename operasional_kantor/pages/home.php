@@ -257,14 +257,14 @@
 								  </div>
 							  </div>
 							  <div class="col-md-8">
-                  <ul class="chart-legend clearfix list-inline">
-                        <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span>On Time</li>
-                        <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span>Terlambat</li>
-                        <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumTidakKerja"></span>Tidak Kerja</li>
-                        <li id="listBelumAbsen"><span class="list-inline-item numberCircleGray" id="jumBelumAbsen"></span>Belum Absen</li>
-                  </ul>
 									<div id="galleryFotoAbsensi"></div>
                 </div>
+                <ul class="chart-legend clearfix list-inline">
+                      <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span> On Time</li>
+                      <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span> Telat</li>
+                      <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumTidakKerja"></span> Tidak Kerja</li>
+                      <li id="listBelumAbsen"><span class="list-inline-item numberCircleGray" id="jumBelumAbsen"></span> Belum Absen</li>
+                </ul>
                 <br>
 							  <!-- ./chart-responsive -->
 							<!-- /.col -->
