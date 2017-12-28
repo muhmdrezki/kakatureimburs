@@ -45,7 +45,7 @@
 		height: 100% !important;
 	}
   .numberCircleOrange {
-    border-radius: 50%;
+    border-radius: 150px;
     width: 20px;
     height: 20px;
     padding: 3px;
