@@ -267,14 +267,6 @@ $(function () {
                   $('#listAlpha').show();
                   $('#jumalpha').text(data[index].value);
                   break;
-                case "Late":
-                  $('#listLate').show();
-                  $('#jumlate').text(data[index].value);
-                  break;
-                case "Alpha":
-                  $('#listPntime').show();
-                  $('#jumOntime').text(data[index].value);
-                  break;
               }
             }
             index++;
@@ -289,6 +281,8 @@ $(function () {
         success: function (data) {
           $('#listLate').hide();
           $('#listOntime').hide();
+          $('#listTidakKerja').hide();
+          $('#listBelumAbsen').hide();
           var status;
           var index = 0;
           //Proses penghitungan data absen di legend donut chart dan .show() legend
@@ -310,7 +304,7 @@ $(function () {
                   break;
                 case "Belum Absen":
                   $('#listBelumAbsen').show();
-                  $('#jumtBelumAbsen').text(data[index].value);
+                  $('#jumBelumAbsen').text(data[index].value);
                   break;
               }
             }
