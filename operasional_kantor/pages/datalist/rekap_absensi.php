@@ -14,10 +14,10 @@
       $_SESSION["tglfilterrekapabsen1"]=$startdate;
       $_SESSION["tglfilterrekapabsen2"]=$enddate;
       //echo '<script>alert("'.$_SESSION["tglfilterrekapabsen1"].'")</script>';
-      $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha, SUM(a.credit_in) AS totalcredits FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE DATE(a.tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y') GROUP BY a.id_anggota WITH ROLLUP";
+      $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN ((a.status_id = 1 OR a.status_id=2  OR a.status_id=7) AND TIME(jam_masuk)>'10:00:00') THEN 1 ELSE NULL END) AS jumtelat,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha, SUM(a.credit_in) AS totalcredits FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE DATE(a.tanggal) BETWEEN STR_TO_DATE('$startdate', '%m/%d/%Y') AND STR_TO_DATE('$enddate', '%m/%d/%Y') GROUP BY a.id_anggota WITH ROLLUP";
       echo '<h2 class="bounceInLeft animated">REKAP ABSENSI TANGGAL '.$startdate.' - '.$enddate.'</h2>';
     } else {
-      $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,SUM(a.credit_in) AS totalcredits  FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE MONTH(a.tanggal)=MONTH('$today') AND YEAR(tanggal)=YEAR('$today') GROUP BY a.id_anggota WITH ROLLUP";
+      $sql = "SELECT a.id_anggota AS id_ang,b.nama AS nama,COUNT(CASE WHEN a.status_id = 1 OR a.status_id=2 THEN 1 ELSE NULL END) AS jumhadir,COUNT(CASE WHEN ((a.status_id = 1 OR a.status_id=2  OR a.status_id=7) AND TIME(jam_masuk)>'10:00:00') THEN 1 ELSE NULL END) AS jumtelat,COUNT(CASE WHEN a.status_id = 3 THEN 1 ELSE NULL END) AS jumsakit,COUNT(CASE WHEN a.status_id = 4 THEN 1 ELSE NULL END) AS jumizin,COUNT(CASE WHEN a.status_id = 5 THEN 1 ELSE NULL END) AS jumcuti,COUNT(CASE WHEN a.status_id = 6 THEN 1 ELSE NULL END) AS jumalpha,SUM(a.credit_in) AS totalcredits  FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota WHERE MONTH(a.tanggal)=MONTH('$today') AND YEAR(tanggal)=YEAR('$today') GROUP BY a.id_anggota WITH ROLLUP";
       $tglawal = date('m/01/Y');
       $tglkaliini = date('m/d/Y');
       echo '<h2 class="bounceInLeft animated">REKAP ABSENSI TANGGAL '.$tglawal.' - '.$tglkaliini.'</h2>';
@@ -67,6 +67,7 @@
         <th style="text-align: center;">ID Anggota</th>
         <th style="text-align: center;">Nama</th>
         <th style="text-align: center;">Jumlah Hadir</th>
+        <th style="text-align: center;">Jumlah Telat</th>
         <th style="text-align: center;">Jumlah Sakit</th>
         <th style="text-align: center;">Jumlah Izin</th>
         <th style="text-align: center;">Jumlah Cuti</th>
@@ -89,6 +90,7 @@
             {
               if ($r["id_ang"]===null) {
                 $totalhadir=$r["jumhadir"];
+                $totaltelat=$r["jumtelat"];
                 $totalsakit=$r["jumsakit"];
                 $totalizin=$r["jumizin"];
                 $totalcuti=$r["jumcuti"];
@@ -100,6 +102,7 @@
               <td><a id="<?php echo $r["id_ang"] ?>" type="button" class="btn btn-default btn-block btn-sm active view_data_anggota"><?php echo $r["id_ang"] ?></a></td>
               <td><a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["nama"] ?></a></a></td>
               <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/hadir" class="btn btn-info btn-block btn-sm" name="id_anggota_rekap" ><?php echo $r["jumhadir"] ?> kali</button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/telat" class="btn btn-primary btn-block btn-sm" name="id_anggota_rekap" ><?php echo $r["jumtelat"] ?> kali</button></td>
               <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/sakit" class="btn btn-danger btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumsakit"] ?> kali</button></td>
               <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/izin" class="btn btn-warning btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumizin"] ?> kali</button></td>
               <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/cuti" class="btn btn-success btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumcuti"] ?> kali</button></td>
@@ -117,6 +120,7 @@
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled">Total</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled"><?php echo $no?> pegawai</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-info btn-block btn-md "><?php echo $totalhadir?> kali</a></th>
+                  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-primary btn-block btn-md "><?php echo $totaltelat?> kali</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-danger btn-block btn-md "><?php echo $totalsakit?> kali</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-warning btn-block btn-md "><?php echo $totalizin?> kali</a></th>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-success btn-block btn-md "><?php echo $totalcuti?> kali</a></th>
