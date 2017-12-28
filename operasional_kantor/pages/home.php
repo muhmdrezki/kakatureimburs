@@ -68,6 +68,18 @@
     
     font: 13px Arial, sans-serif;
   }
+  .numberCircleRed {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    background: #fff;
+    border: 5px solid red;
+    color: #666;
+    text-align: center;
+    
+    font: 13px Arial, sans-serif;
+  }
   /* Sembunyikan carousel-control */
   .carousel .carousel-control { visibility: hidden; }
   .carousel:hover .carousel-control { visibility: visible; }
@@ -226,6 +238,7 @@
                 <ul class="chart-legend clearfix list-inline">
                       <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span>On Time</li>
                       <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span>Terlambat</li>
+                      <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumLate"></span>Tidak Kerja</li>
                 </ul>
                 <br>
 							  <!-- ./chart-responsive -->
