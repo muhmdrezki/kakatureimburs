@@ -238,7 +238,7 @@
                 <ul class="chart-legend clearfix list-inline">
                       <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span>On Time</li>
                       <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span>Terlambat</li>
-                      <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumLate"></span>Tidak Kerja</li>
+                      <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumTidakKerja"></span>Tidak Kerja</li>
                 </ul>
                 <br>
 							  <!-- ./chart-responsive -->

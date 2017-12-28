@@ -305,8 +305,8 @@ $(function () {
                   $('#jumOntime').text(data[index].value);
                   break;
                 case "Tidak Kerja":
-                  $('#listOntime').show();
-                  $('#jumOntime').text(data[index].value);
+                  $('#listTidakKerja').show();
+                  $('#jumTidakKerja').text(data[index].value);
                   break;
               }
             }
