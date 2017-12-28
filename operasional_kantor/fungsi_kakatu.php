@@ -611,7 +611,7 @@ function fetchCreditForPaid($id)
     $now1 = date("H:i:s");
     $output = '';
     $id = antiInjection($id);
-    $qry = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,c.topup_credit AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.credit_id=c.id WHERE a.id_anggota='$id' AND a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH('$today1') AND YEAR(a.tanggal)=YEAR('$today1') GROUP BY a.id_anggota";
+    $qry = "SELECT a.id_anggota AS id_anggota,b.nama AS nama,(c.topup_credit+c.uang_makan) AS jumlah,DATE_FORMAT(a.tanggal,'%Y-%m') AS bulan,SUM(a.credit_in) AS total,a.credit_stat AS status FROM tb_detail_absen a JOIN tb_anggota b ON a.id_anggota=b.id_anggota JOIN tb_credits_anggota c ON a.credit_id=c.id WHERE a.id_anggota='$id' AND a.credit_stat='unpaid' AND MONTH(a.tanggal)=MONTH('$today1') AND YEAR(a.tanggal)=YEAR('$today1') GROUP BY a.id_anggota";
     $conn = createConn();
     $res = $conn->query($qry);
     if (!$res) {
@@ -644,7 +644,7 @@ function fetchCreditForPaid($id)
 					<td width="30%">' . $row["bulan"] . '</td>
 				  </tr>
 				  <tr>
-					<td width="40%"><label>Jumla Akomodasi</label></td>
+					<td width="40%"><label>Jumlah Akomodasi(Makan+Transport)</label></td>
 					<td width="40%">' . $topupcredit . '</td>
 				</tr>
 				  <tr>
