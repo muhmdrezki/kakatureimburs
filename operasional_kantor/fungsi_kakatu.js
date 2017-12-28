@@ -293,7 +293,7 @@ $(function () {
                 case "Late":
                   $('#listLate').show();
                   if (data[index].value>9) {
-                    $('#jumLate').attr('style','border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;background: #fff;border: 3px solid aqua;color: #666;text-align: center;font: 13px Arial, sans-serif;');
+                    $('#jumLate').attr('style','border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;background: #fff;border: 3px solid orange;color: #666;text-align: center;font: 13px Arial, sans-serif;');
                   }
                   $('#jumLate').text(data[index].value);
                   break;
@@ -308,14 +308,14 @@ $(function () {
                 case "Tidak Kerja":
                   $('#listTidakKerja').show();
                   if (data[index].value>9) {
-                    $('#jumTidakKerja').attr('style','border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;background: #fff;border: 3px solid aqua;color: #666;text-align: center;font: 13px Arial, sans-serif;');
+                    $('#jumTidakKerja').attr('style','border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;background: #fff;border: 3px solid red;color: #666;text-align: center;font: 13px Arial, sans-serif;');
                   }
                   $('#jumTidakKerja').text(data[index].value);
                   break;
                 case "Belum Absen":
                   $('#listBelumAbsen').show();
                   if (data[index].value>9) {
-                    $('#jumBelumAbsen').attr('style','border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;background: #fff;border: 3px solid aqua;color: #666;text-align: center;font: 13px Arial, sans-serif;');
+                    $('#jumBelumAbsen').attr('style','border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;background: #fff;border: 3px solid #c0c0c0;color: #666;text-align: center;font: 13px Arial, sans-serif;');
                   }
                   $('#jumBelumAbsen').text(data[index].value);
                   break;
