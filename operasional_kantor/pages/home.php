@@ -44,66 +44,6 @@
 	.chartjs-hidden-iframe {
 		height: 100% !important;
 	}
-  .numberCircleOrange {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    padding-top: 5px;
-    padding-right: 8px;
-    padding-bottom: 5px;
-    padding-left: 8px;
-    background: #fff;
-    border: 3px solid orange;
-    color: #666;
-    text-align: center;
-    
-    font: 13px Arial, sans-serif;
-  }
-  .numberCircleAqua {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    padding-top: 5px;
-    padding-right: 8px;
-    padding-bottom: 5px;
-    padding-left: 8px;
-    background: #fff;
-    border: 3px solid aqua;
-    color: #666;
-    text-align: center;
-    
-    font: 13px Arial, sans-serif;
-  }
-  .numberCircleRed {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    padding-top: 5px;
-    padding-right: 8px;
-    padding-bottom: 5px;
-    padding-left: 8px;
-    background: #fff;
-    border: 3px solid red;
-    color: #666;
-    text-align: center;
-    
-    font: 13px Arial, sans-serif;
-  }
-  .numberCircleGray {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    padding-top: 5px;
-    padding-right: 8px;
-    padding-bottom: 5px;
-    padding-left: 8px;
-    background: #fff;
-    border: 3px solid #c0c0c0;
-    color: #666;
-    text-align: center;
-    
-    font: 13px Arial, sans-serif;
-  }
   /* Sembunyikan carousel-control */
   .carousel .carousel-control { visibility: hidden; }
   .carousel:hover .carousel-control { visibility: visible; }
@@ -260,10 +200,10 @@
 									<div id="galleryFotoAbsensi"></div>
                 </div>
                 <ul class="chart-legend clearfix list-inline">
-                      <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span> On Time</li>
-                      <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span> Telat</li>
-                      <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumTidakKerja"></span> Tidak Kerja</li>
-                      <li id="listBelumAbsen"><span class="list-inline-item numberCircleGray" id="jumBelumAbsen"></span> Belum Absen</li>
+                      <li id="listOntime"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid aqua;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumOntime"></span> On Time</li>
+                      <li id="listLate"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid orange;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumLate"></span> Telat</li>
+                      <li id="listTidakKerja"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid red;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumTidakKerja"></span> Tidak Kerja</li>
+                      <li id="listBelumAbsen"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid #c0c0c0;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumBelumAbsen"></span> Belum Absen</li>
                 </ul>
                 <br>
 							  <!-- ./chart-responsive -->
