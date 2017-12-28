@@ -47,9 +47,6 @@
   .numberCircleOrange {
     border-radius: 50%;
     width: 20px;
-    width:fit-content;
-    width:-webkit-fit-content; 
-    width:-moz-fit-content;
     height: 20px;
     padding: 3px;
     background: #fff;
@@ -252,7 +249,7 @@
                 </div>
                 <ul class="chart-legend clearfix list-inline">
                       <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span>On Time</li>
-                      <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span>Terlambat</li>
+                      <li id="listLate numberCircleOrange"><span class="list-inline-item" id="jumLate"></span>Terlambat</li>
                       <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumTidakKerja"></span>Tidak Kerja</li>
                       <li id="listBelumAbsen"><span class="list-inline-item numberCircleGray" id="jumBelumAbsen"></span>Belum Absen</li>
                 </ul>
