@@ -86,7 +86,7 @@
     height: 20px;
     padding: 3px;
     background: #fff;
-    border: 3px solid blue;
+    border: 3px solid #c0c0c0;
     color: #666;
     text-align: center;
     
@@ -251,7 +251,7 @@
                       <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span>On Time</li>
                       <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span>Terlambat</li>
                       <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumTidakKerja"></span>Tidak Kerja</li>
-                      <li id="listBelumAbsen"><span class="list-inline-item numberCircleGrey" id="jumBelumAbsen"></span>Belum Absen</li>
+                      <li id="listBelumAbsen"><span class="list-inline-item numberCircleGray" id="jumBelumAbsen"></span>Belum Absen</li>
                 </ul>
                 <br>
 							  <!-- ./chart-responsive -->
