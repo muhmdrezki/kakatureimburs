@@ -45,10 +45,13 @@
 		height: 100% !important;
 	}
   .numberCircleOrange {
-    border-radius: 150px;
+    border-radius: 50%;
     width: 20px;
     height: 20px;
-    padding: 3px;
+    padding-top: 5px;
+    padding-right: 8px;
+    padding-bottom: 5px;
+    padding-left: 8px;
     background: #fff;
     border: 3px solid orange;
     color: #666;
@@ -60,7 +63,10 @@
     border-radius: 50%;
     width: 20px;
     height: 20px;
-    padding: 3px;
+    padding-top: 5px;
+    padding-right: 8px;
+    padding-bottom: 5px;
+    padding-left: 8px;
     background: #fff;
     border: 3px solid aqua;
     color: #666;
@@ -72,7 +78,10 @@
     border-radius: 50%;
     width: 20px;
     height: 20px;
-    padding: 3px;
+    padding-top: 5px;
+    padding-right: 8px;
+    padding-bottom: 5px;
+    padding-left: 8px;
     background: #fff;
     border: 3px solid red;
     color: #666;
@@ -84,7 +93,10 @@
     border-radius: 50%;
     width: 20px;
     height: 20px;
-    padding: 3px;
+    padding-top: 5px;
+    padding-right: 8px;
+    padding-bottom: 5px;
+    padding-left: 8px;
     background: #fff;
     border: 3px solid #c0c0c0;
     color: #666;
