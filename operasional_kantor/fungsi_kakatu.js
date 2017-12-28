@@ -296,6 +296,9 @@ $(function () {
                   break;
                 case "Ontime":
                   $('#listOntime').show();
+                  if (data[index].value>9) {
+                    $('#jumOntime').attr('style','border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;background: #fff;border: 3px solid aqua;color: #666;text-align: center;font: 13px Arial, sans-serif;');
+                  }
                   $('#jumOntime').text(data[index].value);
                   break;
                 case "Tidak Kerja":
