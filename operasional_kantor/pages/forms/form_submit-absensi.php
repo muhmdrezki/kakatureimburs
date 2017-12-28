@@ -18,7 +18,12 @@ if (!defined('DIDALAM_INDEX_PHP')) {
         $qry="SELECT jam_masuk FROM tb_detail_absen WHERE id_anggota='$_SESSION[id_anggota]' AND tanggal='$today1'";
         $res = $conn->query($qry);
         $row = $res->fetch_assoc();
-        $jam_keluar = date('H:i:s', strtotime($row['jam_masuk'] . ' + 8hours'));
+        $jam_keluar=null;
+        if (strtotime($row['jam_masuk']) >= strtotime('09:00')) {
+            $jam_keluar = "17:00:00";
+        } else {
+            $jam_keluar = date('H:i:s', strtotime($row['jam_masuk'] . ' + 8hours'));
+        }
         echo '<script>alert("Anda bisa absen keluar minimal pukul '.$jam_keluar.'");window.location="tampil/data-absensi"</script>';
     } elseif($_SESSION["isAbsenToday"] == 2) {
         readfile('pages/views/forms/submit-absensi.html');

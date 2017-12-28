@@ -39,7 +39,7 @@ $tes = "kakatu";
 echo $tes."<br>";
 $enkripsi=encodeData($tes);
 echo "Enkripsi: ".$enkripsi."<br>";
-$dekripsi = decodeData("MDhOcWwzZnVQVDd4ZitoQ2x1R2srUT09");
+$dekripsi = decodeData("UXJ4YlVMNm53NXRXckVocCtGSm5idz09");
 echo "Dekripsi: ".$dekripsi."<br>";
 session_start();
 $isAdmin = strpos($_SESSION['jabatan'], 'Admin')!==false;

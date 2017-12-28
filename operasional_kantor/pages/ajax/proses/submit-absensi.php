@@ -41,20 +41,14 @@ if (!$res) {
         $latMasuk=$row['latitude'];
         $lngMasuk=$row['longitude'];
         if ($row['jam_keluar']===null) {
-            $distance2 = getDistance($latitude, $longitude, $latMasuk, $lngMasuk);
-            if ($distance<=300) {
-                $now = date("H:i:s");
-                $queryKeluar = "UPDATE tb_detail_absen SET jam_keluar='$now' WHERE id_anggota='$id' AND tanggal='$hariini1'";
-                inUpDel($queryKeluar,$errmsg);
-                $status=$row['status_id'];
-                emitData();
-                $tgl_awal = $row['jam_masuk'];
-                $tgl_akhir = $now;
-                $jenis = "keluar";              
-            } else {
-                $errmsg = "Absen Keluar Gagal karena Anda berada " . round($distance2 / 1000, 3) . "km dari lokasi anda absen masuk";
-            }
-            
+            $now = date("H:i:s");
+            $queryKeluar = "UPDATE tb_detail_absen SET jam_keluar='$now' WHERE id_anggota='$id' AND tanggal='$hariini1'";
+            inUpDel($queryKeluar,$errmsg);
+            $status=$row['status_id'];
+            emitData();
+            $tgl_awal = $row['jam_masuk'];
+            $tgl_akhir = $now;
+            $jenis = "keluar";
         } else {
             $errmsg = "Anda sudah mengisi absen hari ini!";
         }
