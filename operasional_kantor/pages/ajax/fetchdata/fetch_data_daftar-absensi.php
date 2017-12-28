@@ -79,7 +79,7 @@
                               $warnaLabel = 'label-default';
                         break;
                   }
-                  if ($statusFoto="Hadir" || $statusFoto="Tugas Kantor" || $statusFoto="Kerja Remote") {
+                  if ($statusFoto=="Hadir" || $statusFoto=="Tugas Kantor" || $statusFoto=="Kerja Remote") {
                         if (strtotime($row['jam_masuk']) >= strtotime('10:00:00')) {
                               $output.='
                               <li>
@@ -114,7 +114,7 @@
                               <img style="
                                     width:256px;
                                     margin: 10px;
-                                    border:3px solid Red;
+                                    border:3px solid red;
                                     border-radius: 500px;
                                     -webkit-border-radius: 500px;
                                     -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
