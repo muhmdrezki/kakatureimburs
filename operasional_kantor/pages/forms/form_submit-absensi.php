@@ -24,7 +24,7 @@ if (!defined('DIDALAM_INDEX_PHP')) {
         } else {
             $jam_keluar = date('H:i:s', strtotime($row['jam_masuk'] . ' + 8hours'));
         }
-        echo '<script>alert("Anda bisa absen keluar minimal pukul '.$jam_keluar.'");window.location="tampil/data-absensi"</script>';
+        echo '<script>alert("Anda bisa absen pulang minimal pukul '.$jam_keluar.'");window.location="tampil/data-absensi"</script>';
     } elseif($_SESSION["isAbsenToday"] == 2) {
         readfile('pages/views/forms/submit-absensi.html');
     } elseif($_SESSION["isAbsenToday"] == 0) {

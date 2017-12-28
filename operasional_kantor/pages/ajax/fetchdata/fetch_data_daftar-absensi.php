@@ -75,20 +75,38 @@
                         case 'Alpha':
                               $warnaLabel = 'label-default';
                         break;
+                        case 'Kerja Remote':
+                              $warnaLabel = 'label-default';
+                        break;
                   }
-                  if (strtotime($row['jam_masuk']) >= strtotime('10:00:00')) {
-                        $output.='
-                        <li>
-                              <a id="'.$row["id_anggota"].'" class="users-list-name btn view_data_anggota">'.$row["nama"].'</a>
-                              <img style="
-                                    width:256px;
-                                    margin: 10px;
-                                    border:3px solid orange;
-                                    border-radius: 500px;
-                                    -webkit-border-radius: 500px;
-                                    -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
-                              <a id="'.$row["id_absen"].'" class="label '.$warnaLabel.' users-list-date detail_kehadiran">'.$statusFoto.'</a>
-                        ';
+                  if ($statusFoto="Hadir" || $statusFoto="Tugas Kantor" || $statusFoto="Kerja Remote") {
+                        if (strtotime($row['jam_masuk']) >= strtotime('10:00:00')) {
+                              $output.='
+                              <li>
+                                    <a id="'.$row["id_anggota"].'" class="users-list-name btn view_data_anggota">'.$row["nama"].'</a>
+                                    <img style="
+                                          width:256px;
+                                          margin: 10px;
+                                          border:3px solid orange;
+                                          border-radius: 500px;
+                                          -webkit-border-radius: 500px;
+                                          -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
+                                    <a id="'.$row["id_absen"].'" class="label '.$warnaLabel.' users-list-date detail_kehadiran">'.$statusFoto.'</a>
+                              ';
+                        } else {
+                              $output.='
+                              <li>
+                                    <a id="'.$row["id_anggota"].'" class="users-list-name btn  view_data_anggota">'.$row["nama"].'</a>
+                                    <img style="
+                                          width:256px;
+                                          margin: 10px;
+                                          border:3px solid Aqua;
+                                          border-radius: 500px;
+                                          -webkit-border-radius: 500px;
+                                          -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
+                                    <a id="'.$row["id_absen"].'" class="label '.$warnaLabel.' users-list-date detail_kehadiran">'.$statusFoto.'</a>
+                              ';
+                        }
                   } else {
                         $output.='
                         <li>
@@ -96,7 +114,7 @@
                               <img style="
                                     width:256px;
                                     margin: 10px;
-                                    border:3px solid Aqua;
+                                    border:3px solid Red;
                                     border-radius: 500px;
                                     -webkit-border-radius: 500px;
                                     -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">

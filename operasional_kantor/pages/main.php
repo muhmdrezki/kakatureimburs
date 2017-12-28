@@ -204,7 +204,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
         <script type="text/javascript" src="inputmask-jquery/dist/jquery.maskMoney.js"></script>
         <!-- Google Maps API With API KEY -->
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAn0sCC7HGqbJbWhwkgJnvyWFiTa7QGtVI"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?php echo getLastConfig('api_key_google')?>"></script>
         <!-- fullCalendar -->
         <script src="bower_components/moment/moment.js"></script>
         <script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
