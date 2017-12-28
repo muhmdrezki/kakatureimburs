@@ -47,6 +47,9 @@
   .numberCircleOrange {
     border-radius: 50%;
     width: 20px;
+    width:fit-content;
+    width:-webkit-fit-content; 
+    width:-moz-fit-content;
     height: 20px;
     padding: 3px;
     background: #fff;
