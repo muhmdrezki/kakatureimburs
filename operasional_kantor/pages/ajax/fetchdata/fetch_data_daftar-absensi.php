@@ -100,7 +100,7 @@
                                     <img style="
                                           width:256px;
                                           margin: 10px;
-                                          border:3px solid Aqua;
+                                          border:3px solid aqua;
                                           border-radius: 500px;
                                           -webkit-border-radius: 500px;
                                           -moz-border-radius: 500px" class="user-image img img-responsive" src="dist/fotoprofile/'.$fotomuka.'" alt="User Image">
