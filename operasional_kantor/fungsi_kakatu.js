@@ -308,6 +308,10 @@ $(function () {
                   $('#listTidakKerja').show();
                   $('#jumTidakKerja').text(data[index].value);
                   break;
+                case "Belum Absen":
+                  $('#listBelumAbsen').show();
+                  $('#jumtBelumAbsen').text(data[index].value);
+                  break;
               }
             }
             index++;

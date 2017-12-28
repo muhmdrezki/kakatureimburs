@@ -16,5 +16,10 @@ $result3 = mysqli_query($koneksi, $query3);
 while ($row3 = mysqli_fetch_assoc($result3)) {
     $all[] = $row3;
 }
+$query4 = "SELECT COUNT(a.id_anggota) AS value,'Belum Absen' AS label FROM tb_anggota a JOIN jabatan_anggota b ON a.id_anggota = b.id_anggota JOIN tb_jabatan c ON c.id_jabatan = b.id_jabatan WHERE a.id_anggota NOT IN (SELECT id_anggota FROM tb_detail_absen WHERE tanggal=CURRENT_DATE) GROUP BY a.id_anggota HAVING GROUP_CONCAT(c.jabatan SEPARATOR ', ') NOT LIKE '%Admin%'";
+$result4 = mysqli_query($koneksi, $query4);
+while ($row4 = mysqli_fetch_assoc($result4)) {
+    $all[] = $row4;
+}
 $data = json_encode($all);
 echo $data;

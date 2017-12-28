@@ -80,6 +80,18 @@
     
     font: 13px Arial, sans-serif;
   }
+  .numberCircleGray {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    background: #fff;
+    border: 3px solid blue;
+    color: #666;
+    text-align: center;
+    
+    font: 13px Arial, sans-serif;
+  }
   /* Sembunyikan carousel-control */
   .carousel .carousel-control { visibility: hidden; }
   .carousel:hover .carousel-control { visibility: visible; }
@@ -239,6 +251,7 @@
                       <li id="listOntime"><span class="list-inline-item numberCircleAqua" id="jumOntime"></span>On Time</li>
                       <li id="listLate"><span class="list-inline-item numberCircleOrange" id="jumLate"></span>Terlambat</li>
                       <li id="listTidakKerja"><span class="list-inline-item numberCircleRed" id="jumTidakKerja"></span>Tidak Kerja</li>
+                      <li id="listBelumAbsen"><span class="list-inline-item numberCircleGrey" id="jumBelumAbsen"></span>Belum Absen</li>
                 </ul>
                 <br>
 							  <!-- ./chart-responsive -->
