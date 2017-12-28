@@ -50,7 +50,7 @@
     height: 20px;
     padding: 3px;
     background: #fff;
-    border: 5px orange;
+    border: 3px solid orange;
     color: #666;
     text-align: center;
     
@@ -62,7 +62,7 @@
     height: 20px;
     padding: 3px;
     background: #fff;
-    border: 5px aqua;
+    border: 3px solid aqua;
     color: #666;
     text-align: center;
     
@@ -74,7 +74,7 @@
     height: 20px;
     padding: 3px;
     background: #fff;
-    border: 5px red;
+    border: 3px solid red;
     color: #666;
     text-align: center;
     
