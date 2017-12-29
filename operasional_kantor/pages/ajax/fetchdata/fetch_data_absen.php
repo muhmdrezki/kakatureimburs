@@ -214,7 +214,11 @@ while ($row = $result->fetch_array()) {
     $sub_array = array();
     $sub_array[] = $row["id"];
     $sub_array[] = $row["tanggal"];
-    $sub_array[] = $row["jam_masuk"];
+    if (strtotime($row['jam_masuk']) >= strtotime('10:00:00')) {
+        $sub_array[] = "<span class=\"label label-warning\">".$row["jam_masuk"]."</span>";
+    } else {
+        $sub_array[] = $row["jam_masuk"];
+    }
     if ($row["jam_keluar"] === null) {
         $sub_array[] = " -";
     } else {
