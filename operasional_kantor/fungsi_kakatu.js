@@ -225,18 +225,18 @@ $(function () {
           //Fungsi untuk buat chart Donut Chart.js
           chartConfigAbsen(data, truefalse2);
           // .hide() Semua legend pada Donut Chart.js sebelum dimunculkan lagi
-          //$('#listHadir').hide();
-          //$('#listHadirDiluar').hide();
-          //$('#listKerjaRemote').hide();
-          //$('#listSakit').hide();
-          //$('#listIzin').hide();
-          //$('#listCuti').hide();
-          //$('#listAlpha').hide();
+          $('#listHadir').hide();
+          $('#listHadirDiluar').hide();
+          $('#listKerjaRemote').hide();
+          $('#listSakit').hide();
+          $('#listIzin').hide();
+          $('#listCuti').hide();
+          $('#listAlpha').hide();
           var status;
           var index = 0;
           //Proses penghitungan data absen di legend donut chart dan .show() legend
           while (index <= (data.length - 1)) {
-            if (typeof (data[index]) !== "undefined") {
+            if (typeof (data[index]) !== "undefined" && data[index] !== null) {
               status = data[index].label;
               switch (status) {
                 case "Hadir":
@@ -279,15 +279,15 @@ $(function () {
         method: "POST",
         dataType: "json",
         success: function (data) {
-          //$('#listLate').hide();
-          //$('#listOntime').hide();
-          //$('#listTidakKerja').hide();
-          //$('#listBelumAbsen').hide();
+          $('#listLate').hide();
+          $('#listOntime').hide();
+          $('#listTidakKerja').hide();
+          $('#listBelumAbsen').hide();
           var status;
           var index = 0;
           //Proses penghitungan data absen di legend donut chart dan .show() legend
           while (index <= (data.length - 1)) {
-            if (typeof (data[index]) !== "undefined") {
+            if (typeof (data[index]) !== "undefined" && data[index] !== null) {
               status = data[index].label;
               switch (status) {
                 case "Late":
