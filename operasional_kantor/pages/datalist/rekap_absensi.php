@@ -101,13 +101,13 @@
             <tr>
               <td><a id="<?php echo $r["id_ang"] ?>" type="button" class="btn btn-default btn-block btn-sm active view_data_anggota"><?php echo $r["id_ang"] ?></a></td>
               <td><a type="button" class="btn btn-default btn-block btn-sm active disabled"><?php echo $r["nama"] ?></a></a></td>
-              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/hadir" class="btn btn-info btn-block btn-sm" name="id_anggota_rekap" ><?php echo $r["jumhadir"] ?> kali</button></td>
-              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/telat" class="btn btn-primary btn-block btn-sm" name="id_anggota_rekap" ><?php echo $r["jumtelat"] ?> kali</button></td>
-              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/sakit" class="btn btn-danger btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumsakit"] ?> kali</button></td>
-              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/izin" class="btn btn-warning btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumizin"] ?> kali</button></td>
-              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/cuti" class="btn btn-success btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumcuti"] ?> kali</button></td>
-              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/alpha" class="btn btn-default btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumalpha"] ?> kali</button></td>
-              <td><a type="button" class="btn btn-default btn-block btn-sm active disabled" > Rp<?php echo number_format($r["totalcredits"]) ?></a></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/hadir" class="btn btn-info btn-block btn-sm" name="id_anggota_rekap" ><?php echo $r["jumhadir"] ?></button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/telat" class="btn btn-primary btn-block btn-sm" name="id_anggota_rekap" ><?php echo $r["jumtelat"] ?></button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/sakit" class="btn btn-danger btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumsakit"] ?></button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/izin" class="btn btn-warning btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumizin"] ?></button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/cuti" class="btn btn-success btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumcuti"] ?></button></td>
+              <td><a href="tampil/data-absensi/<?php echo $r['id_ang']?>/alpha" class="btn btn-default btn-block btn-sm" name="id_anggota_rekap"><?php echo $r["jumalpha"] ?></button></td>
+              <td><a type="button" class="btn btn-default btn-block btn-sm active disabled" ><?php echo $r["totalcredits"]?></a></td>
             </tr>
               <?php
                 $no++;
@@ -118,14 +118,14 @@
     <tfoot>
 								<tr>
 								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled">Total</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled"><?php echo $no?> pegawai</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-info btn-block btn-md "><?php echo $totalhadir?> kali</a></th>
-                  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-primary btn-block btn-md "><?php echo $totaltelat?> kali</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-danger btn-block btn-md "><?php echo $totalsakit?> kali</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-warning btn-block btn-md "><?php echo $totalizin?> kali</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-success btn-block btn-md "><?php echo $totalcuti?> kali</a></th>
-									<th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md"><?php echo $totalalpha?> kali</a></th>
-								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled">Rp<?php echo number_format($totalakomodasi) ?></a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled"><?php echo $no?></a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-info btn-block btn-md "><?php echo $totalhadir?></a></th>
+                  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-primary btn-block btn-md "><?php echo $totaltelat?></a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-danger btn-block btn-md "><?php echo $totalsakit?></a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-warning btn-block btn-md "><?php echo $totalizin?></a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-success btn-block btn-md "><?php echo $totalcuti?></a></th>
+									<th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md"><?php echo $totalalpha?></a></th>
+								  <th><a type="button" style="color: black;font-weight: bold;" class="btn btn-default btn-block btn-md active disabled"><?php echo $totalakomodasi?></a></th>
                 </tr>  
     </tfoot>              
   </table>
