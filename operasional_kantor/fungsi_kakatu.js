@@ -236,7 +236,7 @@ $(function () {
           var index = 0;
           //Proses penghitungan data absen di legend donut chart dan .show() legend
           while (index <= (data.length - 1)) {
-            if (typeof (data[index]) !== "undefined" && data[index] !== null) {
+            if (typeof (data[index]) !== "undefined" && data[index].value !== null) {
               status = data[index].label;
               switch (status) {
                 case "Hadir":
@@ -287,7 +287,7 @@ $(function () {
           var index = 0;
           //Proses penghitungan data absen di legend donut chart dan .show() legend
           while (index <= (data.length - 1)) {
-            if (typeof (data[index]) !== "undefined" && data[index] !== null) {
+            if (typeof (data[index]) !== "undefined" && data[index].value !== null) {
               status = data[index].label;
               switch (status) {
                 case "Late":
