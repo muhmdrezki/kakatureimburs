@@ -182,13 +182,13 @@
 							  <div class="col-md-4">
 								  <div class="row">
 										  <ul class="chart-legend clearfix list-inline">
-											  <li id="listHadir"><span class="list-inline-item label label-info badge" id="jumhadir" ></span>Hadir</li>
-											  <li id="listHadirDiluar"><span class="list-inline-item label label-primary badge" id="jumhadirdiluar"></span>Tugas Kantor</li>
-											  <li id="listSakit"><span class="list-inline-item label label-danger badge" id="jumsakit"></span>Sakit</li>
-											  <li id="listIzin"><span class="list-inline-item label label-warning badge" id="jumizin"></span>Izin</li>
-											  <li id="listCuti"><span class="list-inline-item label label-success badge" id="jumcuti"></span>Cuti</li>
-                        <li id="listAlpha"><span class="list-inline-item label label-default badge" id="jumalpha"></span>Alpha</li>
-                        <li id="listKerjaRemote"><span class="list-inline-item label label-default badge" id="jumkerjaremote"></span>Kerja Remote</li>
+											  <li id="listHadir" style="display:none"><span class="list-inline-item label label-info badge" id="jumhadir" ></span>Hadir</li>
+											  <li id="listHadirDiluar" style="display:none"><span class="list-inline-item label label-primary badge" id="jumhadirdiluar"></span>Tugas Kantor</li>
+											  <li id="listSakit" style="display:none"><span class="list-inline-item label label-danger badge" id="jumsakit"></span>Sakit</li>
+											  <li id="listIzin" style="display:none"><span class="list-inline-item label label-warning badge" id="jumizin"></span>Izin</li>
+											  <li id="listCuti" style="display:none"><span class="list-inline-item label label-success badge" id="jumcuti"></span>Cuti</li>
+                        <li id="listAlpha" style="display:none"><span class="list-inline-item label label-default badge" id="jumalpha"></span>Alpha</li>
+                        <li id="listKerjaRemote" style="display:none"><span class="list-inline-item label label-default badge" id="jumkerjaremote"></span>Kerja Remote</li>
 										  </ul>
 									  <br>
 									  <div class="chart-responsive col-md-12 col-md-pull-2">
@@ -200,10 +200,10 @@
 									<div id="galleryFotoAbsensi"></div>
                 </div>
                 <ul class="chart-legend clearfix list-inline">
-                      <li id="listOntime"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid aqua;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumOntime"></span> On Time</li>
-                      <li id="listLate"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid orange;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumLate"></span> Telat</li>
-                      <li id="listTidakKerja"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid red;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumTidakKerja"></span> Tidak Kerja</li>
-                      <li id="listBelumAbsen"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid #c0c0c0;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumBelumAbsen"></span> Belum Absen</li>
+                      <li id="listOntime" style="display:none"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid aqua;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumOntime"></span> On Time</li>
+                      <li id="listLate" style="display:none"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid orange;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumLate"></span> Telat</li>
+                      <li id="listTidakKerja" style="display:none"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid red;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumTidakKerja"></span> Tidak Kerja</li>
+                      <li id="listBelumAbsen" style="display:none"><span style="border-radius: 50%;width: 20px;height: 20px;padding-top: 5px;padding-right: 8px;padding-bottom: 5px;padding-left: 8px;background: #fff;border: 3px solid #c0c0c0;color: #666;text-align: center;font: 13px Arial, sans-serif;" class="list-inline-item" id="jumBelumAbsen"></span> Belum Absen</li>
                 </ul>
                 <br>
 							  <!-- ./chart-responsive -->

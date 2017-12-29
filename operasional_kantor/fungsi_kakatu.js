@@ -225,13 +225,13 @@ $(function () {
           //Fungsi untuk buat chart Donut Chart.js
           chartConfigAbsen(data, truefalse2);
           // .hide() Semua legend pada Donut Chart.js sebelum dimunculkan lagi
-          $('#listHadir').hide();
-          $('#listHadirDiluar').hide();
-          $('#listKerjaRemote').hide();
-          $('#listSakit').hide();
-          $('#listIzin').hide();
-          $('#listCuti').hide();
-          $('#listAlpha').hide();
+          //$('#listHadir').hide();
+          //$('#listHadirDiluar').hide();
+          //$('#listKerjaRemote').hide();
+          //$('#listSakit').hide();
+          //$('#listIzin').hide();
+          //$('#listCuti').hide();
+          //$('#listAlpha').hide();
           var status;
           var index = 0;
           //Proses penghitungan data absen di legend donut chart dan .show() legend
@@ -279,10 +279,10 @@ $(function () {
         method: "POST",
         dataType: "json",
         success: function (data) {
-          $('#listLate').hide();
-          $('#listOntime').hide();
-          $('#listTidakKerja').hide();
-          $('#listBelumAbsen').hide();
+          //$('#listLate').hide();
+          //$('#listOntime').hide();
+          //$('#listTidakKerja').hide();
+          //$('#listBelumAbsen').hide();
           var status;
           var index = 0;
           //Proses penghitungan data absen di legend donut chart dan .show() legend
@@ -2334,8 +2334,8 @@ $(function () {
           $('#dataModalAbsensiCalendar').on('shown.bs.modal', function () {
             var lat = parseFloat($('#latDetailAbsen').text());
             var lng = parseFloat($('#lngDetailAbsen').text());
-            console.log(lat);
-            console.log(lng);
+            //console.log(lat);
+            //console.log(lng);
             //console.log("Center");
             google.maps.event.addDomListener(window, 'load', initMap(lat, lng));
             google.maps.event.addDomListener(window, "resize", function () {
