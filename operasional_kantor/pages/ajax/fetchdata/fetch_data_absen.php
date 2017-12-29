@@ -214,8 +214,8 @@ while ($row = $result->fetch_array()) {
     $sub_array = array();
     $sub_array[] = $row["id"];
     $sub_array[] = $row["tanggal"];
-    if (strtotime($row['jam_masuk']) >= strtotime('10:00:00')) {
-        $sub_array[] = "<span class=\"label label-warning\">".$row["jam_masuk"]."</span>";
+    if ((strtotime($row['jam_masuk']) >= strtotime('10:00:00')) && ($row['status']=="Hadir" || $row['status']=="Tugas Kantor" || $row['status']=="Kerja Remote")) {
+        $sub_array[] = '<p style="color:orange">'.$row["jam_masuk"].'</p>';
     } else {
         $sub_array[] = $row["jam_masuk"];
     }
